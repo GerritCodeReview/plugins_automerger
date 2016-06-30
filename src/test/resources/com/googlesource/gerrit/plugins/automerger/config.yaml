@@ -1,0 +1,31 @@
+branches:
+  master:
+    ds_one:
+      add_projects:
+      - platform/added/project
+      ignore_projects:
+      - whoo
+    ds_two:
+      merge_all: true
+      add_projects:
+      - platform/added/project
+      ignore_projects:
+      - whoo
+      set_projects:
+      - platform/some/project
+      - platform/other/project
+  ds_two:
+    ds_three:
+      set_projects:
+      - platform/some/project
+global:
+  always_blank_merge:
+  - (?<=Import translations\.\s)DO NOT MERGE
+  - DO NOT MERGE ANYWHERE
+  blank_merge:
+  - DO NOT MERGE
+  manifest:
+    file: default.xml
+    project: platform/manifest
+  ignore_projects:
+  - platform/ignore/me
