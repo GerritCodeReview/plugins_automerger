@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<manifest>
+  <default revision="master" />
+  <project path="whee" name="platform/whee" groups="pdk" />
+  <project path="whoo" name="whoo" groups="pdk" />
+  <project path="whaa" name="platform/whaa" groups="pdk" revision="mirror-aosp-master" />
+</manifest>
