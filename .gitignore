@@ -1,0 +1,12 @@
+/target
+/.buckversion
+/.classpath
+/.settings
+/.project
+/.buckd
+/buck-cache
+/buck-out
+/bucklets
+.buckversion
+.watchmanconfig
+/eclipse-out
