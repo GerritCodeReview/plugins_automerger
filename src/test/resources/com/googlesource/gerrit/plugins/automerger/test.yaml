@@ -1,0 +1,31 @@
+branches:
+  master:
+    ds_one:
+      redirect_emails: ['stephenli+testlimitemail@google.com']
+      add_projects:
+      - platform/added/project
+      ignore_projects:
+      - whoo
+    ds_two:
+      add_projects:
+      - platform/added/project
+      ignore_projects:
+      - whoo
+      set_projects:
+      - platform/some/project
+      - platform/other/project
+  ds_two:
+    ds_three:
+      set_projects:
+      - platform/some/project
+global:
+  always_blank_merge:
+  - (?<=Import translations\.\s)DO NOT MERGE
+  blank_merge:
+  - (don't|do\s+not)\s+(auto[-\s]*)?(merge|integrate)
+  - ^\s*auto-?merger?:\s*(no|false|disable|do not|don't)\b
+  manifest:
+    file: default.xml
+    project: platform/manifest
+  ignore_projects:
+  - platform/ignore/me
