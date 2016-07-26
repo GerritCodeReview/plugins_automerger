@@ -22,9 +22,9 @@ branches:
 global:
   always_blank_merge:
   - (?<=Import translations\.\s)DO NOT MERGE
+  - DO NOT MERGE ANYWHERE
   blank_merge:
-  - (don't|do\s+not)\s+(auto[-\s]*)?(merge|integrate)
-  - ^\s*auto-?merger?:\s*(no|false|disable|do not|don't)\b
+  - DO NOT MERGE
   manifest:
     file: default.xml
     project: platform/manifest
