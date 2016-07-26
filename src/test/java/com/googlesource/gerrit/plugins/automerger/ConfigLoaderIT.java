@@ -36,6 +36,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
+import java.net.URL;
 
 public class ConfigLoaderIT extends PluginDaemonTest {
 
@@ -150,7 +151,7 @@ public class ConfigLoaderIT extends PluginDaemonTest {
     loadConfig();
     Set<String> expectedBranches = new HashSet<String>();
     expectedBranches.add("ds_two");
-    expectedBranches.add("ds_three");
+//    expectedBranches.add("ds_three");
     assertThat(configLoader.getDownstreamBranches(
         "master", "platform/some/project", false)).isEqualTo(expectedBranches);
   }
