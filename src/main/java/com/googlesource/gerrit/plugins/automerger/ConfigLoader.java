@@ -1,6 +1,7 @@
 package com.googlesource.gerrit.plugins.automerger;
 
 import com.google.common.base.Charsets;
+import com.google.common.io.CharStreams;
 import com.google.common.io.Files;
 import com.google.gerrit.extensions.api.GerritApi;
 import com.google.gerrit.extensions.restapi.BinaryResult;
@@ -12,6 +13,8 @@ import org.slf4j.LoggerFactory;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.File;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -28,9 +31,9 @@ public class ConfigLoader {
   String configProjectBranch;
   String configFilename;
   List<String> globalKeys;
-  List<String> configOptionKeys;
   Yaml yaml;
   private Map<String, String> defaultManifestInfo;
+  public List<String> configOptionKeys;
 
   protected GerritApi gApi;
   Map<String, Map> config;
@@ -40,10 +43,9 @@ public class ConfigLoader {
     this.gApi = gApi;
     config = new HashMap<String, Map>();
 
-    String configFilePath = Paths.get(".", "plugins", "automerger", "src", "main",
-            "config", "config.yaml").toAbsolutePath().normalize().toString();
-    File configFile = new File(configFilePath);
-    String automergerConfigYamlString = Files.toString(configFile, Charsets.UTF_8);
+    InputStream inputStream = ConfigLoader.class.getResourceAsStream("/main/config/config_keys.yaml");
+    String automergerConfigYamlString = CharStreams.toString(new InputStreamReader(inputStream, Charsets.UTF_8));
+    inputStream.close();
     Map automergerConfig = (Map) yaml.load(automergerConfigYamlString);
     configProject = (String) automergerConfig.get("config_project");
     configProjectBranch = (String) automergerConfig.get("config_project_branch");
@@ -179,7 +181,7 @@ public class ConfigLoader {
                   (boolean) toBranchConfig.get("merge_all"))) {
             Set<String> projectsInScope = getProjectsInScope(fromBranch, key);
             if (projectsInScope.contains(project)) {
-              downstreamBranches.addAll(getDownstreamBranches(key, project, includeMergeAll));
+//              downstreamBranches.addAll(getDownstreamBranches(key, project, includeMergeAll));
               downstreamBranches.add(key);
             }
           }
