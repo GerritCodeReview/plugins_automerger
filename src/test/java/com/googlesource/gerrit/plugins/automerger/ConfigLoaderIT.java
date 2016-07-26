@@ -36,6 +36,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
+import java.net.URL;
 
 public class ConfigLoaderIT extends PluginDaemonTest {
 
@@ -150,9 +151,9 @@ public class ConfigLoaderIT extends PluginDaemonTest {
     loadConfig();
     Set<String> expectedBranches = new HashSet<String>();
     expectedBranches.add("ds_two");
-    expectedBranches.add("ds_three");
+//    expectedBranches.add("ds_three");
     assertThat(configLoader.getDownstreamBranches(
-        "master", "platform/some/project", false)).isEqualTo(expectedBranches);
+        "master", "platform/some/project")).isEqualTo(expectedBranches);
   }
 
   @Test
@@ -160,16 +161,7 @@ public class ConfigLoaderIT extends PluginDaemonTest {
     loadConfig();
     Set<String> expectedBranches = new HashSet<String>();
     assertThat(configLoader.getDownstreamBranches(
-        "idontexist", "platform/some/project", false)).isEqualTo(expectedBranches);
-  }
-
-  @Test
-  public void downstreamBranchesTest_mergeAll() throws Exception {
-    loadConfig();
-    Set<String> expectedBranches = new HashSet<String>();
-    expectedBranches.add("ds_two");
-    assertThat(configLoader.getDownstreamBranches(
-            "master", "platform/some/project", true)).isEqualTo(expectedBranches);
+        "idontexist", "platform/some/project")).isEqualTo(expectedBranches);
   }
 
   @Test
@@ -178,7 +170,7 @@ public class ConfigLoaderIT extends PluginDaemonTest {
     loadConfig();
     Set<String> expectedBranches = new HashSet<String>();
     assertThat(configLoader.getDownstreamBranches(
-            "asdfidontexist", "platform/some/project", true)).isEqualTo(expectedBranches);
+            "asdfidontexist", "platform/some/project")).isEqualTo(expectedBranches);
   }
 
   @Test(expected = IOException.class)
@@ -188,7 +180,7 @@ public class ConfigLoaderIT extends PluginDaemonTest {
     Set<String> expectedBranches = new HashSet<String>();
 
     assertThat(configLoader.getDownstreamBranches(
-            "master", "platform/some/project", true)).isEqualTo("asdf");
+            "master", "platform/some/project")).isEqualTo("asdf");
   }
 
   @Test(expected = RestApiException.class)
@@ -198,6 +190,6 @@ public class ConfigLoaderIT extends PluginDaemonTest {
     Set<String> expectedBranches = new HashSet<String>();
 
     assertThat(configLoader.getDownstreamBranches(
-            "master", "platform/some/project", true)).isEqualTo("asdf");
+            "master", "platform/some/project")).isEqualTo("asdf");
   }
 }

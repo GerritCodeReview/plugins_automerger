@@ -1,6 +1,7 @@
 package com.googlesource.gerrit.plugins.automerger;
 
 import com.google.common.base.Charsets;
+import com.google.common.io.CharStreams;
 import com.google.common.io.Files;
 import com.google.gerrit.extensions.api.GerritApi;
 import com.google.gerrit.extensions.restapi.BinaryResult;
@@ -12,6 +13,8 @@ import org.slf4j.LoggerFactory;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.File;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -28,9 +31,10 @@ public class ConfigLoader {
   String configProjectBranch;
   String configFilename;
   List<String> globalKeys;
-  List<String> configOptionKeys;
   Yaml yaml;
+  Map global;
   private Map<String, String> defaultManifestInfo;
+  public List<String> configOptionKeys;
 
   protected GerritApi gApi;
   Map<String, Map> config;
@@ -40,10 +44,9 @@ public class ConfigLoader {
     this.gApi = gApi;
     config = new HashMap<String, Map>();
 
-    String configFilePath = Paths.get(".", "plugins", "automerger", "src", "main",
-            "config", "config.yaml").toAbsolutePath().normalize().toString();
-    File configFile = new File(configFilePath);
-    String automergerConfigYamlString = Files.toString(configFile, Charsets.UTF_8);
+    InputStream inputStream = ConfigLoader.class.getResourceAsStream("/main/config/config_keys.yaml");
+    String automergerConfigYamlString = CharStreams.toString(new InputStreamReader(inputStream, Charsets.UTF_8));
+    inputStream.close();
     Map automergerConfig = (Map) yaml.load(automergerConfigYamlString);
     configProject = (String) automergerConfig.get("config_project");
     configProjectBranch = (String) automergerConfig.get("config_project_branch");
@@ -57,11 +60,32 @@ public class ConfigLoader {
       BinaryResult configFile = gApi.projects().name(configProject).branch(configProjectBranch).file(configFilename);
       String configFileString = configFile.asString();
       config = (Map) yaml.load(configFileString);
-      Map global = (Map) config.get("global");
+      global = (Map) config.get("global");
       defaultManifestInfo = (Map<String, String>) global.get("manifest");
     } catch (RestApiException e) {
       log.error("REST API exception!", e);
     }
+  }
+
+  // Returns true if matches DO NOT MERGE regex and merge_all is false
+  public boolean isSkipMerge(String fromBranch, String toBranch, String commitMessage) {
+    List<String> blankMergeRegexes = (List<String>) global.get("blank_merge");
+    for (String blankMergeRegex : blankMergeRegexes) {
+      if (commitMessage.matches(blankMergeRegex)) {
+        Map<String, Object> mergePairConfig = getConfig(fromBranch, toBranch);
+        return mergePairConfig != null && !((boolean) mergePairConfig.get("merge_all"));
+      }
+    }
+    return false;
+  }
+
+  public Map<String, Object> getConfig(String fromBranch, String toBranch) {
+    Map branches = (Map) config.get("branches");
+    Map<String, Map> fromBranchConfig = (Map<String, Map>) branches.get(fromBranch);
+    if (fromBranchConfig == null) {
+      return null;
+    }
+    return (Map<String, Object>) fromBranchConfig.get(toBranch);
   }
 
   private Set<String> applyConfig(Set<String> projects, Map givenConfig) {
@@ -163,7 +187,7 @@ public class ConfigLoader {
   }
 
   // If change has DO NOT MERGE, includeMergeAll should be true
-  public Set<String> getDownstreamBranches(String fromBranch, String project, boolean includeMergeAll)
+  public Set<String> getDownstreamBranches(String fromBranch, String project)
       throws RestApiException, IOException {
     Set<String> downstreamBranches = new HashSet<String>();
     Map branches = (Map) config.get("branches");
@@ -174,14 +198,9 @@ public class ConfigLoader {
         if (!configOptionKeys.contains(key)) {
           // If it's not a config option, then the key is the toBranch
           Map<String, Object> toBranchConfig = (Map<String, Object>) fromBranchConfig.get(key);
-          // Add downstreams if includeMergeAll is false, or if includeMergeAll is true and merge_all is true
-          if (!includeMergeAll || (includeMergeAll && toBranchConfig.keySet().contains("merge_all") &&
-                  (boolean) toBranchConfig.get("merge_all"))) {
-            Set<String> projectsInScope = getProjectsInScope(fromBranch, key);
-            if (projectsInScope.contains(project)) {
-              downstreamBranches.addAll(getDownstreamBranches(key, project, includeMergeAll));
-              downstreamBranches.add(key);
-            }
+          Set<String> projectsInScope = getProjectsInScope(fromBranch, key);
+          if (projectsInScope.contains(project)) {
+            downstreamBranches.add(key);
           }
         }
       }
