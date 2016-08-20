@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "5bc18f1c_e9b395e2",
+        "filename": "BUCK",
+        "patchSetId": 24
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-08-20T00:15:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3e14c9d3_1814a59c",
+      "revId": "f35ee73949ced3d3acd1dc8503bc8df6fe0d5264",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "3e14c9d3_d86ced38",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/AutomergeChangeAction.java",
         "patchSetId": 24
@@ -30,6 +48,30 @@
       "writtenOn": "2016-08-15T15:00:51Z",
       "side": 1,
       "message": "This is your project so ultimately you can do what you want, but note that both the Google Java Style Guide[1] and Gerrit\u0027s style use 2 spaces for indentation.\n\n[1] https://google.github.io/styleguide/javaguide.html#s4.2-block-indentation",
+      "range": {
+        "startLine": 41,
+        "startChar": 0,
+        "endLine": 41,
+        "endChar": 4
+      },
+      "revId": "f35ee73949ced3d3acd1dc8503bc8df6fe0d5264",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1bb717b7_a7adca7c",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/AutomergeChangeAction.java",
+        "patchSetId": 24
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-08-20T00:15:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3e14c9d3_d86ced38",
       "range": {
         "startLine": 41,
         "startChar": 0,
@@ -76,6 +118,24 @@
     },
     {
       "key": {
+        "uuid": "1bb717b7_67cd9264",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/AutomergeChangeAction.java",
+        "patchSetId": 24
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-08-20T00:15:54Z",
+      "side": 1,
+      "message": "4 space indent done.\n\nI don\u0027t think the horizontal alignment thing is relevant; it looks like the horizontal alignment they\u0027re talking about is things like:\n\nint          x;\nboolean y;\n\nwhich I\u0027m not doing.",
+      "parentUuid": "3e14c9d3_98767505",
+      "revId": "f35ee73949ced3d3acd1dc8503bc8df6fe0d5264",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "3e14c9d3_b87b39ee",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/AutomergeChangeAction.java",
         "patchSetId": 24
@@ -87,6 +147,24 @@
       "writtenOn": "2016-08-15T15:00:51Z",
       "side": 1,
       "message": "Is the goal to return an HTTP 204 with no body? In that case you would want to return Response.none() instead of null. I haven\u0027t checked but I think that returning null actually returns a 200 with a JSON body whose content is the JSON token [null].",
+      "revId": "f35ee73949ced3d3acd1dc8503bc8df6fe0d5264",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5bc18f1c_49c8a155",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/AutomergeChangeAction.java",
+        "patchSetId": 24
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-08-20T00:15:54Z",
+      "side": 1,
+      "message": "I actually didn\u0027t want to return anything, but \"public void apply\" doesn\u0027t override the apply method, so Response.none() works for what I want. I suppose it does make sense to return with a 204 when you succeed.\nDone.",
+      "parentUuid": "3e14c9d3_b87b39ee",
       "revId": "f35ee73949ced3d3acd1dc8503bc8df6fe0d5264",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -110,6 +188,24 @@
     },
     {
       "key": {
+        "uuid": "5bc18f1c_69cd6564",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigDownstream.java",
+        "patchSetId": 24
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-08-20T00:15:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3e14c9d3_5861bd38",
+      "revId": "f35ee73949ced3d3acd1dc8503bc8df6fe0d5264",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1ed38597_877fc60b",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigDownstream.java",
         "patchSetId": 24
@@ -121,6 +217,24 @@
       "writtenOn": "2016-08-15T15:00:51Z",
       "side": 1,
       "message": "Optional: if you annotate this with @DefaultInput, then callers can send a plain/text body and the whole body will be parsed into this field.",
+      "revId": "f35ee73949ced3d3acd1dc8503bc8df6fe0d5264",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1bb717b7_07eb76a5",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigDownstream.java",
+        "patchSetId": 24
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-08-20T00:15:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1ed38597_877fc60b",
       "revId": "f35ee73949ced3d3acd1dc8503bc8df6fe0d5264",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -144,6 +258,24 @@
     },
     {
       "key": {
+        "uuid": "1bb717b7_07d29607",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigDownstream.java",
+        "patchSetId": 24
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-08-20T00:15:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1ed38597_e784c209",
+      "revId": "f35ee73949ced3d3acd1dc8503bc8df6fe0d5264",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1ed38597_c789be21",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigDownstream.java",
         "patchSetId": 24
@@ -155,6 +287,24 @@
       "writtenOn": "2016-08-15T15:00:51Z",
       "side": 1,
       "message": "Don\u0027t use Gson manually here. Just return downstreamMap and let Gerrit do the conversion. It also handles setting the proper options on the Gson instance.",
+      "revId": "f35ee73949ced3d3acd1dc8503bc8df6fe0d5264",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1bb717b7_27d79af8",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigDownstream.java",
+        "patchSetId": 24
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-08-20T00:15:54Z",
+      "side": 1,
+      "message": "I tried doing that but it doesn\u0027t seem to work. On the javascript side it just returns \"undefined\" instead of the String it used to return. I\u0027m not sure what I\u0027m doing wrong.\n\nI return downstreamMap, change the method signature to return a Map\u003cString, Boolean\u003e instead of String. However, once I call the endpoint on the javascript side, I just get \"undefined\".",
+      "parentUuid": "1ed38597_c789be21",
       "revId": "f35ee73949ced3d3acd1dc8503bc8df6fe0d5264",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -178,6 +328,24 @@
     },
     {
       "key": {
+        "uuid": "5bc18f1c_09d2a907",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 24
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-08-20T00:15:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5e825d83_a1a1fe8f",
+      "revId": "f35ee73949ced3d3acd1dc8503bc8df6fe0d5264",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1ed38597_a7a12a90",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
         "patchSetId": 24
@@ -189,6 +357,24 @@
       "writtenOn": "2016-08-15T15:00:51Z",
       "side": 1,
       "message": "Having all these mutable fields strikes me as non threadsafe. Looking at DownstreamCreator, it appears loadConfig may be called from any thread that is doing event handling, which means that writes to these values from one thread may not be immediately visible to other threads.\n\nI would recommend factoring out a class containing all of the configuration state that uses only final fields for storing state. Then you can use a volatile field to store the config object, and have loadConfig just swap out the configured value.\n\nThis approach has the advantage of also avoiding the potential NPE problem I point out below, if you preinitialize the volatile field to a non-null but semantically empty config.",
+      "revId": "f35ee73949ced3d3acd1dc8503bc8df6fe0d5264",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3b5cdb04_18b785d2",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 24
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-08-20T00:15:54Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "1ed38597_a7a12a90",
       "revId": "f35ee73949ced3d3acd1dc8503bc8df6fe0d5264",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -212,6 +398,24 @@
     },
     {
       "key": {
+        "uuid": "5b6b4f9b_b9b69f9e",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 24
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-08-20T00:15:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dec80de9_a57abe1b",
+      "revId": "f35ee73949ced3d3acd1dc8503bc8df6fe0d5264",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5e825d83_018aaa14",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
         "patchSetId": 24
@@ -223,6 +427,24 @@
       "writtenOn": "2016-08-15T15:00:51Z",
       "side": 1,
       "message": "Treating this as a mutable map has the same threadsafety issue I mentioned above. I would strongly recommend extracting just the parts of this map that you need into final fields in an encapsulated config option.\n\nThat will also allow you to do all the type casts up front when extracting things from the YAML instance, and you don\u0027t have to litter the rest of your code with casts.",
+      "revId": "f35ee73949ced3d3acd1dc8503bc8df6fe0d5264",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3b5cdb04_38b449cb",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 24
+      },
+      "lineNbr": 80,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-08-20T00:15:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5e825d83_018aaa14",
       "revId": "f35ee73949ced3d3acd1dc8503bc8df6fe0d5264",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -252,6 +474,30 @@
     },
     {
       "key": {
+        "uuid": "5b6b4f9b_59d023cb",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 24
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-08-20T00:15:54Z",
+      "side": 1,
+      "message": "These regexes shouldn\u0027t be run against user provided data; it\u0027s actually only run against the automerger config file (stored in tools/automerger \"config.yaml\" file by default), which should only be modified by admins.\n\nThat being said, it\u0027s probably safer in general to avoid these attack vectors when possible. Done.",
+      "parentUuid": "1ed38597_47966e3e",
+      "range": {
+        "startLine": 87,
+        "startChar": 31,
+        "endLine": 87,
+        "endChar": 46
+      },
+      "revId": "f35ee73949ced3d3acd1dc8503bc8df6fe0d5264",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5e825d83_e184e609",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
         "patchSetId": 24
@@ -263,6 +509,24 @@
       "writtenOn": "2016-08-15T15:00:51Z",
       "side": 1,
       "message": "Logging and continuing when you encounter an exception is asking for NPEs when you\u0027ve failed to populate some of the instance fields here.",
+      "revId": "f35ee73949ced3d3acd1dc8503bc8df6fe0d5264",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3b5cdb04_f8a1f18c",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 24
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-08-20T00:15:54Z",
+      "side": 1,
+      "message": "Throwing the exception instead of catching it now.",
+      "parentUuid": "5e825d83_e184e609",
       "revId": "f35ee73949ced3d3acd1dc8503bc8df6fe0d5264",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -286,6 +550,24 @@
     },
     {
       "key": {
+        "uuid": "5bc18f1c_29d76df8",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 24
+      },
+      "lineNbr": 103,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-08-20T00:15:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1ed38597_87a6a6a3",
+      "revId": "f35ee73949ced3d3acd1dc8503bc8df6fe0d5264",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1ed38597_e79b2262",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
         "patchSetId": 24
@@ -297,6 +579,24 @@
       "writtenOn": "2016-08-15T15:00:51Z",
       "side": 1,
       "message": "Optional: at config parsing time, you could construct a single pattern that is the (..|..) concatenation of all the input patterns, then you wouldn\u0027t have to loop through them.",
+      "revId": "f35ee73949ced3d3acd1dc8503bc8df6fe0d5264",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3b5cdb04_3871a9ec",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 24
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-08-20T00:15:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1ed38597_e79b2262",
       "revId": "f35ee73949ced3d3acd1dc8503bc8df6fe0d5264",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -320,6 +620,24 @@
     },
     {
       "key": {
+        "uuid": "3b5cdb04_58b1fdd9",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 24
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-08-20T00:15:54Z",
+      "side": 1,
+      "message": "Done. This was an oversight.",
+      "parentUuid": "1ed38597_c7a09e89",
+      "revId": "f35ee73949ced3d3acd1dc8503bc8df6fe0d5264",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1ed38597_27b6dad4",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
         "patchSetId": 24
@@ -331,6 +649,24 @@
       "writtenOn": "2016-08-15T15:00:51Z",
       "side": 1,
       "message": "Any of the .name(), .branch(), or .file() gApi calls can throw RNFE. Is it your intent to treat them all the same?",
+      "revId": "f35ee73949ced3d3acd1dc8503bc8df6fe0d5264",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3b5cdb04_78aec178",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 24
+      },
+      "lineNbr": 200,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-08-20T00:15:54Z",
+      "side": 1,
+      "message": "Yes; if we can\u0027t find the file for whatever reason, then we default to nothing.",
+      "parentUuid": "1ed38597_27b6dad4",
       "revId": "f35ee73949ced3d3acd1dc8503bc8df6fe0d5264",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -354,6 +690,24 @@
     },
     {
       "key": {
+        "uuid": "5b6b4f9b_79aec778",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 24
+      },
+      "lineNbr": 220,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-08-20T00:15:54Z",
+      "side": 1,
+      "message": "Same answer; default to nothing.",
+      "parentUuid": "5e825d83_218fae24",
+      "revId": "f35ee73949ced3d3acd1dc8503bc8df6fe0d5264",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5e825d83_418cb22d",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
         "patchSetId": 24
@@ -365,6 +719,24 @@
       "writtenOn": "2016-08-15T15:00:51Z",
       "side": 1,
       "message": "Is it worth trying to cross-check this at config parse time with the label config stored in the repo?",
+      "revId": "f35ee73949ced3d3acd1dc8503bc8df6fe0d5264",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5b6b4f9b_99c71b47",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 24
+      },
+      "lineNbr": 226,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-08-20T00:15:54Z",
+      "side": 1,
+      "message": "This should never change; the only reason I added it is because if we\u0027re open sourcing it, people might want to use different labels than us.",
+      "parentUuid": "5e825d83_418cb22d",
       "revId": "f35ee73949ced3d3acd1dc8503bc8df6fe0d5264",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -388,6 +760,24 @@
     },
     {
       "key": {
+        "uuid": "1bb717b7_c7bb1eb3",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 24
+      },
+      "lineNbr": 243,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-08-20T00:15:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1ed38597_07b3d6e4",
+      "revId": "f35ee73949ced3d3acd1dc8503bc8df6fe0d5264",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "dec80de9_857fc20b",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/DownstreamCreator.java",
         "patchSetId": 24
@@ -399,6 +789,24 @@
       "writtenOn": "2016-08-15T15:00:51Z",
       "side": 1,
       "message": "Missing license header.",
+      "revId": "f35ee73949ced3d3acd1dc8503bc8df6fe0d5264",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5bc18f1c_c9bb31b3",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/DownstreamCreator.java",
+        "patchSetId": 24
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-08-20T00:15:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "dec80de9_857fc20b",
       "revId": "f35ee73949ced3d3acd1dc8503bc8df6fe0d5264",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -422,6 +830,24 @@
     },
     {
       "key": {
+        "uuid": "1bb717b7_e7b8a2b8",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/DownstreamCreator.java",
+        "patchSetId": 24
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-08-20T00:15:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bec199c4_a47ac21b",
+      "revId": "f35ee73949ced3d3acd1dc8503bc8df6fe0d5264",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5e825d83_6199b66e",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/DownstreamCreator.java",
         "patchSetId": 24
@@ -433,6 +859,24 @@
       "writtenOn": "2016-08-15T15:00:51Z",
       "side": 1,
       "message": "Local style is one top-level class per file, so please either move this to its own file or nest it in DownstreamCreator. (I think Blaze will actually fail to compile a Java class like this.)",
+      "revId": "f35ee73949ced3d3acd1dc8503bc8df6fe0d5264",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1bb717b7_87c5263b",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/DownstreamCreator.java",
+        "patchSetId": 24
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-08-20T00:15:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5e825d83_6199b66e",
       "revId": "f35ee73949ced3d3acd1dc8503bc8df6fe0d5264",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -456,6 +900,24 @@
     },
     {
       "key": {
+        "uuid": "1bb717b7_27f0fa90",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/DownstreamCreator.java",
+        "patchSetId": 24
+      },
+      "lineNbr": 63,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-08-20T00:15:54Z",
+      "side": 1,
+      "message": "Will do. The last time I used Java was high school, so I didn\u0027t even realize this existed :[",
+      "parentUuid": "dec80de9_e584b609",
+      "revId": "f35ee73949ced3d3acd1dc8503bc8df6fe0d5264",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bec199c4_847fc60b",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/DownstreamCreator.java",
         "patchSetId": 24
@@ -467,6 +929,24 @@
       "writtenOn": "2016-08-15T15:00:51Z",
       "side": 1,
       "message": "Nit: too much continuation.",
+      "revId": "f35ee73949ced3d3acd1dc8503bc8df6fe0d5264",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1bb717b7_c7e47ed5",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/DownstreamCreator.java",
+        "patchSetId": 24
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-08-20T00:15:54Z",
+      "side": 1,
+      "message": "Using stringbuilder appends instead.",
+      "parentUuid": "bec199c4_847fc60b",
       "revId": "f35ee73949ced3d3acd1dc8503bc8df6fe0d5264",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -496,6 +976,30 @@
     },
     {
       "key": {
+        "uuid": "1bb717b7_e7e182c2",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/DownstreamCreator.java",
+        "patchSetId": 24
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-08-20T00:15:54Z",
+      "side": 1,
+      "message": "Good point. Adding logic to only ... if truncated.",
+      "parentUuid": "5e825d83_a17ade1b",
+      "range": {
+        "startLine": 71,
+        "startChar": 59,
+        "endLine": 71,
+        "endChar": 62
+      },
+      "revId": "f35ee73949ced3d3acd1dc8503bc8df6fe0d5264",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5e825d83_8196ba3b",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/DownstreamCreator.java",
         "patchSetId": 24
@@ -507,6 +1011,24 @@
       "writtenOn": "2016-08-15T15:00:51Z",
       "side": 1,
       "message": "Unfortunately I think the googlesource.com implementation of the event system does not use EventListener, which is tied to the stream-events SSH command which is entirely disabled.\n\nThe new hotness in Gerrit is to implement specific listener types for the events you\u0027re interested in, like RevisionCreatedListener. This has the advantage of avoiding the custom type based dispatcher you had to write in onEvent.",
+      "revId": "f35ee73949ced3d3acd1dc8503bc8df6fe0d5264",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3b5cdb04_38ec4988",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/DownstreamCreator.java",
+        "patchSetId": 24
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-08-20T00:15:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5e825d83_8196ba3b",
       "revId": "f35ee73949ced3d3acd1dc8503bc8df6fe0d5264",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -530,6 +1052,24 @@
     },
     {
       "key": {
+        "uuid": "5bc18f1c_e9b875b8",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ManifestReader.java",
+        "patchSetId": 24
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-08-20T00:15:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1ed38597_67b0d2d6",
+      "revId": "f35ee73949ced3d3acd1dc8503bc8df6fe0d5264",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1ed38597_47adce7a",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ManifestReader.java",
         "patchSetId": 24
@@ -541,6 +1081,24 @@
       "writtenOn": "2016-08-15T15:00:51Z",
       "side": 1,
       "message": "Should these be private final?",
+      "revId": "f35ee73949ced3d3acd1dc8503bc8df6fe0d5264",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1bb717b7_a7c2aa2e",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ManifestReader.java",
+        "patchSetId": 24
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-08-20T00:15:54Z",
+      "side": 1,
+      "message": "Oh, yeah that makes sense. Too used to python where we don\u0027t ever think about things like that. Done.",
+      "parentUuid": "1ed38597_47adce7a",
       "revId": "f35ee73949ced3d3acd1dc8503bc8df6fe0d5264",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -564,6 +1122,24 @@
     },
     {
       "key": {
+        "uuid": "5bc18f1c_89c5393b",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/Module.java",
+        "patchSetId": 24
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-08-20T00:15:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "3e14c9d3_381169ad",
+      "revId": "f35ee73949ced3d3acd1dc8503bc8df6fe0d5264",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1ed38597_a7c80a58",
         "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/ConfigLoaderIT.java",
         "patchSetId": 24
@@ -575,6 +1151,24 @@
       "writtenOn": "2016-08-15T15:00:51Z",
       "side": 1,
       "message": "No wildcard imports. https://google.github.io/styleguide/javaguide.html#s3.3.1-wildcard-imports",
+      "revId": "f35ee73949ced3d3acd1dc8503bc8df6fe0d5264",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5bc18f1c_a9c27d2e",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/ConfigLoaderIT.java",
+        "patchSetId": 24
+      },
+      "lineNbr": 17,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-08-20T00:15:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1ed38597_a7c80a58",
       "revId": "f35ee73949ced3d3acd1dc8503bc8df6fe0d5264",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -598,6 +1192,24 @@
     },
     {
       "key": {
+        "uuid": "5b6b4f9b_594d8396",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/ConfigLoaderIT.java",
+        "patchSetId": 24
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-08-20T00:15:54Z",
+      "side": 1,
+      "message": "...THAT\u0027S why the tests were so slow! I just saw example tests with PluginDaemonTest and mindlessly copied it over. Whoops.",
+      "parentUuid": "1ed38597_e7d20206",
+      "revId": "f35ee73949ced3d3acd1dc8503bc8df6fe0d5264",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5e825d83_c1a602a5",
         "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/ConfigLoaderIT.java",
         "patchSetId": 24
@@ -615,6 +1227,24 @@
     },
     {
       "key": {
+        "uuid": "3b5cdb04_d82c2d96",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/ConfigLoaderIT.java",
+        "patchSetId": 24
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-08-20T00:15:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5e825d83_c1a602a5",
+      "revId": "f35ee73949ced3d3acd1dc8503bc8df6fe0d5264",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5e825d83_e19b0662",
         "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/ConfigLoaderIT.java",
         "patchSetId": 24
@@ -626,6 +1256,24 @@
       "writtenOn": "2016-08-15T15:00:51Z",
       "side": 1,
       "message": "If this works then it works, but I would probably make these config files resources of the java_test rule and then get at them with the resources API rather than depending on the tests running from a specific directory.",
+      "revId": "f35ee73949ced3d3acd1dc8503bc8df6fe0d5264",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3b5cdb04_78532117",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/ConfigLoaderIT.java",
+        "patchSetId": 24
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-08-20T00:15:54Z",
+      "side": 1,
+      "message": "I was trying to do this initially, but Guava\u0027s \"Resources.getResource\" was pointing me towards \"/Users/stephenli/workspace/buck/build/testrunner/classes/\", instead of where the resources actually were.\n\nEventually got it to work though. Whew.",
+      "parentUuid": "5e825d83_e19b0662",
       "revId": "f35ee73949ced3d3acd1dc8503bc8df6fe0d5264",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -655,6 +1303,30 @@
     },
     {
       "key": {
+        "uuid": "3b5cdb04_1847855c",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/ConfigLoaderIT.java",
+        "patchSetId": 24
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-08-20T00:15:54Z",
+      "side": 1,
+      "message": "Obsolete after refactors",
+      "parentUuid": "5e825d83_01a1ca8a",
+      "range": {
+        "startLine": 67,
+        "startChar": 4,
+        "endLine": 68,
+        "endChar": 62
+      },
+      "revId": "f35ee73949ced3d3acd1dc8503bc8df6fe0d5264",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5e825d83_21b6ced4",
         "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/ConfigLoaderIT.java",
         "patchSetId": 24
@@ -666,6 +1338,24 @@
       "writtenOn": "2016-08-15T15:00:51Z",
       "side": 1,
       "message": "Use nio",
+      "revId": "f35ee73949ced3d3acd1dc8503bc8df6fe0d5264",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5b6b4f9b_b9285f9a",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/ConfigLoaderIT.java",
+        "patchSetId": 24
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-08-20T00:15:54Z",
+      "side": 1,
+      "message": "Rendered obsolete through use of getClass().getResourceAsStream()",
+      "parentUuid": "5e825d83_21b6ced4",
       "revId": "f35ee73949ced3d3acd1dc8503bc8df6fe0d5264",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -689,6 +1379,24 @@
     },
     {
       "key": {
+        "uuid": "3b5cdb04_38444955",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/ConfigLoaderIT.java",
+        "patchSetId": 24
+      },
+      "lineNbr": 79,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-08-20T00:15:54Z",
+      "side": 1,
+      "message": "Rendered obsolete through use of getClass().getResourceAsStream()",
+      "parentUuid": "1ed38597_87cd0668",
+      "revId": "f35ee73949ced3d3acd1dc8503bc8df6fe0d5264",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5e825d83_41b3d2e3",
         "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/ConfigLoaderIT.java",
         "patchSetId": 24
@@ -700,6 +1408,24 @@
       "writtenOn": "2016-08-15T15:00:51Z",
       "side": 1,
       "message": "Use nio",
+      "revId": "f35ee73949ced3d3acd1dc8503bc8df6fe0d5264",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5b6b4f9b_d92d13a9",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/ConfigLoaderIT.java",
+        "patchSetId": 24
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-08-20T00:15:54Z",
+      "side": 1,
+      "message": "Rendered obsolete through use of getClass().getResourceAsStream()",
+      "parentUuid": "5e825d83_41b3d2e3",
       "revId": "f35ee73949ced3d3acd1dc8503bc8df6fe0d5264",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -723,6 +1449,24 @@
     },
     {
       "key": {
+        "uuid": "1bb717b7_47f16e97",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/ConfigLoaderIT.java",
+        "patchSetId": 24
+      },
+      "lineNbr": 158,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-08-20T00:15:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5e825d83_61b0d6d6",
+      "revId": "f35ee73949ced3d3acd1dc8503bc8df6fe0d5264",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5e825d83_81adda7d",
         "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/ConfigLoaderIT.java",
         "patchSetId": 24
@@ -734,6 +1478,24 @@
       "writtenOn": "2016-08-15T15:00:51Z",
       "side": 1,
       "message": "The assertThat(...) here is a complete no-op if you expect getDownstreamBranches to throw. I would just remove it.",
+      "revId": "f35ee73949ced3d3acd1dc8503bc8df6fe0d5264",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1bb717b7_67f6f292",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/ConfigLoaderIT.java",
+        "patchSetId": 24
+      },
+      "lineNbr": 218,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-08-20T00:15:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5e825d83_81adda7d",
       "revId": "f35ee73949ced3d3acd1dc8503bc8df6fe0d5264",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -757,6 +1519,24 @@
     },
     {
       "key": {
+        "uuid": "5b6b4f9b_59282384",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/DownstreamCreatorIT.java",
+        "patchSetId": 24
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-08-20T00:15:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5e825d83_a1c81e58",
+      "revId": "f35ee73949ced3d3acd1dc8503bc8df6fe0d5264",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "1ed38597_c7d7fef3",
         "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/DownstreamCreatorIT.java",
         "patchSetId": 24
@@ -774,6 +1554,24 @@
     },
     {
       "key": {
+        "uuid": "5b6b4f9b_7925e7aa",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/DownstreamCreatorIT.java",
+        "patchSetId": 24
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-08-20T00:15:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1ed38597_c7d7fef3",
+      "revId": "f35ee73949ced3d3acd1dc8503bc8df6fe0d5264",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5e825d83_c1cd2267",
         "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/DownstreamCreatorIT.java",
         "patchSetId": 24
@@ -785,6 +1583,24 @@
       "writtenOn": "2016-08-15T15:00:51Z",
       "side": 1,
       "message": "Given that you\u0027re repeating all this mocking set up, would it make sense to factor out a superclass or a set of test utilities that handle wiring up the project API mocks?\n\nFWIW Gerrit also has a class MockingTestCase that sets up and verifies mocks. You can\u0027t use that class directly unless you depend on the plugin API instead of the extension API, but it may give you some ideas how to reduce code duplication.",
+      "revId": "f35ee73949ced3d3acd1dc8503bc8df6fe0d5264",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c8a5b383_24f1d292",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/DownstreamCreatorIT.java",
+        "patchSetId": 24
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-08-20T00:15:54Z",
+      "side": 1,
+      "message": "Using Mockito, was able to de-dup enough to not need a superclass.",
+      "parentUuid": "5e825d83_c1cd2267",
       "revId": "f35ee73949ced3d3acd1dc8503bc8df6fe0d5264",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -814,6 +1630,30 @@
     },
     {
       "key": {
+        "uuid": "5b6b4f9b_9932bbf4",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/DownstreamCreatorIT.java",
+        "patchSetId": 24
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-08-20T00:15:54Z",
+      "side": 1,
+      "message": "Huh, really? Did not know. Does it just infer it from the initialization?",
+      "parentUuid": "5e825d83_e1d22606",
+      "range": {
+        "startLine": 90,
+        "startChar": 58,
+        "endLine": 90,
+        "endChar": 68
+      },
+      "revId": "f35ee73949ced3d3acd1dc8503bc8df6fe0d5264",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5e825d83_01d8ea24",
         "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/ManifestReaderIT.java",
         "patchSetId": 24
@@ -825,6 +1665,24 @@
       "writtenOn": "2016-08-15T15:00:51Z",
       "side": 1,
       "message": "No wildcard imports.",
+      "revId": "f35ee73949ced3d3acd1dc8503bc8df6fe0d5264",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5bc18f1c_49f18197",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/ManifestReaderIT.java",
+        "patchSetId": 24
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-08-20T00:15:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5e825d83_01d8ea24",
       "revId": "f35ee73949ced3d3acd1dc8503bc8df6fe0d5264",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -848,6 +1706,24 @@
     },
     {
       "key": {
+        "uuid": "5bc18f1c_69f6c592",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/ManifestReaderIT.java",
+        "patchSetId": 24
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-08-20T00:15:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5e825d83_21bdeea8",
+      "revId": "f35ee73949ced3d3acd1dc8503bc8df6fe0d5264",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "5e825d83_41baf2b1",
         "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/ManifestReaderIT.java",
         "patchSetId": 24
@@ -859,6 +1735,24 @@
       "writtenOn": "2016-08-15T15:00:51Z",
       "side": 1,
       "message": "Use nio",
+      "revId": "f35ee73949ced3d3acd1dc8503bc8df6fe0d5264",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "5bc18f1c_09eb89a5",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/ManifestReaderIT.java",
+        "patchSetId": 24
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-08-20T00:15:54Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5e825d83_41baf2b1",
       "revId": "f35ee73949ced3d3acd1dc8503bc8df6fe0d5264",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
