@@ -37,6 +37,24 @@
     },
     {
       "key": {
+        "uuid": "68c1271d_c9eb3174",
+        "filename": "BUCK",
+        "patchSetId": 24
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2016-08-21T10:19:04Z",
+      "side": 1,
+      "message": "It was done in: [1] and can be removed once referenced change is merged.\n\n* [1] https://gerrit-review.googlesource.com/#/c/83510/9/gerrit-plugin-api/BUCK@33",
+      "parentUuid": "3e14c9d3_1814a59c",
+      "revId": "f35ee73949ced3d3acd1dc8503bc8df6fe0d5264",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "3e14c9d3_d86ced38",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/AutomergeChangeAction.java",
         "patchSetId": 24
