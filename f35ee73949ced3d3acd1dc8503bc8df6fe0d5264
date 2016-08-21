@@ -55,6 +55,24 @@
     },
     {
       "key": {
+        "uuid": "483d43bc_90e21494",
+        "filename": "BUCK",
+        "patchSetId": 24
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2016-08-21T11:29:00Z",
+      "side": 1,
+      "message": "I prefer to do this kind of thing in separate changes.  Done in:\n\nhttps://gerrit-review.googlesource.com/83756",
+      "parentUuid": "68c1271d_c9eb3174",
+      "revId": "f35ee73949ced3d3acd1dc8503bc8df6fe0d5264",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "3e14c9d3_d86ced38",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/AutomergeChangeAction.java",
         "patchSetId": 24
