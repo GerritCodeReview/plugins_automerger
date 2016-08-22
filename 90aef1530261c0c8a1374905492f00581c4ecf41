@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "c80213f7_3cbb3187",
+        "filename": ".buckconfig",
+        "patchSetId": 30
+      },
+      "lineNbr": 2,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-08-22T20:23:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "88bc9b98_ea4627af",
+      "range": {
+        "startLine": 2,
+        "startChar": 2,
+        "endLine": 2,
+        "endChar": 11
+      },
+      "revId": "90aef1530261c0c8a1374905492f00581c4ecf41",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "88bc9b98_cac48312",
         "filename": "BUCK",
         "patchSetId": 30
@@ -36,6 +60,24 @@
       "writtenOn": "2016-08-21T10:19:04Z",
       "side": 1,
       "message": "Note, that with current approach, only in gerrit tree build mode is supported. Because this build file is sane, it would be easy to add standalone build mode as well. All is needed is to add one single file, like: [1]. I just added this file as lib/gerrit/BUCK: [2], created link to bucklets project: [3], and now this plugin supports standalone build mode: [4]. Interestingly enough, all tests are failing in the standalone build mode: [5].\n\n* [1] https://gerrit.googlesource.com/plugins/reviewers/+/master/lib/gerrit/BUCK\n* [2] http://paste.openstack.org/show/561780\n* [3] https://github.com/davido/bucklets\n* [4] http://paste.openstack.org/show/561778\n* [5] http://paste.openstack.org/show/561779",
+      "revId": "90aef1530261c0c8a1374905492f00581c4ecf41",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "e841977a_fd96a73b",
+        "filename": "BUCK",
+        "patchSetId": 30
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-08-22T20:23:49Z",
+      "side": 1,
+      "message": "Done.\nThis took me longer than expected because I couldn\u0027t figure out how to create the 2.14-SNAPSHOT.jar. Eventually found documentation (https://gerrit-review.googlesource.com/Documentation/dev-buck.html#_extension_and_plugin_api_jar_files).\n\nAlso fixed the tests; was due to my resource (config.yaml) not being in the src/main/resources directory, and instead being in src/main/config, making it impossible for getResource to find (but it worked in gerrit tree mode for some reason.)",
+      "parentUuid": "88bc9b98_cac48312",
       "revId": "90aef1530261c0c8a1374905492f00581c4ecf41",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -65,6 +107,30 @@
     },
     {
       "key": {
+        "uuid": "c8a5b383_24d792bd",
+        "filename": "BUCK",
+        "patchSetId": 30
+      },
+      "lineNbr": 16,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-08-22T20:23:49Z",
+      "side": 1,
+      "message": "Removed.",
+      "parentUuid": "88bc9b98_8a43eb9d",
+      "range": {
+        "startLine": 16,
+        "startChar": 4,
+        "endLine": 16,
+        "endChar": 12
+      },
+      "revId": "90aef1530261c0c8a1374905492f00581c4ecf41",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "68c1271d_29920dfc",
         "filename": "BUCK",
         "patchSetId": 30
@@ -82,6 +148,24 @@
     },
     {
       "key": {
+        "uuid": "c8a5b383_84e526a0",
+        "filename": "BUCK",
+        "patchSetId": 30
+      },
+      "lineNbr": 26,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-08-22T20:23:49Z",
+      "side": 1,
+      "message": "sha1s added.",
+      "parentUuid": "68c1271d_29920dfc",
+      "revId": "90aef1530261c0c8a1374905492f00581c4ecf41",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "68c1271d_098dc9de",
         "filename": "BUCK",
         "patchSetId": 30
@@ -93,6 +177,30 @@
       "writtenOn": "2016-08-21T10:19:04Z",
       "side": 1,
       "message": "Not used.",
+      "range": {
+        "startLine": 58,
+        "startChar": 4,
+        "endLine": 58,
+        "endChar": 29
+      },
+      "revId": "90aef1530261c0c8a1374905492f00581c4ecf41",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c8a5b383_04d296cc",
+        "filename": "BUCK",
+        "patchSetId": 30
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-08-22T20:23:49Z",
+      "side": 1,
+      "message": "Removed.",
+      "parentUuid": "68c1271d_098dc9de",
       "range": {
         "startLine": 58,
         "startChar": 4,
@@ -128,6 +236,30 @@
     },
     {
       "key": {
+        "uuid": "c8a5b383_64dd8add",
+        "filename": "BUCK",
+        "patchSetId": 30
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-08-22T20:23:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "68c1271d_4983c1b4",
+      "range": {
+        "startLine": 59,
+        "startChar": 4,
+        "endLine": 59,
+        "endChar": 32
+      },
+      "revId": "90aef1530261c0c8a1374905492f00581c4ecf41",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "68c1271d_698805d0",
         "filename": "BUCK",
         "patchSetId": 30
@@ -139,6 +271,30 @@
       "writtenOn": "2016-08-21T10:19:04Z",
       "side": 1,
       "message": "This plugin doesn\u0027t touch GWT, use GERRIT_PLUGIN_API instead?",
+      "range": {
+        "startLine": 65,
+        "startChar": 33,
+        "endLine": 65,
+        "endChar": 49
+      },
+      "revId": "90aef1530261c0c8a1374905492f00581c4ecf41",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c8a5b383_44d88eee",
+        "filename": "BUCK",
+        "patchSetId": 30
+      },
+      "lineNbr": 65,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-08-22T20:23:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "68c1271d_698805d0",
       "range": {
         "startLine": 65,
         "startChar": 33,
@@ -174,6 +330,30 @@
     },
     {
       "key": {
+        "uuid": "c80213f7_9c400592",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/DownstreamCreator.java",
+        "patchSetId": 30
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-08-22T20:23:49Z",
+      "side": 1,
+      "message": "The IDE I\u0027m using keeps re-collapsing them -_-\nRemoving wildcard imports again.",
+      "parentUuid": "88bc9b98_aa402f91",
+      "range": {
+        "startLine": 33,
+        "startChar": 0,
+        "endLine": 33,
+        "endChar": 18
+      },
+      "revId": "90aef1530261c0c8a1374905492f00581c4ecf41",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "68c1271d_c976d1e2",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/LoadedConfig.java",
         "patchSetId": 30
@@ -185,6 +365,30 @@
       "writtenOn": "2016-08-21T10:19:04Z",
       "side": 1,
       "message": "Same here.",
+      "range": {
+        "startLine": 27,
+        "startChar": 0,
+        "endLine": 27,
+        "endChar": 19
+      },
+      "revId": "90aef1530261c0c8a1374905492f00581c4ecf41",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c8a5b383_c4eb1e74",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/LoadedConfig.java",
+        "patchSetId": 30
+      },
+      "lineNbr": 27,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-08-22T20:23:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "68c1271d_c976d1e2",
       "range": {
         "startLine": 27,
         "startChar": 0,
@@ -214,6 +418,24 @@
     },
     {
       "key": {
+        "uuid": "e841977a_dd93eb49",
+        "filename": "src/main/resources/Documentation/about.md",
+        "patchSetId": 30
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-08-22T20:23:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "88bc9b98_eac147ff",
+      "revId": "90aef1530261c0c8a1374905492f00581c4ecf41",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "88bc9b98_2ac0bffb",
         "filename": "src/main/resources/Documentation/about.md",
         "patchSetId": 30
@@ -225,6 +447,24 @@
       "writtenOn": "2016-08-21T10:19:04Z",
       "side": 1,
       "message": "Mention here the UI extension/integration as well?",
+      "revId": "90aef1530261c0c8a1374905492f00581c4ecf41",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "88ff3b6b_127eec0e",
+        "filename": "src/main/resources/Documentation/about.md",
+        "patchSetId": 30
+      },
+      "lineNbr": 18,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-08-22T20:23:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "88bc9b98_2ac0bffb",
       "revId": "90aef1530261c0c8a1374905492f00581c4ecf41",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -254,6 +494,30 @@
     },
     {
       "key": {
+        "uuid": "e841977a_3da00f8b",
+        "filename": "src/main/resources/Documentation/rest-api-automerge-change.md",
+        "patchSetId": 30
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-08-22T20:23:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "88bc9b98_aacb4f1d",
+      "range": {
+        "startLine": 10,
+        "startChar": 36,
+        "endLine": 10,
+        "endChar": 46
+      },
+      "revId": "90aef1530261c0c8a1374905492f00581c4ecf41",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "68c1271d_a97d9dbd",
         "filename": "src/main/resources/Documentation/rest-api-automerge-change.md",
         "patchSetId": 30
@@ -271,6 +535,24 @@
     },
     {
       "key": {
+        "uuid": "88ff3b6b_7283f802",
+        "filename": "src/main/resources/Documentation/rest-api-automerge-change.md",
+        "patchSetId": 30
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-08-22T20:23:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "68c1271d_a97d9dbd",
+      "revId": "90aef1530261c0c8a1374905492f00581c4ecf41",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "68c1271d_8980d9a2",
         "filename": "src/main/resources/static/automerger.js",
         "patchSetId": 30
@@ -282,6 +564,30 @@
       "writtenOn": "2016-08-21T10:19:04Z",
       "side": 1,
       "message": "Nit: 2016, like all other files.",
+      "range": {
+        "startLine": 1,
+        "startChar": 17,
+        "endLine": 1,
+        "endChar": 21
+      },
+      "revId": "90aef1530261c0c8a1374905492f00581c4ecf41",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c80213f7_7cb1b9a4",
+        "filename": "src/main/resources/static/automerger.js",
+        "patchSetId": 30
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-08-22T20:23:49Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "68c1271d_8980d9a2",
       "range": {
         "startLine": 1,
         "startChar": 17,
@@ -317,6 +623,30 @@
     },
     {
       "key": {
+        "uuid": "c80213f7_5cb6fd9e",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/DownstreamCreatorIT.java",
+        "patchSetId": 30
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-08-22T20:23:49Z",
+      "side": 1,
+      "message": "Yay :]",
+      "parentUuid": "68c1271d_e97395ef",
+      "range": {
+        "startLine": 32,
+        "startChar": 0,
+        "endLine": 36,
+        "endChar": 21
+      },
+      "revId": "90aef1530261c0c8a1374905492f00581c4ecf41",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "88bc9b98_8ace8b2e",
         "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/DownstreamCreatorIT.java",
         "patchSetId": 30
@@ -328,6 +658,24 @@
       "writtenOn": "2016-08-21T10:19:04Z",
       "side": 1,
       "message": "Nit: unneeded new line.",
+      "revId": "90aef1530261c0c8a1374905492f00581c4ecf41",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c8a5b383_e4e89a79",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/DownstreamCreatorIT.java",
+        "patchSetId": 30
+      },
+      "lineNbr": 39,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-08-22T20:23:49Z",
+      "side": 1,
+      "message": "Removed.",
+      "parentUuid": "88bc9b98_8ace8b2e",
       "revId": "90aef1530261c0c8a1374905492f00581c4ecf41",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
