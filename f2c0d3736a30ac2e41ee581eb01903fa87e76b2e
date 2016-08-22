@@ -1,0 +1,107 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "081c2bae_c693024a",
+        "filename": ".gitignore",
+        "patchSetId": 31
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2016-08-22T21:06:41Z",
+      "side": 1,
+      "message": "If you are already adding standalone build mode, extend here the ignore list: see [1]: .buckversion, .watchmanconfig, /eclipse-out.\n\n* [1] https://gerrit.googlesource.com/plugins/events-log/+/master/.gitignore",
+      "revId": "f2c0d3736a30ac2e41ee581eb01903fa87e76b2e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "081c2bae_4688b21d",
+        "filename": "BUCK",
+        "patchSetId": 31
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2016-08-22T21:06:41Z",
+      "side": 1,
+      "message": "This seems wrong to me: [1]. There is a number of required arguments. Either fix it or remove it entirely.\n\n* [1] https://buckbuild.com/rule/project_config.html",
+      "range": {
+        "startLine": 21,
+        "startChar": 0,
+        "endLine": 23,
+        "endChar": 1
+      },
+      "revId": "f2c0d3736a30ac2e41ee581eb01903fa87e76b2e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "081c2bae_a68c0632",
+        "filename": "src/main/resources/Documentation/build.md",
+        "patchSetId": 31
+      },
+      "lineNbr": 4,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2016-08-22T21:06:41Z",
+      "side": 1,
+      "message": "You havn\u0027t added Maven build, so don\u0027t mention that it\u0027s supported.",
+      "range": {
+        "startLine": 4,
+        "startChar": 35,
+        "endLine": 4,
+        "endChar": 43
+      },
+      "revId": "f2c0d3736a30ac2e41ee581eb01903fa87e76b2e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "081c2bae_e696fe3b",
+        "filename": "src/main/resources/Documentation/build.md",
+        "patchSetId": 31
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2016-08-22T21:06:41Z",
+      "side": 1,
+      "message": "Link to watchmanconfig is missing. Yes, it\u0027s missing also in the file I referenced you in my prevoous comment. Here it\u0027s present: [1]. So something like:\n\n  Add link to the .watchmanconfig file:\n  ```\n  cd events-log \u0026\u0026 ln -s bucklets/watchmanconfig .watchmanconfig\n  ```\n\n* [1] https://gerrit.googlesource.com/plugins/events-log/+/master/src/main/resources/Documentation/build.md",
+      "revId": "f2c0d3736a30ac2e41ee581eb01903fa87e76b2e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "081c2bae_86890a22",
+        "filename": "src/main/resources/Documentation/build.md",
+        "patchSetId": 31
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2016-08-22T21:06:41Z",
+      "side": 1,
+      "message": "And here.",
+      "range": {
+        "startLine": 68,
+        "startChar": 0,
+        "endLine": 81,
+        "endChar": 66
+      },
+      "revId": "f2c0d3736a30ac2e41ee581eb01903fa87e76b2e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
