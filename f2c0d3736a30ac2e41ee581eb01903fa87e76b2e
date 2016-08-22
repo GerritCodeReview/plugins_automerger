@@ -184,6 +184,24 @@
     },
     {
       "key": {
+        "uuid": "081c2bae_06a51a9b",
+        "filename": "src/main/resources/Documentation/build.md",
+        "patchSetId": 31
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2016-08-22T21:17:47Z",
+      "side": 1,
+      "message": "Yeah, exactly: [1]. It woud improve Buck perfomance *a lot*.\n\n* [1] https://facebook.github.io/watchman",
+      "parentUuid": "e841977a_9db043d6",
+      "revId": "f2c0d3736a30ac2e41ee581eb01903fa87e76b2e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "081c2bae_86890a22",
         "filename": "src/main/resources/Documentation/build.md",
         "patchSetId": 31
