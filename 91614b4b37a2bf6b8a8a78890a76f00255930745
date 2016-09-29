@@ -16,6 +16,24 @@
       "revId": "91614b4b37a2bf6b8a8a78890a76f00255930745",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c246796b_236e8a25",
+        "filename": "src/main/resources/Documentation/rest-api-automerge-change.md",
+        "patchSetId": 34
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-09-29T23:40:20Z",
+      "side": 1,
+      "message": "Whenever you update a change, anything in the same topic with that change as a second parent will be updated as well.\n\nSo updating 1 to 1\u0027 will ripple down and create 2\u0027, 3\u0027, 4\u0027, 5\u0027.\nUpdating 3\u0027 to 3\u0027\u0027 will create 4\u0027\u0027, 5\u0027\u0027.\n\nI probably actually want to do this for all changes, not just changes in the same topic, but I don\u0027t know of a gerrit query that would allow me to find all changes with a specific sha as a second parent.",
+      "parentUuid": "c246796b_c3ab3670",
+      "revId": "91614b4b37a2bf6b8a8a78890a76f00255930745",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
