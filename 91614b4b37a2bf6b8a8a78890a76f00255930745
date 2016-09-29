@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c246796b_c3ab3670",
+        "filename": "src/main/resources/Documentation/rest-api-automerge-change.md",
+        "patchSetId": 34
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1012422
+      },
+      "writtenOn": "2016-09-29T19:10:38Z",
+      "side": 1,
+      "message": "How do you automerge a change if its parents are out of date?\n\ni.e. I upload patches 1,2,3,4,5 in a stack, then update patches 1 and 3 with a second patchset (we\u0027ll refer to that as 1\u0027,3\u0027). Patchset 5 still has 1,2,3,4,5 in its history as it wasn\u0027t updated. Patchset 4 still has 1,2,3,4 in its history. Patchset 3 has 1\u0027,3\u0027 in its history. Patchset 2 should not be included, but has 1,2 in its history. Patchset 1 is updated and has 1\u0027. What we want to be merge created is 1\u0027,3\u0027,4\u0027,5\u0027 (where 4\u0027 and 5\u0027 are the rebases autocreated when you submit the patch)",
+      "revId": "91614b4b37a2bf6b8a8a78890a76f00255930745",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
