@@ -34,6 +34,24 @@
       "revId": "91614b4b37a2bf6b8a8a78890a76f00255930745",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c246796b_03738e0f",
+        "filename": "src/main/resources/Documentation/rest-api-automerge-change.md",
+        "patchSetId": 34
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-09-30T00:02:50Z",
+      "side": 1,
+      "message": "Ah, wait, these are first parents not second parents.\n\nIf you update 1 then 3, then you\u0027ll have 1\u0027 and 3\u0027. 4 and 5 will be ignored unless you\u0027re submitting those as well.\n\nIf you\u0027re trying to submit 4 and 5, then gerrit won\u0027t allow you to submit because it\u0027s trying to submit a change whose parent is not in the git history.",
+      "parentUuid": "c246796b_236e8a25",
+      "revId": "91614b4b37a2bf6b8a8a78890a76f00255930745",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
