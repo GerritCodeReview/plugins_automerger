@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "1c01db89_05a1d27a",
+        "filename": "lib/gerrit/BUCK",
+        "patchSetId": 35
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2016-10-19T06:42:51Z",
+      "side": 1,
+      "message": "MergePatchSetInput is not in 2.13.",
+      "parentUuid": "1c01db89_c59a9a4c",
+      "revId": "3d59cd9cc5feed844d3b94043fe859248baa4fd0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bcb60fe5_7ae399bf",
         "filename": "lib/gerrit/BUCK",
         "patchSetId": 35
