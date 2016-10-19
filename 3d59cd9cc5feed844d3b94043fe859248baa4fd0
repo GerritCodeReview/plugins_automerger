@@ -55,6 +55,24 @@
     },
     {
       "key": {
+        "uuid": "7c057749_1016e46f",
+        "filename": "lib/gerrit/BUCK",
+        "patchSetId": 35
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-10-19T17:31:19Z",
+      "side": 1,
+      "message": "Aside: MergePatchSetInput was actually only submitted Oct 17, 2 days ago, so in any case I\u0027d almost certainly need a snapshot.",
+      "parentUuid": "1c01db89_c5c17a1e",
+      "revId": "3d59cd9cc5feed844d3b94043fe859248baa4fd0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bcb60fe5_7ae399bf",
         "filename": "lib/gerrit/BUCK",
         "patchSetId": 35
@@ -66,6 +84,24 @@
       "writtenOn": "2016-10-19T01:32:04Z",
       "side": 1,
       "message": "add a line here:\n\n sha1 \u003d \u0027aaa\u0027,\n\nreplacing `aaa` with the actual sha1 of the file in your local ~/.m2/repository/",
+      "revId": "3d59cd9cc5feed844d3b94043fe859248baa4fd0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7c057749_701bf097",
+        "filename": "lib/gerrit/BUCK",
+        "patchSetId": 35
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-10-19T17:31:19Z",
+      "side": 1,
+      "message": "I actually got it working with sop@\u0027s suggestion in a different thread to remove the cached artifacts directly, but you were both spot on in diagnosis. Thanks! :]\n\n  rm -rf buck-out\n  rm -f ~/.gerritcodereview/buck-cache/downloaded-artifacts/gerrit-plugin-api*.jar",
+      "parentUuid": "bcb60fe5_7ae399bf",
       "revId": "3d59cd9cc5feed844d3b94043fe859248baa4fd0",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
