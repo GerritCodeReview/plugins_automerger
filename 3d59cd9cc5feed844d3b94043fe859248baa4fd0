@@ -37,6 +37,24 @@
     },
     {
       "key": {
+        "uuid": "1c01db89_c5c17a1e",
+        "filename": "lib/gerrit/BUCK",
+        "patchSetId": 35
+      },
+      "lineNbr": 3,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2016-10-19T06:54:04Z",
+      "side": 1,
+      "message": "Thanks, missed it. To raise the question why 2.14 wasn\u0027t released yet? We said during last hackathon that we would like to release ofter as it\u0027s now the case (more or less 1 releases per year).",
+      "parentUuid": "1c01db89_05a1d27a",
+      "revId": "3d59cd9cc5feed844d3b94043fe859248baa4fd0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bcb60fe5_7ae399bf",
         "filename": "lib/gerrit/BUCK",
         "patchSetId": 35
