@@ -1,0 +1,55 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c5ccbe55_ec2c0bfd",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/AutomergeChangeAction.java",
+        "patchSetId": 33
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1010008
+      },
+      "writtenOn": "2016-11-02T17:13:33Z",
+      "side": 1,
+      "message": "What you had before is the preferred style for anonymous TypeToken classes.",
+      "revId": "a41db569f29198a276155ca31cd80f05f3f4b97e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c5ccbe55_cc2fcfef",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/AutomergeChangeAction.java",
+        "patchSetId": 33
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 1010008
+      },
+      "writtenOn": "2016-11-02T17:13:33Z",
+      "side": 1,
+      "message": "Indent 4 spaces",
+      "revId": "a41db569f29198a276155ca31cd80f05f3f4b97e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c5ccbe55_0c263720",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/AutomergeChangeAction.java",
+        "patchSetId": 33
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 1010008
+      },
+      "writtenOn": "2016-11-02T17:13:33Z",
+      "side": 1,
+      "message": "Combine these into a multi-catch. Maybe log the exception as well?",
+      "revId": "a41db569f29198a276155ca31cd80f05f3f4b97e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
