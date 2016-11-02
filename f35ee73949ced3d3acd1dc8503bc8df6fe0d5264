@@ -138,6 +138,30 @@
     },
     {
       "key": {
+        "uuid": "46a38215_6ec38ff3",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/AutomergeChangeAction.java",
+        "patchSetId": 24
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-11-02T20:41:57Z",
+      "side": 1,
+      "message": "Hm. Ran this through google-java-format and it seems to have indented it 4 spaces...\nI believe it\u0027s because of https://google.github.io/styleguide/javaguide.html#s4.5.2-line-wrapping-indent",
+      "parentUuid": "3e14c9d3_d86ced38",
+      "range": {
+        "startLine": 41,
+        "startChar": 0,
+        "endLine": 41,
+        "endChar": 4
+      },
+      "revId": "f35ee73949ced3d3acd1dc8503bc8df6fe0d5264",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "3e14c9d3_f871b10f",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/AutomergeChangeAction.java",
         "patchSetId": 24
@@ -167,6 +191,24 @@
       "side": 1,
       "message": "Ping",
       "parentUuid": "3e14c9d3_f871b10f",
+      "revId": "f35ee73949ced3d3acd1dc8503bc8df6fe0d5264",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "46a38215_eeae5f3a",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/AutomergeChangeAction.java",
+        "patchSetId": 24
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-11-02T20:41:57Z",
+      "side": 1,
+      "message": "It is a JSON field. In the \"apply\" method we read this as a JSON.\n\nI believe there\u0027s something I can do to make this a Gson instead of a String, but I wasn\u0027t able to figure out how to get it to work. Will look further into it.",
+      "parentUuid": "e841977a_fd6ce734",
       "revId": "f35ee73949ced3d3acd1dc8503bc8df6fe0d5264",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -220,6 +262,24 @@
       "side": 1,
       "message": "Here\u0027s what it says (emphasis added):\n\n\"Horizontal alignment is the practice of *adding a variable number of additional spaces* in your code with the goal of making certain tokens appear directly below certain other tokens on previous lines.\"\n\nIf the number of spaces of indent depends on the length of the method name, that\u0027s horizontal alignment.\n\nGo look at Gerrit code or the bulk of Google-authored Java code or the output of google-java-format. You\u0027re not going to see these huge blocks of leading whitespace.\n\nHonestly, I would suggest running the whole thing through google-java-format so you don\u0027t have to think about formatting. (We don\u0027t use that in core Gerrit because reasons, but I would heartily recommend it for any new project.)",
       "parentUuid": "1bb717b7_67cd9264",
+      "revId": "f35ee73949ced3d3acd1dc8503bc8df6fe0d5264",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c6d852b2_2ae05f83",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/AutomergeChangeAction.java",
+        "patchSetId": 24
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-11-02T20:41:57Z",
+      "side": 1,
+      "message": "Ran through google-java-format.",
+      "parentUuid": "88ff3b6b_d20e248e",
       "revId": "f35ee73949ced3d3acd1dc8503bc8df6fe0d5264",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
