@@ -16,6 +16,24 @@
       "revId": "5417c7caef32580afb1d6948b839d18e72fc6060",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "46a38215_2e9227df",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/DownstreamCreator.java",
+        "patchSetId": 32
+      },
+      "lineNbr": 23,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-11-02T20:41:57Z",
+      "side": 1,
+      "message": "These are gone, you were looking at patchset 32 for this for some reason.",
+      "parentUuid": "e841977a_9d5fa37a",
+      "revId": "5417c7caef32580afb1d6948b839d18e72fc6060",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
