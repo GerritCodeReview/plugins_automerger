@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "c6d852b2_aa760ff8",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/AutomergeChangeAction.java",
+        "patchSetId": 33
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-11-02T20:41:57Z",
+      "side": 1,
+      "message": "google-java-format took care of it.",
+      "parentUuid": "c5ccbe55_ec2c0bfd",
+      "revId": "a41db569f29198a276155ca31cd80f05f3f4b97e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "c5ccbe55_cc2fcfef",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/AutomergeChangeAction.java",
         "patchSetId": 33
@@ -36,6 +54,24 @@
     },
     {
       "key": {
+        "uuid": "46a38215_4ec053e5",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/AutomergeChangeAction.java",
+        "patchSetId": 33
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-11-02T20:41:57Z",
+      "side": 1,
+      "message": "google-java-format took care of it. I was assuming column length should be 80 but google-java-format says 100.",
+      "parentUuid": "c5ccbe55_cc2fcfef",
+      "revId": "a41db569f29198a276155ca31cd80f05f3f4b97e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "c5ccbe55_0c263720",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/AutomergeChangeAction.java",
         "patchSetId": 33
@@ -47,6 +83,24 @@
       "writtenOn": "2016-11-02T17:13:33Z",
       "side": 1,
       "message": "Combine these into a multi-catch. Maybe log the exception as well?",
+      "revId": "a41db569f29198a276155ca31cd80f05f3f4b97e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c6d852b2_8a7b4be2",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/AutomergeChangeAction.java",
+        "patchSetId": 33
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-11-02T20:41:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c5ccbe55_0c263720",
       "revId": "a41db569f29198a276155ca31cd80f05f3f4b97e",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
