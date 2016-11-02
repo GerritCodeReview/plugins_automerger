@@ -155,6 +155,24 @@
     },
     {
       "key": {
+        "uuid": "e841977a_fd6ce734",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/AutomergeChangeAction.java",
+        "patchSetId": 24
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1010008
+      },
+      "writtenOn": "2016-11-02T17:13:33Z",
+      "side": 1,
+      "message": "Ping",
+      "parentUuid": "3e14c9d3_f871b10f",
+      "revId": "f35ee73949ced3d3acd1dc8503bc8df6fe0d5264",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "3e14c9d3_98767505",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/AutomergeChangeAction.java",
         "patchSetId": 24
@@ -184,6 +202,24 @@
       "side": 1,
       "message": "4 space indent done.\n\nI don\u0027t think the horizontal alignment thing is relevant; it looks like the horizontal alignment they\u0027re talking about is things like:\n\nint          x;\nboolean y;\n\nwhich I\u0027m not doing.",
       "parentUuid": "3e14c9d3_98767505",
+      "revId": "f35ee73949ced3d3acd1dc8503bc8df6fe0d5264",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "88ff3b6b_d20e248e",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/AutomergeChangeAction.java",
+        "patchSetId": 24
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1010008
+      },
+      "writtenOn": "2016-11-02T17:13:33Z",
+      "side": 1,
+      "message": "Here\u0027s what it says (emphasis added):\n\n\"Horizontal alignment is the practice of *adding a variable number of additional spaces* in your code with the goal of making certain tokens appear directly below certain other tokens on previous lines.\"\n\nIf the number of spaces of indent depends on the length of the method name, that\u0027s horizontal alignment.\n\nGo look at Gerrit code or the bulk of Google-authored Java code or the output of google-java-format. You\u0027re not going to see these huge blocks of leading whitespace.\n\nHonestly, I would suggest running the whole thing through google-java-format so you don\u0027t have to think about formatting. (We don\u0027t use that in core Gerrit because reasons, but I would heartily recommend it for any new project.)",
+      "parentUuid": "1bb717b7_67cd9264",
       "revId": "f35ee73949ced3d3acd1dc8503bc8df6fe0d5264",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -1346,6 +1382,24 @@
       "side": 1,
       "message": "I was trying to do this initially, but Guava\u0027s \"Resources.getResource\" was pointing me towards \"/Users/stephenli/workspace/buck/build/testrunner/classes/\", instead of where the resources actually were.\n\nEventually got it to work though. Whew.",
       "parentUuid": "5e825d83_e19b0662",
+      "revId": "f35ee73949ced3d3acd1dc8503bc8df6fe0d5264",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "46a38215_8e46bbbd",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/ConfigLoaderIT.java",
+        "patchSetId": 24
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1010008
+      },
+      "writtenOn": "2016-11-02T17:13:33Z",
+      "side": 1,
+      "message": "Yeah resource APIs are confusing, sorry.",
+      "parentUuid": "3b5cdb04_78532117",
       "revId": "f35ee73949ced3d3acd1dc8503bc8df6fe0d5264",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
