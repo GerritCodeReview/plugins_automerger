@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "46a38215_aecbb708",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigDownstreamAction.java",
+        "patchSetId": 38
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-11-02T20:41:57Z",
+      "side": 1,
+      "message": "Huh. Done.\n\nWhy don\u0027t we need the generics in the instantiation?",
+      "parentUuid": "c6d852b2_0a011b6b",
+      "range": {
+        "startLine": 58,
+        "startChar": 53,
+        "endLine": 58,
+        "endChar": 68
+      },
+      "revId": "8a4883a61c41b970376f17dfaf55e927c7957adb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "c6d852b2_aaa44f5c",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
         "patchSetId": 38
@@ -36,6 +60,24 @@
       "writtenOn": "2016-11-02T17:13:33Z",
       "side": 1,
       "message": "Catching Exception is usually a smell. Just catch the checked exceptino types from loadConfig() instead?",
+      "revId": "8a4883a61c41b970376f17dfaf55e927c7957adb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "46a38215_ceca8302",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 38
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-11-02T20:41:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c6d852b2_aaa44f5c",
       "revId": "8a4883a61c41b970376f17dfaf55e927c7957adb",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -59,6 +101,24 @@
     },
     {
       "key": {
+        "uuid": "46a38215_eec5bff2",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 38
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-11-02T20:41:57Z",
+      "side": 1,
+      "message": "Whoops. I think this was a holdover from before I figured out how error logging worked.\nRemoved.",
+      "parentUuid": "c6d852b2_6a59b7a0",
+      "revId": "8a4883a61c41b970376f17dfaf55e927c7957adb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "c6d852b2_8a5fcb89",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
         "patchSetId": 38
@@ -70,6 +130,24 @@
       "writtenOn": "2016-11-02T17:13:33Z",
       "side": 1,
       "message": "The behavior you have here is if a project is ignored in the global config but added explicitly in the branch config, the branch config wins. Is that intentional? Or do you mean to apply all ignore_projects after all add_projects?",
+      "revId": "8a4883a61c41b970376f17dfaf55e927c7957adb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c6d852b2_2a6b3f13",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 38
+      },
+      "lineNbr": 118,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-11-02T20:41:57Z",
+      "side": 1,
+      "message": "Yep, that\u0027s intentional. The lower-level the specification, the higher priority it has.\n\nI\u0027ll add a comment to that effect.",
+      "parentUuid": "c6d852b2_8a5fcb89",
       "revId": "8a4883a61c41b970376f17dfaf55e927c7957adb",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -93,6 +171,24 @@
     },
     {
       "key": {
+        "uuid": "46a38215_2ee06783",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 38
+      },
+      "lineNbr": 153,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-11-02T20:41:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c6d852b2_ea648763",
+      "revId": "8a4883a61c41b970376f17dfaf55e927c7957adb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "c6d852b2_ca69c33b",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
         "patchSetId": 38
@@ -104,6 +200,24 @@
       "writtenOn": "2016-11-02T17:13:33Z",
       "side": 1,
       "message": "Braces",
+      "revId": "8a4883a61c41b970376f17dfaf55e927c7957adb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "46a38215_0eddabc5",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 38
+      },
+      "lineNbr": 163,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-11-02T20:41:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c6d852b2_ca69c33b",
       "revId": "8a4883a61c41b970376f17dfaf55e927c7957adb",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -133,6 +247,30 @@
     },
     {
       "key": {
+        "uuid": "c6d852b2_8aa22b36",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 38
+      },
+      "lineNbr": 165,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-11-02T20:41:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c6d852b2_0a4c7be2",
+      "range": {
+        "startLine": 163,
+        "startChar": 3,
+        "endLine": 165,
+        "endChar": 43
+      },
+      "revId": "8a4883a61c41b970376f17dfaf55e927c7957adb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "c6d852b2_6afed746",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
         "patchSetId": 38
@@ -144,6 +282,24 @@
       "writtenOn": "2016-11-02T17:13:33Z",
       "side": 1,
       "message": "Collections.emptySet()",
+      "revId": "8a4883a61c41b970376f17dfaf55e927c7957adb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c6d852b2_0a68fb12",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 38
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-11-02T20:41:57Z",
+      "side": 1,
+      "message": "I totally just assumed that it would complain if I didn\u0027t set the generic. Clearly I don\u0027t know Java that well :P",
+      "parentUuid": "c6d852b2_6afed746",
       "revId": "8a4883a61c41b970376f17dfaf55e927c7957adb",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -167,6 +323,24 @@
     },
     {
       "key": {
+        "uuid": "46a38215_ae9d77f4",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 38
+      },
+      "lineNbr": 189,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-11-02T20:41:57Z",
+      "side": 1,
+      "message": "Factored out a method that takes Map\u003cString, String\u003e instead, since the manifestProject and manifestFile are both grabbed the same way.",
+      "parentUuid": "c6d852b2_2a4fbfda",
+      "revId": "8a4883a61c41b970376f17dfaf55e927c7957adb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "46a38215_ee649f63",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
         "patchSetId": 38
@@ -178,6 +352,24 @@
       "writtenOn": "2016-11-02T17:13:33Z",
       "side": 1,
       "message": "Collections.emptySet()",
+      "revId": "8a4883a61c41b970376f17dfaf55e927c7957adb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "46a38215_6eda6fcf",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 38
+      },
+      "lineNbr": 203,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-11-02T20:41:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "46a38215_ee649f63",
       "revId": "8a4883a61c41b970376f17dfaf55e927c7957adb",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -201,6 +393,24 @@
     },
     {
       "key": {
+        "uuid": "c6d852b2_2a921fdf",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 38
+      },
+      "lineNbr": 209,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-11-02T20:41:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c6d852b2_aa5a8f99",
+      "revId": "8a4883a61c41b970376f17dfaf55e927c7957adb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "c6d852b2_4afb1355",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
         "patchSetId": 38
@@ -218,6 +428,24 @@
     },
     {
       "key": {
+        "uuid": "46a38215_ce9c43f6",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 38
+      },
+      "lineNbr": 212,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-11-02T20:41:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c6d852b2_4afb1355",
+      "revId": "8a4883a61c41b970376f17dfaf55e927c7957adb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "46a38215_ce69e33b",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
         "patchSetId": 38
@@ -229,6 +457,24 @@
       "writtenOn": "2016-11-02T17:13:33Z",
       "side": 1,
       "message": "This ignores any modifications you made earlier in the method. Seems like this if block should be first, and just return early.",
+      "revId": "8a4883a61c41b970376f17dfaf55e927c7957adb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "46a38215_ee977fce",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 38
+      },
+      "lineNbr": 224,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-11-02T20:41:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "46a38215_ce69e33b",
       "revId": "8a4883a61c41b970376f17dfaf55e927c7957adb",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -258,6 +504,30 @@
     },
     {
       "key": {
+        "uuid": "46a38215_6e5f0f56",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/DownstreamCreator.java",
+        "patchSetId": 38
+      },
+      "lineNbr": 351,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-11-02T20:41:57Z",
+      "side": 1,
+      "message": "Is there a particular reason to use accessor methods as opposed to just using the attributes directly?\n\nI created a SingleDownstreamMergeInput class and a MultipleDownstreamMergeInput class that just holds arguments (like https://gerrit.googlesource.com/gerrit/+/master/gerrit-extension-api/src/main/java/com/google/gerrit/extensions/api/changes/RebaseInput.java).",
+      "parentUuid": "46a38215_6e59cfa0",
+      "range": {
+        "startLine": 349,
+        "startChar": 36,
+        "endLine": 351,
+        "endChar": 79
+      },
+      "revId": "8a4883a61c41b970376f17dfaf55e927c7957adb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "c6d852b2_eaae473a",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/FailedMergeException.java",
         "patchSetId": 38
@@ -269,6 +539,24 @@
       "writtenOn": "2016-11-02T17:13:33Z",
       "side": 1,
       "message": "final",
+      "revId": "8a4883a61c41b970376f17dfaf55e927c7957adb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c6d852b2_0a8f5bb9",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/FailedMergeException.java",
+        "patchSetId": 38
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-11-02T20:41:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c6d852b2_eaae473a",
       "revId": "8a4883a61c41b970376f17dfaf55e927c7957adb",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -292,6 +580,24 @@
     },
     {
       "key": {
+        "uuid": "c6d852b2_6a8c17c3",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/FailedMergeException.java",
+        "patchSetId": 38
+      },
+      "lineNbr": 22,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-11-02T20:41:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "46a38215_4e569370",
+      "revId": "8a4883a61c41b970376f17dfaf55e927c7957adb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "46a38215_2e4fc7da",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/LoadedConfig.java",
         "patchSetId": 38
@@ -303,6 +609,24 @@
       "writtenOn": "2016-11-02T17:13:33Z",
       "side": 1,
       "message": "Nit: blank line after static members",
+      "revId": "8a4883a61c41b970376f17dfaf55e927c7957adb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c6d852b2_4a8953b1",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/LoadedConfig.java",
+        "patchSetId": 38
+      },
+      "lineNbr": 36,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-11-02T20:41:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "46a38215_2e4fc7da",
       "revId": "8a4883a61c41b970376f17dfaf55e927c7957adb",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -326,6 +650,24 @@
     },
     {
       "key": {
+        "uuid": "c6d852b2_aa40cf7c",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/LoadedConfig.java",
+        "patchSetId": 38
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-11-02T20:41:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c6d852b2_4a567370",
+      "revId": "8a4883a61c41b970376f17dfaf55e927c7957adb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "c6d852b2_aa41efa9",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/LoadedConfig.java",
         "patchSetId": 38
@@ -337,6 +679,24 @@
       "writtenOn": "2016-11-02T17:13:33Z",
       "side": 1,
       "message": "Log some additional info like project/branch/filename?",
+      "revId": "8a4883a61c41b970376f17dfaf55e927c7957adb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "46a38215_6e8c2fc3",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/LoadedConfig.java",
+        "patchSetId": 38
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-11-02T20:41:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c6d852b2_aa41efa9",
       "revId": "8a4883a61c41b970376f17dfaf55e927c7957adb",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -366,6 +726,30 @@
     },
     {
       "key": {
+        "uuid": "46a38215_8e451b8d",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/LoadedConfig.java",
+        "patchSetId": 38
+      },
+      "lineNbr": 67,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-11-02T20:41:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "46a38215_0e4c8be2",
+      "range": {
+        "startLine": 65,
+        "startChar": 4,
+        "endLine": 67,
+        "endChar": 5
+      },
+      "revId": "8a4883a61c41b970376f17dfaf55e927c7957adb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "c6d852b2_8a46abbd",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/LoadedConfig.java",
         "patchSetId": 38
@@ -383,6 +767,24 @@
     },
     {
       "key": {
+        "uuid": "c6d852b2_ea4ac79a",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/LoadedConfig.java",
+        "patchSetId": 38
+      },
+      "lineNbr": 73,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-11-02T20:41:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c6d852b2_8a46abbd",
+      "revId": "8a4883a61c41b970376f17dfaf55e927c7957adb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "c6d852b2_ea3be72f",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/LoadedConfig.java",
         "patchSetId": 38
@@ -394,6 +796,24 @@
       "writtenOn": "2016-11-02T17:13:33Z",
       "side": 1,
       "message": "Did you mean to assign these to null in LoadedConfig()?",
+      "revId": "8a4883a61c41b970376f17dfaf55e927c7957adb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "46a38215_ee4adf9a",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/LoadedConfig.java",
+        "patchSetId": 38
+      },
+      "lineNbr": 84,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-11-02T20:41:57Z",
+      "side": 1,
+      "message": "Oh, you\u0027re right. Shouldn\u0027t be possible for these to be null. I was hedging against something modifying the blankMergePattern to be null, but it\u0027s \"final\".",
+      "parentUuid": "c6d852b2_ea3be72f",
       "revId": "8a4883a61c41b970376f17dfaf55e927c7957adb",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -423,6 +843,30 @@
     },
     {
       "key": {
+        "uuid": "c6d852b2_2a55ff35",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/LoadedConfig.java",
+        "patchSetId": 38
+      },
+      "lineNbr": 110,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-11-02T20:41:57Z",
+      "side": 1,
+      "message": "Yes :[\n\nEssentially, we have a config that looks something like:\n\nbranches:\n  somefrombranch:\n    sometobranch:\n      set_projects:\n      - platform/vendor/google_experimental/automerger\n      - tools/automerger\n      - platform/vendor/google_experimental/automerger_parent\n      merge_all: true\nglobal:\n  always_blank_merge:\n  - (?\u003c\u003dImport translations\\.\\s)DO NOT MERGE\n  - DO NOT MERGE ANYWHERE\n  blank_merge:\n  - DO NOT MERGE\n  manifest:\n    file: default.xml\n    project: platform/manifest\n\n\nThe YAML library forces me to get Object for the type of the values of set_projects and merge_all. However, I know that the type of the values associated with the from_branch are a Map.\n\nOriginally I chose to use YAML because the current automerger uses YAML and it\u0027d be an easy migration. I\u0027m starting to think that maybe I should use something else instead...maybe json?",
+      "parentUuid": "c6d852b2_2a369f46",
+      "range": {
+        "startLine": 110,
+        "startChar": 21,
+        "endLine": 110,
+        "endChar": 27
+      },
+      "revId": "8a4883a61c41b970376f17dfaf55e927c7957adb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "c6d852b2_ca40a3a3",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/LoadedConfig.java",
         "patchSetId": 38
@@ -440,6 +884,24 @@
     },
     {
       "key": {
+        "uuid": "c6d852b2_ca4f03a9",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/LoadedConfig.java",
+        "patchSetId": 38
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-11-02T20:41:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c6d852b2_ca40a3a3",
+      "revId": "8a4883a61c41b970376f17dfaf55e927c7957adb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "c6d852b2_6a309748",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ManifestReader.java",
         "patchSetId": 38
@@ -451,6 +913,30 @@
       "writtenOn": "2016-11-02T17:13:33Z",
       "side": 1,
       "message": "Include the branch name?",
+      "range": {
+        "startLine": 87,
+        "startChar": 17,
+        "endLine": 87,
+        "endChar": 23
+      },
+      "revId": "8a4883a61c41b970376f17dfaf55e927c7957adb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c6d852b2_6a5ff755",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ManifestReader.java",
+        "patchSetId": 38
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-11-02T20:41:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c6d852b2_6a309748",
       "range": {
         "startLine": 87,
         "startChar": 17,
@@ -486,6 +972,30 @@
     },
     {
       "key": {
+        "uuid": "c6d852b2_0a52bb4d",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ManifestReader.java",
+        "patchSetId": 38
+      },
+      "lineNbr": 88,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-11-02T20:41:57Z",
+      "side": 1,
+      "message": "Ah, did not realize it included the exception type. That simplifies things.",
+      "parentUuid": "c6d852b2_0a33db56",
+      "range": {
+        "startLine": 82,
+        "startChar": 6,
+        "endLine": 88,
+        "endChar": 5
+      },
+      "revId": "8a4883a61c41b970376f17dfaf55e927c7957adb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "46a38215_2e36a746",
         "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/ConfigLoaderIT.java",
         "patchSetId": 38
@@ -497,6 +1007,30 @@
       "writtenOn": "2016-11-02T17:13:33Z",
       "side": 1,
       "message": "Glad you got it to be a small test. This leaves me with one naming nit, which is that \"IT\" stands for \"integration test\", and this is now a small unit test. So I would name this ConfigLoaderTest",
+      "range": {
+        "startLine": 33,
+        "startChar": 13,
+        "endLine": 33,
+        "endChar": 27
+      },
+      "revId": "8a4883a61c41b970376f17dfaf55e927c7957adb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "46a38215_ce4f23a9",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/ConfigLoaderIT.java",
+        "patchSetId": 38
+      },
+      "lineNbr": 33,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-11-02T20:41:57Z",
+      "side": 1,
+      "message": "Ah, I had no idea what IT stood for and just saw it used everywhere. I assumed it was a java convention I didn\u0027t know about.\n\nRemoved.",
+      "parentUuid": "46a38215_2e36a746",
       "range": {
         "startLine": 33,
         "startChar": 13,
@@ -532,6 +1066,30 @@
     },
     {
       "key": {
+        "uuid": "c6d852b2_4a5cb35f",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/DownstreamCreatorIT.java",
+        "patchSetId": 38
+      },
+      "lineNbr": 41,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-11-02T20:41:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c6d852b2_2ab97f7f",
+      "range": {
+        "startLine": 41,
+        "startChar": 13,
+        "endLine": 41,
+        "endChar": 32
+      },
+      "revId": "8a4883a61c41b970376f17dfaf55e927c7957adb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "46a38215_6e30af48",
         "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/DownstreamCreatorIT.java",
         "patchSetId": 38
@@ -543,6 +1101,24 @@
       "writtenOn": "2016-11-02T17:13:33Z",
       "side": 1,
       "message": "Optional, for less boilerplate:\n\n return ImmutableList.of(\n     mockChangeInfo(...),\n     ...);",
+      "revId": "8a4883a61c41b970376f17dfaf55e927c7957adb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "46a38215_2e550736",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/DownstreamCreatorIT.java",
+        "patchSetId": 38
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-11-02T20:41:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "46a38215_6e30af48",
       "revId": "8a4883a61c41b970376f17dfaf55e927c7957adb",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -566,6 +1142,24 @@
     },
     {
       "key": {
+        "uuid": "c6d852b2_aa272fe7",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/DownstreamCreatorIT.java",
+        "patchSetId": 38
+      },
+      "lineNbr": 82,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-11-02T20:41:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "46a38215_4e2df3f0",
+      "revId": "8a4883a61c41b970376f17dfaf55e927c7957adb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "46a38215_aea4575c",
         "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/DownstreamCreatorIT.java",
         "patchSetId": 38
@@ -583,6 +1177,24 @@
     },
     {
       "key": {
+        "uuid": "c6d852b2_8a2cebcc",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/DownstreamCreatorIT.java",
+        "patchSetId": 38
+      },
+      "lineNbr": 238,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-11-02T20:41:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "46a38215_aea4575c",
+      "revId": "8a4883a61c41b970376f17dfaf55e927c7957adb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "c6d852b2_0ab63b8d",
         "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/ManifestReaderIT.java",
         "patchSetId": 38
@@ -594,6 +1206,30 @@
       "writtenOn": "2016-11-02T17:13:33Z",
       "side": 1,
       "message": "ManifestReaderTest",
+      "range": {
+        "startLine": 29,
+        "startChar": 13,
+        "endLine": 29,
+        "endChar": 29
+      },
+      "revId": "8a4883a61c41b970376f17dfaf55e927c7957adb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c6d852b2_ea2127d3",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/ManifestReaderIT.java",
+        "patchSetId": 38
+      },
+      "lineNbr": 29,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-11-02T20:41:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "c6d852b2_0ab63b8d",
       "range": {
         "startLine": 29,
         "startChar": 13,
