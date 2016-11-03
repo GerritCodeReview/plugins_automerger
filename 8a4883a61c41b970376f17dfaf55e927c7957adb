@@ -306,6 +306,24 @@
     },
     {
       "key": {
+        "uuid": "c6d852b2_aa0a8f03",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 38
+      },
+      "lineNbr": 183,
+      "author": {
+        "id": 1010008
+      },
+      "writtenOn": "2016-11-03T11:48:18Z",
+      "side": 1,
+      "message": "Yeah, it\u0027s a little confusing.\n\nWhen instantiating a generic type, you need a \u003c...\u003e, even if it\u0027s empty, to say \"this is a generic type\".\n\nThis line here is not a generic type, it\u0027s calling a static method that has a type parameter. When calling such a generic method, you can omit the \u003c...\u003e entirely (although sometimes it\u0027s necessary if the inferred return type is not exactly what you want).\n\nI...don\u0027t actually know why it is this way.",
+      "parentUuid": "c6d852b2_0a68fb12",
+      "revId": "8a4883a61c41b970376f17dfaf55e927c7957adb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "c6d852b2_2a4fbfda",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
         "patchSetId": 38
@@ -522,6 +540,24 @@
         "endLine": 351,
         "endChar": 79
       },
+      "revId": "8a4883a61c41b970376f17dfaf55e927c7957adb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "46a38215_ae9f379a",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/DownstreamCreator.java",
+        "patchSetId": 38
+      },
+      "lineNbr": 351,
+      "author": {
+        "id": 1010008
+      },
+      "writtenOn": "2016-11-03T11:48:18Z",
+      "side": 1,
+      "message": "This is a big improvement, thanks.\n\nThe main reason I said accessor methods is that\u0027s what you get with AutoValue. There are some minor benefits to using AutoValue over a hand-rolled class here (free null checks) but it\u0027s not a huge win, so no need to rewrite it again at this point.",
+      "parentUuid": "46a38215_6e5f0f56",
       "revId": "8a4883a61c41b970376f17dfaf55e927c7957adb",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
