@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "46a38215_0eb12b2d",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigDownstreamAction.java",
+        "patchSetId": 41
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-11-03T16:23:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "666166bb_97a4445d",
+      "range": {
+        "startLine": 51,
+        "startChar": 41,
+        "endLine": 51,
+        "endChar": 55
+      },
+      "revId": "7ba5c2ae3b7284447d6e1c50941c376ab3d9b7a0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "46a38215_4ed4d346",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
         "patchSetId": 41
@@ -48,6 +72,30 @@
     },
     {
       "key": {
+        "uuid": "c6d852b2_4addd352",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 41
+      },
+      "lineNbr": 181,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-11-03T16:23:27Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "46a38215_4ed4d346",
+      "range": {
+        "startLine": 181,
+        "startChar": 13,
+        "endLine": 181,
+        "endChar": 26
+      },
+      "revId": "7ba5c2ae3b7284447d6e1c50941c376ab3d9b7a0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "c6d852b2_8a0fcb13",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ManifestReader.java",
         "patchSetId": 41
@@ -59,6 +107,30 @@
       "writtenOn": "2016-11-03T11:48:18Z",
       "side": 1,
       "message": "This is where slf4j really sucks. Using {} formatting and varargs means you can\u0027t get a stack trace.\n\n log.error(\"foo\", someException)\n\nlogs a stack trace\n\n log.error(\"foo {}\", someNonException)\n\ninterpolates someNonException into your format string\n\n log.error(\"foo {}, {}\", bar, someException)\n\ninterpolates both bar and someException into your format string, and doesn\u0027t give you a stack trace\n\nTo make this log a stack trace you have to do:\n\n log.error(\"foo \" + bar, someException)\n\nThis loses the lazy string interpolation, which in practice is rarely a big deal because the error log level is usually enabled.",
+      "range": {
+        "startLine": 78,
+        "startChar": 16,
+        "endLine": 78,
+        "endChar": 68
+      },
+      "revId": "7ba5c2ae3b7284447d6e1c50941c376ab3d9b7a0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c6d852b2_aa544fde",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ManifestReader.java",
+        "patchSetId": 41
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-11-03T16:23:27Z",
+      "side": 1,
+      "message": "It looks like I can do:\n\nlog.error(\"foo {}\", bar, someException) and have it log the stack trace while also interpolating. That looks like it lets me get the best of both worlds.",
+      "parentUuid": "c6d852b2_8a0fcb13",
       "range": {
         "startLine": 78,
         "startChar": 16,
