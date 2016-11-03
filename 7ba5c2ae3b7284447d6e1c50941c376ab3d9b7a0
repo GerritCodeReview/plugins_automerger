@@ -140,6 +140,30 @@
       "revId": "7ba5c2ae3b7284447d6e1c50941c376ab3d9b7a0",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c6d852b2_ca6383c8",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ManifestReader.java",
+        "patchSetId": 41
+      },
+      "lineNbr": 78,
+      "author": {
+        "id": 1010008
+      },
+      "writtenOn": "2016-11-03T16:28:38Z",
+      "side": 1,
+      "message": "Amazing, I had to actually look at the slf4j source to see that that works. Did I mention I hate slf4j?",
+      "parentUuid": "c6d852b2_aa544fde",
+      "range": {
+        "startLine": 78,
+        "startChar": 16,
+        "endLine": 78,
+        "endChar": 68
+      },
+      "revId": "7ba5c2ae3b7284447d6e1c50941c376ab3d9b7a0",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
