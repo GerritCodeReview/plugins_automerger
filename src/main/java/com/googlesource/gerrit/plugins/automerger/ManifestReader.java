@@ -58,7 +58,6 @@ public class ManifestReader {
         Node projectNode = projectNodes.item(i);
         if (projectNode.getNodeType() == Node.ELEMENT_NODE) {
           Element projectElement = (Element) projectNode;
-          String path = projectElement.getAttribute("path");
           String name = projectElement.getAttribute("name");
 
           String revision = projectElement.getAttribute("revision");

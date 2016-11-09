@@ -22,18 +22,16 @@ import com.google.gerrit.extensions.restapi.ResourceNotFoundException;
 import com.google.gerrit.extensions.restapi.RestApiException;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.yaml.snakeyaml.Yaml;
-
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.yaml.snakeyaml.Yaml;
 
 @Singleton
 public class ConfigLoader {
@@ -132,7 +130,6 @@ public class ConfigLoader {
       for (String key : fromBranchConfig.keySet()) {
         if (!configOptionKeys.contains(key)) {
           // If it's not a config option, then the key is the toBranch
-          Map<String, Object> toBranchConfig = (Map<String, Object>) fromBranchConfig.get(key);
           Set<String> projectsInScope = getProjectsInScope(fromBranch, key);
           if (projectsInScope.contains(project)) {
             downstreamBranches.add(key);

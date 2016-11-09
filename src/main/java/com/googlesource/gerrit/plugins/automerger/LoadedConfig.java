@@ -19,17 +19,16 @@ import com.google.gerrit.extensions.api.GerritApi;
 import com.google.gerrit.extensions.restapi.BinaryResult;
 import com.google.gerrit.extensions.restapi.RestApiException;
 import com.google.re2j.Pattern;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.yaml.snakeyaml.Yaml;
 
 import java.io.IOException;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.yaml.snakeyaml.Yaml;
 
 public class LoadedConfig {
   private static final Logger log = LoggerFactory.getLogger(LoadedConfig.class);

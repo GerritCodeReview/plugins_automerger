@@ -18,12 +18,12 @@ import com.google.gerrit.extensions.api.GerritApi;
 import com.google.gerrit.extensions.api.changes.AbandonInput;
 import com.google.gerrit.extensions.api.changes.ChangeApi;
 import com.google.gerrit.extensions.api.changes.NotifyHandling;
-import com.google.gerrit.extensions.api.changes.ReviewInput;
 import com.google.gerrit.extensions.api.changes.RestoreInput;
+import com.google.gerrit.extensions.api.changes.ReviewInput;
 import com.google.gerrit.extensions.client.ChangeStatus;
 import com.google.gerrit.extensions.client.ListChangesOption;
-import com.google.gerrit.extensions.common.ChangeInput;
 import com.google.gerrit.extensions.common.ChangeInfo;
+import com.google.gerrit.extensions.common.ChangeInput;
 import com.google.gerrit.extensions.common.CommitInfo;
 import com.google.gerrit.extensions.common.MergeInput;
 import com.google.gerrit.extensions.common.MergePatchSetInput;
@@ -34,23 +34,19 @@ import com.google.gerrit.extensions.events.ChangeRestoredListener;
 import com.google.gerrit.extensions.events.DraftPublishedListener;
 import com.google.gerrit.extensions.events.RevisionCreatedListener;
 import com.google.gerrit.extensions.events.TopicEditedListener;
-
 import com.google.gerrit.extensions.restapi.MergeConflictException;
 import com.google.gerrit.extensions.restapi.RestApiException;
-import com.google.gerrit.server.events.Event;
 import com.google.inject.Inject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashMap;
-import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.List;
-import java.util.ArrayList;
 import java.util.UUID;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class DownstreamCreator
     implements ChangeAbandonedListener,

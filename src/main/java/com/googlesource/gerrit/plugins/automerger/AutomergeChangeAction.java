@@ -23,16 +23,12 @@ import com.google.gerrit.server.CurrentUser;
 import com.google.gerrit.server.IdentifiedUser;
 import com.google.gerrit.server.change.RevisionResource;
 import com.google.gerrit.server.events.EventFactory;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+import java.io.IOException;
+import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import java.io.IOException;
-import java.lang.reflect.Type;
-import java.util.Map;
 
 class AutomergeChangeAction
     implements UiAction<RevisionResource>,
@@ -42,18 +38,15 @@ class AutomergeChangeAction
   private Provider<CurrentUser> user;
   private ConfigLoader config;
   private DownstreamCreator dsCreator;
-  private EventFactory eventFactory;
 
   @Inject
   AutomergeChangeAction(
       Provider<CurrentUser> user,
       ConfigLoader config,
-      DownstreamCreator dsCreator,
-      EventFactory eventFactory) {
+      DownstreamCreator dsCreator) {
     this.user = user;
     this.config = config;
     this.dsCreator = dsCreator;
-    this.eventFactory = eventFactory;
   }
 
   @Override

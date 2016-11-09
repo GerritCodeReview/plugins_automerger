@@ -19,11 +19,7 @@ import com.google.gerrit.extensions.restapi.Response;
 import com.google.gerrit.extensions.restapi.RestApiException;
 import com.google.gerrit.extensions.restapi.RestModifyView;
 import com.google.gerrit.server.change.RevisionResource;
-import com.google.gson.Gson;
 import com.google.inject.Inject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -31,7 +27,6 @@ import java.util.Set;
 
 class ConfigDownstreamAction
     implements RestModifyView<RevisionResource, ConfigDownstreamAction.Input> {
-  private static final Logger log = LoggerFactory.getLogger(ConfigDownstreamAction.class);
 
   protected ConfigLoader config;
 

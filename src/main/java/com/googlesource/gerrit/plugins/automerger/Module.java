@@ -14,12 +14,17 @@
 
 package com.googlesource.gerrit.plugins.automerger;
 
-import com.google.gerrit.extensions.events.*;
+import static com.google.gerrit.server.change.RevisionResource.REVISION_KIND;
+
+import com.google.gerrit.extensions.events.ChangeAbandonedListener;
+import com.google.gerrit.extensions.events.ChangeMergedListener;
+import com.google.gerrit.extensions.events.ChangeRestoredListener;
+import com.google.gerrit.extensions.events.DraftPublishedListener;
+import com.google.gerrit.extensions.events.RevisionCreatedListener;
+import com.google.gerrit.extensions.events.TopicEditedListener;
 import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.extensions.restapi.RestApiModule;
 import com.google.inject.AbstractModule;
-
-import static com.google.gerrit.server.change.RevisionResource.REVISION_KIND;
 
 public class Module extends AbstractModule {
 
