@@ -48,9 +48,10 @@ public class ConfigLoader {
   public ConfigLoader(GerritApi gApi) throws IOException {
     this.gApi = gApi;
 
-    String configKeysPath = "/config/config_keys.yaml";
+    String configKeysPath = "config/config_keys.yaml";
     try (InputStreamReader streamReader =
-        new InputStreamReader(getClass().getResourceAsStream(configKeysPath), Charsets.UTF_8)) {
+        new InputStreamReader(getClass().getClassLoader().getResourceAsStream(
+            configKeysPath), Charsets.UTF_8)) {
 
       String automergerConfigYamlString = CharStreams.toString(streamReader);
       Map automergerConfig = (Map) (new Yaml().load(automergerConfigYamlString));
