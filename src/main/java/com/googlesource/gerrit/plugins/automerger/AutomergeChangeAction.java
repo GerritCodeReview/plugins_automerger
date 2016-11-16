@@ -55,6 +55,10 @@ class AutomergeChangeAction
     Map<String, Boolean> branchMap = input.branchMap;
 
     Change change = rev.getChange();
+    if (branchMap == null) {
+      log.debug("Branch map is empty for change {}", change.getKey().get());
+      return Response.none();
+    }
     String revision = rev.getPatchSet().getRevision().get();
 
     MultipleDownstreamMergeInput mdsMergeInput = new MultipleDownstreamMergeInput();
@@ -65,6 +69,8 @@ class AutomergeChangeAction
     mdsMergeInput.subject = change.getSubject();
     mdsMergeInput.obsoleteRevision = revision;
     mdsMergeInput.currentRevision = revision;
+
+    log.debug("Multiple downstream merge input: {}", mdsMergeInput.dsBranchMap);
 
     dsCreator.createMergesAndHandleConflicts(mdsMergeInput);
     return Response.none();
