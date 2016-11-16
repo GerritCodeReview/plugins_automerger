@@ -22,7 +22,6 @@ import com.google.gerrit.reviewdb.client.Change;
 import com.google.gerrit.server.CurrentUser;
 import com.google.gerrit.server.IdentifiedUser;
 import com.google.gerrit.server.change.RevisionResource;
-import com.google.gerrit.server.events.EventFactory;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import java.io.IOException;
