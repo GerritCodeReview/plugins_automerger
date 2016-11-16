@@ -7,8 +7,7 @@ gerrit_plugin(
   resources = glob(['src/main/**/*']),
   manifest_entries = [
     'Gerrit-PluginName: automerger',
-    'Gerrit-Module: com.googlesource.gerrit.plugins.automerger.Module',
-    'Gerrit-HttpModule: com.googlesource.gerrit.plugins.automerger.HttpModule',
+    'Gerrit-Module: com.googlesource.gerrit.plugins.automerger.AutomergerModule',
     'Implementation-Title: Automerger plugin',
     'Implementation-URL: https://gerrit-review.googlesource.com/#/admin/projects/plugins/automerger',
   ],

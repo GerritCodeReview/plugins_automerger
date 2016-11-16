@@ -114,6 +114,7 @@ public class ConfigLoader {
       applyConfig(projectSet, config.getMergeConfig(fromBranch));
       applyConfig(projectSet, config.getMergeConfig(fromBranch, toBranch));
 
+      log.debug("Project set for {} to {} is {}", fromBranch, toBranch, projectSet);
       return projectSet;
     } catch (RestApiException | IOException e) {
       log.error("Error reading manifest for {}!", fromBranch, e);
@@ -152,6 +153,9 @@ public class ConfigLoader {
   // If manifest does not exist, return empty set.
   private Set<String> getManifestProjects(String fromBranch) throws RestApiException, IOException {
     Map fromBranchConfig = config.getMergeConfig(fromBranch);
+    if (fromBranchConfig == null) {
+      return new HashSet<>();
+    }
     Map<String, String> manifestProjectInfo = getManifestInfoFromConfig(fromBranchConfig);
     return getManifestProjectsForBranch(manifestProjectInfo, fromBranch);
   }
@@ -161,6 +165,9 @@ public class ConfigLoader {
   private Set<String> getManifestProjects(String fromBranch, String toBranch)
       throws RestApiException, IOException {
     Map<String, Object> toBranchConfig = config.getMergeConfig(fromBranch, toBranch);
+    if (toBranchConfig == null) {
+      return new HashSet<>();
+    }
     Map<String, String> manifestProjectInfo = getManifestInfoFromConfig(toBranchConfig);
     return getManifestProjectsForBranch(manifestProjectInfo, toBranch);
   }
@@ -175,11 +182,15 @@ public class ConfigLoader {
       ManifestReader manifestReader = new ManifestReader(branch, manifestConfig.asString());
       return manifestReader.getProjects();
     } catch (ResourceNotFoundException e) {
+      log.info("Manifest for {} not found", branch);
       return new HashSet<>();
     }
   }
 
   private void applyConfig(Set<String> projects, Map givenConfig) {
+    if (givenConfig == null) {
+      return;
+    }
     if (givenConfig.containsKey("set_projects")) {
       List<String> setProjects = (ArrayList<String>) givenConfig.get("set_projects");
       projects.clear();

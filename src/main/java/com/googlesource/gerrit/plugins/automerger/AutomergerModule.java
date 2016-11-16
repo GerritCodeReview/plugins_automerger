@@ -24,9 +24,11 @@ import com.google.gerrit.extensions.events.RevisionCreatedListener;
 import com.google.gerrit.extensions.events.TopicEditedListener;
 import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.extensions.restapi.RestApiModule;
+import com.google.gerrit.extensions.webui.JavaScriptPlugin;
+import com.google.gerrit.extensions.webui.WebUiPlugin;
 import com.google.inject.AbstractModule;
 
-public class Module extends AbstractModule {
+public class AutomergerModule extends AbstractModule {
 
   @Override
   protected void configure() {
@@ -44,5 +46,6 @@ public class Module extends AbstractModule {
             post(REVISION_KIND, "config-downstream").to(ConfigDownstreamAction.class);
           }
         });
+    DynamicSet.bind(binder(), WebUiPlugin.class).toInstance(new JavaScriptPlugin("automerger.js"));
   }
 }
