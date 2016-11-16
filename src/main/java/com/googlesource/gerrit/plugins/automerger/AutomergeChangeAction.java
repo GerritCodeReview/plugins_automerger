@@ -41,9 +41,7 @@ class AutomergeChangeAction
 
   @Inject
   AutomergeChangeAction(
-      Provider<CurrentUser> user,
-      ConfigLoader config,
-      DownstreamCreator dsCreator) {
+      Provider<CurrentUser> user, ConfigLoader config, DownstreamCreator dsCreator) {
     this.user = user;
     this.config = config;
     this.dsCreator = dsCreator;
@@ -53,8 +51,11 @@ class AutomergeChangeAction
   public Object apply(RevisionResource rev, Input input)
       throws RestApiException, FailedMergeException {
     Map<String, Boolean> branchMap = input.branchMap;
-
     Change change = rev.getChange();
+    if (branchMap == null) {
+      log.info("Branch map is empty for change {}", change.getKey().get());
+      return Response.none();
+    }
     String revision = rev.getPatchSet().getRevision().get();
 
     MultipleDownstreamMergeInput mdsMergeInput = new MultipleDownstreamMergeInput();
@@ -65,6 +66,8 @@ class AutomergeChangeAction
     mdsMergeInput.subject = change.getSubject();
     mdsMergeInput.obsoleteRevision = revision;
     mdsMergeInput.currentRevision = revision;
+
+    log.info("Multiple downstream merge input: {}", mdsMergeInput.dsBranchMap);
 
     dsCreator.createMergesAndHandleConflicts(mdsMergeInput);
     return Response.none();
