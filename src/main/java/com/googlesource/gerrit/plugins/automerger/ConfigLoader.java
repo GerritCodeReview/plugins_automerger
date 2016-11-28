@@ -182,7 +182,7 @@ public class ConfigLoader {
       ManifestReader manifestReader = new ManifestReader(branch, manifestConfig.asString());
       return manifestReader.getProjects();
     } catch (ResourceNotFoundException e) {
-      log.info("Manifest for {} not found", branch);
+      log.debug("Manifest for {} not found", branch);
       return new HashSet<>();
     }
   }

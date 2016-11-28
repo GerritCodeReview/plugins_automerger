@@ -22,6 +22,7 @@ import com.google.gerrit.extensions.api.changes.RestoreInput;
 import com.google.gerrit.extensions.api.changes.ReviewInput;
 import com.google.gerrit.extensions.client.ChangeStatus;
 import com.google.gerrit.extensions.client.ListChangesOption;
+import com.google.gerrit.extensions.common.ApprovalInfo;
 import com.google.gerrit.extensions.common.ChangeInfo;
 import com.google.gerrit.extensions.common.ChangeInput;
 import com.google.gerrit.extensions.common.CommitInfo;
@@ -31,6 +32,7 @@ import com.google.gerrit.extensions.common.RevisionInfo;
 import com.google.gerrit.extensions.events.ChangeAbandonedListener;
 import com.google.gerrit.extensions.events.ChangeMergedListener;
 import com.google.gerrit.extensions.events.ChangeRestoredListener;
+import com.google.gerrit.extensions.events.CommentAddedListener;
 import com.google.gerrit.extensions.events.DraftPublishedListener;
 import com.google.gerrit.extensions.events.RevisionCreatedListener;
 import com.google.gerrit.extensions.events.TopicEditedListener;
@@ -52,6 +54,7 @@ public class DownstreamCreator
     implements ChangeAbandonedListener,
         ChangeMergedListener,
         ChangeRestoredListener,
+        CommentAddedListener,
         DraftPublishedListener,
         RevisionCreatedListener,
         TopicEditedListener {
@@ -148,6 +151,51 @@ public class DownstreamCreator
   }
 
   @Override
+  public void onCommentAdded(CommentAddedListener.Event event) {
+    ChangeInfo change = event.getChange();
+    try {
+      String revision = change.currentRevision;
+      Set<String> downstreamBranches = config.getDownstreamBranches(change.branch, change.project);
+
+      if (downstreamBranches.isEmpty()) {
+        log.info("Downstream branches of {} on {} are empty", change.branch, change.project);
+        return;
+      }
+
+      Map<String, ApprovalInfo> approvals = event.getApprovals();
+
+      for (String downstreamBranch : downstreamBranches) {
+        List<Integer> existingDownstream =
+            getExistingMergesOnBranch(revision, change.topic, downstreamBranch);
+        for (Integer changeNumber : existingDownstream) {
+          ChangeInfo downstreamChange =
+              gApi.changes().id(changeNumber).get(EnumSet.of(ListChangesOption.CURRENT_REVISION));
+          for (String label : approvals.keySet()) {
+            ApprovalInfo vote = approvals.get(label);
+            updateVote(downstreamChange, label, vote.value.shortValue());
+          }
+        }
+      }
+    } catch (RestApiException | IOException e) {
+      log.error("Failed to edit downstream votes of {}", change.id, e);
+    }
+  }
+
+  private void updateVote(ChangeInfo change, String label, Short vote) throws RestApiException {
+    if (label.equals(config.getAutomergeLabel())) {
+      log.info("Not updating automerge label, as it blocks when there is a merge conflict.");
+      return;
+    }
+    log.info("Giving {} for label {} to {}", vote, label, change.id);
+    // Vote on all downstream branches unless merge conflict.
+    ReviewInput reviewInput = new ReviewInput();
+    Map<String, Short> labels = new HashMap<String, Short>();
+    labels.put(label, vote);
+    reviewInput.labels = labels;
+    gApi.changes().id(change.id).revision(change.currentRevision).review(reviewInput);
+  }
+
+  @Override
   public void onChangeRestored(ChangeRestoredListener.Event event) {
     ChangeInfo change = event.getChange();
     try {
@@ -231,12 +279,12 @@ public class DownstreamCreator
               + Joiner.on(", ").join(mdsMergeInput.dsBranchMap.keySet())
               + " succeeded!";
       reviewInput.notify = NotifyHandling.NONE;
-      vote = 1;
     } catch (FailedMergeException e) {
       reviewInput.message = e.displayConflicts();
       reviewInput.notify = NotifyHandling.ALL;
       vote = -1;
     }
+    // Zero out automerge label if success, -1 vote if fail.
     labels.put(config.getAutomergeLabel(), vote);
     reviewInput.labels = labels;
     gApi.changes()
@@ -357,7 +405,6 @@ public class DownstreamCreator
 
     ChangeInfo updatedChange = originalChange.createMergePatchSet(mergePatchSetInput);
     ChangeApi updatedChangeApi = gApi.changes().id(updatedChange.id);
-    givePlusTwo(updatedChangeApi);
   }
 
   public void createSingleDownstreamMerge(SingleDownstreamMergeInput sdsMergeInput)
@@ -388,19 +435,6 @@ public class DownstreamCreator
     }
 
     ChangeApi newChangeApi = gApi.changes().create(downstreamChangeInput);
-    givePlusTwo(newChangeApi);
-  }
-
-  private void givePlusTwo(ChangeApi downstreamChange) throws RestApiException {
-    log.info("Giving +2 to {}", downstreamChange.id());
-    // Vote +2 on all downstream branches unless merge conflict.
-    ReviewInput reviewInput = new ReviewInput();
-    ChangeInfo newChange = downstreamChange.get(EnumSet.of(ListChangesOption.CURRENT_REVISION));
-    short codeReviewVote = 2;
-    Map<String, Short> labels = new HashMap<String, Short>();
-    labels.put(config.getCodeReviewLabel(), codeReviewVote);
-    reviewInput.labels = labels;
-    gApi.changes().id(newChange.id).revision(newChange.currentRevision).review(reviewInput);
   }
 
   private String getPreviousRevision(ChangeApi change, int currentPatchSetNumber)
