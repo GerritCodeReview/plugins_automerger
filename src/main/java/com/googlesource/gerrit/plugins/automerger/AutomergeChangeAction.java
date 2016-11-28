@@ -29,6 +29,9 @@ import java.util.Map;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * Implementation behind the "Recreate Automerges" button.
+ */
 class AutomergeChangeAction
     implements UiAction<RevisionResource>,
         RestModifyView<RevisionResource, AutomergeChangeAction.Input> {
@@ -48,6 +51,14 @@ class AutomergeChangeAction
     this.dsCreator = dsCreator;
   }
 
+  /**
+   * Gets the input to the button and re-merges downstream based on the input.
+   * @param rev RevisionResource of the change whose page we are clicking the button.
+   * @param input A map of branch to whether or not the merge should be "-s ours".
+   * @return Returns HTTP 200 on success.
+   * @throws RestApiException
+   * @throws FailedMergeException
+   */
   @Override
   public Object apply(RevisionResource rev, Input input)
       throws RestApiException, FailedMergeException {
@@ -75,6 +86,11 @@ class AutomergeChangeAction
     return Response.none();
   }
 
+  /**
+   * Description for what the DOM element for the button should look like.
+   * @param resource RevisionResource of the change whose page the button is one.
+   * @return Returns Description object that contains the right labels, visibility, etc.
+   */
   @Override
   public Description getDescription(RevisionResource resource) {
     String project = resource.getProject().get();

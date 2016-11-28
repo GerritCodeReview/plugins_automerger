@@ -31,6 +31,9 @@ import java.io.StringReader;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Class to read a repo manifest.
+ */
 public class ManifestReader {
   private static final Logger log = LoggerFactory.getLogger(ManifestReader.class);
 
@@ -42,6 +45,10 @@ public class ManifestReader {
     this.branch = branch;
   }
 
+  /**
+   * Read the given repo manifest, then parse and return the set of projects in it.
+   * @return The set of projects in the manifest.
+   */
   public Set<String> getProjects() {
     Set<String> projectSet = new HashSet<String>();
 
