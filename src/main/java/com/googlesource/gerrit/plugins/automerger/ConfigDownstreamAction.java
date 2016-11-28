@@ -25,16 +25,31 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+/** The logic behind auto-filling the branch map, aka the input to AutomergeChangeAction. */
 class ConfigDownstreamAction
     implements RestModifyView<RevisionResource, ConfigDownstreamAction.Input> {
 
   protected ConfigLoader config;
 
+  /**
+   * Initializer for this class that sets the config.
+   *
+   * @param config Config for this plugin.
+   */
   @Inject
   public ConfigDownstreamAction(ConfigLoader config) {
     this.config = config;
   }
 
+  /**
+   * Return the map of branch names to whether or not we should merge with "-s ours".
+   *
+   * @param rev RevisionResource of the change whose page we are on.
+   * @param input The subject of the change (since it can modify our map, i.e. DO NOT MERGE)
+   * @return The map of branch names to whether or not to skip them (i.e. merge with "-s ours")
+   * @throws RestApiException
+   * @throws IOException
+   */
   @Override
   public Response<Map<String, Boolean>> apply(RevisionResource rev, Input input)
       throws RestApiException, IOException {

@@ -17,6 +17,7 @@ import com.google.common.base.Joiner;
 
 import java.util.Map;
 
+/** Exception class for merge conflicts. */
 class FailedMergeException extends Exception {
   private static final int MAX_CONFLICT_MESSAGE_LENGTH = 10000;
 
@@ -26,6 +27,11 @@ class FailedMergeException extends Exception {
     this.failedMerges = failedMerges;
   }
 
+  /**
+   * Display all conflicts for a change. Truncate at MAX_CONFLICT_MESSAGE_LENGTH.
+   *
+   * @return A string representation of the conflicts.
+   */
   public String displayConflicts() {
     StringBuilder output = new StringBuilder();
     output.append("Merge conflict found on ");
@@ -52,6 +58,11 @@ class FailedMergeException extends Exception {
     return output.toString();
   }
 
+  /**
+   * Get the branches that we failed to merge to.
+   *
+   * @return The comma-separated branches that we failed to merge to.
+   */
   public String failedMergeKeys() {
     return Joiner.on(", ").join(failedMerges.keySet());
   }

@@ -16,6 +16,7 @@ package com.googlesource.gerrit.plugins.automerger;
 
 import static com.google.gerrit.server.change.RevisionResource.REVISION_KIND;
 
+import com.google.gerrit.extensions.events.CommentAddedListener;
 import com.google.gerrit.extensions.events.ChangeAbandonedListener;
 import com.google.gerrit.extensions.events.ChangeMergedListener;
 import com.google.gerrit.extensions.events.ChangeRestoredListener;
@@ -28,10 +29,12 @@ import com.google.gerrit.extensions.webui.JavaScriptPlugin;
 import com.google.gerrit.extensions.webui.WebUiPlugin;
 import com.google.inject.AbstractModule;
 
+/** Module to bind listeners, plugins, and other modules. */
 public class AutomergerModule extends AbstractModule {
 
   @Override
   protected void configure() {
+    DynamicSet.bind(binder(), CommentAddedListener.class).to(DownstreamCreator.class);
     DynamicSet.bind(binder(), ChangeAbandonedListener.class).to(DownstreamCreator.class);
     DynamicSet.bind(binder(), ChangeMergedListener.class).to(DownstreamCreator.class);
     DynamicSet.bind(binder(), ChangeRestoredListener.class).to(DownstreamCreator.class);
