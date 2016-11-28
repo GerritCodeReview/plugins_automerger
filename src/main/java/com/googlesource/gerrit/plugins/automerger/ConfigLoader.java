@@ -33,6 +33,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.yaml.snakeyaml.Yaml;
 
+/** Class to read the config and swap it out of memory if the config has changed. */
 @Singleton
 public class ConfigLoader {
   private static final Logger log = LoggerFactory.getLogger(ConfigLoader.class);
@@ -44,6 +45,12 @@ public class ConfigLoader {
   protected GerritApi gApi;
   private volatile LoadedConfig config;
 
+  /**
+   * Initializer to read the config options of the config, and load the configuration based on it.
+   *
+   * @param gApi API to access gerrit information.
+   * @throws IOException
+   */
   @Inject
   public ConfigLoader(GerritApi gApi) throws IOException {
     this.gApi = gApi;
@@ -68,29 +75,60 @@ public class ConfigLoader {
     }
   }
 
+  /**
+   * Swap out the current config for a new, up to date config.
+   *
+   * @throws IOException
+   * @throws RestApiException
+   */
   public void loadConfig() throws IOException, RestApiException {
     config =
         new LoadedConfig(
             gApi, configProject, configProjectBranch, configFilename, configOptionKeys);
   }
 
-  // Returns true if matches DO NOT MERGE regex and merge_all is false
+  /**
+   * Detects whether to skip a change based on the configuration. ( )
+   *
+   * @param fromBranch Branch we are merging from.
+   * @param toBranch Branch we are merging to.
+   * @param commitMessage Commit message of the change.
+   * @return True if we match blank_merge_regex and merge_all is false, or we match
+   *     always_blank_merge_regex
+   */
   public boolean isSkipMerge(String fromBranch, String toBranch, String commitMessage) {
     return config.isSkipMerge(fromBranch, toBranch, commitMessage);
   }
 
+  /**
+   * Get the merge configuration for a pair of branches.
+   *
+   * @param fromBranch Branch we are merging from.
+   * @param toBranch Branch we are merging to.
+   * @return Returns the configuration for the given input.
+   */
   public Map<String, Object> getConfig(String fromBranch, String toBranch) {
     return config.getMergeConfig(fromBranch, toBranch);
   }
 
+  /**
+   * Returns the name of the automerge label (i.e. the label to vote -1 if we have a merge conflict)
+   *
+   * @return Returns the name of the automerge label.
+   */
   public String getAutomergeLabel() {
     return config.getAutomergeLabel();
   }
 
-  public String getCodeReviewLabel() {
-    return config.getCodeReviewLabel();
-  }
-
+  /**
+   * Get the projects that should be merged for the given pair of branches.
+   *
+   * @param fromBranch Branch we are merging from.
+   * @param toBranch Branch we are merging to.
+   * @return The projects that are in scope of the given projects.
+   * @throws RestApiException
+   * @throws IOException
+   */
   public Set<String> getProjectsInScope(String fromBranch, String toBranch)
       throws RestApiException, IOException {
     try {
@@ -122,6 +160,15 @@ public class ConfigLoader {
     }
   }
 
+  /**
+   * Gets the downstream branches of the given branch and project.
+   *
+   * @param fromBranch The branch we are merging from.
+   * @param project The project we are merging.
+   * @return Returns the branches downstream of the given branch for the given project.
+   * @throws RestApiException
+   * @throws IOException
+   */
   public Set<String> getDownstreamBranches(String fromBranch, String project)
       throws RestApiException, IOException {
     Set<String> downstreamBranches = new HashSet<String>();
@@ -182,7 +229,7 @@ public class ConfigLoader {
       ManifestReader manifestReader = new ManifestReader(branch, manifestConfig.asString());
       return manifestReader.getProjects();
     } catch (ResourceNotFoundException e) {
-      log.info("Manifest for {} not found", branch);
+      log.debug("Manifest for {} not found", branch);
       return new HashSet<>();
     }
   }

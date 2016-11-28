@@ -30,6 +30,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.yaml.snakeyaml.Yaml;
 
+/**
+ * The loaded configuration stored in memory.
+ */
 public class LoadedConfig {
   private static final Logger log = LoggerFactory.getLogger(LoadedConfig.class);
 
@@ -71,11 +74,18 @@ public class LoadedConfig {
     log.info("Finished syncing automerger config.");
   }
 
-  private Pattern getConfigPattern(String key) {
-    Set<String> mergeStrings = new HashSet<String>((List<String>) global.get(key));
-    return Pattern.compile(Joiner.on("|").join(mergeStrings), Pattern.DOTALL);
-  }
-
+  /**
+   * Checks to see if we should skip the change.
+   *
+   * If the commit message matches the alwaysBlankMergePattern, always return true.
+   * If the commit message matches the blankMergePattern and merge_all is false for this pair of
+   * branches, return true.
+   *
+   * @param fromBranch Branch we are merging from.
+   * @param toBranch Branch we are merging to.
+   * @param commitMessage Commmit message of the original change.
+   * @return Returns whether or not to merge with "-s ours".
+   */
   public boolean isSkipMerge(String fromBranch, String toBranch, String commitMessage) {
     // If regex matches always_blank_merge (DO NOT MERGE ANYWHERE), skip.
     if (alwaysBlankMergePattern.matches(commitMessage)) {
@@ -93,10 +103,22 @@ public class LoadedConfig {
     return false;
   }
 
+  /**
+   * Gets the merge configuration for this branch.
+   * @param fromBranch Branch we are merging from.
+   * @return A map of config keys to their values, or a map of "to branches" to a map of config keys
+   * to their values.
+   */
   public Map<String, Map> getMergeConfig(String fromBranch) {
     return getBranches().get(fromBranch);
   }
 
+  /**
+   * Gets the merge configuration for a pair of branches.
+   * @param fromBranch Branch we are merging from.
+   * @param toBranch Branch we are merging to.
+   * @return Map of configuration keys to their values.
+   */
   public Map<String, Object> getMergeConfig(String fromBranch, String toBranch) {
     Map<String, Map> fromBranchConfig = getBranches().get(fromBranch);
     if (fromBranchConfig == null) {
@@ -105,31 +127,59 @@ public class LoadedConfig {
     return (Map<String, Object>) fromBranchConfig.get(toBranch);
   }
 
+  /**
+   * Gets all the branches and their configuration information.
+   * @return A map of from branches to their configuration maps.
+   */
   public Map<String, Map> getBranches() {
     return (Map<String, Map>) config.get("branches");
   }
 
+  /**
+   * Gets the global config.
+   * @return A map of configuration keys to their values.
+   */
   public Map<String, Object> getGlobal() {
     return global;
   }
 
+  /**
+   * Gets the default manifest information.
+   * @return A map of configuration keys to their default values.
+   */
   public Map<String, String> getDefaultManifestInfo() {
     return defaultManifestInfo;
   }
 
+  /**
+   * Gets the automerge label (i.e. what to vote -1 on when we hit a merge conflict)
+   * @return The automerge label (by default, the String "Verified").
+   */
   public String getAutomergeLabel() {
     return (String) global.getOrDefault("automerge_label", "Verified");
   }
 
-  public String getCodeReviewLabel() {
-    return (String) global.getOrDefault("code_review_label", "Code-Review");
-  }
-
+  /**
+   * Gets the value of a global attribute.
+   * @param key A configuration key that is defined in the config.
+   * @return The value of the global attribute.
+   */
   public Object getGlobalAttribute(String key) {
     return global.get(key);
   }
 
+  /**
+   * Gets the value of a global attribute, or the default value if it cannot be found.
+   * @param key A configuration key that is defined in the config.
+   * @param def The default value if we cannot find it in the config.
+   * @return The value of the global attribute, or the default value if it cannot be found.
+   */
   public Object getGlobalAttributeOrDefault(String key, Object def) {
     return global.getOrDefault(key, def);
+  }
+
+  private Pattern getConfigPattern(String key) {
+    Set<String> mergeStrings = new HashSet<String>((List<String>) global.get(key));
+    return Pattern.compile(Joiner.on("|").join(mergeStrings), Pattern.DOTALL);
   }
 }
