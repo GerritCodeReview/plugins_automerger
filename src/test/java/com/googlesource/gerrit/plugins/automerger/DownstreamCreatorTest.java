@@ -53,7 +53,6 @@ public class DownstreamCreatorTest {
   public void setUp() throws Exception {
     gApiMock = Mockito.mock(GerritApi.class, Mockito.RETURNS_DEEP_STUBS);
     configMock = Mockito.mock(ConfigLoader.class);
-    Mockito.when(configMock.getCodeReviewLabel()).thenReturn("Code-Review");
     ds = new DownstreamCreator(gApiMock, configMock);
   }
 
@@ -111,12 +110,6 @@ public class DownstreamCreatorTest {
 
     ds.createSingleDownstreamMerge(dsMergeInput);
 
-    // Check ReviewInput is +2
-    ArgumentCaptor<ReviewInput> reviewInputArgument = ArgumentCaptor.forClass(ReviewInput.class);
-    Mockito.verify(revisionApiMock).review(reviewInputArgument.capture());
-    ReviewInput reviewInput = reviewInputArgument.getValue();
-    assertThat(reviewInput.labels.get("Code-Review")).isEqualTo(2);
-
     // Check ChangeInput is the right project, branch, topic, subject
     ArgumentCaptor<ChangeInput> changeInputCaptor = ArgumentCaptor.forClass(ChangeInput.class);
     Mockito.verify(gApiMock.changes()).create(changeInputCaptor.capture());
@@ -155,12 +148,6 @@ public class DownstreamCreatorTest {
     dsMergeInput.doMerge = false;
 
     ds.createSingleDownstreamMerge(dsMergeInput);
-
-    // Check ReviewInput is +2
-    ArgumentCaptor<ReviewInput> reviewInputArgument = ArgumentCaptor.forClass(ReviewInput.class);
-    Mockito.verify(revisionApiMock).review(reviewInputArgument.capture());
-    ReviewInput reviewInput = reviewInputArgument.getValue();
-    assertThat(reviewInput.labels.get("Code-Review")).isEqualTo(2);
 
     // Check ChangeInput is the right project, branch, topic, subject
     ArgumentCaptor<ChangeInput> changeInputCaptor = ArgumentCaptor.forClass(ChangeInput.class);

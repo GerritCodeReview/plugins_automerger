@@ -16,6 +16,9 @@ package com.googlesource.gerrit.plugins.automerger;
 
 import java.util.Map;
 
+/**
+ * Class to hold input for a set of merges from a single source change, with associated metadata.
+ */
 public class MultipleDownstreamMergeInput {
   public Map<String, Boolean> dsBranchMap;
   public String sourceId;
