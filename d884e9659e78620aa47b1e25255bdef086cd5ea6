@@ -1,0 +1,112 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "9071345a_8c74e73e",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/AutomergeChangeAction.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2016-11-29T23:17:50Z",
+      "side": 1,
+      "message": "nit: No need to repeat \u0027returns\u0027. This should be a noun phrase --- e.g.,\n\n @return HTTP 200 on success",
+      "revId": "d884e9659e78620aa47b1e25255bdef086cd5ea6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "105d44d4_65b666dd",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/AutomergeChangeAction.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 91,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2016-11-29T23:17:50Z",
+      "side": 1,
+      "message": "button is on?",
+      "range": {
+        "startLine": 91,
+        "startChar": 67,
+        "endLine": 91,
+        "endChar": 80
+      },
+      "revId": "d884e9659e78620aa47b1e25255bdef086cd5ea6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "105d44d4_25c06e36",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2016-11-29T23:17:50Z",
+      "side": 1,
+      "message": "not about this change: when does this throw IOException? It seems like the implementation logs and does not allow the exception to propagate --- is that intended?",
+      "revId": "d884e9659e78620aa47b1e25255bdef086cd5ea6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9071345a_ac79ab37",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2016-11-29T23:17:50Z",
+      "side": 1,
+      "message": "nit: there should be a blank line between the description and tags (see http://www.oracle.com/technetwork/articles/java/index-137868.html)",
+      "revId": "d884e9659e78620aa47b1e25255bdef086cd5ea6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "105d44d4_c5ab9a6e",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 97,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2016-11-29T23:17:50Z",
+      "side": 1,
+      "message": "this can be incorporated into the javadoc",
+      "revId": "d884e9659e78620aa47b1e25255bdef086cd5ea6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "105d44d4_e5b016dd",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/DownstreamCreator.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 179,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2016-11-29T23:17:50Z",
+      "side": 1,
+      "message": "optional: can simplify using entrySet():\n\n  for (Map.Entry\u003cString, ApprovalInfo\u003e label : approvals.entrySet()) {\n    updateVote(downstreamChange, label.getKey(), label.getValue().value.shortValue());\n  }",
+      "revId": "d884e9659e78620aa47b1e25255bdef086cd5ea6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
