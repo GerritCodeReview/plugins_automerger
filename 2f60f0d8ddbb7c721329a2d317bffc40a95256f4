@@ -19,6 +19,29 @@
     },
     {
       "key": {
+        "uuid": "105d44d4_a8799337",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/DownstreamCreator.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 468,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2016-11-30T00:08:27Z",
+      "side": 1,
+      "message": "should be an unboxed (lowercase) short",
+      "range": {
+        "startLine": 468,
+        "startChar": 59,
+        "endLine": 468,
+        "endChar": 65
+      },
+      "revId": "2f60f0d8ddbb7c721329a2d317bffc40a95256f4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "105d44d4_e86f8b68",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/FailedMergeException.java",
         "patchSetId": 6
