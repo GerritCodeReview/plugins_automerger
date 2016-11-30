@@ -102,7 +102,7 @@ public class DownstreamCreator
   public void onChangeAbandoned(ChangeAbandonedListener.Event event) {
     ChangeInfo change = event.getChange();
     String revision = event.getRevision().commit.commit;
-    log.info("Detected revision {} abandoned on {}.", revision, change.project);
+    log.debug("Detected revision {} abandoned on {}.", revision, change.project);
     abandonDownstream(change, revision);
   }
 
@@ -125,7 +125,7 @@ public class DownstreamCreator
     }
 
     if (downstreamBranches.isEmpty()) {
-      log.info("Downstream branches of {} on {} are empty", change.branch, change.project);
+      log.debug("Downstream branches of {} on {} are empty", change.branch, change.project);
       return;
     }
 
@@ -134,7 +134,7 @@ public class DownstreamCreator
         List<Integer> existingDownstream =
             getExistingMergesOnBranch(revision, oldTopic, downstreamBranch);
         for (Integer changeNumber : existingDownstream) {
-          log.info("Setting topic {} on {}", change.topic, changeNumber);
+          log.debug("Setting topic {} on {}", change.topic, changeNumber);
           gApi.changes().id(changeNumber).topic(change.topic);
         }
       } catch (RestApiException e) {
@@ -290,7 +290,7 @@ public class DownstreamCreator
               getExistingMergesOnBranch(
                   mdsMergeInput.obsoleteRevision, mdsMergeInput.topic, downstreamBranch);
           if (!existingDownstream.isEmpty()) {
-            log.info(
+            log.debug(
                 "Attempting to update downstream merge of {} on branch {}",
                 mdsMergeInput.currentRevision,
                 downstreamBranch);
@@ -307,7 +307,7 @@ public class DownstreamCreator
           }
         }
         if (createDownstreams) {
-          log.info(
+          log.debug(
               "Attempting to create downstream merge of {} on branch {}",
               mdsMergeInput.currentRevision,
               downstreamBranch);
@@ -322,9 +322,9 @@ public class DownstreamCreator
           createSingleDownstreamMerge(sdsMergeInput);
         }
       } catch (MergeConflictException e) {
-        log.info("Merge conflict from {} to {}", mdsMergeInput.currentRevision, downstreamBranch);
+        log.debug("Merge conflict from {} to {}", mdsMergeInput.currentRevision, downstreamBranch);
         failedMerges.put(downstreamBranch, e.getMessage());
-        log.info("Abandoning downstream of {}", mdsMergeInput.sourceId);
+        log.debug("Abandoning downstream of {}", mdsMergeInput.sourceId);
         abandonDownstream(
             gApi.changes().id(mdsMergeInput.sourceId).info(), mdsMergeInput.currentRevision);
       }
@@ -383,7 +383,7 @@ public class DownstreamCreator
     MergeInput mergeInput = new MergeInput();
     mergeInput.source = sdsMergeInput.currentRevision;
 
-    log.info("Creating downstream merge for {}", sdsMergeInput.currentRevision);
+    log.debug("Creating downstream merge for {}", sdsMergeInput.currentRevision);
     ChangeInput downstreamChangeInput = new ChangeInput();
     downstreamChangeInput.project = sdsMergeInput.project;
     downstreamChangeInput.branch = sdsMergeInput.downstreamBranch;
@@ -396,7 +396,7 @@ public class DownstreamCreator
       mergeInput.strategy = "ours";
       downstreamChangeInput.subject =
           sdsMergeInput.subject + " skipped: " + sdsMergeInput.currentRevision.substring(0, 10);
-      log.info(
+      log.debug(
           "Skipping merge for {} to {}",
           sdsMergeInput.currentRevision,
           sdsMergeInput.downstreamBranch);
@@ -417,18 +417,18 @@ public class DownstreamCreator
   private void automergeChanges(ChangeInfo change, RevisionInfo revisionInfo)
       throws RestApiException, IOException {
     if (revisionInfo.draft != null && revisionInfo.draft) {
-      log.info("Patchset {} is draft change, ignoring.", revisionInfo.commit.commit);
+      log.debug("Patchset {} is draft change, ignoring.", revisionInfo.commit.commit);
       return;
     }
 
     String currentRevision = revisionInfo.commit.commit;
-    log.info(
+    log.debug(
         "Handling patchsetevent with change id {} and revision {}", change.id, currentRevision);
 
     Set<String> downstreamBranches = config.getDownstreamBranches(change.branch, change.project);
 
     if (downstreamBranches.isEmpty()) {
-      log.info("Downstream branches of {} on {} are empty", change.branch, change.project);
+      log.debug("Downstream branches of {} on {} are empty", change.branch, change.project);
       return;
     }
 
@@ -438,7 +438,7 @@ public class DownstreamCreator
       boolean isSkipMerge = config.isSkipMerge(change.branch, downstreamBranch, change.subject);
       dsBranchMap.put(downstreamBranch, !isSkipMerge);
     }
-    log.info("Automerging change {} from branch {}", change.id, change.branch);
+    log.debug("Automerging change {} from branch {}", change.id, change.branch);
 
     ChangeApi currentChange = gApi.changes().id(change._number);
     String previousRevision = getPreviousRevision(currentChange, revisionInfo._number);
@@ -466,7 +466,7 @@ public class DownstreamCreator
       for (String downstreamBranch : downstreamBranches) {
         List<Integer> existingDownstream =
             getExistingMergesOnBranch(revision, change.topic, downstreamBranch);
-        log.info("Abandoning existing downstreams: {}", existingDownstream);
+        log.debug("Abandoning existing downstreams: {}", existingDownstream);
         for (Integer changeNumber : existingDownstream) {
           abandonChange(changeNumber);
         }
@@ -478,10 +478,10 @@ public class DownstreamCreator
 
   private void updateVote(ChangeInfo change, String label, short vote) throws RestApiException {
     if (label.equals(config.getAutomergeLabel())) {
-      log.info("Not updating automerge label, as it blocks when there is a merge conflict.");
+      log.debug("Not updating automerge label, as it blocks when there is a merge conflict.");
       return;
     }
-    log.info("Giving {} for label {} to {}", vote, label, change.id);
+    log.debug("Giving {} for label {} to {}", vote, label, change.id);
     // Vote on all downstream branches unless merge conflict.
     ReviewInput reviewInput = new ReviewInput();
     Map<String, Short> labels = new HashMap<String, Short>();
@@ -502,7 +502,7 @@ public class DownstreamCreator
       mergeInput.strategy = "ours";
       mergePatchSetInput.subject =
           upstreamSubject + " skipped: " + newParentRevision.substring(0, 10);
-      log.info("Skipping merge for {} on {}", newParentRevision, sourceNum);
+      log.debug("Skipping merge for {} on {}", newParentRevision, sourceNum);
     }
     mergePatchSetInput.merge = mergeInput;
 
@@ -538,7 +538,7 @@ public class DownstreamCreator
   }
 
   private void abandonChange(Integer changeNumber) throws RestApiException {
-    log.info("Abandoning change: {}", changeNumber);
+    log.debug("Abandoning change: {}", changeNumber);
     AbandonInput abandonInput = new AbandonInput();
     abandonInput.notify = NotifyHandling.NONE;
     abandonInput.message = "Merge parent updated; abandoning due to upstream conflict.";
@@ -548,7 +548,7 @@ public class DownstreamCreator
   private String setTopic(String sourceId, String topic) throws RestApiException {
     if (topic == null || topic.isEmpty()) {
       topic = "am-" + UUID.randomUUID().toString();
-      log.info("Setting original change {} topic to {}", sourceId, topic);
+      log.debug("Setting original change {} topic to {}", sourceId, topic);
       gApi.changes().id(sourceId).topic(topic);
     }
     return topic;
