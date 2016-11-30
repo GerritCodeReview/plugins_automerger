@@ -119,6 +119,24 @@
     },
     {
       "key": {
+        "uuid": "105d44d4_289da341",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2016-11-30T00:27:23Z",
+      "side": 1,
+      "message": "That information can go in the javadoc. E.g. something like\n\n /**\n  * Read static configuration from config_keys.yaml and try to load\n  * dynamic configuration for the first time.\n  * \u003cp\u003e\n  * If loading the dynamic configuration fails, logs and treats the\n  * configuration as empty. Callers can call {@link #loadConfig}\n  * to retry.\n  *\n  * @param gApi API to access gerrit information\n  * @throws IOException if reading config_keys.yaml failed\n  */\n @Inject",
+      "parentUuid": "9071345a_ec96c32a",
+      "revId": "d884e9659e78620aa47b1e25255bdef086cd5ea6",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9071345a_ac79ab37",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
         "patchSetId": 5
