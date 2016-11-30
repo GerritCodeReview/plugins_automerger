@@ -46,10 +46,13 @@ public class ConfigLoader {
   private volatile LoadedConfig config;
 
   /**
-   * Initializer to read the config options of the config, and load the configuration based on it.
+   * Read static configuration from config_keys.yaml and try to load initial dynamic configuration.
+   *
+   * <p>If loading dynamic configuration fails, logs and treats configuration as empty. Callers can
+   * call {@link loadConfig} to retry.
    *
    * @param gApi API to access gerrit information.
-   * @throws IOException
+   * @throws IOException if reading config_keys.yaml failed
    */
   @Inject
   public ConfigLoader(GerritApi gApi) throws IOException {
