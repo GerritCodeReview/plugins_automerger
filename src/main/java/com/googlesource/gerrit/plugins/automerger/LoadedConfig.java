@@ -185,7 +185,7 @@ public class LoadedConfig {
   }
 
   private Pattern getConfigPattern(String key) {
-    Set<String> mergeStrings = new HashSet<String>((List<String>) global.get(key));
+    Set<String> mergeStrings = new HashSet<>((List<String>) global.get(key));
     return Pattern.compile(Joiner.on("|").join(mergeStrings), Pattern.DOTALL);
   }
 }

@@ -17,7 +17,6 @@ package com.googlesource.gerrit.plugins.automerger;
 import com.google.gerrit.extensions.api.GerritApi;
 import com.google.gerrit.extensions.api.changes.AbandonInput;
 import com.google.gerrit.extensions.api.changes.ChangeApi;
-import com.google.gerrit.extensions.api.changes.ReviewInput;
 import com.google.gerrit.extensions.api.changes.RevisionApi;
 import com.google.gerrit.extensions.client.ListChangesOption;
 import com.google.gerrit.extensions.common.ChangeInfo;
@@ -167,7 +166,7 @@ public class DownstreamCreatorTest {
 
   @Test
   public void testCreateDownstreamMerges() throws Exception {
-    Map<String, Boolean> downstreamBranchMap = new HashMap<String, Boolean>();
+    Map<String, Boolean> downstreamBranchMap = new HashMap<>();
     downstreamBranchMap.put("testone", true);
     downstreamBranchMap.put("testtwo", true);
 
@@ -191,7 +190,7 @@ public class DownstreamCreatorTest {
 
   @Test
   public void testCreateDownstreamMerges_withPreviousRevisions() throws Exception {
-    Map<String, Boolean> downstreamBranchMap = new HashMap<String, Boolean>();
+    Map<String, Boolean> downstreamBranchMap = new HashMap<>();
     downstreamBranchMap.put("testone", true);
     downstreamBranchMap.put("testtwo", true);
 
