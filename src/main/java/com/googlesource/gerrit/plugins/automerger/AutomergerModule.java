@@ -16,10 +16,10 @@ package com.googlesource.gerrit.plugins.automerger;
 
 import static com.google.gerrit.server.change.RevisionResource.REVISION_KIND;
 
-import com.google.gerrit.extensions.events.CommentAddedListener;
 import com.google.gerrit.extensions.events.ChangeAbandonedListener;
 import com.google.gerrit.extensions.events.ChangeMergedListener;
 import com.google.gerrit.extensions.events.ChangeRestoredListener;
+import com.google.gerrit.extensions.events.CommentAddedListener;
 import com.google.gerrit.extensions.events.DraftPublishedListener;
 import com.google.gerrit.extensions.events.RevisionCreatedListener;
 import com.google.gerrit.extensions.events.TopicEditedListener;

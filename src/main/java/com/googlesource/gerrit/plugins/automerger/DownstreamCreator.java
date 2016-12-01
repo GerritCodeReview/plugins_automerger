@@ -402,7 +402,7 @@ public class DownstreamCreator
           sdsMergeInput.downstreamBranch);
     }
 
-    ChangeApi newChangeApi = gApi.changes().create(downstreamChangeInput);
+    gApi.changes().create(downstreamChangeInput);
   }
 
   private void loadConfig() throws IOException, RestApiException {
@@ -514,8 +514,7 @@ public class DownstreamCreator
       originalChange.restore(restoreInput);
     }
 
-    ChangeInfo updatedChange = originalChange.createMergePatchSet(mergePatchSetInput);
-    ChangeApi updatedChangeApi = gApi.changes().id(updatedChange.id);
+    originalChange.createMergePatchSet(mergePatchSetInput);
   }
 
   private String getPreviousRevision(ChangeApi change, int currentPatchSetNumber)
