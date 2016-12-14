@@ -121,6 +121,15 @@ public class ConfigLoader {
   }
 
   /**
+   * Returns a string to append to the end of the merge conflict message.
+   *
+   * @return The message string, or the empty string if nothing is specified.
+   */
+  public String getExtraConflictMessage() {
+    return config.getExtraConflictMessage();
+  }
+
+  /**
    * Get the projects that should be merged for the given pair of branches.
    *
    * @param fromBranch Branch we are merging from.
