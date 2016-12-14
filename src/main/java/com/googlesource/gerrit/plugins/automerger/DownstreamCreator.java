@@ -46,6 +46,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -255,7 +256,7 @@ public class DownstreamCreator
               + " succeeded!";
       reviewInput.notify = NotifyHandling.NONE;
     } catch (FailedMergeException e) {
-      reviewInput.message = e.displayConflicts();
+      reviewInput.message = e.getDisplayString();
       reviewInput.notify = NotifyHandling.ALL;
       vote = -1;
     }
@@ -277,7 +278,7 @@ public class DownstreamCreator
    */
   public void createDownstreamMerges(MultipleDownstreamMergeInput mdsMergeInput)
       throws RestApiException, FailedMergeException {
-    Map<String, String> failedMerges = new HashMap<String, String>();
+    Map<String, String> failedMergeBranchMap = new TreeMap<String, String>();
 
     List<Integer> existingDownstream;
     for (String downstreamBranch : mdsMergeInput.dsBranchMap.keySet()) {
@@ -322,16 +323,16 @@ public class DownstreamCreator
           createSingleDownstreamMerge(sdsMergeInput);
         }
       } catch (MergeConflictException e) {
-        log.debug("Merge conflict from {} to {}", mdsMergeInput.currentRevision, downstreamBranch);
-        failedMerges.put(downstreamBranch, e.getMessage());
+        failedMergeBranchMap.put(downstreamBranch, e.getMessage());
         log.debug("Abandoning downstream of {}", mdsMergeInput.sourceId);
         abandonDownstream(
             gApi.changes().id(mdsMergeInput.sourceId).info(), mdsMergeInput.currentRevision);
       }
     }
 
-    if (!failedMerges.keySet().isEmpty()) {
-      throw new FailedMergeException(failedMerges);
+    if (!failedMergeBranchMap.isEmpty()) {
+      throw new FailedMergeException(
+          failedMergeBranchMap, mdsMergeInput.currentRevision, config.getExtraConflictMessage());
     }
   }
 

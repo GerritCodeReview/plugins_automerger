@@ -166,6 +166,15 @@ public class LoadedConfig {
   }
 
   /**
+   * Get a string to append to the end of the merge conflict notification.
+   *
+   * @return The message string, or the empty string if not specified.
+   */
+  public String getExtraConflictMessage() {
+    return (String) global.getOrDefault("extra_conflict_message", "");
+  }
+
+  /**
    * Gets the value of a global attribute.
    *
    * @param key A configuration key that is defined in the config.
