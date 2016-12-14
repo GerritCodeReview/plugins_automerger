@@ -14,17 +14,30 @@
 package com.googlesource.gerrit.plugins.automerger;
 
 import com.google.common.base.Joiner;
-
+import com.google.common.base.Strings;
+import com.google.gerrit.common.data.ParameterizedString;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /** Exception class for merge conflicts. */
 class FailedMergeException extends Exception {
   private static final int MAX_CONFLICT_MESSAGE_LENGTH = 10000;
+  private final String DEFAULT_CONFLICT_MESSAGE = "Merge conflict found on ${branch}";
+  public final String currentRevision;
+  public final String conflictMessage;
+  public final Map<String, String> failedMergeBranchMap;
 
-  public final Map<String, String> failedMerges;
-
-  FailedMergeException(Map<String, String> failedMerges) {
-    this.failedMerges = failedMerges;
+  FailedMergeException(Map<String, String> failedMergeBranchMap, String currentRevision,
+      String conflictMessage) {
+    this.failedMergeBranchMap = failedMergeBranchMap;
+    this.currentRevision = currentRevision;
+    if (Strings.isNullOrEmpty(conflictMessage)) {
+      this.conflictMessage = DEFAULT_CONFLICT_MESSAGE;
+    } else {
+      this.conflictMessage = conflictMessage;
+    }
   }
 
   /**
@@ -32,38 +45,34 @@ class FailedMergeException extends Exception {
    *
    * @return A string representation of the conflicts.
    */
-  public String displayConflicts() {
-    StringBuilder output = new StringBuilder();
-    output.append("Merge conflict found on ");
-    output.append(failedMergeKeys());
-    output.append(". Please follow instructions at go/resolveconflict ");
-    output.append("to resolve this merge conflict.\n\n");
-
-    for (Map.Entry<String, String> entry : failedMerges.entrySet()) {
-      String branch = entry.getKey();
-      String message = entry.getValue();
-      String conflictMessage = message;
-      boolean truncated = false;
-      if (message.length() > MAX_CONFLICT_MESSAGE_LENGTH) {
-        conflictMessage = message.substring(0, MAX_CONFLICT_MESSAGE_LENGTH);
-        truncated = true;
-      }
-      output.append(branch);
-      output.append(":\n");
-      output.append(conflictMessage);
-      if (truncated) {
-        output.append("...\n\n");
-      }
+  public String getDisplayString() {
+    // TODO(stephenli): also put host in the map so we can do go/resolveconflict/googleplex-android
+    List<String> conflictMessages = new ArrayList<String>();
+    for (Map.Entry<String, String> branchMapEntry : failedMergeBranchMap.entrySet()) {
+      String branch = branchMapEntry.getKey();
+      String mergeConflictMessage = branchMapEntry.getValue();
+      conflictMessages.add(assembleConflictMessage(conflictMessage,
+          getSubstitutionMap(branch, mergeConflictMessage)));
     }
-    return output.toString();
+
+    return Joiner.on("\n").join(conflictMessages);
   }
 
-  /**
-   * Get the branches that we failed to merge to.
-   *
-   * @return The comma-separated branches that we failed to merge to.
-   */
-  public String failedMergeKeys() {
-    return Joiner.on(", ").join(failedMerges.keySet());
+  private String assembleConflictMessage(String errorString, Map<String, String> substitutionMap) {
+    ParameterizedString pattern = new ParameterizedString(errorString);
+
+    String modifiedString = pattern.replace(substitutionMap);
+    if (errorString.length() > MAX_CONFLICT_MESSAGE_LENGTH) {
+      modifiedString = modifiedString.substring(0, MAX_CONFLICT_MESSAGE_LENGTH) + "\n...";
+    }
+    return modifiedString;
+  }
+
+  private Map<String, String> getSubstitutionMap(String branch, String mergeConflictMessage) {
+    Map<String, String> substitutionMap = new HashMap<>();
+    substitutionMap.put("branch", branch);
+    substitutionMap.put("revision", currentRevision);
+    substitutionMap.put("conflict", mergeConflictMessage);
+    return substitutionMap;
   }
 }

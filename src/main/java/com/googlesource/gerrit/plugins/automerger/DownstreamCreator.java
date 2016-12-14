@@ -46,6 +46,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,13 +58,8 @@ import org.slf4j.LoggerFactory;
  * be modified as well.
  */
 public class DownstreamCreator
-    implements ChangeAbandonedListener,
-        ChangeMergedListener,
-        ChangeRestoredListener,
-        CommentAddedListener,
-        DraftPublishedListener,
-        RevisionCreatedListener,
-        TopicEditedListener {
+    implements ChangeAbandonedListener, ChangeMergedListener, ChangeRestoredListener,
+    CommentAddedListener, DraftPublishedListener, RevisionCreatedListener, TopicEditedListener {
   private static final Logger log = LoggerFactory.getLogger(DownstreamCreator.class);
 
   protected GerritApi gApi;
@@ -152,8 +148,8 @@ public class DownstreamCreator
   public void onCommentAdded(CommentAddedListener.Event event) {
     RevisionInfo eventRevision = event.getRevision();
     if (!eventRevision.isCurrent) {
-      log.info(
-          "Not updating downstream votes since revision {} is not current.", eventRevision._number);
+      log.info("Not updating downstream votes since revision {} is not current.",
+          eventRevision._number);
       return;
     }
     ChangeInfo change = event.getChange();
@@ -249,22 +245,18 @@ public class DownstreamCreator
     try {
       createDownstreamMerges(mdsMergeInput);
 
-      reviewInput.message =
-          "Automerging to "
-              + Joiner.on(", ").join(mdsMergeInput.dsBranchMap.keySet())
-              + " succeeded!";
+      reviewInput.message = "Automerging to "
+          + Joiner.on(", ").join(mdsMergeInput.dsBranchMap.keySet()) + " succeeded!";
       reviewInput.notify = NotifyHandling.NONE;
     } catch (FailedMergeException e) {
-      reviewInput.message = e.displayConflicts();
+      reviewInput.message = e.getDisplayString();
       reviewInput.notify = NotifyHandling.ALL;
       vote = -1;
     }
     // Zero out automerge label if success, -1 vote if fail.
     labels.put(config.getAutomergeLabel(), vote);
     reviewInput.labels = labels;
-    gApi.changes()
-        .id(mdsMergeInput.sourceId)
-        .revision(mdsMergeInput.currentRevision)
+    gApi.changes().id(mdsMergeInput.sourceId).revision(mdsMergeInput.currentRevision)
         .review(reviewInput);
   }
 
@@ -277,7 +269,7 @@ public class DownstreamCreator
    */
   public void createDownstreamMerges(MultipleDownstreamMergeInput mdsMergeInput)
       throws RestApiException, FailedMergeException {
-    Map<String, String> failedMerges = new HashMap<String, String>();
+    Map<String, String> failedMergeBranchMap = new TreeMap<String, String>();
 
     List<Integer> existingDownstream;
     for (String downstreamBranch : mdsMergeInput.dsBranchMap.keySet()) {
@@ -286,31 +278,23 @@ public class DownstreamCreator
       try {
         boolean createDownstreams = true;
         if (mdsMergeInput.obsoleteRevision != null) {
-          existingDownstream =
-              getExistingMergesOnBranch(
-                  mdsMergeInput.obsoleteRevision, mdsMergeInput.topic, downstreamBranch);
+          existingDownstream = getExistingMergesOnBranch(mdsMergeInput.obsoleteRevision,
+              mdsMergeInput.topic, downstreamBranch);
           if (!existingDownstream.isEmpty()) {
-            log.debug(
-                "Attempting to update downstream merge of {} on branch {}",
-                mdsMergeInput.currentRevision,
-                downstreamBranch);
+            log.debug("Attempting to update downstream merge of {} on branch {}",
+                mdsMergeInput.currentRevision, downstreamBranch);
             // existingDownstream should almost always be of length one, but
             // it's possible to construct it so that it's not
             for (Integer dsChangeNumber : existingDownstream) {
-              updateDownstreamMerge(
-                  mdsMergeInput.currentRevision,
-                  mdsMergeInput.subject,
-                  dsChangeNumber,
-                  mdsMergeInput.dsBranchMap.get(downstreamBranch));
+              updateDownstreamMerge(mdsMergeInput.currentRevision, mdsMergeInput.subject,
+                  dsChangeNumber, mdsMergeInput.dsBranchMap.get(downstreamBranch));
               createDownstreams = false;
             }
           }
         }
         if (createDownstreams) {
-          log.debug(
-              "Attempting to create downstream merge of {} on branch {}",
-              mdsMergeInput.currentRevision,
-              downstreamBranch);
+          log.debug("Attempting to create downstream merge of {} on branch {}",
+              mdsMergeInput.currentRevision, downstreamBranch);
           SingleDownstreamMergeInput sdsMergeInput = new SingleDownstreamMergeInput();
           sdsMergeInput.currentRevision = mdsMergeInput.currentRevision;
           sdsMergeInput.sourceId = mdsMergeInput.sourceId;
@@ -322,16 +306,16 @@ public class DownstreamCreator
           createSingleDownstreamMerge(sdsMergeInput);
         }
       } catch (MergeConflictException e) {
-        log.debug("Merge conflict from {} to {}", mdsMergeInput.currentRevision, downstreamBranch);
-        failedMerges.put(downstreamBranch, e.getMessage());
+        failedMergeBranchMap.put(downstreamBranch, e.getMessage());
         log.debug("Abandoning downstream of {}", mdsMergeInput.sourceId);
-        abandonDownstream(
-            gApi.changes().id(mdsMergeInput.sourceId).info(), mdsMergeInput.currentRevision);
+        abandonDownstream(gApi.changes().id(mdsMergeInput.sourceId).info(),
+            mdsMergeInput.currentRevision);
       }
     }
 
-    if (!failedMerges.keySet().isEmpty()) {
-      throw new FailedMergeException(failedMerges);
+    if (!failedMergeBranchMap.isEmpty()) {
+      throw new FailedMergeException(failedMergeBranchMap, mdsMergeInput.currentRevision,
+          config.getExtraConflictMessage());
     }
   }
 
@@ -344,16 +328,13 @@ public class DownstreamCreator
    * @return List of change numbers that are downstream of the given branch.
    * @throws RestApiException Throws when we fail a REST API call.
    */
-  public List<Integer> getExistingMergesOnBranch(
-      String upstreamRevision, String topic, String downstreamBranch) throws RestApiException {
+  public List<Integer> getExistingMergesOnBranch(String upstreamRevision, String topic,
+      String downstreamBranch) throws RestApiException {
     List<Integer> downstreamChangeNumbers = new ArrayList<Integer>();
     // get changes in same topic and check if their parent is upstreamRevision
     String query = "topic:" + topic + " status:open branch:" + downstreamBranch;
-    List<ChangeInfo> changes =
-        gApi.changes()
-            .query(query)
-            .withOptions(ListChangesOption.ALL_REVISIONS, ListChangesOption.CURRENT_COMMIT)
-            .get();
+    List<ChangeInfo> changes = gApi.changes().query(query)
+        .withOptions(ListChangesOption.ALL_REVISIONS, ListChangesOption.CURRENT_COMMIT).get();
 
     for (ChangeInfo change : changes) {
       String changeRevision = change.currentRevision;
@@ -397,9 +378,7 @@ public class DownstreamCreator
       mergeInput.strategy = "ours";
       downstreamChangeInput.subject =
           sdsMergeInput.subject + " skipped: " + sdsMergeInput.currentRevision.substring(0, 10);
-      log.debug(
-          "Skipping merge for {} to {}",
-          sdsMergeInput.currentRevision,
+      log.debug("Skipping merge for {} to {}", sdsMergeInput.currentRevision,
           sdsMergeInput.downstreamBranch);
     }
 
@@ -423,8 +402,8 @@ public class DownstreamCreator
     }
 
     String currentRevision = revisionInfo.commit.commit;
-    log.debug(
-        "Handling patchsetevent with change id {} and revision {}", change.id, currentRevision);
+    log.debug("Handling patchsetevent with change id {} and revision {}", change.id,
+        currentRevision);
 
     Set<String> downstreamBranches = config.getDownstreamBranches(change.branch, change.project);
 
@@ -491,9 +470,8 @@ public class DownstreamCreator
     gApi.changes().id(change.id).revision(change.currentRevision).review(reviewInput);
   }
 
-  private void updateDownstreamMerge(
-      String newParentRevision, String upstreamSubject, Integer sourceNum, boolean doMerge)
-      throws RestApiException {
+  private void updateDownstreamMerge(String newParentRevision, String upstreamSubject,
+      Integer sourceNum, boolean doMerge) throws RestApiException {
     MergeInput mergeInput = new MergeInput();
     mergeInput.source = newParentRevision;
 
