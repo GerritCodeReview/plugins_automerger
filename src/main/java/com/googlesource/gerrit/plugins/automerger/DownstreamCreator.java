@@ -47,6 +47,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import org.apache.commons.lang.text.StrSubstitutor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -65,6 +66,7 @@ public class DownstreamCreator
         RevisionCreatedListener,
         TopicEditedListener {
   private static final Logger log = LoggerFactory.getLogger(DownstreamCreator.class);
+  private static final int MAX_CONFLICT_MESSAGE_LENGTH = 10000;
 
   protected GerritApi gApi;
   protected ConfigLoader config;
@@ -277,7 +279,7 @@ public class DownstreamCreator
    */
   public void createDownstreamMerges(MultipleDownstreamMergeInput mdsMergeInput)
       throws RestApiException, FailedMergeException {
-    Map<String, String> failedMerges = new HashMap<String, String>();
+    List<String> failedMerges = new ArrayList<String>();
 
     List<Integer> existingDownstream;
     for (String downstreamBranch : mdsMergeInput.dsBranchMap.keySet()) {
@@ -322,17 +324,34 @@ public class DownstreamCreator
           createSingleDownstreamMerge(sdsMergeInput);
         }
       } catch (MergeConflictException e) {
+        // TODO(stephenli): also put host in the map
+        Map<String, String> substitutionMap = new HashMap<>();
+        substitutionMap.put("branch", downstreamBranch);
+        substitutionMap.put("revision", mdsMergeInput.currentRevision);
+        String resolvedString = assembleConflictMessage(substitutionMap, e.getMessage());
+
         log.debug("Merge conflict from {} to {}", mdsMergeInput.currentRevision, downstreamBranch);
-        failedMerges.put(downstreamBranch, e.getMessage());
+        failedMerges.add(resolvedString);
         log.debug("Abandoning downstream of {}", mdsMergeInput.sourceId);
         abandonDownstream(
             gApi.changes().id(mdsMergeInput.sourceId).info(), mdsMergeInput.currentRevision);
       }
     }
 
-    if (!failedMerges.keySet().isEmpty()) {
+    if (!failedMerges.isEmpty()) {
       throw new FailedMergeException(failedMerges);
     }
+  }
+
+  private String assembleConflictMessage(Map<String, String> substitutionMap, String error) {
+    if (error.length() > MAX_CONFLICT_MESSAGE_LENGTH) {
+      error = error.substring(0, MAX_CONFLICT_MESSAGE_LENGTH) + "\n...";
+    }
+    substitutionMap.put("conflict", error);
+    StrSubstitutor sub = new StrSubstitutor(substitutionMap);
+
+    log.info(sub.replace("branch: ${branch}"));
+    return sub.replace(config.getExtraConflictMessage());
   }
 
   /**

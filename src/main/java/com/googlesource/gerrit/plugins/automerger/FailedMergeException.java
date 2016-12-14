@@ -15,15 +15,13 @@ package com.googlesource.gerrit.plugins.automerger;
 
 import com.google.common.base.Joiner;
 
-import java.util.Map;
+import java.util.List;
 
 /** Exception class for merge conflicts. */
 class FailedMergeException extends Exception {
-  private static final int MAX_CONFLICT_MESSAGE_LENGTH = 10000;
+  public final List<String> failedMerges;
 
-  public final Map<String, String> failedMerges;
-
-  FailedMergeException(Map<String, String> failedMerges) {
+  FailedMergeException(List<String> failedMerges) {
     this.failedMerges = failedMerges;
   }
 
@@ -33,37 +31,6 @@ class FailedMergeException extends Exception {
    * @return A string representation of the conflicts.
    */
   public String displayConflicts() {
-    StringBuilder output = new StringBuilder();
-    output.append("Merge conflict found on ");
-    output.append(failedMergeKeys());
-    output.append(". Please follow instructions at go/resolveconflict ");
-    output.append("to resolve this merge conflict.\n\n");
-
-    for (Map.Entry<String, String> entry : failedMerges.entrySet()) {
-      String branch = entry.getKey();
-      String message = entry.getValue();
-      String conflictMessage = message;
-      boolean truncated = false;
-      if (message.length() > MAX_CONFLICT_MESSAGE_LENGTH) {
-        conflictMessage = message.substring(0, MAX_CONFLICT_MESSAGE_LENGTH);
-        truncated = true;
-      }
-      output.append(branch);
-      output.append(":\n");
-      output.append(conflictMessage);
-      if (truncated) {
-        output.append("...\n\n");
-      }
-    }
-    return output.toString();
-  }
-
-  /**
-   * Get the branches that we failed to merge to.
-   *
-   * @return The comma-separated branches that we failed to merge to.
-   */
-  public String failedMergeKeys() {
-    return Joiner.on(", ").join(failedMerges.keySet());
+    return Joiner.on("\n").join(failedMerges);
   }
 }
