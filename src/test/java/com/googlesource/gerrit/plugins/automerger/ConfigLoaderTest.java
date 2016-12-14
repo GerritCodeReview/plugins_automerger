@@ -46,6 +46,7 @@ public class ConfigLoaderTest {
 
   private ConfigLoader configLoader;
   private AllProjectsName allProjectsName;
+  private String hostName;
   @Mock private PluginConfigFactory cfgFactory;
 
   @Rule public ExpectedException thrown = ExpectedException.none();
@@ -53,6 +54,7 @@ public class ConfigLoaderTest {
   @Before
   public void setUp() throws Exception {
     allProjectsName = new AllProjectsName("All-Projects");
+    hostName = "livingbeef.example.com";
     mockFile("automerger.config", allProjectsName.get(), RefNames.REFS_CONFIG, "automerger.config");
     mockFile("default.xml", "platform/manifest", "master", "default.xml");
     mockFile("ds_one.xml", "platform/manifest", "ds_one", "default.xml");
@@ -79,7 +81,7 @@ public class ConfigLoaderTest {
             .file("automerger.config")
             .asString());
     Mockito.when(cfgFactory.getProjectPluginConfig(allProjectsName, "automerger")).thenReturn(cfg);
-    configLoader = new ConfigLoader(gApiMock, allProjectsName, "automerger", cfgFactory);
+    configLoader = new ConfigLoader(gApiMock, allProjectsName, "automerger", hostName, cfgFactory);
   }
 
   @Test
@@ -206,5 +208,19 @@ public class ConfigLoaderTest {
     thrown.expect(ConfigInvalidException.class);
     thrown.expectMessage("Automerger config branch pair malformed: master..ds_one");
     configLoader.getDownstreamBranches("master", "platform/some/project");
+  }
+
+  @Test
+  public void getDefaultConflictMessage() throws Exception {
+    loadConfig();
+    assertThat(configLoader.getConflictMessage()).isEqualTo("Merge conflict found on ${branch}");
+  }
+
+  @Test
+  public void getMultilineConflictMessage() throws Exception {
+    mockFile("alternate.config", allProjectsName.get(), RefNames.REFS_CONFIG, "automerger.config");
+    loadConfig();
+    assertThat(configLoader.getConflictMessage())
+        .isEqualTo("line1\n" + "line2\n" + "line3 ${branch}\n" + "line4");
   }
 }

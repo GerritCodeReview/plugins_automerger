@@ -15,12 +15,14 @@
 package com.googlesource.gerrit.plugins.automerger;
 
 import com.google.common.base.Joiner;
+import com.google.common.base.Strings;
 import com.google.gerrit.extensions.annotations.PluginName;
 import com.google.gerrit.extensions.api.GerritApi;
 import com.google.gerrit.extensions.restapi.BinaryResult;
 import com.google.gerrit.extensions.restapi.ResourceNotFoundException;
 import com.google.gerrit.extensions.restapi.RestApiException;
 import com.google.gerrit.server.config.AllProjectsName;
+import com.google.gerrit.server.config.CanonicalWebUrl;
 import com.google.gerrit.server.config.PluginConfigFactory;
 import com.google.gerrit.server.project.NoSuchProjectException;
 import com.google.inject.Inject;
@@ -41,9 +43,11 @@ import org.slf4j.LoggerFactory;
 public class ConfigLoader {
   private static final Logger log = LoggerFactory.getLogger(ConfigLoader.class);
   private static final String BRANCH_DELIMITER = ":";
+  private static final String DEFAULT_CONFLICT_MESSAGE = "Merge conflict found on ${branch}";
 
   private final GerritApi gApi;
   private final String pluginName;
+  private final String canonicalWebUrl;
   private final AllProjectsName allProjectsName;
   private final PluginConfigFactory cfgFactory;
 
@@ -60,8 +64,10 @@ public class ConfigLoader {
       GerritApi gApi,
       AllProjectsName allProjectsName,
       @PluginName String pluginName,
+      @CanonicalWebUrl String canonicalWebUrl,
       PluginConfigFactory cfgFactory) {
     this.gApi = gApi;
+    this.canonicalWebUrl = canonicalWebUrl;
     this.pluginName = pluginName;
     this.cfgFactory = cfgFactory;
     this.allProjectsName = allProjectsName;
@@ -121,6 +127,34 @@ public class ConfigLoader {
   public String getAutomergeLabel() throws ConfigInvalidException {
     String automergeLabel = getConfig().getString("global", null, "automergeLabel");
     return automergeLabel != null ? automergeLabel : "Verified";
+  }
+
+  /**
+   * Returns the hostName.
+   * 
+   * Uses the hostName defined in the configuration if specified. If not, defaults to the
+   * canonicalWebUrl.
+   *
+   * @return Returns the hostname
+   * @throws ConfigInvalidException
+   */
+  public String getHostName() throws ConfigInvalidException {
+    String hostName = getConfig().getString("global", null, "hostName");
+    return hostName != null ? hostName : canonicalWebUrl;
+  }
+
+  /**
+   * Returns a string to append to the end of the merge conflict message.
+   *
+   * @return The message string, or the empty string if nothing is specified.
+   * @throws ConfigInvalidException 
+   */
+  public String getConflictMessage() throws ConfigInvalidException {
+    String conflictMessage = getConfig().getString("global", null, "conflictMessage");
+    if (Strings.isNullOrEmpty(conflictMessage)) {
+      conflictMessage = DEFAULT_CONFLICT_MESSAGE;
+    }
+    return conflictMessage; 
   }
 
   /**
