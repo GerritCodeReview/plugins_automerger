@@ -45,6 +45,7 @@ public class ConfigLoaderIT extends LightweightPluginDaemonTest {
   private ConfigLoader configLoader;
   @Inject private AllProjectsName allProjectsName;
   @Inject private PluginConfigFactory cfgFactory;
+  @Inject private String canonicalWebUrl;
   private Project.NameKey manifestNameKey;
 
   @Test
@@ -174,6 +175,19 @@ public class ConfigLoaderIT extends LightweightPluginDaemonTest {
     loadConfig(resourceName);
   }
 
+  @Test
+  public void getDefaultConflictMessageTest() throws Exception {
+    defaultSetup("automerger.config");
+    assertThat(configLoader.getConflictMessage()).isEqualTo("Merge conflict found on ${branch}");
+  }
+
+  @Test
+  public void getMultilineConflictMessageTest() throws Exception {
+    defaultSetup("alternate.config");
+    assertThat(configLoader.getConflictMessage())
+        .isEqualTo("line1\n" + "line2\n" + "line3 ${branch}\n" + "line4");
+  }
+
   private void setupTestRepo(
       String resourceName, Project.NameKey projectNameKey, String branchName, String filename)
       throws Exception {
@@ -208,6 +222,7 @@ public class ConfigLoaderIT extends LightweightPluginDaemonTest {
 
   private void loadConfig(String configFilename) throws Exception {
     pushConfig(configFilename);
-    configLoader = new ConfigLoader(gApi, allProjectsName, "automerger", cfgFactory);
+    configLoader =
+        new ConfigLoader(gApi, allProjectsName, "automerger", canonicalWebUrl, cfgFactory);
   }
 }
