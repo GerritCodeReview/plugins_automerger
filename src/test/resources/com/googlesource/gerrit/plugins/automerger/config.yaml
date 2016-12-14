@@ -29,3 +29,4 @@ global:
     project: platform/manifest
   ignore_projects:
   - platform/ignore/me
+  extra_conflict_message: "test extra conflict message"

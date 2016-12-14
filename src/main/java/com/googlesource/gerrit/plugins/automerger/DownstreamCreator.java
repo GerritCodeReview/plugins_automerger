@@ -331,7 +331,7 @@ public class DownstreamCreator
     }
 
     if (!failedMerges.keySet().isEmpty()) {
-      throw new FailedMergeException(failedMerges);
+      throw new FailedMergeException(failedMerges, config.getExtraConflictMessage());
     }
   }
 
