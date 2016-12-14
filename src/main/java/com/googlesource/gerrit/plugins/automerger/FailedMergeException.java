@@ -22,9 +22,11 @@ class FailedMergeException extends Exception {
   private static final int MAX_CONFLICT_MESSAGE_LENGTH = 10000;
 
   public final Map<String, String> failedMerges;
+  public final String extraMessage;
 
-  FailedMergeException(Map<String, String> failedMerges) {
+  FailedMergeException(Map<String, String> failedMerges, String extraMessage) {
     this.failedMerges = failedMerges;
+    this.extraMessage = extraMessage;
   }
 
   /**
@@ -36,8 +38,9 @@ class FailedMergeException extends Exception {
     StringBuilder output = new StringBuilder();
     output.append("Merge conflict found on ");
     output.append(failedMergeKeys());
-    output.append(". Please follow instructions at go/resolveconflict ");
-    output.append("to resolve this merge conflict.\n\n");
+    output.append(". ");
+    output.append(extraMessage);
+    output.append("\n\n");
 
     for (Map.Entry<String, String> entry : failedMerges.entrySet()) {
       String branch = entry.getKey();
