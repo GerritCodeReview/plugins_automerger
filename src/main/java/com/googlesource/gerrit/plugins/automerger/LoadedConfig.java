@@ -133,7 +133,7 @@ public class LoadedConfig {
    * @return A map of from branches to their configuration maps.
    */
   public Map<String, Map> getBranches() {
-    return (Map<String, Map>) config.get("branches");
+    return (Map<String, Map>) config.getOrDefault("branches", Collections.emptyMap());
   }
 
   /**

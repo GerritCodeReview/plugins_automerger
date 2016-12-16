@@ -37,6 +37,7 @@ import org.yaml.snakeyaml.Yaml;
 @Singleton
 public class ConfigLoader {
   private static final Logger log = LoggerFactory.getLogger(ConfigLoader.class);
+  private static final int NUM_LOAD_CONFIG_RETRIES = 3;
   public final String configProject;
   public final String configProjectBranch;
   public final String configFilename;
@@ -73,7 +74,7 @@ public class ConfigLoader {
         loadConfig();
       } catch (IOException | RestApiException e) {
         log.error("Config failed to sync!", e);
-        config = new LoadedConfig();
+        throw e;
       }
     }
   }
