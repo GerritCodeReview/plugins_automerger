@@ -37,6 +37,7 @@ import org.yaml.snakeyaml.Yaml;
 @Singleton
 public class ConfigLoader {
   private static final Logger log = LoggerFactory.getLogger(ConfigLoader.class);
+  private static final int NUM_LOAD_CONFIG_RETRIES = 3;
   public final String configProject;
   public final String configProjectBranch;
   public final String configFilename;
@@ -85,9 +86,23 @@ public class ConfigLoader {
    * @throws RestApiException
    */
   public void loadConfig() throws IOException, RestApiException {
-    config =
-        new LoadedConfig(
-            gApi, configProject, configProjectBranch, configFilename, configOptionKeys);
+    for (int i = 1; i <= NUM_LOAD_CONFIG_RETRIES; i++) {
+      try {
+        config =
+            new LoadedConfig(
+                gApi, configProject, configProjectBranch, configFilename, configOptionKeys);
+      } catch (IOException | RestApiException e) {
+        log.error("Failed to load config: ", e);
+        if (i >= NUM_LOAD_CONFIG_RETRIES) {
+          throw e;
+        } else {
+          try {
+            Thread.sleep(100 * i);
+          } catch (InterruptedException ignored) {
+          }
+        }
+      }
+    }
   }
 
   /**
