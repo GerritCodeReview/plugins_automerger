@@ -55,7 +55,7 @@ public class ConfigLoader {
    * @throws IOException if reading config_keys.yaml failed
    */
   @Inject
-  public ConfigLoader(GerritApi gApi) throws IOException {
+  public ConfigLoader(GerritApi gApi) throws IOException, RestApiException {
     this.gApi = gApi;
 
     String configKeysPath = "/config/config_keys.yaml";
@@ -69,12 +69,7 @@ public class ConfigLoader {
       configFilename = (String) automergerConfig.get("config_filename");
       configOptionKeys = (List<String>) automergerConfig.get("config_option_keys");
 
-      try {
-        loadConfig();
-      } catch (IOException | RestApiException e) {
-        log.error("Config failed to sync!", e);
-        config = new LoadedConfig();
-      }
+      loadConfig();
     }
   }
 
