@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "bad8d7b0_4a667302",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2016-12-16T23:29:47Z",
+      "side": 1,
+      "message": "Is there a way to test what will happen in this case (e.g. sticking an unconditional \u0027throw\u0027 in loadConfig)? I\u0027m wondering\n\n* how guice will handle the exception --- does it know how to give up or does it keep retrying?\n* whether the exception would be logged twice",
+      "revId": "a85d72683824755716ac4cdc64249988c618f4b5",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
