@@ -73,7 +73,7 @@ public class ConfigLoader {
         loadConfig();
       } catch (IOException | RestApiException e) {
         log.error("Config failed to sync!", e);
-        config = new LoadedConfig();
+        throw e;
       }
     }
   }
