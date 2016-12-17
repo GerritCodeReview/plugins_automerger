@@ -60,7 +60,7 @@ public class ConfigLoader {
 
     String configKeysPath = "/config/config_keys.yaml";
     try (InputStreamReader streamReader =
-        new InputStreamReader(getClass().getResourceAsStream(configKeysPath), Charsets.UTF_8)) {
+             new InputStreamReader(getClass().getResourceAsStream(configKeysPath), Charsets.UTF_8)) {
 
       String automergerConfigYamlString = CharStreams.toString(streamReader);
       Map automergerConfig = (Map) (new Yaml().load(automergerConfigYamlString));
@@ -82,7 +82,7 @@ public class ConfigLoader {
   public void loadConfig() throws IOException, RestApiException {
     config =
         new LoadedConfig(
-            gApi, configProject, configProjectBranch, configFilename, configOptionKeys);
+                            gApi, configProject, configProjectBranch, configFilename, configOptionKeys);
   }
 
   /**
@@ -170,7 +170,7 @@ public class ConfigLoader {
   public Set<String> getDownstreamBranches(String fromBranch, String project)
       throws RestApiException, IOException {
     Set<String> downstreamBranches = new HashSet<String>();
-    Map<String, Map> fromBranchConfig = config.getMergeConfig(fromBranch);
+    Map<String, Map<String, Object>> fromBranchConfig = config.getMergeConfig(fromBranch);
 
     if (fromBranchConfig != null) {
       for (String key : fromBranchConfig.keySet()) {
@@ -218,7 +218,7 @@ public class ConfigLoader {
   }
 
   private Set<String> getManifestProjectsForBranch(
-      Map<String, String> manifestProjectInfo, String branch) throws RestApiException, IOException {
+                                                      Map<String, String> manifestProjectInfo, String branch) throws RestApiException, IOException {
     String manifestProject = manifestProjectInfo.get("project");
     String manifestFile = manifestProjectInfo.get("file");
     try {
