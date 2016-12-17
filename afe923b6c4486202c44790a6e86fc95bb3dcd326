@@ -2,6 +2,23 @@
   "comments": [
     {
       "key": {
+        "uuid": "fac16fc3_a4a3e2e7",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/LoadedConfig.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 38,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2016-12-17T02:47:03Z",
+      "side": 1,
+      "message": "What is the type of this map?",
+      "revId": "afe923b6c4486202c44790a6e86fc95bb3dcd326",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "fac16fc3_44d82e80",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/LoadedConfig.java",
         "patchSetId": 2
