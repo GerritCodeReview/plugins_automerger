@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "fac16fc3_44666e02",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 75,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-12-17T00:00:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "bad8d7b0_0a83db58",
+      "revId": "6db730da4009e98c44c3aa4b7a6f11e4b691a45a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "bad8d7b0_6a80974a",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/LoadedConfig.java",
         "patchSetId": 5
@@ -30,6 +48,24 @@
       "writtenOn": "2016-12-16T23:52:48Z",
       "side": 1,
       "message": "nit: long line",
+      "revId": "6db730da4009e98c44c3aa4b7a6f11e4b691a45a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bad8d7b0_aabc4f0f",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/LoadedConfig.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2016-12-17T00:00:19Z",
+      "side": 1,
+      "message": "https://engdoc.corp.google.com/eng/doc/devguide/java/styleguide.shtml?cl\u003dhead#s4.4-column-limit\n\nGoogle Java style guide says that column limit should be 100. This line is only 87 (unless my IDE is lying to me).\n\nI think the dotted line in Gerrit defaults to 80.",
+      "parentUuid": "bad8d7b0_6a80974a",
       "revId": "6db730da4009e98c44c3aa4b7a6f11e4b691a45a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
