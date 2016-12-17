@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fac16fc3_e48b1a72",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 6
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2016-12-17T00:02:51Z",
+      "side": 1,
+      "message": "The commit message is stale now.",
+      "range": {
+        "startLine": 9,
+        "startChar": 44,
+        "endLine": 10,
+        "endChar": 22
+      },
+      "revId": "454801b71ee0475b682955944873505c657825d8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
