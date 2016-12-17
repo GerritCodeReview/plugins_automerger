@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fac16fc3_44d82e80",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/LoadedConfig.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 123,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2016-12-17T02:45:49Z",
+      "side": 1,
+      "message": "Forgive my ignorance: why does this produce an unchecked warning? Is some tool reporting a warning about the body of getBranches() in the wrong place?",
+      "revId": "afe923b6c4486202c44790a6e86fc95bb3dcd326",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
