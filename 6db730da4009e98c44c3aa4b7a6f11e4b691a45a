@@ -69,6 +69,24 @@
       "revId": "6db730da4009e98c44c3aa4b7a6f11e4b691a45a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "bad8d7b0_eac647a9",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/LoadedConfig.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 136,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2016-12-17T00:02:17Z",
+      "side": 1,
+      "message": "Good call --- I\u0027ll reconfigure my gerrit prefs. Thank you.",
+      "parentUuid": "bad8d7b0_aabc4f0f",
+      "revId": "6db730da4009e98c44c3aa4b7a6f11e4b691a45a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
