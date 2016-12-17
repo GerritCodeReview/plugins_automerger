@@ -63,7 +63,8 @@ public class ConfigLoader {
         new InputStreamReader(getClass().getResourceAsStream(configKeysPath), Charsets.UTF_8)) {
 
       String automergerConfigYamlString = CharStreams.toString(streamReader);
-      Map automergerConfig = (Map) (new Yaml().load(automergerConfigYamlString));
+      Map<String, Object> automergerConfig =
+          (Map<String, Object>) (new Yaml().load(automergerConfigYamlString));
       configProject = (String) automergerConfig.get("config_project");
       configProjectBranch = (String) automergerConfig.get("config_project_branch");
       configFilename = (String) automergerConfig.get("config_filename");
@@ -170,7 +171,7 @@ public class ConfigLoader {
   public Set<String> getDownstreamBranches(String fromBranch, String project)
       throws RestApiException, IOException {
     Set<String> downstreamBranches = new HashSet<String>();
-    Map<String, Map> fromBranchConfig = config.getMergeConfig(fromBranch);
+    Map<String, Object> fromBranchConfig = config.getMergeConfig(fromBranch);
 
     if (fromBranchConfig != null) {
       for (String key : fromBranchConfig.keySet()) {
@@ -197,7 +198,7 @@ public class ConfigLoader {
   // Returns contents of manifest file for the given branch.
   // If manifest does not exist, return empty set.
   private Set<String> getManifestProjects(String fromBranch) throws RestApiException, IOException {
-    Map fromBranchConfig = config.getMergeConfig(fromBranch);
+    Map<String, Object> fromBranchConfig = config.getMergeConfig(fromBranch);
     if (fromBranchConfig == null) {
       return new HashSet<>();
     }
@@ -232,7 +233,7 @@ public class ConfigLoader {
     }
   }
 
-  private void applyConfig(Set<String> projects, Map givenConfig) {
+  private void applyConfig(Set<String> projects, Map<String, Object> givenConfig) {
     if (givenConfig == null) {
       return;
     }

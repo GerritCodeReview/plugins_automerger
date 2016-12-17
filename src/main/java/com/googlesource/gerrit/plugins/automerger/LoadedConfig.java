@@ -35,7 +35,7 @@ public class LoadedConfig {
   private static final Logger log = LoggerFactory.getLogger(LoadedConfig.class);
 
   private final Map<String, Object> global;
-  private final Map<String, Map> config;
+  private final Map<String, Map<String, ?>> config;
   private final Map<String, String> defaultManifestInfo;
   private final Pattern blankMergePattern;
   private final Pattern alwaysBlankMergePattern;
@@ -63,7 +63,7 @@ public class LoadedConfig {
     BinaryResult configFile =
         gApi.projects().name(configProject).branch(configProjectBranch).file(configFilename);
     String configFileString = configFile.asString();
-    config = (Map<String, Map>) (new Yaml().load(configFileString));
+    config = (Map<String, Map<String, ?>>) (new Yaml().load(configFileString));
     global = (Map<String, Object>) config.get("global");
     defaultManifestInfo = (Map<String, String>) global.get("manifest");
 
@@ -108,7 +108,7 @@ public class LoadedConfig {
    * @return A map of config keys to their values, or a map of "to branches" to a map of config keys
    *     to their values.
    */
-  public Map<String, Map> getMergeConfig(String fromBranch) {
+  public Map<String, Object> getMergeConfig(String fromBranch) {
     return getBranches().get(fromBranch);
   }
 
@@ -120,7 +120,7 @@ public class LoadedConfig {
    * @return Map of configuration keys to their values.
    */
   public Map<String, Object> getMergeConfig(String fromBranch, String toBranch) {
-    Map<String, Map> fromBranchConfig = getBranches().get(fromBranch);
+    Map<String, Object> fromBranchConfig = getBranches().get(fromBranch);
     if (fromBranchConfig == null) {
       return Collections.emptyMap();
     }
@@ -132,8 +132,9 @@ public class LoadedConfig {
    *
    * @return A map of from branches to their configuration maps.
    */
-  public Map<String, Map> getBranches() {
-    return (Map<String, Map>) config.getOrDefault("branches", Collections.emptyMap());
+  public Map<String, Map<String, Object>> getBranches() {
+    return (Map<String, Map<String, Object>>)
+        config.getOrDefault("branches", Collections.<String, Map<String, Object>>emptyMap());
   }
 
   /**
@@ -167,7 +168,7 @@ public class LoadedConfig {
    * Gets the value of a global attribute.
    *
    * @param key A configuration key that is defined in the config.
-   * @return The value of the global attribute.
+   * @return The value of the global attribute
    */
   public Object getGlobalAttribute(String key) {
     return global.get(key);
