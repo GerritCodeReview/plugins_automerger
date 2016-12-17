@@ -170,7 +170,7 @@ public class ConfigLoader {
   public Set<String> getDownstreamBranches(String fromBranch, String project)
       throws RestApiException, IOException {
     Set<String> downstreamBranches = new HashSet<String>();
-    Map<String, Map> fromBranchConfig = config.getMergeConfig(fromBranch);
+    Map<String, Map<String, Object>> fromBranchConfig = config.getMergeConfig(fromBranch);
 
     if (fromBranchConfig != null) {
       for (String key : fromBranchConfig.keySet()) {

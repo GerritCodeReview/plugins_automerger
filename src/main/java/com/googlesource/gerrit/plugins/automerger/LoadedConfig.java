@@ -108,7 +108,7 @@ public class LoadedConfig {
    * @return A map of config keys to their values, or a map of "to branches" to a map of config keys
    *     to their values.
    */
-  public Map<String, Map> getMergeConfig(String fromBranch) {
+  public Map<String, Map<String, Object>> getMergeConfig(String fromBranch) {
     return getBranches().get(fromBranch);
   }
 
@@ -120,11 +120,12 @@ public class LoadedConfig {
    * @return Map of configuration keys to their values.
    */
   public Map<String, Object> getMergeConfig(String fromBranch, String toBranch) {
-    Map<String, Map> fromBranchConfig = getBranches().get(fromBranch);
+    @SuppressWarnings("unchecked")
+    Map<String, Map<String, Object>> fromBranchConfig = getBranches().get(fromBranch);
     if (fromBranchConfig == null) {
       return Collections.emptyMap();
     }
-    return (Map<String, Object>) fromBranchConfig.get(toBranch);
+    return fromBranchConfig.get(toBranch);
   }
 
   /**
@@ -132,8 +133,9 @@ public class LoadedConfig {
    *
    * @return A map of from branches to their configuration maps.
    */
-  public Map<String, Map> getBranches() {
-    return (Map<String, Map>) config.getOrDefault("branches", Collections.emptyMap());
+  public Map<String, Map<String, Map<String, Object>>> getBranches() {
+    return (Map<String, Map<String, Map<String, Object>>>)
+        config.getOrDefault("branches", Collections.emptyMap());
   }
 
   /**
