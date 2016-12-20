@@ -14,8 +14,12 @@
 
 package com.googlesource.gerrit.plugins.automerger;
 
+import static com.google.common.truth.Truth.assertThat;
+
+import com.google.common.base.Function;
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
 import com.google.gerrit.extensions.api.GerritApi;
-import com.google.gerrit.extensions.api.changes.AbandonInput;
 import com.google.gerrit.extensions.api.changes.ChangeApi;
 import com.google.gerrit.extensions.api.changes.RevisionApi;
 import com.google.gerrit.extensions.client.ListChangesOption;
@@ -24,19 +28,14 @@ import com.google.gerrit.extensions.common.ChangeInput;
 import com.google.gerrit.extensions.common.CommitInfo;
 import com.google.gerrit.extensions.common.MergePatchSetInput;
 import com.google.gerrit.extensions.common.RevisionInfo;
-import com.google.common.collect.ImmutableList;
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-
-import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static com.google.common.truth.Truth.assertThat;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Mockito;
 
 public class DownstreamCreatorTest {
   private final String changeId = "testid";
@@ -158,8 +157,7 @@ public class DownstreamCreatorTest {
     assertThat(changeInput.merge.source).isEqualTo(currentRevision);
 
     // Check that it was actually skipped
-    String expectedSubject =
-        changeSubject + " skipped: " + currentRevision.substring(0, 10);
+    String expectedSubject = changeSubject + " skipped: " + currentRevision.substring(0, 10);
     assertThat(changeInput.merge.strategy).isEqualTo("ours");
     assertThat(expectedSubject).isEqualTo(changeInput.subject);
   }
@@ -183,9 +181,16 @@ public class DownstreamCreatorTest {
 
     ArgumentCaptor<ChangeInput> changeInputCaptor = ArgumentCaptor.forClass(ChangeInput.class);
     Mockito.verify(gApiMock.changes(), Mockito.times(2)).create(changeInputCaptor.capture());
-    List<ChangeInput> capturedChangeInputs = changeInputCaptor.getAllValues();
-    assertThat(capturedChangeInputs.get(0).branch).isEqualTo("testone");
-    assertThat(capturedChangeInputs.get(1).branch).isEqualTo("testtwo");
+    List<String> capturedBranches =
+        Lists.transform(
+            changeInputCaptor.getAllValues(),
+            new Function<ChangeInput, String>() {
+              @Override
+              public String apply(ChangeInput c) {
+                return c.branch;
+              }
+            });
+    assertThat(capturedBranches).containsExactly("testone", "testtwo");
   }
 
   @Test
