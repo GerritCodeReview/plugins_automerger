@@ -1,74 +1,48 @@
 Build
 =====
 
-This plugin can be built with Buck.
-
-Buck
-----
-
-Two build modes are supported: Standalone and in Gerrit tree.
-The standalone build mode is recommended, as this mode doesn't require
-the Gerrit tree to exist locally.
-
-
-### Build standalone
-
-Clone bucklets library:
-
-```
-  git clone https://gerrit.googlesource.com/bucklets
-
-```
-and link it to automerger plugin directory:
-
-```
-  cd automerger && ln -s ../bucklets .
-```
-
-Add link to the .buckversion file:
-
-```
-  cd automerger && ln -s bucklets/buckversion .buckversion
-```
-
-Add link to the .watchmanconfig file:
-```
-  cd automerger && ln -s bucklets/watchmanconfig .watchmanconfig
-```
-
-To build the plugin, issue the following command:
-
-
-```
-  buck build plugin
-```
-
-The output is created in
-
-```
-  buck-out/gen/automerger.jar
-```
-
-### Build in Gerrit tree
+This plugin is built using Bazel.
+Only the Gerrit in-tree build is supported.
 
 Clone or link this plugin to the plugins directory of Gerrit's source
-tree, and issue the command:
+tree.
 
 ```
-  buck build plugins/automerger
+  git clone https://gerrit.googlesource.com/gerrit
+  git clone https://gerrit.googlesource.com/plugins/automerger
+  cd gerrit/plugins
+  ln -s ../../automerger .
+```
+
+Put the external dependency Bazel build file into the Gerrit /plugins
+directory, replacing the existing empty one.
+
+```
+  cd gerrit/plugins
+  rm external_plugin_deps.bzl
+  ln -s automerger/external_plugin_deps.bzl .
+```
+
+From Gerrit source tree issue the command:
+
+```
+  bazel build plugins/automerger
 ```
 
 The output is created in
 
 ```
-  buck-out/gen/plugins/automerger/automerger.jar
+  bazel-genfiles/plugins/automerger/automerger.jar
 ```
 
-This project can be imported into the Eclipse IDE:
+To execute the tests run:
 
 ```
-  ./tools/eclipse/project.py
+  bazel test plugins/automerger:automerger_tests
 ```
 
-How to build the Gerrit Plugin API is described in the [Gerrit
-documentation](../../../Documentation/dev-buck.html#_extension_and_plugin_api_jar_files).
+or filtering using the comma separated tags:
+
+````
+  bazel test --test_tag_filters=automerger //...
+````
