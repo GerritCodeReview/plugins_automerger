@@ -22,6 +22,30 @@
       "revId": "3cd953339921c2ac84f77b2041b549b5e2c78627",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "a8373020_d0076ab8",
+        "filename": "BUILD",
+        "patchSetId": 3
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "Feb 2, 2017 11:58:09 AM",
+      "side": 1,
+      "message": "Ugh. Should have caught that. It works now because we don\u0027t have anything more than one directory down of resources, but future-proofing \u003d\u003d good.\nThanks!",
+      "parentUuid": "05a52208_aa634c61",
+      "range": {
+        "startLine": 13,
+        "startChar": 22,
+        "endLine": 13,
+        "endChar": 44
+      },
+      "revId": "3cd953339921c2ac84f77b2041b549b5e2c78627",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
