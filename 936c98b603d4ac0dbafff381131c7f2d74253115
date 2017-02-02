@@ -22,6 +22,30 @@
       "revId": "936c98b603d4ac0dbafff381131c7f2d74253115",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7e69441c_b64055f0",
+        "filename": "src/main/resources/Documentation/build.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "Feb 2, 2017 11:31:59 AM",
+      "side": 0,
+      "message": "Ah, I removed it because I didn\u0027t have Eclipse set up and didn\u0027t want to add documentation that I hadn\u0027t tested and verified to work. But I can add it back in.",
+      "parentUuid": "75351e73_61e153cd",
+      "range": {
+        "startLine": 66,
+        "startChar": 0,
+        "endLine": 70,
+        "endChar": 28
+      },
+      "revId": "936c98b603d4ac0dbafff381131c7f2d74253115",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
