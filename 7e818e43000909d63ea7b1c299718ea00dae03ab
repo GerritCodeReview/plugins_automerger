@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "224d9241_bb27d917",
+        "filename": "BUILD",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "Feb 1, 2017 10:54:31 PM",
+      "side": 1,
+      "message": "Indentation in this file should be Bazel like and not Buck like. Also in Bazel \" char is used for string: \"foo\" and not \u0027foo\u0027.\n\nJust install buildifier and run this file through it:\n\n  $ buildifier BUILD\n\ndid this with this file: [1].\n\n* [1] http://paste.openstack.org/show/597304",
+      "revId": "7e818e43000909d63ea7b1c299718ea00dae03ab",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
