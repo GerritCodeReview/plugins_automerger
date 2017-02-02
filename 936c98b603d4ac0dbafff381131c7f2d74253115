@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "75351e73_61e153cd",
+        "filename": "src/main/resources/Documentation/build.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 70,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "Feb 1, 2017 10:54:31 PM",
+      "side": 0,
+      "message": "Inadvertently removed? So, in Bazel, there is one additional step to make it actually work: [1].\n\nAlson note, that this wouldn\u0027t add test plugin own dependency, like mockito in this case. We hae ideas how to fix that, see my last comments here: [2]. But it wasn\u0027t done yet.\n\n* [1] https://gerrit-review.googlesource.com/#/c/95679/5/src/main/resources/Documentation/build.md@20\n* [2] https://gerrit-review.googlesource.com/#/c/93151/",
+      "range": {
+        "startLine": 66,
+        "startChar": 0,
+        "endLine": 70,
+        "endChar": 28
+      },
+      "revId": "936c98b603d4ac0dbafff381131c7f2d74253115",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
