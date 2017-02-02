@@ -22,6 +22,30 @@
       "revId": "68937cf187cd7e6e86115e154eab9cd18cce8a85",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "11a365c5_dcbd4827",
+        "filename": "BUILD",
+        "patchSetId": 2
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "Feb 2, 2017 11:53:05 AM",
+      "side": 1,
+      "message": "You are correct! Fixed.",
+      "parentUuid": "57f481d5_a10a19ba",
+      "range": {
+        "startLine": 13,
+        "startChar": 22,
+        "endLine": 13,
+        "endChar": 37
+      },
+      "revId": "68937cf187cd7e6e86115e154eab9cd18cce8a85",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
