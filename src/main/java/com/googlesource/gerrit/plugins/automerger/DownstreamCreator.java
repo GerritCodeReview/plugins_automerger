@@ -382,6 +382,7 @@ public class DownstreamCreator
 
     MergeInput mergeInput = new MergeInput();
     mergeInput.source = sdsMergeInput.currentRevision;
+    mergeInput.strategy = "recursive";
 
     log.debug("Creating downstream merge for {}", sdsMergeInput.currentRevision);
     ChangeInput downstreamChangeInput = new ChangeInput();
