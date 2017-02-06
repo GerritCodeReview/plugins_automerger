@@ -116,6 +116,7 @@ public class DownstreamCreatorTest {
     assertThat("testds").isEqualTo(changeInput.branch);
     assertThat(changeTopic).isEqualTo(changeInput.topic);
     assertThat(changeInput.merge.source).isEqualTo(currentRevision);
+    assertThat(changeInput.merge.strategy).isEqualTo("recursive");
 
     String expectedSubject = changeSubject + " am: " + currentRevision.substring(0, 10);
     assertThat(expectedSubject).isEqualTo(changeInput.subject);
