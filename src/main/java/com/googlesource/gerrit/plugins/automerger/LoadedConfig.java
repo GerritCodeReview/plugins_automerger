@@ -48,18 +48,8 @@ public class LoadedConfig {
     alwaysBlankMergePattern = Pattern.compile("");
   }
 
-  public LoadedConfig(
-      GerritApi gApi,
-      String configProject,
-      String configProjectBranch,
-      String configFilename,
-      List<String> configOptionKeys)
-      throws IOException, RestApiException {
-    log.info(
-        "Loading config file from project {} on branch {} and filename {}",
-        configProject,
-        configProjectBranch,
-        configFilename);
+  public LoadedConfig(GerritApi gApi, String configProject, String configProjectBranch,
+      String configFilename, List<String> configOptionKeys) throws IOException, RestApiException {
     BinaryResult configFile =
         gApi.projects().name(configProject).branch(configProjectBranch).file(configFilename);
     String configFileString = configFile.asString();
@@ -69,13 +59,13 @@ public class LoadedConfig {
 
     blankMergePattern = getConfigPattern("blank_merge");
     alwaysBlankMergePattern = getConfigPattern("always_blank_merge");
-    log.info("Finished syncing automerger config.");
   }
 
   /**
    * Checks to see if we should skip the change.
    *
-   * <p>If the commit message matches the alwaysBlankMergePattern, always return true. If the commit
+   * <p>
+   * If the commit message matches the alwaysBlankMergePattern, always return true. If the commit
    * message matches the blankMergePattern and merge_all is false for this pair of branches, return
    * true.
    *
@@ -106,7 +96,7 @@ public class LoadedConfig {
    *
    * @param fromBranch Branch we are merging from.
    * @return A map of config keys to their values, or a map of "to branches" to a map of config keys
-   *     to their values.
+   *         to their values.
    */
   public Map<String, Map> getMergeConfig(String fromBranch) {
     return getBranches().get(fromBranch);
