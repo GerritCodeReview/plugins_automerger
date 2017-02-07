@@ -14,34 +14,37 @@
 
 package com.googlesource.gerrit.plugins.automerger;
 
+import static com.google.common.truth.Truth.assertThat;
+import static org.junit.Assert.assertThrows;
+
 import com.google.common.base.Charsets;
 import com.google.common.io.CharStreams;
 import com.google.gerrit.extensions.api.GerritApi;
 import com.google.gerrit.extensions.restapi.RestApiException;
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.Mockito;
-
+import com.google.gerrit.server.project.ProjectCache;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.HashSet;
 import java.util.Set;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
+import org.mockito.Mockito;
 
-import static com.google.common.truth.Truth.assertThat;
-
+@RunWith(JUnit4.class)
 public class ConfigLoaderTest {
   protected GerritApi gApiMock;
+  private ProjectCache projectCacheMock;
   private ConfigLoader configLoader;
-  private String configString;
-  private String manifestString;
-  private String firstDownstreamManifestString;
-  private String secondDownstreamManifestString;
 
   @Before
   public void setUp() throws Exception {
     gApiMock = Mockito.mock(GerritApi.class, Mockito.RETURNS_DEEP_STUBS);
-    mockFile("config.yaml", "tools/automerger", "master", "config.yaml");
+    projectCacheMock = Mockito.mock(ProjectCache.class, Mockito.RETURNS_DEEP_STUBS);
+    mockFile(
+        "automerger_config.yaml", "All-Projects", "refs/meta/config", "automerger_config.yaml");
     mockFile("default.xml", "platform/manifest", "master", "default.xml");
     mockFile("ds_one.xml", "platform/manifest", "ds_one", "default.xml");
     mockFile("ds_two.xml", "platform/manifest", "ds_two", "default.xml");
@@ -58,7 +61,7 @@ public class ConfigLoaderTest {
   }
 
   private void loadConfig() throws Exception {
-    configLoader = new ConfigLoader(gApiMock);
+    configLoader = new ConfigLoader(gApiMock, projectCacheMock);
   }
 
   @Test
@@ -134,7 +137,7 @@ public class ConfigLoaderTest {
         .isEqualTo(expectedBranches);
   }
 
-  @Test(expected = IOException.class)
+  @Test
   public void downstreamBranchesTest_IOException() throws Exception {
     Mockito.when(
             gApiMock
@@ -145,16 +148,19 @@ public class ConfigLoaderTest {
                 .asString())
         .thenThrow(new IOException("!"));
     loadConfig();
-    Set<String> expectedBranches = new HashSet<String>();
 
-    configLoader.getDownstreamBranches("master", "platform/some/project");
+    assertThrows(
+        IOException.class,
+        () -> configLoader.getDownstreamBranches("master", "platform/some/project"));
   }
 
-  @Test(expected = RestApiException.class)
+  @Test
   public void downstreamBranchesTest_restApiException() throws Exception {
     Mockito.when(gApiMock.projects().name("platform/manifest").branch("master"))
         .thenThrow(new RestApiException("!"));
     loadConfig();
-    configLoader.getDownstreamBranches("master", "platform/some/project");
+    assertThrows(
+        RestApiException.class,
+        () -> configLoader.getDownstreamBranches("master", "platform/some/project"));
   }
 }
