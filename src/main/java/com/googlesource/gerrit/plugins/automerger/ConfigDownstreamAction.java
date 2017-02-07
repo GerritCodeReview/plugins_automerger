@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import org.eclipse.jgit.errors.ConfigInvalidException;
 
 /** The logic behind auto-filling the branch map, aka the input to AutomergeChangeAction. */
 class ConfigDownstreamAction
@@ -49,10 +50,11 @@ class ConfigDownstreamAction
    * @return The map of branch names to whether or not to skip them (i.e. merge with "-s ours")
    * @throws RestApiException
    * @throws IOException
+   * @throws ConfigInvalidException
    */
   @Override
   public Response<Map<String, Boolean>> apply(RevisionResource rev, Input input)
-      throws RestApiException, IOException {
+      throws RestApiException, IOException, ConfigInvalidException {
 
     String branchName = rev.getChange().getDest().getShortName();
     String projectName = rev.getProject().get();
