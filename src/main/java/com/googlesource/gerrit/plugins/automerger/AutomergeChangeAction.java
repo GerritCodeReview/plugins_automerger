@@ -53,12 +53,13 @@ class AutomergeChangeAction
    * @param rev RevisionResource of the change whose page we are clicking the button.
    * @param input A map of branch to whether or not the merge should be "-s ours".
    * @return HTTP 200 on success.
+   * @throws IOException
    * @throws RestApiException
    * @throws FailedMergeException
    */
   @Override
   public Object apply(RevisionResource rev, Input input)
-      throws RestApiException, FailedMergeException {
+      throws IOException, RestApiException, FailedMergeException {
     Map<String, Boolean> branchMap = input.branchMap;
 
     Change change = rev.getChange();
