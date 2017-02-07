@@ -30,7 +30,6 @@ import com.google.gerrit.extensions.common.MergeInput;
 import com.google.gerrit.extensions.common.MergePatchSetInput;
 import com.google.gerrit.extensions.common.RevisionInfo;
 import com.google.gerrit.extensions.events.ChangeAbandonedListener;
-import com.google.gerrit.extensions.events.ChangeMergedListener;
 import com.google.gerrit.extensions.events.ChangeRestoredListener;
 import com.google.gerrit.extensions.events.CommentAddedListener;
 import com.google.gerrit.extensions.events.DraftPublishedListener;
@@ -38,6 +37,7 @@ import com.google.gerrit.extensions.events.RevisionCreatedListener;
 import com.google.gerrit.extensions.events.TopicEditedListener;
 import com.google.gerrit.extensions.restapi.MergeConflictException;
 import com.google.gerrit.extensions.restapi.RestApiException;
+import com.google.gerrit.server.project.ProjectCache;
 import com.google.inject.Inject;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -58,7 +58,6 @@ import org.slf4j.LoggerFactory;
  */
 public class DownstreamCreator
     implements ChangeAbandonedListener,
-        ChangeMergedListener,
         ChangeRestoredListener,
         CommentAddedListener,
         DraftPublishedListener,
@@ -70,27 +69,9 @@ public class DownstreamCreator
   protected ConfigLoader config;
 
   @Inject
-  public DownstreamCreator(GerritApi gApi, ConfigLoader config) {
+  public DownstreamCreator(GerritApi gApi, ConfigLoader config, ProjectCache projectCache) {
     this.gApi = gApi;
     this.config = config;
-  }
-
-  /**
-   * Updates the config in memory if the config project is updated.
-   *
-   * @param event Event we are listening to.
-   */
-  @Override
-  public void onChangeMerged(ChangeMergedListener.Event event) {
-    ChangeInfo change = event.getChange();
-    try {
-      if (change.project.equals(config.configProject)
-          && change.branch.equals(config.configProjectBranch)) {
-        loadConfig();
-      }
-    } catch (RestApiException | IOException e) {
-      log.error("Failed to reload config at {}", change.id, e);
-    }
   }
 
   /**
@@ -184,8 +165,8 @@ public class DownstreamCreator
             updateVote(downstreamChange, label.getKey(), label.getValue().value.shortValue());
           }
         }
-      } catch (RestApiException e) {
-        log.error("RestApiException when updating downstream votes of {}", change.id, e);
+      } catch (RestApiException | IOException e) {
+        log.error("Exception when updating downstream votes of {}", change.id, e);
       }
     }
   }
@@ -239,10 +220,11 @@ public class DownstreamCreator
    * Creates merges downstream, and votes -1 on the automerge label if we have a failed merge.
    *
    * @param mdsMergeInput Input containing the downstream branch map and source change ID.
+   * @throws IOException if we fail to read the automerge label from config
    * @throws RestApiException Throws if we fail a REST API call.
    */
   public void createMergesAndHandleConflicts(MultipleDownstreamMergeInput mdsMergeInput)
-      throws RestApiException {
+      throws IOException, RestApiException {
     ReviewInput reviewInput = new ReviewInput();
     Map<String, Short> labels = new HashMap<String, Short>();
     short vote = 0;
@@ -406,15 +388,6 @@ public class DownstreamCreator
     gApi.changes().create(downstreamChangeInput);
   }
 
-  private void loadConfig() throws IOException, RestApiException {
-    try {
-      config.loadConfig();
-    } catch (IOException | RestApiException e) {
-      log.error("Config failed to sync!", e);
-      throw e;
-    }
-  }
-
   private void automergeChanges(ChangeInfo change, RevisionInfo revisionInfo)
       throws RestApiException, IOException {
     if (revisionInfo.draft != null && revisionInfo.draft) {
@@ -477,7 +450,8 @@ public class DownstreamCreator
     }
   }
 
-  private void updateVote(ChangeInfo change, String label, short vote) throws RestApiException {
+  private void updateVote(ChangeInfo change, String label, short vote)
+      throws IOException, RestApiException {
     if (label.equals(config.getAutomergeLabel())) {
       log.debug("Not updating automerge label, as it blocks when there is a merge conflict.");
       return;

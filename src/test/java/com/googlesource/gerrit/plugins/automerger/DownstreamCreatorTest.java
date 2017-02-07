@@ -28,30 +28,35 @@ import com.google.gerrit.extensions.common.ChangeInput;
 import com.google.gerrit.extensions.common.CommitInfo;
 import com.google.gerrit.extensions.common.MergePatchSetInput;
 import com.google.gerrit.extensions.common.RevisionInfo;
+import com.google.gerrit.server.project.ProjectCache;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
+@RunWith(JUnit4.class)
 public class DownstreamCreatorTest {
   private final String changeId = "testid";
   private final String changeProject = "testproject";
-  private final String changeBranch = "testbranch";
   private final String changeTopic = "testtopic";
   private final String changeSubject = "testmessage";
   private GerritApi gApiMock;
+  private ProjectCache projectCacheMock;
   private DownstreamCreator ds;
   private ConfigLoader configMock;
 
   @Before
   public void setUp() throws Exception {
     gApiMock = Mockito.mock(GerritApi.class, Mockito.RETURNS_DEEP_STUBS);
+    projectCacheMock = Mockito.mock(ProjectCache.class, Mockito.RETURNS_DEEP_STUBS);
     configMock = Mockito.mock(ConfigLoader.class);
-    ds = new DownstreamCreator(gApiMock, configMock);
+    ds = new DownstreamCreator(gApiMock, configMock, projectCacheMock);
   }
 
   private List<ChangeInfo> mockChangeInfoList(String upstreamBranch) {
@@ -70,7 +75,7 @@ public class DownstreamCreatorTest {
     ChangeInfo info = Mockito.mock(ChangeInfo.class);
     info._number = number;
     info.currentRevision = "info" + number;
-    info.revisions = Mockito.mock(Map.class);
+    info.revisions = new HashMap<>();
 
     RevisionInfo revisionInfoMock = Mockito.mock(RevisionInfo.class);
     CommitInfo commit = Mockito.mock(CommitInfo.class);
@@ -112,9 +117,9 @@ public class DownstreamCreatorTest {
     ArgumentCaptor<ChangeInput> changeInputCaptor = ArgumentCaptor.forClass(ChangeInput.class);
     Mockito.verify(gApiMock.changes()).create(changeInputCaptor.capture());
     ChangeInput changeInput = changeInputCaptor.getValue();
-    assertThat(changeProject).isEqualTo(changeInput.project);
-    assertThat("testds").isEqualTo(changeInput.branch);
-    assertThat(changeTopic).isEqualTo(changeInput.topic);
+    assertThat(changeInput.project).isEqualTo(changeProject);
+    assertThat(changeInput.branch).isEqualTo("testds");
+    assertThat(changeInput.topic).isEqualTo(changeTopic);
     assertThat(changeInput.merge.source).isEqualTo(currentRevision);
     assertThat(changeInput.merge.strategy).isEqualTo("recursive");
 
@@ -152,9 +157,9 @@ public class DownstreamCreatorTest {
     ArgumentCaptor<ChangeInput> changeInputCaptor = ArgumentCaptor.forClass(ChangeInput.class);
     Mockito.verify(gApiMock.changes()).create(changeInputCaptor.capture());
     ChangeInput changeInput = changeInputCaptor.getValue();
-    assertThat(changeProject).isEqualTo(changeInput.project);
-    assertThat("testds").isEqualTo(changeInput.branch);
-    assertThat(changeTopic).isEqualTo(changeInput.topic);
+    assertThat(changeInput.project).isEqualTo(changeProject);
+    assertThat(changeInput.branch).isEqualTo("testds");
+    assertThat(changeInput.topic).isEqualTo(changeTopic);
     assertThat(changeInput.merge.source).isEqualTo(currentRevision);
 
     // Check that it was actually skipped
