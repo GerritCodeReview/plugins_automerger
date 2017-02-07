@@ -30,7 +30,6 @@ import com.google.gerrit.extensions.common.MergeInput;
 import com.google.gerrit.extensions.common.MergePatchSetInput;
 import com.google.gerrit.extensions.common.RevisionInfo;
 import com.google.gerrit.extensions.events.ChangeAbandonedListener;
-import com.google.gerrit.extensions.events.ChangeMergedListener;
 import com.google.gerrit.extensions.events.ChangeRestoredListener;
 import com.google.gerrit.extensions.events.CommentAddedListener;
 import com.google.gerrit.extensions.events.DraftPublishedListener;
@@ -47,6 +46,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import org.eclipse.jgit.errors.ConfigInvalidException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -58,7 +58,6 @@ import org.slf4j.LoggerFactory;
  */
 public class DownstreamCreator
     implements ChangeAbandonedListener,
-        ChangeMergedListener,
         ChangeRestoredListener,
         CommentAddedListener,
         DraftPublishedListener,
@@ -76,24 +75,6 @@ public class DownstreamCreator
   }
 
   /**
-   * Updates the config in memory if the config project is updated.
-   *
-   * @param event Event we are listening to.
-   */
-  @Override
-  public void onChangeMerged(ChangeMergedListener.Event event) {
-    ChangeInfo change = event.getChange();
-    try {
-      if (change.project.equals(config.configProject)
-          && change.branch.equals(config.configProjectBranch)) {
-        loadConfig();
-      }
-    } catch (RestApiException | IOException e) {
-      log.error("Failed to reload config at {}", change.id, e);
-    }
-  }
-
-  /**
    * Abandons downstream changes if a change is abandoned.
    *
    * @param event Event we are listening to.
@@ -103,7 +84,11 @@ public class DownstreamCreator
     ChangeInfo change = event.getChange();
     String revision = event.getRevision().commit.commit;
     log.debug("Detected revision {} abandoned on {}.", revision, change.project);
-    abandonDownstream(change, revision);
+    try {
+      abandonDownstream(change, revision);
+    } catch (ConfigInvalidException e) {
+      log.error("Automerger plugin failed onChangeAbandoned for {}", change.id, e);
+    }
   }
 
   /**
@@ -119,7 +104,7 @@ public class DownstreamCreator
     Set<String> downstreamBranches;
     try {
       downstreamBranches = config.getDownstreamBranches(change.branch, change.project);
-    } catch (RestApiException | IOException e) {
+    } catch (RestApiException | IOException | ConfigInvalidException e) {
       log.error("Failed to edit downstream topics of {}", change.id, e);
       return;
     }
@@ -161,7 +146,7 @@ public class DownstreamCreator
     Set<String> downstreamBranches;
     try {
       downstreamBranches = config.getDownstreamBranches(change.branch, change.project);
-    } catch (RestApiException | IOException e) {
+    } catch (RestApiException | IOException | ConfigInvalidException e) {
       log.error("Failed to update downstream votes of {}", change.id, e);
       return;
     }
@@ -184,8 +169,8 @@ public class DownstreamCreator
             updateVote(downstreamChange, label.getKey(), label.getValue().value.shortValue());
           }
         }
-      } catch (RestApiException e) {
-        log.error("RestApiException when updating downstream votes of {}", change.id, e);
+      } catch (RestApiException | ConfigInvalidException e) {
+        log.error("Exception when updating downstream votes of {}", change.id, e);
       }
     }
   }
@@ -200,8 +185,8 @@ public class DownstreamCreator
     ChangeInfo change = event.getChange();
     try {
       automergeChanges(change, event.getRevision());
-    } catch (RestApiException | IOException e) {
-      log.error("Failed to edit downstream topics of {}", change.id, e);
+    } catch (RestApiException | IOException | ConfigInvalidException e) {
+      log.error("Automerger plugin failed onChangeRestored for {}", change.id, e);
     }
   }
 
@@ -215,8 +200,8 @@ public class DownstreamCreator
     ChangeInfo change = event.getChange();
     try {
       automergeChanges(change, event.getRevision());
-    } catch (RestApiException | IOException e) {
-      log.error("Failed to edit downstream topics of {}", change.id, e);
+    } catch (RestApiException | IOException | ConfigInvalidException e) {
+      log.error("Automerger plugin failed onDraftPublished for {}", change.id, e);
     }
   }
 
@@ -230,8 +215,8 @@ public class DownstreamCreator
     ChangeInfo change = event.getChange();
     try {
       automergeChanges(change, event.getRevision());
-    } catch (RestApiException | IOException e) {
-      log.error("Failed to edit downstream topics of {}", change.id, e);
+    } catch (RestApiException | IOException | ConfigInvalidException e) {
+      log.error("Automerger plugin failed onRevisionCreated for {}", change.id, e);
     }
   }
 
@@ -240,9 +225,10 @@ public class DownstreamCreator
    *
    * @param mdsMergeInput Input containing the downstream branch map and source change ID.
    * @throws RestApiException Throws if we fail a REST API call.
+   * @throws ConfigInvalidException Throws if we get a malformed configuration
    */
   public void createMergesAndHandleConflicts(MultipleDownstreamMergeInput mdsMergeInput)
-      throws RestApiException {
+      throws RestApiException, ConfigInvalidException {
     ReviewInput reviewInput = new ReviewInput();
     Map<String, Short> labels = new HashMap<String, Short>();
     short vote = 0;
@@ -274,9 +260,10 @@ public class DownstreamCreator
    * @param mdsMergeInput Input containing the downstream branch map and source change ID.
    * @throws RestApiException Throws if we fail a REST API call.
    * @throws FailedMergeException Throws if we get a merge conflict when merging downstream.
+   * @throws ConfigInvalidException Throws if we get a malformed config file
    */
   public void createDownstreamMerges(MultipleDownstreamMergeInput mdsMergeInput)
-      throws RestApiException, FailedMergeException {
+      throws RestApiException, FailedMergeException, ConfigInvalidException {
     Map<String, String> failedMerges = new HashMap<String, String>();
 
     List<Integer> existingDownstream;
@@ -406,17 +393,8 @@ public class DownstreamCreator
     gApi.changes().create(downstreamChangeInput);
   }
 
-  private void loadConfig() throws IOException, RestApiException {
-    try {
-      config.loadConfig();
-    } catch (IOException | RestApiException e) {
-      log.error("Config failed to sync!", e);
-      throw e;
-    }
-  }
-
   private void automergeChanges(ChangeInfo change, RevisionInfo revisionInfo)
-      throws RestApiException, IOException {
+      throws RestApiException, IOException, ConfigInvalidException {
     if (revisionInfo.draft != null && revisionInfo.draft) {
       log.debug("Patchset {} is draft change, ignoring.", revisionInfo.commit.commit);
       return;
@@ -456,7 +434,7 @@ public class DownstreamCreator
     createMergesAndHandleConflicts(mdsMergeInput);
   }
 
-  private void abandonDownstream(ChangeInfo change, String revision) {
+  private void abandonDownstream(ChangeInfo change, String revision) throws ConfigInvalidException {
     try {
       Set<String> downstreamBranches = config.getDownstreamBranches(change.branch, change.project);
       if (downstreamBranches.isEmpty()) {
@@ -477,7 +455,8 @@ public class DownstreamCreator
     }
   }
 
-  private void updateVote(ChangeInfo change, String label, short vote) throws RestApiException {
+  private void updateVote(ChangeInfo change, String label, short vote)
+      throws RestApiException, ConfigInvalidException {
     if (label.equals(config.getAutomergeLabel())) {
       log.debug("Not updating automerge label, as it blocks when there is a merge conflict.");
       return;

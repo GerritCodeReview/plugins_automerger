@@ -14,109 +14,116 @@
 
 package com.googlesource.gerrit.plugins.automerger;
 
-import com.google.common.base.Charsets;
-import com.google.common.io.CharStreams;
+import com.google.common.base.Joiner;
+import com.google.gerrit.extensions.annotations.PluginName;
 import com.google.gerrit.extensions.api.GerritApi;
 import com.google.gerrit.extensions.restapi.BinaryResult;
 import com.google.gerrit.extensions.restapi.ResourceNotFoundException;
 import com.google.gerrit.extensions.restapi.RestApiException;
+import com.google.gerrit.server.config.AllProjectsName;
+import com.google.gerrit.server.config.PluginConfigFactory;
+import com.google.gerrit.server.project.NoSuchProjectException;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.google.re2j.Pattern;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
+import org.eclipse.jgit.errors.ConfigInvalidException;
+import org.eclipse.jgit.lib.Config;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.yaml.snakeyaml.Yaml;
 
-/** Class to read the config and swap it out of memory if the config has changed. */
+/** Class to read the config. */
 @Singleton
 public class ConfigLoader {
   private static final Logger log = LoggerFactory.getLogger(ConfigLoader.class);
-  public final String configProject;
-  public final String configProjectBranch;
-  public final String configFilename;
-  public final List<String> configOptionKeys;
+  private static final String BRANCH_DELIMITER = ":";
 
-  protected GerritApi gApi;
-  private volatile LoadedConfig config;
+  private final GerritApi gApi;
+  private final String pluginName;
+  private final AllProjectsName allProjectsName;
+  private final PluginConfigFactory cfgFactory;
+  private Pattern blankMergePattern;
+  private Pattern alwaysBlankMergePattern;
 
   /**
-   * Read static configuration from config_keys.yaml and try to load initial dynamic configuration.
-   *
-   * <p>If loading dynamic configuration fails, logs and treats configuration as empty. Callers can
-   * call {@link loadConfig} to retry.
+   * Read config from plugin project.
    *
    * @param gApi API to access gerrit information.
-   * @throws IOException if reading config_keys.yaml failed
    */
   @Inject
-  public ConfigLoader(GerritApi gApi) throws IOException, RestApiException {
+  public ConfigLoader(
+      GerritApi gApi,
+      AllProjectsName allProjectsName,
+      @PluginName String pluginName,
+      PluginConfigFactory cfgFactory) {
     this.gApi = gApi;
+    this.pluginName = pluginName;
+    this.cfgFactory = cfgFactory;
+    this.allProjectsName = allProjectsName;
+  }
 
-    String configKeysPath = "/config/config_keys.yaml";
-    try (InputStreamReader streamReader =
-        new InputStreamReader(getClass().getResourceAsStream(configKeysPath), Charsets.UTF_8)) {
-
-      String automergerConfigYamlString = CharStreams.toString(streamReader);
-      Map<String, Object> automergerConfig =
-          (Map<String, Object>) (new Yaml().load(automergerConfigYamlString));
-      configProject = (String) automergerConfig.get("config_project");
-      configProjectBranch = (String) automergerConfig.get("config_project_branch");
-      configFilename = (String) automergerConfig.get("config_filename");
-      configOptionKeys = (List<String>) automergerConfig.get("config_option_keys");
-
-      loadConfig();
+  private Config getConfig() throws ConfigInvalidException {
+    try {
+      return cfgFactory.getProjectPluginConfig(allProjectsName, pluginName);
+    } catch (NoSuchProjectException e) {
+      throw new ConfigInvalidException(
+          "Config invalid because " + allProjectsName.get() + " does not exist!");
     }
   }
 
   /**
-   * Swap out the current config for a new, up to date config.
-   *
-   * @throws IOException
-   * @throws RestApiException
-   */
-  public void loadConfig() throws IOException, RestApiException {
-    config =
-        new LoadedConfig(
-            gApi, configProject, configProjectBranch, configFilename, configOptionKeys);
-  }
-
-  /**
-   * Detects whether to skip a change based on the configuration. ( )
+   * Detects whether to skip a change based on the configuration.
    *
    * @param fromBranch Branch we are merging from.
    * @param toBranch Branch we are merging to.
    * @param commitMessage Commit message of the change.
    * @return True if we match blank_merge_regex and merge_all is false, or we match
    *     always_blank_merge_regex
+   * @throws ConfigInvalidException
    */
-  public boolean isSkipMerge(String fromBranch, String toBranch, String commitMessage) {
-    return config.isSkipMerge(fromBranch, toBranch, commitMessage);
+  public boolean isSkipMerge(String fromBranch, String toBranch, String commitMessage)
+      throws ConfigInvalidException {
+    alwaysBlankMergePattern = getConfigPattern("alwaysBlankMerge");
+    if (alwaysBlankMergePattern.matches(commitMessage)) {
+      return true;
+    }
+
+    blankMergePattern = getConfigPattern("blankMerge");
+    // If regex matches blank_merge (DO NOT MERGE), skip iff merge_all is false
+    if (blankMergePattern.matches(commitMessage)) {
+      return !getMergeAll(fromBranch, toBranch);
+    }
+    return false;
   }
 
-  /**
-   * Get the merge configuration for a pair of branches.
-   *
-   * @param fromBranch Branch we are merging from.
-   * @param toBranch Branch we are merging to.
-   * @return The configuration for the given input.
-   */
-  public Map<String, Object> getConfig(String fromBranch, String toBranch) {
-    return config.getMergeConfig(fromBranch, toBranch);
+  private Pattern getConfigPattern(String key) throws ConfigInvalidException {
+    // TODO(stephenli): MAKE SURE THAT Pattern.compile of empty doesn't match everything
+    String[] patternList = getConfig().getStringList("global", null, key);
+    Set<String> mergeStrings = new HashSet<>(Arrays.asList(patternList));
+    return Pattern.compile(Joiner.on("|").join(mergeStrings), Pattern.DOTALL);
+  }
+
+  private boolean getMergeAll(String fromBranch, String toBranch) throws ConfigInvalidException {
+    return getConfig()
+        .getBoolean("automerger", fromBranch + BRANCH_DELIMITER + toBranch, "mergeAll", false);
   }
 
   /**
    * Returns the name of the automerge label (i.e. the label to vote -1 if we have a merge conflict)
    *
    * @return Returns the name of the automerge label.
+   * @throws ConfigInvalidException
    */
-  public String getAutomergeLabel() {
-    return config.getAutomergeLabel();
+  public String getAutomergeLabel() throws ConfigInvalidException {
+    String automergeLabel = getConfig().getString("global", null, "automergeLabel");
+    if (automergeLabel == null) {
+      return "Verified";
+    }
+    return automergeLabel;
   }
 
   /**
@@ -127,29 +134,13 @@ public class ConfigLoader {
    * @return The projects that are in scope of the given projects.
    * @throws RestApiException
    * @throws IOException
+   * @throws ConfigInvalidException
    */
   public Set<String> getProjectsInScope(String fromBranch, String toBranch)
-      throws RestApiException, IOException {
+      throws RestApiException, IOException, ConfigInvalidException {
     try {
-      Set<String> projectSet = new HashSet<String>();
-
-      Set<String> fromProjectSet = getManifestProjects(fromBranch);
-      projectSet.addAll(fromProjectSet);
-
-      Set<String> toProjectSet = getManifestProjects(fromBranch, toBranch);
-      // Take intersection of project sets, unless one is empty.
-      if (projectSet.isEmpty()) {
-        projectSet = toProjectSet;
-      } else if (!toProjectSet.isEmpty()) {
-        projectSet.retainAll(toProjectSet);
-      }
-
-      // The lower the level a config is applied, the higher priority it has
-      // For example, a project ignored in the global config but added in the branch config will
-      // be added to the final project set, not ignored
-      applyConfig(projectSet, config.getGlobal());
-      applyConfig(projectSet, config.getMergeConfig(fromBranch));
-      applyConfig(projectSet, config.getMergeConfig(fromBranch, toBranch));
+      Set<String> projectSet = getManifestProjects(fromBranch, toBranch);
+      projectSet = applyConfig(fromBranch, toBranch, projectSet);
 
       log.debug("Project set for {} to {} is {}", fromBranch, toBranch, projectSet);
       return projectSet;
@@ -167,20 +158,24 @@ public class ConfigLoader {
    * @return The branches downstream of the given branch for the given project.
    * @throws RestApiException
    * @throws IOException
+   * @throws ConfigInvalidException
    */
   public Set<String> getDownstreamBranches(String fromBranch, String project)
-      throws RestApiException, IOException {
+      throws RestApiException, IOException, ConfigInvalidException {
     Set<String> downstreamBranches = new HashSet<String>();
-    Map<String, Object> fromBranchConfig = config.getMergeConfig(fromBranch);
-
-    if (fromBranchConfig != null) {
-      for (String key : fromBranchConfig.keySet()) {
-        if (!configOptionKeys.contains(key)) {
-          // If it's not a config option, then the key is the toBranch
-          Set<String> projectsInScope = getProjectsInScope(fromBranch, key);
-          if (projectsInScope.contains(project)) {
-            downstreamBranches.add(key);
-          }
+    // List all subsections of automerger, split by :
+    Set<String> subsections = getConfig().getSubsections(pluginName);
+    for (String subsection : subsections) {
+      // Subsections are of the form "fromBranch:toBranch"
+      String[] branchPair = subsection.split(Pattern.quote(BRANCH_DELIMITER));
+      if (branchPair.length != 2) {
+        throw new ConfigInvalidException("Automerger config branch pair malformed: " + subsection);
+      }
+      if (fromBranch.equals(branchPair[0])) {
+        // If fromBranches match, check if project is in both their manifests
+        Set<String> projectsInScope = getProjectsInScope(branchPair[0], branchPair[1]);
+        if (projectsInScope.contains(project)) {
+          downstreamBranches.add(branchPair[1]);
         }
       }
     }
@@ -188,40 +183,50 @@ public class ConfigLoader {
   }
 
   // Returns overriden manifest config if specified, default if not
-  private Map<String, String> getManifestInfoFromConfig(Map<String, Object> configMap) {
-    if (configMap.containsKey("manifest")) {
-      return (Map<String, String>) configMap.get("manifest");
+  private String getManifestFile() throws ConfigInvalidException {
+    String manifestFile = getConfig().getString("global", null, "manifestFile");
+    if (manifestFile == null) {
+      throw new ConfigInvalidException("manifestFile not specified.");
     }
-    return config.getDefaultManifestInfo();
+    return manifestFile;
   }
 
-  // Returns contents of manifest file for the given branch.
-  // If manifest does not exist, return empty set.
-  private Set<String> getManifestProjects(String fromBranch) throws RestApiException, IOException {
-    Map<String, Object> fromBranchConfig = config.getMergeConfig(fromBranch);
-    if (fromBranchConfig == null) {
-      return new HashSet<>();
+  // Returns overriden manifest config if specified, default if not
+  private String getManifestProject() throws ConfigInvalidException {
+    String manifestProject = getConfig().getString("global", null, "manifestProject");
+    if (manifestProject == null) {
+      throw new ConfigInvalidException("manifestProject not specified.");
     }
-    Map<String, String> manifestProjectInfo = getManifestInfoFromConfig(fromBranchConfig);
-    return getManifestProjectsForBranch(manifestProjectInfo, fromBranch);
+    return manifestProject;
   }
 
   // Returns contents of manifest file for the given branch pair
   // If manifest does not exist, return empty set.
   private Set<String> getManifestProjects(String fromBranch, String toBranch)
-      throws RestApiException, IOException {
-    Map<String, Object> toBranchConfig = config.getMergeConfig(fromBranch, toBranch);
-    if (toBranchConfig == null) {
-      return new HashSet<>();
+      throws RestApiException, IOException, ConfigInvalidException {
+    boolean ignoreSourceManifest =
+        getConfig()
+            .getBoolean(
+                "automerger",
+                fromBranch + BRANCH_DELIMITER + toBranch,
+                "ignoreSourceManifest",
+                false);
+
+    Set<String> toProjects =
+        getProjectsInManifest(getManifestProject(), getManifestFile(), toBranch);
+    if (ignoreSourceManifest) {
+      return toProjects;
     }
-    Map<String, String> manifestProjectInfo = getManifestInfoFromConfig(toBranchConfig);
-    return getManifestProjectsForBranch(manifestProjectInfo, toBranch);
+
+    Set<String> fromProjects =
+        getProjectsInManifest(getManifestProject(), getManifestFile(), fromBranch);
+    fromProjects.retainAll(toProjects);
+    return fromProjects;
   }
 
-  private Set<String> getManifestProjectsForBranch(
-      Map<String, String> manifestProjectInfo, String branch) throws RestApiException, IOException {
-    String manifestProject = manifestProjectInfo.get("project");
-    String manifestFile = manifestProjectInfo.get("file");
+  private Set<String> getProjectsInManifest(
+      String manifestProject, String manifestFile, String branch)
+      throws RestApiException, IOException {
     try {
       BinaryResult manifestConfig =
           gApi.projects().name(manifestProject).branch(branch).file(manifestFile);
@@ -233,24 +238,32 @@ public class ConfigLoader {
     }
   }
 
-  private void applyConfig(Set<String> projects, Map<String, Object> givenConfig) {
-    if (givenConfig == null) {
-      return;
-    }
-    if (givenConfig.containsKey("set_projects")) {
-      List<String> setProjects = (ArrayList<String>) givenConfig.get("set_projects");
+  private Set<String> applyConfig(String fromBranch, String toBranch, Set<String> inputProjects)
+      throws ConfigInvalidException {
+    Set<String> projects = new HashSet<>(inputProjects);
+    List<String> setProjects =
+        Arrays.asList(
+            getConfig()
+                .getStringList(
+                    "automerger", fromBranch + BRANCH_DELIMITER + toBranch, "setProjects"));
+    if (!setProjects.isEmpty()) {
       projects.clear();
       projects.addAll(setProjects);
       // if we set projects we can ignore the rest
-      return;
+      return projects;
     }
-    if (givenConfig.containsKey("add_projects")) {
-      List<String> addProjects = (List<String>) givenConfig.get("add_projects");
-      projects.addAll(addProjects);
-    }
-    if (givenConfig.containsKey("ignore_projects")) {
-      List<String> ignoreProjects = (List<String>) givenConfig.get("ignore_projects");
-      projects.removeAll(ignoreProjects);
-    }
+    List<String> addProjects =
+        Arrays.asList(
+            getConfig()
+                .getStringList(
+                    "automerger", fromBranch + BRANCH_DELIMITER + toBranch, "addProjects"));
+    projects.addAll(addProjects);
+    List<String> ignoreProjects =
+        Arrays.asList(
+            getConfig()
+                .getStringList(
+                    "automerger", fromBranch + BRANCH_DELIMITER + toBranch, "ignoreProjects"));
+    projects.removeAll(ignoreProjects);
+    return projects;
   }
 }
