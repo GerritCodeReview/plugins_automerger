@@ -10,3 +10,4 @@
 .buckversion
 .watchmanconfig
 /eclipse-out
+bin/
