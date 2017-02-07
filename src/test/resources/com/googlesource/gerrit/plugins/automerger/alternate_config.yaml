@@ -19,6 +19,8 @@ branches:
       set_projects:
       - platform/some/project
 global:
+  always_blank_merge:
+  - .*BLANK ANYWHERE.*
   blank_merge:
   - .*DO NOT MERGE.*
   manifest:
