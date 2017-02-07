@@ -20,6 +20,8 @@ import com.google.gerrit.extensions.api.GerritApi;
 import com.google.gerrit.extensions.restapi.BinaryResult;
 import com.google.gerrit.extensions.restapi.ResourceNotFoundException;
 import com.google.gerrit.extensions.restapi.RestApiException;
+import com.google.gerrit.reviewdb.client.Project;
+import com.google.gerrit.server.project.ProjectCache;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import java.io.IOException;
@@ -29,6 +31,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import org.eclipse.jgit.lib.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.yaml.snakeyaml.Yaml;
@@ -43,6 +46,8 @@ public class ConfigLoader {
   public final List<String> configOptionKeys;
 
   protected GerritApi gApi;
+  private ProjectCache projectCache;
+  private ObjectId currentConfigObjectId = null;
   private volatile LoadedConfig config;
 
   /**
@@ -55,8 +60,9 @@ public class ConfigLoader {
    * @throws IOException if reading config_keys.yaml failed
    */
   @Inject
-  public ConfigLoader(GerritApi gApi) throws IOException, RestApiException {
+  public ConfigLoader(GerritApi gApi, ProjectCache projectCache) throws IOException, RestApiException {
     this.gApi = gApi;
+    this.projectCache = projectCache;
 
     String configKeysPath = "/config/config_keys.yaml";
     try (InputStreamReader streamReader =
@@ -80,9 +86,11 @@ public class ConfigLoader {
    * @throws RestApiException
    */
   public void loadConfig() throws IOException, RestApiException {
-    config =
-        new LoadedConfig(
-            gApi, configProject, configProjectBranch, configFilename, configOptionKeys);
+    if (configExpired()) {
+      config =
+          new LoadedConfig(gApi, configProject, configProjectBranch, configFilename,
+                              configOptionKeys);
+    }
   }
 
   /**
@@ -91,10 +99,14 @@ public class ConfigLoader {
    * @param fromBranch Branch we are merging from.
    * @param toBranch Branch we are merging to.
    * @param commitMessage Commit message of the change.
+   * @throws IOException
+   * @throws RestApiException
    * @return True if we match blank_merge_regex and merge_all is false, or we match
    *     always_blank_merge_regex
    */
-  public boolean isSkipMerge(String fromBranch, String toBranch, String commitMessage) {
+  public boolean isSkipMerge(String fromBranch, String toBranch, String commitMessage)
+      throws IOException, RestApiException {
+    loadConfig();
     return config.isSkipMerge(fromBranch, toBranch, commitMessage);
   }
 
@@ -103,18 +115,25 @@ public class ConfigLoader {
    *
    * @param fromBranch Branch we are merging from.
    * @param toBranch Branch we are merging to.
+   * @throws IOException
+   * @throws RestApiException
    * @return The configuration for the given input.
    */
-  public Map<String, Object> getConfig(String fromBranch, String toBranch) {
+  public Map<String, Object> getConfig(String fromBranch, String toBranch)
+      throws IOException, RestApiException {
+    loadConfig();
     return config.getMergeConfig(fromBranch, toBranch);
   }
 
   /**
    * Returns the name of the automerge label (i.e. the label to vote -1 if we have a merge conflict)
    *
+   * @throws IOException
+   * @throws RestApiException
    * @return Returns the name of the automerge label.
    */
-  public String getAutomergeLabel() {
+  public String getAutomergeLabel() throws IOException, RestApiException {
+    loadConfig();
     return config.getAutomergeLabel();
   }
 
@@ -129,6 +148,7 @@ public class ConfigLoader {
    */
   public Set<String> getProjectsInScope(String fromBranch, String toBranch)
       throws RestApiException, IOException {
+    loadConfig();
     try {
       Set<String> projectSet = new HashSet<String>();
 
@@ -169,6 +189,7 @@ public class ConfigLoader {
    */
   public Set<String> getDownstreamBranches(String fromBranch, String project)
       throws RestApiException, IOException {
+    loadConfig();
     Set<String> downstreamBranches = new HashSet<String>();
     Map<String, Map> fromBranchConfig = config.getMergeConfig(fromBranch);
 
@@ -184,6 +205,12 @@ public class ConfigLoader {
       }
     }
     return downstreamBranches;
+  }
+
+  private boolean configExpired() throws IOException {
+    ObjectId configObjectId = projectCache.checkedGet(new Project.NameKey(
+        configProject)).getConfig(configFilename).getRevision();
+    return !configObjectId.equals(currentConfigObjectId);
   }
 
   // Returns overriden manifest config if specified, default if not
