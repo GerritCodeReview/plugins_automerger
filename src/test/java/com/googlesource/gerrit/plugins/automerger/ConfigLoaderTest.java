@@ -14,34 +14,42 @@
 
 package com.googlesource.gerrit.plugins.automerger;
 
+import static com.google.common.truth.Truth.assertThat;
+
 import com.google.common.base.Charsets;
 import com.google.common.io.CharStreams;
 import com.google.gerrit.extensions.api.GerritApi;
 import com.google.gerrit.extensions.restapi.RestApiException;
-import org.junit.Before;
-import org.junit.Test;
-import org.mockito.Mockito;
-
+import com.google.gerrit.reviewdb.client.Project;
+import com.google.gerrit.server.config.AllProjectsName;
+import com.google.gerrit.server.project.ProjectCache;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.HashSet;
 import java.util.Set;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
+import org.mockito.Mockito;
 
-import static com.google.common.truth.Truth.assertThat;
-
+@RunWith(JUnit4.class)
 public class ConfigLoaderTest {
   protected GerritApi gApiMock;
+  private ProjectCache projectCacheMock;
   private ConfigLoader configLoader;
-  private String configString;
-  private String manifestString;
-  private String firstDownstreamManifestString;
-  private String secondDownstreamManifestString;
+  private AllProjectsName allProjectsName;
 
   @Before
   public void setUp() throws Exception {
     gApiMock = Mockito.mock(GerritApi.class, Mockito.RETURNS_DEEP_STUBS);
-    mockFile("config.yaml", "tools/automerger", "master", "config.yaml");
+    projectCacheMock = Mockito.mock(ProjectCache.class, Mockito.RETURNS_DEEP_STUBS);
+    Mockito.when(projectCacheMock.checkedGet(Mockito.any(Project.NameKey.class)).getConfig()
+        .getRevision().toString()).thenReturn("fakesha1");
+    allProjectsName = new AllProjectsName("All-Projects");
+    mockFile("automerger_config.yaml", "All-Projects", "refs/meta/config",
+        "automerger_config.yaml");
     mockFile("default.xml", "platform/manifest", "master", "default.xml");
     mockFile("ds_one.xml", "platform/manifest", "ds_one", "default.xml");
     mockFile("ds_two.xml", "platform/manifest", "ds_two", "default.xml");
@@ -51,14 +59,14 @@ public class ConfigLoaderTest {
       throws Exception {
     try (InputStream in = getClass().getResourceAsStream(resourceName)) {
       String resourceString = CharStreams.toString(new InputStreamReader(in, Charsets.UTF_8));
-      Mockito.when(
-              gApiMock.projects().name(projectName).branch(branchName).file(filename).asString())
+      Mockito
+          .when(gApiMock.projects().name(projectName).branch(branchName).file(filename).asString())
           .thenReturn(resourceString);
     }
   }
 
   private void loadConfig() throws Exception {
-    configLoader = new ConfigLoader(gApiMock);
+    configLoader = new ConfigLoader(gApiMock, projectCacheMock, allProjectsName);
   }
 
   @Test
@@ -104,8 +112,8 @@ public class ConfigLoaderTest {
   public void isSkipMergeTest_alwaysBlankMerge() throws Exception {
     loadConfig();
     assertThat(
-            configLoader.isSkipMerge("master", "ds_one", "test test \n \n DO NOT MERGE ANYWHERE"))
-        .isTrue();
+        configLoader.isSkipMerge("master", "ds_one", "test test \n \n DO NOT MERGE ANYWHERE"))
+            .isTrue();
   }
 
   @Test
@@ -127,16 +135,9 @@ public class ConfigLoaderTest {
 
   @Test(expected = IOException.class)
   public void downstreamBranchesTest_IOException() throws Exception {
-    Mockito.when(
-            gApiMock
-                .projects()
-                .name("platform/manifest")
-                .branch("master")
-                .file("default.xml")
-                .asString())
-        .thenThrow(new IOException("!"));
+    Mockito.when(gApiMock.projects().name("platform/manifest").branch("master").file("default.xml")
+        .asString()).thenThrow(new IOException("!"));
     loadConfig();
-    Set<String> expectedBranches = new HashSet<String>();
 
     configLoader.getDownstreamBranches("master", "platform/some/project");
   }
