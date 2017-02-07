@@ -34,13 +34,15 @@ import java.util.List;
 import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
+@RunWith(JUnit4.class)
 public class DownstreamCreatorTest {
   private final String changeId = "testid";
   private final String changeProject = "testproject";
-  private final String changeBranch = "testbranch";
   private final String changeTopic = "testtopic";
   private final String changeSubject = "testmessage";
   private GerritApi gApiMock;
@@ -70,15 +72,14 @@ public class DownstreamCreatorTest {
     ChangeInfo info = Mockito.mock(ChangeInfo.class);
     info._number = number;
     info.currentRevision = "info" + number;
-    info.revisions = Mockito.mock(Map.class);
+    info.revisions = new HashMap<>();
 
     RevisionInfo revisionInfoMock = Mockito.mock(RevisionInfo.class);
     CommitInfo commit = Mockito.mock(CommitInfo.class);
     commit.parents = ImmutableList.of(parent1, parent2);
     revisionInfoMock.commit = commit;
 
-    Mockito.when(info.revisions.get(info.currentRevision)).thenReturn(revisionInfoMock);
-
+    info.revisions.put(info.currentRevision, revisionInfoMock);
     return info;
   }
 
@@ -112,9 +113,9 @@ public class DownstreamCreatorTest {
     ArgumentCaptor<ChangeInput> changeInputCaptor = ArgumentCaptor.forClass(ChangeInput.class);
     Mockito.verify(gApiMock.changes()).create(changeInputCaptor.capture());
     ChangeInput changeInput = changeInputCaptor.getValue();
-    assertThat(changeProject).isEqualTo(changeInput.project);
-    assertThat("testds").isEqualTo(changeInput.branch);
-    assertThat(changeTopic).isEqualTo(changeInput.topic);
+    assertThat(changeInput.project).isEqualTo(changeProject);
+    assertThat(changeInput.branch).isEqualTo("testds");
+    assertThat(changeInput.topic).isEqualTo(changeTopic);
     assertThat(changeInput.merge.source).isEqualTo(currentRevision);
     assertThat(changeInput.merge.strategy).isEqualTo("recursive");
 
@@ -152,9 +153,9 @@ public class DownstreamCreatorTest {
     ArgumentCaptor<ChangeInput> changeInputCaptor = ArgumentCaptor.forClass(ChangeInput.class);
     Mockito.verify(gApiMock.changes()).create(changeInputCaptor.capture());
     ChangeInput changeInput = changeInputCaptor.getValue();
-    assertThat(changeProject).isEqualTo(changeInput.project);
-    assertThat("testds").isEqualTo(changeInput.branch);
-    assertThat(changeTopic).isEqualTo(changeInput.topic);
+    assertThat(changeInput.project).isEqualTo(changeProject);
+    assertThat(changeInput.branch).isEqualTo("testds");
+    assertThat(changeInput.topic).isEqualTo(changeTopic);
     assertThat(changeInput.merge.source).isEqualTo(currentRevision);
 
     // Check that it was actually skipped
