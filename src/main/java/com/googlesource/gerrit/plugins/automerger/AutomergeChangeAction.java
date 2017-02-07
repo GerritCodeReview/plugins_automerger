@@ -26,6 +26,7 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 import java.io.IOException;
 import java.util.Map;
+import org.eclipse.jgit.errors.ConfigInvalidException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -53,12 +54,14 @@ class AutomergeChangeAction
    * @param rev RevisionResource of the change whose page we are clicking the button.
    * @param input A map of branch to whether or not the merge should be "-s ours".
    * @return HTTP 200 on success.
+   * @throws IOException
    * @throws RestApiException
    * @throws FailedMergeException
+   * @throws ConfigInvalidException
    */
   @Override
   public Object apply(RevisionResource rev, Input input)
-      throws RestApiException, FailedMergeException {
+      throws IOException, RestApiException, FailedMergeException, ConfigInvalidException {
     Map<String, Boolean> branchMap = input.branchMap;
 
     Change change = rev.getChange();
@@ -101,7 +104,7 @@ class AutomergeChangeAction
       } else {
         desc = desc.setVisible(user.get() instanceof IdentifiedUser);
       }
-    } catch (RestApiException | IOException e) {
+    } catch (RestApiException | IOException | ConfigInvalidException e) {
       log.error("Failed to recreate automerges for {} on {}", project, branch);
       desc = desc.setVisible(false);
     }
