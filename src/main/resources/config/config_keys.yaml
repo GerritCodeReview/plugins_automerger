@@ -1,6 +1,4 @@
-config_project: tools/automerger
-config_project_branch: master
-config_filename: config.yaml
+config_filename: automerger_config.yaml
 global_keys:
 - always_blank_merge
 - blank_merge
