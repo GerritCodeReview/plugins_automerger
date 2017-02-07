@@ -28,6 +28,7 @@ import com.google.gerrit.extensions.common.ChangeInput;
 import com.google.gerrit.extensions.common.CommitInfo;
 import com.google.gerrit.extensions.common.MergePatchSetInput;
 import com.google.gerrit.extensions.common.RevisionInfo;
+import com.google.gerrit.server.project.ProjectCache;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
@@ -44,14 +45,16 @@ public class DownstreamCreatorTest {
   private final String changeTopic = "testtopic";
   private final String changeSubject = "testmessage";
   private GerritApi gApiMock;
+  private ProjectCache projectCacheMock;
   private DownstreamCreator ds;
   private ConfigLoader configMock;
 
   @Before
   public void setUp() throws Exception {
     gApiMock = Mockito.mock(GerritApi.class, Mockito.RETURNS_DEEP_STUBS);
+    projectCacheMock = Mockito.mock(ProjectCache.class, Mockito.RETURNS_DEEP_STUBS);
     configMock = Mockito.mock(ConfigLoader.class);
-    ds = new DownstreamCreator(gApiMock, configMock);
+    ds = new DownstreamCreator(gApiMock, configMock, projectCacheMock);
   }
 
   private List<ChangeInfo> mockChangeInfoList(String upstreamBranch) {
@@ -241,3 +244,4 @@ public class DownstreamCreatorTest {
     assertThat(downstreamChangeNumbers).containsExactly(1, 3).inOrder();
   }
 }
+
