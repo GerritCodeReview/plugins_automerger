@@ -18,6 +18,7 @@ import com.google.common.base.Charsets;
 import com.google.common.io.CharStreams;
 import com.google.gerrit.extensions.api.GerritApi;
 import com.google.gerrit.extensions.restapi.RestApiException;
+import com.google.gerrit.server.project.ProjectCache;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -32,16 +33,15 @@ import static com.google.common.truth.Truth.assertThat;
 
 public class ConfigLoaderTest {
   protected GerritApi gApiMock;
+  private ProjectCache projectCacheMock;
   private ConfigLoader configLoader;
-  private String configString;
-  private String manifestString;
-  private String firstDownstreamManifestString;
-  private String secondDownstreamManifestString;
 
   @Before
   public void setUp() throws Exception {
     gApiMock = Mockito.mock(GerritApi.class, Mockito.RETURNS_DEEP_STUBS);
-    mockFile("config.yaml", "tools/automerger", "master", "config.yaml");
+    projectCacheMock = Mockito.mock(ProjectCache.class, Mockito.RETURNS_DEEP_STUBS);
+    mockFile(
+        "automerger_config.yaml", "All-Projects", "refs/meta/config", "automerger_config.yaml");
     mockFile("default.xml", "platform/manifest", "master", "default.xml");
     mockFile("ds_one.xml", "platform/manifest", "ds_one", "default.xml");
     mockFile("ds_two.xml", "platform/manifest", "ds_two", "default.xml");
@@ -58,7 +58,7 @@ public class ConfigLoaderTest {
   }
 
   private void loadConfig() throws Exception {
-    configLoader = new ConfigLoader(gApiMock);
+    configLoader = new ConfigLoader(gApiMock, projectCacheMock);
   }
 
   @Test
@@ -136,7 +136,6 @@ public class ConfigLoaderTest {
                 .asString())
         .thenThrow(new IOException("!"));
     loadConfig();
-    Set<String> expectedBranches = new HashSet<String>();
 
     configLoader.getDownstreamBranches("master", "platform/some/project");
   }
