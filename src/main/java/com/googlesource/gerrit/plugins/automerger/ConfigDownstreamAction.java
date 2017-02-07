@@ -14,6 +14,7 @@
 
 package com.googlesource.gerrit.plugins.automerger;
 
+import com.google.gerrit.extensions.restapi.ResourceConflictException;
 import com.google.gerrit.extensions.restapi.DefaultInput;
 import com.google.gerrit.extensions.restapi.Response;
 import com.google.gerrit.extensions.restapi.RestApiException;
@@ -24,6 +25,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import org.eclipse.jgit.errors.ConfigInvalidException;
 
 /** The logic behind auto-filling the branch map, aka the input to AutomergeChangeAction. */
 class ConfigDownstreamAction
@@ -57,13 +59,18 @@ class ConfigDownstreamAction
     String branchName = rev.getChange().getDest().getShortName();
     String projectName = rev.getProject().get();
 
-    Set<String> downstreamBranches = config.getDownstreamBranches(branchName, projectName);
-    Map<String, Boolean> downstreamMap = new HashMap<>();
-    for (String downstreamBranch : downstreamBranches) {
-      boolean isSkipMerge = config.isSkipMerge(branchName, downstreamBranch, input.subject);
-      downstreamMap.put(downstreamBranch, !isSkipMerge);
+    try {
+      Set<String> downstreamBranches = config.getDownstreamBranches(branchName, projectName);
+      Map<String, Boolean> downstreamMap = new HashMap<>();
+      for (String downstreamBranch : downstreamBranches) {
+        boolean isSkipMerge = config.isSkipMerge(branchName, downstreamBranch, input.subject);
+        downstreamMap.put(downstreamBranch, !isSkipMerge);
+      }
+      return Response.created(downstreamMap);
+    } catch (ConfigInvalidException e) {
+      throw new ResourceConflictException(
+          "Automerger configuration file is invalid: " + e.getMessage());
     }
-    return Response.created(downstreamMap);
   }
 
   static class Input {

@@ -17,7 +17,6 @@ package com.googlesource.gerrit.plugins.automerger;
 import static com.google.gerrit.server.change.RevisionResource.REVISION_KIND;
 
 import com.google.gerrit.extensions.events.ChangeAbandonedListener;
-import com.google.gerrit.extensions.events.ChangeMergedListener;
 import com.google.gerrit.extensions.events.ChangeRestoredListener;
 import com.google.gerrit.extensions.events.CommentAddedListener;
 import com.google.gerrit.extensions.events.DraftPublishedListener;
@@ -36,7 +35,6 @@ public class AutomergerModule extends AbstractModule {
   protected void configure() {
     DynamicSet.bind(binder(), CommentAddedListener.class).to(DownstreamCreator.class);
     DynamicSet.bind(binder(), ChangeAbandonedListener.class).to(DownstreamCreator.class);
-    DynamicSet.bind(binder(), ChangeMergedListener.class).to(DownstreamCreator.class);
     DynamicSet.bind(binder(), ChangeRestoredListener.class).to(DownstreamCreator.class);
     DynamicSet.bind(binder(), DraftPublishedListener.class).to(DownstreamCreator.class);
     DynamicSet.bind(binder(), RevisionCreatedListener.class).to(DownstreamCreator.class);
