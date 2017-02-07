@@ -13,7 +13,6 @@ gerrit_plugin(
     resources = glob(["src/main/resources/**/*"]),
     deps = [
         "@re2j//jar",
-        "@yaml//jar",
     ],
 )
 
