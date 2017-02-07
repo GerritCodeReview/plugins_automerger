@@ -20,6 +20,8 @@ import com.google.gerrit.extensions.api.GerritApi;
 import com.google.gerrit.extensions.restapi.BinaryResult;
 import com.google.gerrit.extensions.restapi.ResourceNotFoundException;
 import com.google.gerrit.extensions.restapi.RestApiException;
+import com.google.gerrit.reviewdb.client.Project;
+import com.google.gerrit.server.project.ProjectCache;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import java.io.IOException;
@@ -28,7 +30,9 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
+import org.eclipse.jgit.lib.ObjectId;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.yaml.snakeyaml.Yaml;
@@ -37,26 +41,31 @@ import org.yaml.snakeyaml.Yaml;
 @Singleton
 public class ConfigLoader {
   private static final Logger log = LoggerFactory.getLogger(ConfigLoader.class);
-  public final String configProject;
-  public final String configProjectBranch;
+  public static final String configProject = "All-Projects";
+  public static final String configProjectBranch = "refs/meta/config";
   public final String configFilename;
   public final List<String> configOptionKeys;
 
   protected GerritApi gApi;
-  private volatile LoadedConfig config;
+  private final ProjectCache projectCache;
+  private final ObjectId currentConfigObjectId = null;
+  private volatile LoadedConfig lastLoadedConfig;
 
   /**
    * Read static configuration from config_keys.yaml and try to load initial dynamic configuration.
    *
-   * <p>If loading dynamic configuration fails, logs and treats configuration as empty. Callers can
+   * <p>
+   * If loading dynamic configuration fails, logs and treats configuration as empty. Callers can
    * call {@link loadConfig} to retry.
    *
    * @param gApi API to access gerrit information.
    * @throws IOException if reading config_keys.yaml failed
    */
   @Inject
-  public ConfigLoader(GerritApi gApi) throws IOException, RestApiException {
+  public ConfigLoader(GerritApi gApi, ProjectCache projectCache)
+      throws IOException, RestApiException {
     this.gApi = gApi;
+    this.projectCache = projectCache;
 
     String configKeysPath = "/config/config_keys.yaml";
     try (InputStreamReader streamReader =
@@ -65,25 +74,24 @@ public class ConfigLoader {
       String automergerConfigYamlString = CharStreams.toString(streamReader);
       Map<String, Object> automergerConfig =
           (Map<String, Object>) (new Yaml().load(automergerConfigYamlString));
-      configProject = (String) automergerConfig.get("config_project");
-      configProjectBranch = (String) automergerConfig.get("config_project_branch");
       configFilename = (String) automergerConfig.get("config_filename");
       configOptionKeys = (List<String>) automergerConfig.get("config_option_keys");
-
-      loadConfig();
     }
   }
 
   /**
-   * Swap out the current config for a new, up to date config.
+   * Swap out the current config for a new, up to date config. This may be a no-op if the last
+   * loaded config is still up to date.
    *
    * @throws IOException
    * @throws RestApiException
    */
-  public void loadConfig() throws IOException, RestApiException {
-    config =
-        new LoadedConfig(
-            gApi, configProject, configProjectBranch, configFilename, configOptionKeys);
+  public LoadedConfig getOrLoadConfig() throws IOException, RestApiException {
+    if (lastLoadedConfig == null || configExpired()) {
+      lastLoadedConfig = new LoadedConfig(gApi, configProject, configProjectBranch, configFilename,
+          configOptionKeys);
+    }
+    return lastLoadedConfig;
   }
 
   /**
@@ -92,10 +100,14 @@ public class ConfigLoader {
    * @param fromBranch Branch we are merging from.
    * @param toBranch Branch we are merging to.
    * @param commitMessage Commit message of the change.
+   * @throws IOException
+   * @throws RestApiException
    * @return True if we match blank_merge_regex and merge_all is false, or we match
-   *     always_blank_merge_regex
+   *         always_blank_merge_regex
    */
-  public boolean isSkipMerge(String fromBranch, String toBranch, String commitMessage) {
+  public boolean isSkipMerge(String fromBranch, String toBranch, String commitMessage)
+      throws IOException, RestApiException {
+    LoadedConfig config = getOrLoadConfig();
     return config.isSkipMerge(fromBranch, toBranch, commitMessage);
   }
 
@@ -104,18 +116,25 @@ public class ConfigLoader {
    *
    * @param fromBranch Branch we are merging from.
    * @param toBranch Branch we are merging to.
+   * @throws IOException
+   * @throws RestApiException
    * @return The configuration for the given input.
    */
-  public Map<String, Object> getConfig(String fromBranch, String toBranch) {
+  public Map<String, Object> getConfig(String fromBranch, String toBranch)
+      throws IOException, RestApiException {
+    LoadedConfig config = getOrLoadConfig();
     return config.getMergeConfig(fromBranch, toBranch);
   }
 
   /**
    * Returns the name of the automerge label (i.e. the label to vote -1 if we have a merge conflict)
    *
+   * @throws IOException
+   * @throws RestApiException
    * @return Returns the name of the automerge label.
    */
-  public String getAutomergeLabel() {
+  public String getAutomergeLabel() throws IOException, RestApiException {
+    LoadedConfig config = getOrLoadConfig();
     return config.getAutomergeLabel();
   }
 
@@ -130,6 +149,7 @@ public class ConfigLoader {
    */
   public Set<String> getProjectsInScope(String fromBranch, String toBranch)
       throws RestApiException, IOException {
+    LoadedConfig config = getOrLoadConfig();
     try {
       Set<String> projectSet = new HashSet<String>();
 
@@ -170,6 +190,7 @@ public class ConfigLoader {
    */
   public Set<String> getDownstreamBranches(String fromBranch, String project)
       throws RestApiException, IOException {
+    LoadedConfig config = getOrLoadConfig();
     Set<String> downstreamBranches = new HashSet<String>();
     Map<String, Object> fromBranchConfig = config.getMergeConfig(fromBranch);
 
@@ -187,8 +208,16 @@ public class ConfigLoader {
     return downstreamBranches;
   }
 
+  private boolean configExpired() throws IOException {
+    ObjectId configObjectId =
+        projectCache.checkedGet(new Project.NameKey(configProject)).getConfig().getRevision();
+    return !Objects.equals(configObjectId, currentConfigObjectId);
+  }
+
   // Returns overriden manifest config if specified, default if not
-  private Map<String, String> getManifestInfoFromConfig(Map<String, Object> configMap) {
+  private Map<String, String> getManifestInfoFromConfig(Map<String, Object> configMap)
+      throws RestApiException, IOException {
+    LoadedConfig config = getOrLoadConfig();
     if (configMap.containsKey("manifest")) {
       return (Map<String, String>) configMap.get("manifest");
     }
@@ -198,6 +227,7 @@ public class ConfigLoader {
   // Returns contents of manifest file for the given branch.
   // If manifest does not exist, return empty set.
   private Set<String> getManifestProjects(String fromBranch) throws RestApiException, IOException {
+    LoadedConfig config = getOrLoadConfig();
     Map<String, Object> fromBranchConfig = config.getMergeConfig(fromBranch);
     if (fromBranchConfig == null) {
       return new HashSet<>();
@@ -210,6 +240,7 @@ public class ConfigLoader {
   // If manifest does not exist, return empty set.
   private Set<String> getManifestProjects(String fromBranch, String toBranch)
       throws RestApiException, IOException {
+    LoadedConfig config = getOrLoadConfig();
     Map<String, Object> toBranchConfig = config.getMergeConfig(fromBranch, toBranch);
     if (toBranchConfig == null) {
       return new HashSet<>();
@@ -218,8 +249,8 @@ public class ConfigLoader {
     return getManifestProjectsForBranch(manifestProjectInfo, toBranch);
   }
 
-  private Set<String> getManifestProjectsForBranch(
-      Map<String, String> manifestProjectInfo, String branch) throws RestApiException, IOException {
+  private Set<String> getManifestProjectsForBranch(Map<String, String> manifestProjectInfo,
+      String branch) throws RestApiException, IOException {
     String manifestProject = manifestProjectInfo.get("project");
     String manifestFile = manifestProjectInfo.get("file");
     try {
