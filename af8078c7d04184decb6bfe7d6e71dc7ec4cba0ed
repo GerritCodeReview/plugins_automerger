@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8831ec76_ca789acd",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2017-02-10T20:04:47Z",
+      "side": 1,
+      "message": "We now call \"loadConfig\" before every call in this method, but we only actually load one if configExpired() returns true.\n\nThere may be a more idiomatic way of doing this but I was unable to think of one or find one.",
+      "range": {
+        "startLine": 90,
+        "startChar": 8,
+        "endLine": 90,
+        "endChar": 21
+      },
+      "revId": "af8078c7d04184decb6bfe7d6e71dc7ec4cba0ed",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c9381390_01b37051",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/ConfigLoaderTest.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2017-02-10T20:04:47Z",
+      "side": 1,
+      "message": "Changed because we want to assert that it throws only on the method, not on any other possible thing in the test.",
+      "range": {
+        "startLine": 143,
+        "startChar": 4,
+        "endLine": 143,
+        "endChar": 16
+      },
+      "revId": "af8078c7d04184decb6bfe7d6e71dc7ec4cba0ed",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "47cf71ff_64bb395f",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/DownstreamCreatorTest.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 120,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2017-02-10T20:04:47Z",
+      "side": 1,
+      "message": "These were switched around due to linting issues. Apparently the constant should be on the right, not the left \u003d/",
+      "range": {
+        "startLine": 120,
+        "startChar": 15,
+        "endLine": 120,
+        "endChar": 26
+      },
+      "revId": "af8078c7d04184decb6bfe7d6e71dc7ec4cba0ed",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
