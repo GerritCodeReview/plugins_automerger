@@ -109,6 +109,15 @@ public class ConfigLoaderTest {
   }
 
   @Test
+  public void isSkipMergeTest_alwaysBlankMergeNull() throws Exception {
+    mockFile("alternate_config.yaml", "tools/automerger", "master", "config.yaml");
+    loadConfig();
+    assertThat(
+            configLoader.isSkipMerge("master", "ds_two", "test test \n \n DO NOT MERGE ANYWHERE"))
+        .isFalse();
+  }
+
+  @Test
   public void downstreamBranchesTest() throws Exception {
     loadConfig();
     Set<String> expectedBranches = new HashSet<String>();

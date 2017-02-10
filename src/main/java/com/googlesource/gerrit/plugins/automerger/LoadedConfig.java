@@ -44,8 +44,8 @@ public class LoadedConfig {
     global = Collections.emptyMap();
     config = Collections.emptyMap();
     defaultManifestInfo = Collections.emptyMap();
-    blankMergePattern = Pattern.compile("");
-    alwaysBlankMergePattern = Pattern.compile("");
+    blankMergePattern = null;
+    alwaysBlankMergePattern = null;
   }
 
   public LoadedConfig(
@@ -86,12 +86,12 @@ public class LoadedConfig {
    */
   public boolean isSkipMerge(String fromBranch, String toBranch, String commitMessage) {
     // If regex matches always_blank_merge (DO NOT MERGE ANYWHERE), skip.
-    if (alwaysBlankMergePattern.matches(commitMessage)) {
+    if (alwaysBlankMergePattern != null && alwaysBlankMergePattern.matches(commitMessage)) {
       return true;
     }
 
     // If regex matches blank_merge (DO NOT MERGE), skip iff merge_all is false
-    if (blankMergePattern.matches(commitMessage)) {
+    if (blankMergePattern != null && blankMergePattern.matches(commitMessage)) {
       Map<String, Object> mergePairConfig = getMergeConfig(fromBranch, toBranch);
       if (mergePairConfig != null) {
         boolean isMergeAll = (boolean) mergePairConfig.getOrDefault("merge_all", false);
@@ -185,7 +185,11 @@ public class LoadedConfig {
   }
 
   private Pattern getConfigPattern(String key) {
-    Set<String> mergeStrings = new HashSet<>((List<String>) global.get(key));
-    return Pattern.compile(Joiner.on("|").join(mergeStrings), Pattern.DOTALL);
+    Object patterns = global.get(key);
+    if (patterns != null) {
+      Set<String> mergeStrings = new HashSet<>((List<String>) patterns);
+      return Pattern.compile(Joiner.on("|").join(mergeStrings), Pattern.DOTALL);
+    }
+    return null;
   }
 }
