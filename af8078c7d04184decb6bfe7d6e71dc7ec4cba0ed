@@ -2,6 +2,29 @@
   "comments": [
     {
       "key": {
+        "uuid": "1ca139d3_463a8cc7",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1010008
+      },
+      "writtenOn": "2017-02-14T19:13:32Z",
+      "side": 1,
+      "message": "Didn\u0027t we decide that this can only be refs/meta/config, otherwise the project cache invalidation doesn\u0027t kick in?",
+      "range": {
+        "startLine": 44,
+        "startChar": 42,
+        "endLine": 44,
+        "endChar": 0
+      },
+      "revId": "af8078c7d04184decb6bfe7d6e71dc7ec4cba0ed",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "8831ec76_ca789acd",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
         "patchSetId": 5
@@ -22,6 +45,64 @@
       "revId": "af8078c7d04184decb6bfe7d6e71dc7ec4cba0ed",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "fd54e521_9b9dddc1",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 1010008
+      },
+      "writtenOn": "2017-02-14T19:13:32Z",
+      "side": 1,
+      "message": "Another alternative:\n\n* rename the field lastLoadedConfig, or something else you\u0027re not likely to type accidentally\n* make loadConfig both refresh lastLoadedConfig and return a LoadedConfig\n* at the top of each method, do LoadedConfig config \u003d loadConfig();\n\nThat way it\u0027s impossible to forget to call loadConfig(), because you won\u0027t have a LoadedConfig variable available in scope if you don\u0027t. (Except for this.lastLoadedConfig, hence choosing an unwieldy name.)\n\nThe naming of this method might be ever so slightly misleading, since both the method name and the javadoc imply that loading always happens. Optionally, I think it would be clearer if you at least mentioned in the javadoc that this method might be a no-op.",
+      "parentUuid": "8831ec76_ca789acd",
+      "range": {
+        "startLine": 90,
+        "startChar": 8,
+        "endLine": 90,
+        "endChar": 21
+      },
+      "revId": "af8078c7d04184decb6bfe7d6e71dc7ec4cba0ed",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d201aa80_d964cbdb",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 215,
+      "author": {
+        "id": 1010008
+      },
+      "writtenOn": "2017-02-14T19:13:32Z",
+      "side": 1,
+      "message": "If you take a closer look at ProjectState#getConfig, you\u0027ll see that it\u0027s parsing this filename with the git config file format and caching the parsed representation. Is that what you want? I thought these config files were yaml, in which case this would throw an exception. (If that\u0027s the case, why are the tests passing?)\n\nI would recommend just using .getConfig(), which returns a ProjectConfig, which doesn\u0027t depend on the format of your config file. The value of getRevision() will be the same either way; it\u0027s defined to be the SHA-1 of the commit in which the file is found.",
+      "revId": "af8078c7d04184decb6bfe7d6e71dc7ec4cba0ed",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "381b4788_e542fb9a",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 217,
+      "author": {
+        "id": 1010008
+      },
+      "writtenOn": "2017-02-14T19:13:32Z",
+      "side": 1,
+      "message": "VersionedMetaData#getRevision returns null when the ref (refs/meta/config in this case) doesn\u0027t exist, so use Objects.equal here.",
+      "revId": "af8078c7d04184decb6bfe7d6e71dc7ec4cba0ed",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     },
     {
       "key": {
