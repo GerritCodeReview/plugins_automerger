@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "2c95aebc_10ae4e26",
+        "filename": ".gitignore",
+        "patchSetId": 7
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2017-02-14T21:49:31Z",
+      "side": 1,
+      "message": "bazel, apparently. \n\nWhen I run \"bazel build plugins/automerger\" from the gerrit tree, this bin directory shows up under plugins/automerger",
+      "parentUuid": "f466e4d1_5a1b8896",
+      "revId": "6ba1012b51b513499fecb7c693a5bc116c649cf4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "9ebf0ccc_11eb4e4c",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
         "patchSetId": 7
@@ -30,6 +48,24 @@
       "writtenOn": "2017-02-14T21:15:35Z",
       "side": 1,
       "message": "optional: can inject AllProjectsName (from com.google.gerrit.server.config) and call get() on it.\n\nThe All-Projects name is configurable but it\u0027s not likely to change on googlesource.com so hard-coding it is safe.",
+      "revId": "6ba1012b51b513499fecb7c693a5bc116c649cf4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f6511952_bc32f0df",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2017-02-14T21:49:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "9ebf0ccc_11eb4e4c",
       "revId": "6ba1012b51b513499fecb7c693a5bc116c649cf4",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
@@ -53,6 +89,24 @@
     },
     {
       "key": {
+        "uuid": "1c8bb9c5_6b5ff19c",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2017-02-14T21:49:31Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4812f732_ee646f3a",
+      "revId": "6ba1012b51b513499fecb7c693a5bc116c649cf4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "388509c6_9c9f5b0d",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
         "patchSetId": 7
@@ -70,6 +124,24 @@
     },
     {
       "key": {
+        "uuid": "2a7a1625_208ad6e6",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2017-02-14T21:49:31Z",
+      "side": 1,
+      "message": "No it should not. How was this even working? I guess it was just reloading every time..?",
+      "parentUuid": "388509c6_9c9f5b0d",
+      "revId": "6ba1012b51b513499fecb7c693a5bc116c649cf4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "60a195a1_4d1382e3",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
         "patchSetId": 7
@@ -81,6 +153,24 @@
       "writtenOn": "2017-02-14T21:15:35Z",
       "side": 1,
       "message": "Is this used in multiple threads? Does it need synchronization?\n\ncom.google.common.cache.LoadingCache takes care of that synchronization automatically if it\u0027s needed. It can be configured to use a small (e.g. single-key) cache if appropriate.",
+      "revId": "6ba1012b51b513499fecb7c693a5bc116c649cf4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1dbb0f5a_39803566",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2017-02-14T21:49:31Z",
+      "side": 1,
+      "message": "Yes and yes. \n\nAlso, slightly confused about the second paragraph.\n\nAre you saying that there\u0027s already a LoadingCache in ProjectCache that I should be taking advantage of?\n(i.e. https://gerrit.googlesource.com/gerrit/+/refs/heads/master/gerrit-server/src/main/java/com/google/gerrit/server/project/ProjectCacheImpl.java#81)\n\nOr are you saying that I need to roll my own LoadingCache?",
+      "parentUuid": "60a195a1_4d1382e3",
       "revId": "6ba1012b51b513499fecb7c693a5bc116c649cf4",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
