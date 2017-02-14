@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "71f1f767_e8c40b9c",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2017-02-14T21:01:53Z",
+      "side": 1,
+      "message": "Yes we did. My bad.\n\nI hacked it by setting the variables in the config_keys.yaml file (where these are getting loaded from) with a note to myself to make them constants in this file, then I forgot. \n\nFixed now.",
+      "parentUuid": "1ca139d3_463a8cc7",
+      "range": {
+        "startLine": 44,
+        "startChar": 42,
+        "endLine": 44,
+        "endChar": 0
+      },
+      "revId": "af8078c7d04184decb6bfe7d6e71dc7ec4cba0ed",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "8831ec76_ca789acd",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
         "patchSetId": 5
@@ -72,6 +96,30 @@
     },
     {
       "key": {
+        "uuid": "f6de0c32_09da4579",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2017-02-14T21:01:53Z",
+      "side": 1,
+      "message": "Good idea.\n\nAnd since we\u0027re calling getOrLoadConfig() before each thing, I also removed it from the constructor, since it didn\u0027t need to be there.\n\nJavadoc and method name also updated to be clearer.",
+      "parentUuid": "fd54e521_9b9dddc1",
+      "range": {
+        "startLine": 90,
+        "startChar": 8,
+        "endLine": 90,
+        "endChar": 21
+      },
+      "revId": "af8078c7d04184decb6bfe7d6e71dc7ec4cba0ed",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "d201aa80_d964cbdb",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
         "patchSetId": 5
@@ -89,6 +137,24 @@
     },
     {
       "key": {
+        "uuid": "a72e06fb_422ff5d8",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 215,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2017-02-14T21:01:53Z",
+      "side": 1,
+      "message": "Huh. It doesn\u0027t appear to be throwing an exception; seems to be working fine locally.\n\nI suspect (but haven\u0027t verified) that it may just be silently throwing the ConfigInvalidException in https://gerrit.googlesource.com/gerrit/+/refs/heads/master/gerrit-server/src/main/java/com/google/gerrit/server/project/ProjectState.java#236 and outputting a log.warn, but still returning a valid ProjectLevelConfig which I can do a valid getRevision() on.\n\nIn any case, will go with just using .getConfig(), since you\u0027re completely correct that all I need is the SHA-1 of the commit where the file is found.",
+      "parentUuid": "d201aa80_d964cbdb",
+      "revId": "af8078c7d04184decb6bfe7d6e71dc7ec4cba0ed",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "381b4788_e542fb9a",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
         "patchSetId": 5
@@ -100,6 +166,24 @@
       "writtenOn": "2017-02-14T19:13:32Z",
       "side": 1,
       "message": "VersionedMetaData#getRevision returns null when the ref (refs/meta/config in this case) doesn\u0027t exist, so use Objects.equal here.",
+      "revId": "af8078c7d04184decb6bfe7d6e71dc7ec4cba0ed",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "acbbe3ab_083c1f31",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 217,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2017-02-14T21:01:53Z",
+      "side": 1,
+      "message": "Done. Wouldn\u0027t want a null pointer.",
+      "parentUuid": "381b4788_e542fb9a",
       "revId": "af8078c7d04184decb6bfe7d6e71dc7ec4cba0ed",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
