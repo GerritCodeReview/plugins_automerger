@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "ca3e50a8_fa9da54b",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/DownstreamCreator.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1010008
+      },
+      "writtenOn": "2017-02-14T15:53:21Z",
+      "side": 1,
+      "message": "Gerrit has its own version of this, com.google.gerrit.common.data.ParameterizedString. I would recommend using that as the semantics are the same as elsewhere in Gerrit and it avoids this external dependency.",
+      "revId": "268933e733931e8c81143c328b2523f17d68bf22",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "56d46a05_8a829725",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/DownstreamCreator.java",
+        "patchSetId": 5
+      },
+      "lineNbr": 348,
+      "author": {
+        "id": 1010008
+      },
+      "writtenOn": "2017-02-14T15:53:21Z",
+      "side": 1,
+      "message": "What if this is in the middle of a ${var}? Or for that matter if ${branch} or something is exceedingly long. Would it be better to trim after substitution?",
+      "revId": "268933e733931e8c81143c328b2523f17d68bf22",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
