@@ -1,0 +1,89 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f466e4d1_5a1b8896",
+        "filename": ".gitignore",
+        "patchSetId": 7
+      },
+      "lineNbr": 13,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2017-02-14T21:15:35Z",
+      "side": 1,
+      "message": "What produces files there?",
+      "revId": "6ba1012b51b513499fecb7c693a5bc116c649cf4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9ebf0ccc_11eb4e4c",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2017-02-14T21:15:35Z",
+      "side": 1,
+      "message": "optional: can inject AllProjectsName (from com.google.gerrit.server.config) and call get() on it.\n\nThe All-Projects name is configurable but it\u0027s not likely to change on googlesource.com so hard-coding it is safe.",
+      "revId": "6ba1012b51b513499fecb7c693a5bc116c649cf4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4812f732_ee646f3a",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2017-02-14T21:15:35Z",
+      "side": 1,
+      "message": "optional: \u003d RefNames.REFS_CONFIG (from com.google.gerrit.reviewdb.client).",
+      "revId": "6ba1012b51b513499fecb7c693a5bc116c649cf4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "388509c6_9c9f5b0d",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2017-02-14T21:15:35Z",
+      "side": 1,
+      "message": "This shouldn\u0027t be final, right?\n\nNo need to assign null since that\u0027s the default.",
+      "revId": "6ba1012b51b513499fecb7c693a5bc116c649cf4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "60a195a1_4d1382e3",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2017-02-14T21:15:35Z",
+      "side": 1,
+      "message": "Is this used in multiple threads? Does it need synchronization?\n\ncom.google.common.cache.LoadingCache takes care of that synchronization automatically if it\u0027s needed. It can be configured to use a small (e.g. single-key) cache if appropriate.",
+      "revId": "6ba1012b51b513499fecb7c693a5bc116c649cf4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
