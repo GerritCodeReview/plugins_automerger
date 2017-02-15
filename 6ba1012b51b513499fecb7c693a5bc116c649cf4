@@ -192,6 +192,24 @@
       "revId": "6ba1012b51b513499fecb7c693a5bc116c649cf4",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f3fc3100_7846ed52",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2017-02-15T00:21:21Z",
+      "side": 1,
+      "message": "Got it. Done.",
+      "parentUuid": "07f9a961_672a76b8",
+      "revId": "6ba1012b51b513499fecb7c693a5bc116c649cf4",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
