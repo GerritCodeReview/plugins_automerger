@@ -22,6 +22,30 @@
       "revId": "56f3b9ef7806d9578b4c647e73bb144648079421",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "d6f5215e_264e0d6b",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/DownstreamCreator.java",
+        "patchSetId": 6
+      },
+      "lineNbr": 152,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2017-02-15T23:29:35Z",
+      "side": 1,
+      "message": "Dealt with.",
+      "parentUuid": "5076240c_3456697c",
+      "range": {
+        "startLine": 152,
+        "startChar": 31,
+        "endLine": 152,
+        "endChar": 33
+      },
+      "revId": "56f3b9ef7806d9578b4c647e73bb144648079421",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
