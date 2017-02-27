@@ -1,0 +1,90 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d2fd8bfe_ce7037c6",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 15
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1003935
+      },
+      "writtenOn": "2017-02-27T17:05:07Z",
+      "side": 1,
+      "message": "Have you considered to store the plugin configuration in a Git config file, instead of using YAML?\n\nE.g. if the config would be stored in a \u0027automerger.config\u0027 Git config file in the \u0027refs/meta/config\u0027 branch of the \u0027All-Projects\u0027 repository, you could simply use PluginConfigFactory.getProjectPluginConfig(...) from Gerrit core to load the config [1]. The loaded config would be automatically cached as part of the ProjectState in the project cache. So you wouldn\u0027t need to worry about reloading and caching the config at all.\n\n[1] https://gerrit-review.googlesource.com/Documentation/dev-plugins.html#project-specific-configuration",
+      "revId": "275af6c28f8a23e10ba99144b413addbf1478332",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9832f062_4c1534ba",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 15
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 1003935
+      },
+      "writtenOn": "2017-02-27T17:05:07Z",
+      "side": 1,
+      "message": "Why is key not used?",
+      "range": {
+        "startLine": 89,
+        "startChar": 44,
+        "endLine": 89,
+        "endChar": 47
+      },
+      "revId": "275af6c28f8a23e10ba99144b413addbf1478332",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "1f7a0b1b_d6a34f74",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 15
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 1003935
+      },
+      "writtenOn": "2017-02-27T17:05:07Z",
+      "side": 1,
+      "message": "[optional] Instead of hard-coding the plugin name you may get it injected with \n\n  @PluginName String pluginName",
+      "range": {
+        "startLine": 107,
+        "startChar": 43,
+        "endLine": 107,
+        "endChar": 53
+      },
+      "revId": "275af6c28f8a23e10ba99144b413addbf1478332",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "c7692fde_30aefdad",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/DownstreamCreator.java",
+        "patchSetId": 15
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1003935
+      },
+      "writtenOn": "2017-02-27T17:05:07Z",
+      "side": 1,
+      "message": "not used",
+      "range": {
+        "startLine": 72,
+        "startChar": 64,
+        "endLine": 72,
+        "endChar": 89
+      },
+      "revId": "275af6c28f8a23e10ba99144b413addbf1478332",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
