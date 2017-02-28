@@ -37,6 +37,24 @@
     },
     {
       "key": {
+        "uuid": "36072ab9_0572ba15",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 15
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2017-02-28T19:21:25Z",
+      "side": 1,
+      "message": "Would it be okay if I did this in a followup CL? We\u0027re hoping to deploy this fix relatively soon so we can start rolling it out. Just learned about a deadline today \u003d/",
+      "parentUuid": "9415a97c_1a20a881",
+      "revId": "275af6c28f8a23e10ba99144b413addbf1478332",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9832f062_4c1534ba",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
         "patchSetId": 15
@@ -48,6 +66,30 @@
       "writtenOn": "2017-02-27T17:05:07Z",
       "side": 1,
       "message": "Why is key not used?",
+      "range": {
+        "startLine": 89,
+        "startChar": 44,
+        "endLine": 89,
+        "endChar": 47
+      },
+      "revId": "275af6c28f8a23e10ba99144b413addbf1478332",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "b547323a_4df6c0a2",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 15
+      },
+      "lineNbr": 89,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2017-02-28T19:21:25Z",
+      "side": 1,
+      "message": "It\u0027s pretty much there so that, when \"key\" changes, we grab the newest config. The actual value of the key doesn\u0027t matter so much as that it\u0027s not the same as the previous.",
+      "parentUuid": "9832f062_4c1534ba",
       "range": {
         "startLine": 89,
         "startChar": 44,
@@ -83,6 +125,30 @@
     },
     {
       "key": {
+        "uuid": "f3378a82_54506661",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 15
+      },
+      "lineNbr": 107,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2017-02-28T19:21:25Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "1f7a0b1b_d6a34f74",
+      "range": {
+        "startLine": 107,
+        "startChar": 43,
+        "endLine": 107,
+        "endChar": 53
+      },
+      "revId": "275af6c28f8a23e10ba99144b413addbf1478332",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "c7692fde_30aefdad",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/DownstreamCreator.java",
         "patchSetId": 15
@@ -94,6 +160,30 @@
       "writtenOn": "2017-02-27T17:05:07Z",
       "side": 1,
       "message": "not used",
+      "range": {
+        "startLine": 72,
+        "startChar": 64,
+        "endLine": 72,
+        "endChar": 89
+      },
+      "revId": "275af6c28f8a23e10ba99144b413addbf1478332",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "e4ed35dc_a3141204",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/DownstreamCreator.java",
+        "patchSetId": 15
+      },
+      "lineNbr": 72,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2017-02-28T19:21:25Z",
+      "side": 1,
+      "message": "Whoops, meant to delete that. Done.",
+      "parentUuid": "c7692fde_30aefdad",
       "range": {
         "startLine": 72,
         "startChar": 64,
