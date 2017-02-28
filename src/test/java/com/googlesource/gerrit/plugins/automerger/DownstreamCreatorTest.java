@@ -28,7 +28,6 @@ import com.google.gerrit.extensions.common.ChangeInput;
 import com.google.gerrit.extensions.common.CommitInfo;
 import com.google.gerrit.extensions.common.MergePatchSetInput;
 import com.google.gerrit.extensions.common.RevisionInfo;
-import com.google.gerrit.server.project.ProjectCache;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
@@ -38,25 +37,29 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import org.mockito.ArgumentCaptor;
+import org.mockito.Answers;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+import org.mockito.runners.MockitoJUnitRunner;
 
-@RunWith(JUnit4.class)
+@RunWith(MockitoJUnitRunner.class)
 public class DownstreamCreatorTest {
   private final String changeId = "testid";
   private final String changeProject = "testproject";
   private final String changeTopic = "testtopic";
   private final String changeSubject = "testmessage";
+
+  @Mock(answer = Answers.RETURNS_DEEP_STUBS)
   private GerritApi gApiMock;
-  private ProjectCache projectCacheMock;
+
   private DownstreamCreator ds;
   private ConfigLoader configMock;
 
   @Before
   public void setUp() throws Exception {
-    gApiMock = Mockito.mock(GerritApi.class, Mockito.RETURNS_DEEP_STUBS);
-    projectCacheMock = Mockito.mock(ProjectCache.class, Mockito.RETURNS_DEEP_STUBS);
     configMock = Mockito.mock(ConfigLoader.class);
-    ds = new DownstreamCreator(gApiMock, configMock, projectCacheMock);
+    ds = new DownstreamCreator(gApiMock, configMock);
   }
 
   private List<ChangeInfo> mockChangeInfoList(String upstreamBranch) {
