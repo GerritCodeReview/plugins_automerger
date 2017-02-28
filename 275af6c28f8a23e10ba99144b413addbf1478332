@@ -193,6 +193,23 @@
       "revId": "275af6c28f8a23e10ba99144b413addbf1478332",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ca7698e3_41d1e6c7",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/LoadedConfig.java",
+        "patchSetId": 15
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2017-02-28T20:13:08Z",
+      "side": 1,
+      "message": "I don\u0027t think this works for refs/meta/config. /branches/* matches against refs/heads/*: https://gerrit.googlesource.com/gerrit/+/a2cfc65301a9a534c4d0a08d2524fa048bcbd92e/gerrit-server/src/main/java/com/google/gerrit/server/project/BranchesCollection.java#64\n\nekempin\u0027s suggestion sounds simpler. An alternative is to open the project directly: \n\n      GitRepositoryManager mgr;\n      try (Repository repo \u003d mgr.openRepository(name); RevWalk rw \u003d new RevWalk(repo)) {\n        RevCommit revision \u003d rw.parseCommit(rev);\n        TreeWalk tw \u003d TreeWalk.forPath(rw.getObjectReader(), configFilename, revision.getTree());\n        if (tw !\u003d null) {\n          ObjectLoader obj \u003d reader.open(tw.getObjectId(0), Constants.OBJ_BLOB);\n          return RawParseUtils.decode(obj.getCachedBytes(Integer.MAX_VALUE));\n        }\n        return \"\";\n      }\n\nAnother nice effect here is that rev can be the sha1 you obtained from ProjectConfig, to avoid caches getting confused.",
+      "revId": "275af6c28f8a23e10ba99144b413addbf1478332",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
