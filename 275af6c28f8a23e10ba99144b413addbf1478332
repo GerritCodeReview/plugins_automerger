@@ -228,6 +228,24 @@
       "revId": "275af6c28f8a23e10ba99144b413addbf1478332",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cc4ddaf2_d8c71949",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/LoadedConfig.java",
+        "patchSetId": 15
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2017-02-28T21:29:50Z",
+      "side": 1,
+      "message": "Re: Not working\nI\u0027ve tested it on local (only changing refs/meta/config) and it seems to work fine. I have no idea why, but the evidence doesn\u0027t lie (unless there\u0027s some reason that wouldn\u0027t hold true on prod).\n\n\nRe using git config:\nekempin\u0027s solution requires a refactoring of how the YAML config file works, since AFAICT it doesn\u0027t let me nest things.\n\ni.e. it won\u0027t let me do this\n\n[automerger \"branch1\"]\n  [\"branch2\"]\n    merge \u003d false\n    limitEmails \u003d \"stephenli@google.com\"\n  [\"branch3\"]\n    merge \u003d true\n    limitEmails \u003d \"test@example.com\"\n\n\nThat\u0027s not necessarily a blocker; I may be able to hack around it with something like:\n[automerger \"branch1.branch2\"]\n  merge \u003d false\n  limitEmails \u003d stephenli@google.com\n[automerger \"branch1.branch3\"]\n  merge \u003d true\n  limitEmails \u003d test@example.com\n\nbut the current code relies on being able to find the destination branches (i.e. given branch1, return branch2 and branch3) so it\u0027s not a simple change.\n\nIn the meantime I want to get something working on prod, since we\u0027re looking to have this live in a week or two.",
+      "parentUuid": "ab9b37cf_9b4a3382",
+      "revId": "275af6c28f8a23e10ba99144b413addbf1478332",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
