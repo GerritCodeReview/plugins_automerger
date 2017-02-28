@@ -246,6 +246,24 @@
       "revId": "275af6c28f8a23e10ba99144b413addbf1478332",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "02dd85b5_77cf4623",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/LoadedConfig.java",
+        "patchSetId": 15
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2017-02-28T22:06:08Z",
+      "side": 1,
+      "message": "Ah, you\u0027re right. ListBranches special-cases refs/meta/config.",
+      "parentUuid": "cc4ddaf2_d8c71949",
+      "revId": "275af6c28f8a23e10ba99144b413addbf1478332",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
