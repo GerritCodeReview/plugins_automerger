@@ -210,6 +210,24 @@
       "revId": "275af6c28f8a23e10ba99144b413addbf1478332",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ab9b37cf_9b4a3382",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/LoadedConfig.java",
+        "patchSetId": 15
+      },
+      "lineNbr": 54,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2017-02-28T21:22:57Z",
+      "side": 1,
+      "message": "...Huh. It seems to work locally, though. I wonder why that is?",
+      "parentUuid": "ca7698e3_41d1e6c7",
+      "revId": "275af6c28f8a23e10ba99144b413addbf1478332",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
