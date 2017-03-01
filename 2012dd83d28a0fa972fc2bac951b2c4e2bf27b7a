@@ -1,0 +1,142 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "055d26e3_03946319",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 16
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1030912
+      },
+      "writtenOn": "2017-03-01T12:18:41Z",
+      "side": 1,
+      "message": "optional: private",
+      "range": {
+        "startLine": 55,
+        "startChar": 2,
+        "endLine": 55,
+        "endChar": 11
+      },
+      "revId": "2012dd83d28a0fa972fc2bac951b2c4e2bf27b7a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e303a0d3_8a95d148",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/ConfigLoaderTest.java",
+        "patchSetId": 16
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1030912
+      },
+      "writtenOn": "2017-03-01T12:18:41Z",
+      "side": 1,
+      "message": "optional: Why do we need this?",
+      "range": {
+        "startLine": 37,
+        "startChar": 0,
+        "endLine": 37,
+        "endChar": 22
+      },
+      "revId": "2012dd83d28a0fa972fc2bac951b2c4e2bf27b7a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c66be526_402c1293",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/ConfigLoaderTest.java",
+        "patchSetId": 16
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1030912
+      },
+      "writtenOn": "2017-03-01T12:18:41Z",
+      "side": 1,
+      "message": "optional: We normally should try to avoid the use of deep stubs. As also the Javadoc description of this constant mentions, deep stubs should only be used for legacy code.",
+      "range": {
+        "startLine": 47,
+        "startChar": 56,
+        "endLine": 47,
+        "endChar": 82
+      },
+      "revId": "2012dd83d28a0fa972fc2bac951b2c4e2bf27b7a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "02caf6d6_c6df50b7",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/ConfigLoaderTest.java",
+        "patchSetId": 16
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1030912
+      },
+      "writtenOn": "2017-03-01T12:18:41Z",
+      "side": 1,
+      "message": "optional: These two mocks could be more easily defined by using the @Mock annotation on the field in combination with the \u0027answer\u0027 parameter. To make it work, you would also need to use the MockitoJUnitRunner. This runner has the additional benefit of validating the usage of Mockito.",
+      "range": {
+        "startLine": 46,
+        "startChar": 0,
+        "endLine": 47,
+        "endChar": 84
+      },
+      "revId": "2012dd83d28a0fa972fc2bac951b2c4e2bf27b7a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2f7a0c35_6c51ee0e",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/ConfigLoaderTest.java",
+        "patchSetId": 16
+      },
+      "lineNbr": 69,
+      "author": {
+        "id": 1030912
+      },
+      "writtenOn": "2017-03-01T12:18:41Z",
+      "side": 1,
+      "message": "Does this compile for you? The constructor of ConfigLoader requires four parameters.",
+      "range": {
+        "startLine": 69,
+        "startChar": 23,
+        "endLine": 69,
+        "endChar": 81
+      },
+      "revId": "2012dd83d28a0fa972fc2bac951b2c4e2bf27b7a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "18f8fd92_b1a08255",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/DownstreamCreatorTest.java",
+        "patchSetId": 16
+      },
+      "lineNbr": 59,
+      "author": {
+        "id": 1030912
+      },
+      "writtenOn": "2017-03-01T12:18:41Z",
+      "side": 1,
+      "message": "Does this class compile for you? The constructor of DownstreamCreator seems to have only two parameters.",
+      "range": {
+        "startLine": 59,
+        "startChar": 53,
+        "endLine": 59,
+        "endChar": 69
+      },
+      "revId": "2012dd83d28a0fa972fc2bac951b2c4e2bf27b7a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
