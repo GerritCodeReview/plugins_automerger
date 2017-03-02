@@ -96,6 +96,30 @@
     },
     {
       "key": {
+        "uuid": "09ae740b_83626d41",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/ConfigLoaderTest.java",
+        "patchSetId": 16
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1026112
+      },
+      "writtenOn": "2017-03-02T10:37:07Z",
+      "side": 1,
+      "message": "By default, lint would complain about missing @RunWith annotations. This would even result in a hard failure if you run the test inside Google3.\n\nHowever, we don\u0027t use the default annotation in Gerrit (mainly for historic reasons) and have created our own build rule to work around these issues. So you can safely remove these annotations.",
+      "parentUuid": "abe8191f_e96cf74f",
+      "range": {
+        "startLine": 37,
+        "startChar": 0,
+        "endLine": 37,
+        "endChar": 22
+      },
+      "revId": "2012dd83d28a0fa972fc2bac951b2c4e2bf27b7a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "c66be526_402c1293",
         "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/ConfigLoaderTest.java",
         "patchSetId": 16
@@ -183,6 +207,30 @@
         "startChar": 0,
         "endLine": 47,
         "endChar": 84
+      },
+      "revId": "2012dd83d28a0fa972fc2bac951b2c4e2bf27b7a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "67410339_fd992910",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/ConfigLoaderTest.java",
+        "patchSetId": 16
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1026112
+      },
+      "writtenOn": "2017-03-02T10:37:07Z",
+      "side": 1,
+      "message": "In general I would try to avoid mocking the Gerrit API and write an integration test instead. You need to write a lot of code to mock this while you could have the \u0027real\u0027 Gerrit almost for free.\n\nJust checkout how other plugins do that (e.g. gitnumberer)",
+      "parentUuid": "717ccbab_0a2f58ac",
+      "range": {
+        "startLine": 47,
+        "startChar": 56,
+        "endLine": 47,
+        "endChar": 82
       },
       "revId": "2012dd83d28a0fa972fc2bac951b2c4e2bf27b7a",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
