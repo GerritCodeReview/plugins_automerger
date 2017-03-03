@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "961a5b1e_4ab9bf0d",
+        "filename": "external_plugin_deps.bzl",
+        "patchSetId": 20
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2017-03-03T22:15:39Z",
+      "side": 1,
+      "message": "Are you sure? Everywhere I\u0027m checking it seems to indicate 1.10.19 is good, but I may be doing it wrong.\n\nthird_party/java_src/mockito/METADATA seems to indicate that 1.10.19 is the version used internally.\nI\u0027ve imported this patchset internally with copybara and successfully ran the tests (cl/149149523)",
+      "parentUuid": "a1299fc6_9f090985",
+      "range": {
+        "startLine": 6,
+        "startChar": 40,
+        "endLine": 6,
+        "endChar": 47
+      },
+      "revId": "89ef5a511cc8378e4b660127d6caf0f183ab5228",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "b7de23bf_a0b8fb4e",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/AutomergeChangeAction.java",
         "patchSetId": 20
@@ -36,6 +60,30 @@
       "writtenOn": "2017-03-03T12:30:16Z",
       "side": 1,
       "message": "nit: Do we map this exception to a nice error message? Or will a user of this REST endpoint just be notified about an internal server error?",
+      "range": {
+        "startLine": 64,
+        "startChar": 66,
+        "endLine": 64,
+        "endChar": 88
+      },
+      "revId": "89ef5a511cc8378e4b660127d6caf0f183ab5228",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "097e441f_775a1a9b",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/AutomergeChangeAction.java",
+        "patchSetId": 20
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2017-03-03T22:15:39Z",
+      "side": 1,
+      "message": "Aha, wasn\u0027t aware that I could map it to a nice error message. \n\nI\u0027ve set it to throw a BadRequestException (it\u0027s not a perfect fit, but it seemed to fit better than ResourceConflictException). I believe that\u0027s how we make it spit out a nice error message...",
+      "parentUuid": "b7de23bf_a0b8fb4e",
       "range": {
         "startLine": 64,
         "startChar": 66,
@@ -71,6 +119,30 @@
     },
     {
       "key": {
+        "uuid": "c94685bf_8eb465d8",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigDownstreamAction.java",
+        "patchSetId": 20
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2017-03-03T22:15:39Z",
+      "side": 1,
+      "message": "Resolved in the same fashion.",
+      "parentUuid": "65f3f22c_8bddcddc",
+      "range": {
+        "startLine": 57,
+        "startChar": 44,
+        "endLine": 57,
+        "endChar": 66
+      },
+      "revId": "89ef5a511cc8378e4b660127d6caf0f183ab5228",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "67349bd6_11e6bb07",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
         "patchSetId": 20
@@ -82,6 +154,30 @@
       "writtenOn": "2017-03-03T12:30:16Z",
       "side": 1,
       "message": "optional: Doesn\u0027t Git normally use : to separate the source from the target branch? I don\u0027t know whether it will conflict with other parts of the config but thought it might help to have a notation others already know from Git.",
+      "range": {
+        "startLine": 43,
+        "startChar": 50,
+        "endLine": 43,
+        "endChar": 52
+      },
+      "revId": "89ef5a511cc8378e4b660127d6caf0f183ab5228",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2fd46bbf_910e32e8",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 20
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2017-03-03T22:15:39Z",
+      "side": 1,
+      "message": "Ah, slipped my mind. My mind was stuck in \"git rev-list\" land where \"..\" separates them. Fixing to be consistent with the rest of git-land.",
+      "parentUuid": "67349bd6_11e6bb07",
       "range": {
         "startLine": 43,
         "startChar": 50,
@@ -140,6 +236,30 @@
     },
     {
       "key": {
+        "uuid": "968be88b_87b0e777",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 20
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2017-03-03T22:15:39Z",
+      "side": 1,
+      "message": "Finalized.",
+      "parentUuid": "c83baac7_1ccdec61",
+      "range": {
+        "startLine": 47,
+        "startChar": 9,
+        "endLine": 47,
+        "endChar": 10
+      },
+      "revId": "89ef5a511cc8378e4b660127d6caf0f183ab5228",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "e29bcd69_273f3b4b",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
         "patchSetId": 20
@@ -151,6 +271,30 @@
       "writtenOn": "2017-03-03T12:30:16Z",
       "side": 1,
       "message": "optional: Doing real work in a constructor is discouraged for several reasons. As we use Guice and throw exceptions, it\u0027s even worse. I know that the constructor loaded and interpreted the config file also before this change. Do you think it would be possible to adjust the design of this class in a follow-up change?",
+      "range": {
+        "startLine": 70,
+        "startChar": 4,
+        "endLine": 71,
+        "endChar": 67
+      },
+      "revId": "89ef5a511cc8378e4b660127d6caf0f183ab5228",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "89983eaf_6785740e",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 20
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2017-03-03T22:15:39Z",
+      "side": 1,
+      "message": "\"Doing real work in a constructor is discouraged for several reasons.\"\nApologies, was not aware, before this plugin I\u0027d done very little Java work.\n\nMoved out of the constructor (turned out to be a relatively trivial change, as it\u0027s only used in one method).",
+      "parentUuid": "e29bcd69_273f3b4b",
       "range": {
         "startLine": 70,
         "startChar": 4,
@@ -186,6 +330,30 @@
     },
     {
       "key": {
+        "uuid": "7df5047a_6b839bc2",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 20
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2017-03-03T22:15:39Z",
+      "side": 1,
+      "message": "I was going to say yes, but you\u0027re right, it would return an empty array. This was a holdover from the old config format; my bad.",
+      "parentUuid": "eb7f1b47_c1a1bae9",
+      "range": {
+        "startLine": 76,
+        "startChar": 4,
+        "endLine": 76,
+        "endChar": 28
+      },
+      "revId": "89ef5a511cc8378e4b660127d6caf0f183ab5228",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "8fe7580f_7e03617e",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
         "patchSetId": 20
@@ -197,6 +365,30 @@
       "writtenOn": "2017-03-03T11:57:38Z",
       "side": 1,
       "message": "omit, this is implicit",
+      "range": {
+        "startLine": 77,
+        "startChar": 45,
+        "endLine": 77,
+        "endChar": 51
+      },
+      "revId": "89ef5a511cc8378e4b660127d6caf0f183ab5228",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "151ea5b0_7f0d99c5",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 20
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2017-03-03T22:15:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8fe7580f_7e03617e",
       "range": {
         "startLine": 77,
         "startChar": 45,
@@ -232,6 +424,30 @@
     },
     {
       "key": {
+        "uuid": "4145f3f3_653526b8",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 20
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2017-03-03T22:15:39Z",
+      "side": 1,
+      "message": "Removed.",
+      "parentUuid": "cde51f1b_02799fc4",
+      "range": {
+        "startLine": 128,
+        "startChar": 43,
+        "endLine": 128,
+        "endChar": 73
+      },
+      "revId": "89ef5a511cc8378e4b660127d6caf0f183ab5228",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "2216bda4_48c68309",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
         "patchSetId": 20
@@ -243,6 +459,30 @@
       "writtenOn": "2017-03-03T11:57:38Z",
       "side": 1,
       "message": "don\u0027t log the error here, but log it at the topmost call when you see the ConfigInvalidException instead",
+      "range": {
+        "startLine": 179,
+        "startChar": 8,
+        "endLine": 180,
+        "endChar": 81
+      },
+      "revId": "89ef5a511cc8378e4b660127d6caf0f183ab5228",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5edd2650_368817ea",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 20
+      },
+      "lineNbr": 180,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2017-03-03T22:15:39Z",
+      "side": 1,
+      "message": "Removed the log.error here.",
+      "parentUuid": "2216bda4_48c68309",
       "range": {
         "startLine": 179,
         "startChar": 8,
@@ -278,6 +518,30 @@
     },
     {
       "key": {
+        "uuid": "dac64d09_07b45a39",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 20
+      },
+      "lineNbr": 229,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2017-03-03T22:15:39Z",
+      "side": 1,
+      "message": "Not quite. If ignoreSourceManifest is true, it will return the toProjects set.\n\nYou are correct that this can be made more efficient though. Done.",
+      "parentUuid": "14cda4f9_3556f8cd",
+      "range": {
+        "startLine": 223,
+        "startChar": 4,
+        "endLine": 229,
+        "endChar": 22
+      },
+      "revId": "89ef5a511cc8378e4b660127d6caf0f183ab5228",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "05ba5479_36e04ac0",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
         "patchSetId": 20
@@ -289,6 +553,30 @@
       "writtenOn": "2017-03-03T12:30:16Z",
       "side": 1,
       "message": "optional as unrelated: This call should be part of a try-with-resources statement.",
+      "range": {
+        "startLine": 236,
+        "startChar": 6,
+        "endLine": 237,
+        "endChar": 82
+      },
+      "revId": "89ef5a511cc8378e4b660127d6caf0f183ab5228",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "66450548_e95f0cd8",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 20
+      },
+      "lineNbr": 237,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2017-03-03T22:15:39Z",
+      "side": 1,
+      "message": "Would leave this to a future CL anyways, but:\n\nI\u0027m not sure this makes sense as a try-with-resources? ManifestReader isn\u0027t a reader in the sense of a BufferedReader (i.e. doesn\u0027t java.lang.AutoCloseable), as it doesn\u0027t hold on to a file and read it, it just loads it all in at once. Try with resources appears to be for the purposes of making sure we close a resource after we\u0027re done with it, but we\u0027re not really opening a resource AFAIK...",
+      "parentUuid": "05ba5479_36e04ac0",
       "range": {
         "startLine": 236,
         "startChar": 6,
@@ -324,6 +612,30 @@
     },
     {
       "key": {
+        "uuid": "1a99dfc1_da130ed1",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 20
+      },
+      "lineNbr": 246,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2017-03-03T22:15:39Z",
+      "side": 1,
+      "message": "Changed to not mutate.",
+      "parentUuid": "ee5d1eb4_2f896144",
+      "range": {
+        "startLine": 246,
+        "startChar": 75,
+        "endLine": 246,
+        "endChar": 83
+      },
+      "revId": "89ef5a511cc8378e4b660127d6caf0f183ab5228",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "7c29257a_2ef922f8",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/DownstreamCreator.java",
         "patchSetId": 20
@@ -335,6 +647,30 @@
       "writtenOn": "2017-03-03T12:30:16Z",
       "side": 1,
       "message": "Will this exception be printed in the log message? The message string contains only one placeholder and the Javadoc comment doesn\u0027t say anything about special casing exceptions which are passed as second parameter.",
+      "range": {
+        "startLine": 90,
+        "startChar": 80,
+        "endLine": 90,
+        "endChar": 81
+      },
+      "revId": "89ef5a511cc8378e4b660127d6caf0f183ab5228",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1b9b27a1_8610e2c8",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/DownstreamCreator.java",
+        "patchSetId": 20
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2017-03-03T22:15:39Z",
+      "side": 1,
+      "message": "It is in fact printed in the log message.\n\nSee:\nhttps://www.slf4j.org/apidocs/org/slf4j/Logger.html#error(java.lang.String, java.lang.Throwable)",
+      "parentUuid": "7c29257a_2ef922f8",
       "range": {
         "startLine": 90,
         "startChar": 80,
@@ -370,6 +706,30 @@
     },
     {
       "key": {
+        "uuid": "8e2c4e27_f3c5154d",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/DownstreamCreator.java",
+        "patchSetId": 20
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2017-03-03T22:15:39Z",
+      "side": 1,
+      "message": "Yes we can, and I did in other places, but missed it here. Thanks for catching that.",
+      "parentUuid": "7120727d_fe1a7a10",
+      "range": {
+        "startLine": 110,
+        "startChar": 4,
+        "endLine": 114,
+        "endChar": 0
+      },
+      "revId": "89ef5a511cc8378e4b660127d6caf0f183ab5228",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "7d465dfc_bb34e99b",
         "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/ConfigLoaderTest.java",
         "patchSetId": 20
@@ -381,6 +741,30 @@
       "writtenOn": "2017-03-03T12:30:16Z",
       "side": 1,
       "message": "nit: Some of these imports are unused.",
+      "range": {
+        "startLine": 22,
+        "startChar": 0,
+        "endLine": 43,
+        "endChar": 0
+      },
+      "revId": "89ef5a511cc8378e4b660127d6caf0f183ab5228",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "58906d74_8805aaf4",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/ConfigLoaderTest.java",
+        "patchSetId": 20
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2017-03-03T22:15:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7d465dfc_bb34e99b",
       "range": {
         "startLine": 22,
         "startChar": 0,
@@ -416,6 +800,30 @@
     },
     {
       "key": {
+        "uuid": "f3a8debe_d9db480d",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/ConfigLoaderTest.java",
+        "patchSetId": 20
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2017-03-03T22:15:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6d89abea_b53bf0b8",
+      "range": {
+        "startLine": 51,
+        "startChar": 10,
+        "endLine": 51,
+        "endChar": 41
+      },
+      "revId": "89ef5a511cc8378e4b660127d6caf0f183ab5228",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "e81af9f4_3e2e39ee",
         "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/ConfigLoaderTest.java",
         "patchSetId": 20
@@ -427,6 +835,30 @@
       "writtenOn": "2017-03-03T12:30:16Z",
       "side": 1,
       "message": "optional: Could be a local variable.",
+      "range": {
+        "startLine": 52,
+        "startChar": 10,
+        "endLine": 52,
+        "endChar": 21
+      },
+      "revId": "89ef5a511cc8378e4b660127d6caf0f183ab5228",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "d2ef272c_5dda6ae6",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/ConfigLoaderTest.java",
+        "patchSetId": 20
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2017-03-03T22:15:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e81af9f4_3e2e39ee",
       "range": {
         "startLine": 52,
         "startChar": 10,
@@ -462,6 +894,30 @@
     },
     {
       "key": {
+        "uuid": "836303b2_eed813b6",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/ConfigLoaderTest.java",
+        "patchSetId": 20
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2017-03-03T22:15:39Z",
+      "side": 1,
+      "message": "Ooh, was unaware of the existence of this. Thanks!",
+      "parentUuid": "80122f91_da9eb32a",
+      "range": {
+        "startLine": 166,
+        "startChar": 7,
+        "endLine": 166,
+        "endChar": 48
+      },
+      "revId": "89ef5a511cc8378e4b660127d6caf0f183ab5228",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "037b7f04_0b1632b7",
         "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/ConfigLoaderTest.java",
         "patchSetId": 20
@@ -473,6 +929,30 @@
       "writtenOn": "2017-03-03T12:30:16Z",
       "side": 1,
       "message": "Why doesn\u0027t this test do anything?",
+      "range": {
+        "startLine": 174,
+        "startChar": 2,
+        "endLine": 175,
+        "endChar": 76
+      },
+      "revId": "89ef5a511cc8378e4b660127d6caf0f183ab5228",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a157d8b2_998eb32f",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/ConfigLoaderTest.java",
+        "patchSetId": 20
+      },
+      "lineNbr": 175,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2017-03-03T22:15:39Z",
+      "side": 1,
+      "message": "Because I was silly and left this as a TODO then forgot to go back and do it. My bad.\n\nThis is now an actual test as getProjectsInScope_ignoreSourceManifest (since we should be testing the public methods that are our contract with the rest of the world, not private methods)",
+      "parentUuid": "037b7f04_0b1632b7",
       "range": {
         "startLine": 174,
         "startChar": 2,
@@ -508,6 +988,30 @@
     },
     {
       "key": {
+        "uuid": "c0604771_598aa091",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/DownstreamCreatorTest.java",
+        "patchSetId": 20
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2017-03-03T22:15:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6fd780e4_c913a11e",
+      "range": {
+        "startLine": 37,
+        "startChar": 0,
+        "endLine": 44,
+        "endChar": 46
+      },
+      "revId": "89ef5a511cc8378e4b660127d6caf0f183ab5228",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "e3599a91_57d4a94f",
         "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/DownstreamCreatorTest.java",
         "patchSetId": 20
@@ -519,6 +1023,30 @@
       "writtenOn": "2017-03-03T12:30:16Z",
       "side": 1,
       "message": "optional: Either define via @Mock or transform it into a local variable.",
+      "range": {
+        "startLine": 61,
+        "startChar": 4,
+        "endLine": 61,
+        "endChar": 50
+      },
+      "revId": "89ef5a511cc8378e4b660127d6caf0f183ab5228",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ee2dde77_3a0dc415",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/DownstreamCreatorTest.java",
+        "patchSetId": 20
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2017-03-03T22:15:39Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e3599a91_57d4a94f",
       "range": {
         "startLine": 61,
         "startChar": 4,
