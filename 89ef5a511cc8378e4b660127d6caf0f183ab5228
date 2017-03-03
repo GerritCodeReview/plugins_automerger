@@ -25,6 +25,75 @@
     },
     {
       "key": {
+        "uuid": "b7de23bf_a0b8fb4e",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/AutomergeChangeAction.java",
+        "patchSetId": 20
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1030912
+      },
+      "writtenOn": "2017-03-03T12:30:16Z",
+      "side": 1,
+      "message": "nit: Do we map this exception to a nice error message? Or will a user of this REST endpoint just be notified about an internal server error?",
+      "range": {
+        "startLine": 64,
+        "startChar": 66,
+        "endLine": 64,
+        "endChar": 88
+      },
+      "revId": "89ef5a511cc8378e4b660127d6caf0f183ab5228",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "65f3f22c_8bddcddc",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigDownstreamAction.java",
+        "patchSetId": 20
+      },
+      "lineNbr": 57,
+      "author": {
+        "id": 1030912
+      },
+      "writtenOn": "2017-03-03T12:30:16Z",
+      "side": 1,
+      "message": "nit: Same as with AutomergeChangeAction.",
+      "range": {
+        "startLine": 57,
+        "startChar": 44,
+        "endLine": 57,
+        "endChar": 66
+      },
+      "revId": "89ef5a511cc8378e4b660127d6caf0f183ab5228",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "67349bd6_11e6bb07",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 20
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1030912
+      },
+      "writtenOn": "2017-03-03T12:30:16Z",
+      "side": 1,
+      "message": "optional: Doesn\u0027t Git normally use : to separate the source from the target branch? I don\u0027t know whether it will conflict with other parts of the config but thought it might help to have a notation others already know from Git.",
+      "range": {
+        "startLine": 43,
+        "startChar": 50,
+        "endLine": 43,
+        "endChar": 52
+      },
+      "revId": "89ef5a511cc8378e4b660127d6caf0f183ab5228",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "9d0d50a1_31668a91",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
         "patchSetId": 20
@@ -41,6 +110,75 @@
         "startChar": 0,
         "endLine": 47,
         "endChar": 40
+      },
+      "revId": "89ef5a511cc8378e4b660127d6caf0f183ab5228",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c83baac7_1ccdec61",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 20
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1030912
+      },
+      "writtenOn": "2017-03-03T12:30:16Z",
+      "side": 1,
+      "message": "nit: Insert \u0027final\u0027.",
+      "range": {
+        "startLine": 47,
+        "startChar": 9,
+        "endLine": 47,
+        "endChar": 10
+      },
+      "revId": "89ef5a511cc8378e4b660127d6caf0f183ab5228",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e29bcd69_273f3b4b",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 20
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1030912
+      },
+      "writtenOn": "2017-03-03T12:30:16Z",
+      "side": 1,
+      "message": "optional: Doing real work in a constructor is discouraged for several reasons. As we use Guice and throw exceptions, it\u0027s even worse. I know that the constructor loaded and interpreted the config file also before this change. Do you think it would be possible to adjust the design of this class in a follow-up change?",
+      "range": {
+        "startLine": 70,
+        "startChar": 4,
+        "endLine": 71,
+        "endChar": 67
+      },
+      "revId": "89ef5a511cc8378e4b660127d6caf0f183ab5228",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "eb7f1b47_c1a1bae9",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 20
+      },
+      "lineNbr": 76,
+      "author": {
+        "id": 1030912
+      },
+      "writtenOn": "2017-03-03T12:30:16Z",
+      "side": 1,
+      "message": "nit: Can the patternList really be null?",
+      "range": {
+        "startLine": 76,
+        "startChar": 4,
+        "endLine": 76,
+        "endChar": 28
       },
       "revId": "89ef5a511cc8378e4b660127d6caf0f183ab5228",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
@@ -71,6 +209,29 @@
     },
     {
       "key": {
+        "uuid": "cde51f1b_02799fc4",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 20
+      },
+      "lineNbr": 128,
+      "author": {
+        "id": 1030912
+      },
+      "writtenOn": "2017-03-03T12:30:16Z",
+      "side": 1,
+      "message": "nit: These exceptions aren\u0027t thrown in the method body. Please also remove them from other methods calling this method.",
+      "range": {
+        "startLine": 128,
+        "startChar": 43,
+        "endLine": 128,
+        "endChar": 73
+      },
+      "revId": "89ef5a511cc8378e4b660127d6caf0f183ab5228",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "2216bda4_48c68309",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
         "patchSetId": 20
@@ -87,6 +248,282 @@
         "startChar": 8,
         "endLine": 180,
         "endChar": 81
+      },
+      "revId": "89ef5a511cc8378e4b660127d6caf0f183ab5228",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "14cda4f9_3556f8cd",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 20
+      },
+      "lineNbr": 229,
+      "author": {
+        "id": 1030912
+      },
+      "writtenOn": "2017-03-03T12:30:16Z",
+      "side": 1,
+      "message": "nit: If I understand the code correctly, the empty set will be returned if ignoreSourceManifest is true. Is that correct? If so, it would be more efficient to simply return the empty set at the beginning of this code block when ignoreSourceManifest is true.",
+      "range": {
+        "startLine": 223,
+        "startChar": 4,
+        "endLine": 229,
+        "endChar": 22
+      },
+      "revId": "89ef5a511cc8378e4b660127d6caf0f183ab5228",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "05ba5479_36e04ac0",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 20
+      },
+      "lineNbr": 237,
+      "author": {
+        "id": 1030912
+      },
+      "writtenOn": "2017-03-03T12:30:16Z",
+      "side": 1,
+      "message": "optional as unrelated: This call should be part of a try-with-resources statement.",
+      "range": {
+        "startLine": 236,
+        "startChar": 6,
+        "endLine": 237,
+        "endChar": 82
+      },
+      "revId": "89ef5a511cc8378e4b660127d6caf0f183ab5228",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ee5d1eb4_2f896144",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 20
+      },
+      "lineNbr": 246,
+      "author": {
+        "id": 1030912
+      },
+      "writtenOn": "2017-03-03T12:30:16Z",
+      "side": 1,
+      "message": "nit: Using method parameters for return values is discouraged in Java.",
+      "range": {
+        "startLine": 246,
+        "startChar": 75,
+        "endLine": 246,
+        "endChar": 83
+      },
+      "revId": "89ef5a511cc8378e4b660127d6caf0f183ab5228",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7c29257a_2ef922f8",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/DownstreamCreator.java",
+        "patchSetId": 20
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 1030912
+      },
+      "writtenOn": "2017-03-03T12:30:16Z",
+      "side": 1,
+      "message": "Will this exception be printed in the log message? The message string contains only one placeholder and the Javadoc comment doesn\u0027t say anything about special casing exceptions which are passed as second parameter.",
+      "range": {
+        "startLine": 90,
+        "startChar": 80,
+        "endLine": 90,
+        "endChar": 81
+      },
+      "revId": "89ef5a511cc8378e4b660127d6caf0f183ab5228",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7120727d_fe1a7a10",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/DownstreamCreator.java",
+        "patchSetId": 20
+      },
+      "lineNbr": 114,
+      "author": {
+        "id": 1030912
+      },
+      "writtenOn": "2017-03-03T12:30:16Z",
+      "side": 1,
+      "message": "optional: Why do we need a special case here and for similar cases below? Can\u0027t we integrate it with the previous catch clause and make sure that the exception is logged?",
+      "range": {
+        "startLine": 110,
+        "startChar": 4,
+        "endLine": 114,
+        "endChar": 0
+      },
+      "revId": "89ef5a511cc8378e4b660127d6caf0f183ab5228",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7d465dfc_bb34e99b",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/ConfigLoaderTest.java",
+        "patchSetId": 20
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1030912
+      },
+      "writtenOn": "2017-03-03T12:30:16Z",
+      "side": 1,
+      "message": "nit: Some of these imports are unused.",
+      "range": {
+        "startLine": 22,
+        "startChar": 0,
+        "endLine": 43,
+        "endChar": 0
+      },
+      "revId": "89ef5a511cc8378e4b660127d6caf0f183ab5228",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6d89abea_b53bf0b8",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/ConfigLoaderTest.java",
+        "patchSetId": 20
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1030912
+      },
+      "writtenOn": "2017-03-03T12:30:16Z",
+      "side": 1,
+      "message": "optional: Either define via @Mock or transform to a local variable.",
+      "range": {
+        "startLine": 51,
+        "startChar": 10,
+        "endLine": 51,
+        "endChar": 41
+      },
+      "revId": "89ef5a511cc8378e4b660127d6caf0f183ab5228",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e81af9f4_3e2e39ee",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/ConfigLoaderTest.java",
+        "patchSetId": 20
+      },
+      "lineNbr": 52,
+      "author": {
+        "id": 1030912
+      },
+      "writtenOn": "2017-03-03T12:30:16Z",
+      "side": 1,
+      "message": "optional: Could be a local variable.",
+      "range": {
+        "startLine": 52,
+        "startChar": 10,
+        "endLine": 52,
+        "endChar": 21
+      },
+      "revId": "89ef5a511cc8378e4b660127d6caf0f183ab5228",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "80122f91_da9eb32a",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/ConfigLoaderTest.java",
+        "patchSetId": 20
+      },
+      "lineNbr": 166,
+      "author": {
+        "id": 1030912
+      },
+      "writtenOn": "2017-03-03T12:30:16Z",
+      "side": 1,
+      "message": "optional: Using ExpectedException directly before the call which throws the exception would ensure that the correct line of code throws the exception.",
+      "range": {
+        "startLine": 166,
+        "startChar": 7,
+        "endLine": 166,
+        "endChar": 48
+      },
+      "revId": "89ef5a511cc8378e4b660127d6caf0f183ab5228",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "037b7f04_0b1632b7",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/ConfigLoaderTest.java",
+        "patchSetId": 20
+      },
+      "lineNbr": 175,
+      "author": {
+        "id": 1030912
+      },
+      "writtenOn": "2017-03-03T12:30:16Z",
+      "side": 1,
+      "message": "Why doesn\u0027t this test do anything?",
+      "range": {
+        "startLine": 174,
+        "startChar": 2,
+        "endLine": 175,
+        "endChar": 76
+      },
+      "revId": "89ef5a511cc8378e4b660127d6caf0f183ab5228",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6fd780e4_c913a11e",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/DownstreamCreatorTest.java",
+        "patchSetId": 20
+      },
+      "lineNbr": 44,
+      "author": {
+        "id": 1030912
+      },
+      "writtenOn": "2017-03-03T12:30:16Z",
+      "side": 1,
+      "message": "nit: Some of these imports or unused.",
+      "range": {
+        "startLine": 37,
+        "startChar": 0,
+        "endLine": 44,
+        "endChar": 46
+      },
+      "revId": "89ef5a511cc8378e4b660127d6caf0f183ab5228",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "e3599a91_57d4a94f",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/DownstreamCreatorTest.java",
+        "patchSetId": 20
+      },
+      "lineNbr": 61,
+      "author": {
+        "id": 1030912
+      },
+      "writtenOn": "2017-03-03T12:30:16Z",
+      "side": 1,
+      "message": "optional: Either define via @Mock or transform it into a local variable.",
+      "range": {
+        "startLine": 61,
+        "startChar": 4,
+        "endLine": 61,
+        "endChar": 50
       },
       "revId": "89ef5a511cc8378e4b660127d6caf0f183ab5228",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
