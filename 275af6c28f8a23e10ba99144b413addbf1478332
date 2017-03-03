@@ -55,6 +55,24 @@
     },
     {
       "key": {
+        "uuid": "46a045f9_2fbed00e",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 15
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2017-03-03T02:17:46Z",
+      "side": 1,
+      "message": "Using Git config now. Removed dependency on SnakeYAML.",
+      "parentUuid": "36072ab9_0572ba15",
+      "revId": "275af6c28f8a23e10ba99144b413addbf1478332",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "9832f062_4c1534ba",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
         "patchSetId": 15
