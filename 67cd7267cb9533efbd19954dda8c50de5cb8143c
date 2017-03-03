@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "fceb1e95_749bfaf7",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 18
+      },
+      "lineNbr": 49,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2017-03-03T02:01:56Z",
+      "side": 1,
+      "message": "nit: this should be static and named in CONSTANT_CASE (i.e. BRANCH_DELIMITER)",
+      "range": {
+        "startLine": 49,
+        "startChar": 23,
+        "endLine": 49,
+        "endChar": 38
+      },
+      "revId": "67cd7267cb9533efbd19954dda8c50de5cb8143c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
