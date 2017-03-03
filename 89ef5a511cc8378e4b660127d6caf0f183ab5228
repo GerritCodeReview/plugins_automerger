@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "a1299fc6_9f090985",
+        "filename": "external_plugin_deps.bzl",
+        "patchSetId": 20
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1026112
+      },
+      "writtenOn": "2017-03-03T11:57:38Z",
+      "side": 1,
+      "message": "You will not be able to run these tests inside Google (would need v1.9.5)",
+      "range": {
+        "startLine": 6,
+        "startChar": 40,
+        "endLine": 6,
+        "endChar": 47
+      },
+      "revId": "89ef5a511cc8378e4b660127d6caf0f183ab5228",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9d0d50a1_31668a91",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 20
+      },
+      "lineNbr": 47,
+      "author": {
+        "id": 1026112
+      },
+      "writtenOn": "2017-03-03T11:57:38Z",
+      "side": 1,
+      "message": "nit: move this below all the private final variables",
+      "range": {
+        "startLine": 47,
+        "startChar": 0,
+        "endLine": 47,
+        "endChar": 40
+      },
+      "revId": "89ef5a511cc8378e4b660127d6caf0f183ab5228",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8fe7580f_7e03617e",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 20
+      },
+      "lineNbr": 77,
+      "author": {
+        "id": 1026112
+      },
+      "writtenOn": "2017-03-03T11:57:38Z",
+      "side": 1,
+      "message": "omit, this is implicit",
+      "range": {
+        "startLine": 77,
+        "startChar": 45,
+        "endLine": 77,
+        "endChar": 51
+      },
+      "revId": "89ef5a511cc8378e4b660127d6caf0f183ab5228",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2216bda4_48c68309",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 20
+      },
+      "lineNbr": 180,
+      "author": {
+        "id": 1026112
+      },
+      "writtenOn": "2017-03-03T11:57:38Z",
+      "side": 1,
+      "message": "don\u0027t log the error here, but log it at the topmost call when you see the ConfigInvalidException instead",
+      "range": {
+        "startLine": 179,
+        "startChar": 8,
+        "endLine": 180,
+        "endChar": 81
+      },
+      "revId": "89ef5a511cc8378e4b660127d6caf0f183ab5228",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
