@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "641abb68_8d6c4424",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 23
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2017-03-07T21:34:22Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "373c52f1_4f3896fa",
+      "range": {
+        "startLine": 49,
+        "startChar": 2,
+        "endLine": 50,
+        "endChar": 42
+      },
+      "revId": "f3241a17adb5131143ac6a1af99e9a6c3d110094",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "c6056483_df08649c",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
         "patchSetId": 23
@@ -36,6 +60,30 @@
       "writtenOn": "2017-03-07T13:11:40Z",
       "side": 1,
       "message": "Before this change, the intersection of both sets was only taken if both were non-empty. Otherwise, the non-empty set was returned. Don\u0027t we need this special logic anymore?",
+      "range": {
+        "startLine": 221,
+        "startChar": 4,
+        "endLine": 224,
+        "endChar": 24
+      },
+      "revId": "f3241a17adb5131143ac6a1af99e9a6c3d110094",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8a60e6ad_f2caba0b",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 23
+      },
+      "lineNbr": 224,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2017-03-07T21:34:22Z",
+      "side": 1,
+      "message": "The way it\u0027s supposed to work is:\n\nif ignoreSourceManifest:\n  take the relevant projects in the manifest of \"to branch\" and use that\nelse:\n  take the intersection of the relevant projects in the \"from branch\" and \"to branch\" and use that\n\nI\u0027ve added a test to cover the case of a missing toBranch (it should just return the empty set).",
+      "parentUuid": "c6056483_df08649c",
       "range": {
         "startLine": 221,
         "startChar": 4,
