@@ -1,0 +1,50 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "373c52f1_4f3896fa",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 23
+      },
+      "lineNbr": 50,
+      "author": {
+        "id": 1030912
+      },
+      "writtenOn": "2017-03-07T13:11:40Z",
+      "side": 1,
+      "message": "Should be local variables.",
+      "range": {
+        "startLine": 49,
+        "startChar": 2,
+        "endLine": 50,
+        "endChar": 42
+      },
+      "revId": "f3241a17adb5131143ac6a1af99e9a6c3d110094",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "c6056483_df08649c",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 23
+      },
+      "lineNbr": 224,
+      "author": {
+        "id": 1030912
+      },
+      "writtenOn": "2017-03-07T13:11:40Z",
+      "side": 1,
+      "message": "Before this change, the intersection of both sets was only taken if both were non-empty. Otherwise, the non-empty set was returned. Don\u0027t we need this special logic anymore?",
+      "range": {
+        "startLine": 221,
+        "startChar": 4,
+        "endLine": 224,
+        "endChar": 24
+      },
+      "revId": "f3241a17adb5131143ac6a1af99e9a6c3d110094",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}

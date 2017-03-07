@@ -96,6 +96,30 @@
     },
     {
       "key": {
+        "uuid": "b0a2366e_bbf537e5",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/AutomergeChangeAction.java",
+        "patchSetId": 20
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1030912
+      },
+      "writtenOn": "2017-03-07T13:11:40Z",
+      "side": 1,
+      "message": "Yes, BadRequestException as well as ResourceConflictException can be used for a nice error message.\n\nIn Gerrit core, we normally use BadRequestException to indicate that the passed parameters are the cause. If the internal state doesn\u0027t allow the requested operation to be executed, we normally use ResourceConflictException (even if the name isn\u0027t ideal for all situations). I don\u0027t mind if you stay with BadRequestException, though.",
+      "parentUuid": "097e441f_775a1a9b",
+      "range": {
+        "startLine": 64,
+        "startChar": 66,
+        "endLine": 64,
+        "endChar": 88
+      },
+      "revId": "89ef5a511cc8378e4b660127d6caf0f183ab5228",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "65f3f22c_8bddcddc",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigDownstreamAction.java",
         "patchSetId": 20
@@ -295,6 +319,30 @@
       "side": 1,
       "message": "\"Doing real work in a constructor is discouraged for several reasons.\"\nApologies, was not aware, before this plugin I\u0027d done very little Java work.\n\nMoved out of the constructor (turned out to be a relatively trivial change, as it\u0027s only used in one method).",
       "parentUuid": "e29bcd69_273f3b4b",
+      "range": {
+        "startLine": 70,
+        "startChar": 4,
+        "endLine": 71,
+        "endChar": 67
+      },
+      "revId": "89ef5a511cc8378e4b660127d6caf0f183ab5228",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fcb61623_93f1d398",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 20
+      },
+      "lineNbr": 71,
+      "author": {
+        "id": 1030912
+      },
+      "writtenOn": "2017-03-07T13:11:40Z",
+      "side": 1,
+      "message": "Thanks.",
+      "parentUuid": "89983eaf_6785740e",
       "range": {
         "startLine": 70,
         "startChar": 4,
@@ -589,6 +637,30 @@
     },
     {
       "key": {
+        "uuid": "2cd017fd_d731d2d5",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 20
+      },
+      "lineNbr": 237,
+      "author": {
+        "id": 1030912
+      },
+      "writtenOn": "2017-03-07T13:11:40Z",
+      "side": 1,
+      "message": "I wasn\u0027t referring to the ManifestReader. BinaryResult implements Closeable and hence should be closed after use.",
+      "parentUuid": "66450548_e95f0cd8",
+      "range": {
+        "startLine": 236,
+        "startChar": 6,
+        "endLine": 237,
+        "endChar": 82
+      },
+      "revId": "89ef5a511cc8378e4b660127d6caf0f183ab5228",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "ee5d1eb4_2f896144",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
         "patchSetId": 20
@@ -671,6 +743,30 @@
       "side": 1,
       "message": "It is in fact printed in the log message.\n\nSee:\nhttps://www.slf4j.org/apidocs/org/slf4j/Logger.html#error(java.lang.String, java.lang.Throwable)",
       "parentUuid": "7c29257a_2ef922f8",
+      "range": {
+        "startLine": 90,
+        "startChar": 80,
+        "endLine": 90,
+        "endChar": 81
+      },
+      "revId": "89ef5a511cc8378e4b660127d6caf0f183ab5228",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b8c9b2e5_c317db16",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/DownstreamCreator.java",
+        "patchSetId": 20
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 1030912
+      },
+      "writtenOn": "2017-03-07T13:11:40Z",
+      "side": 1,
+      "message": "The code doesn\u0027t use the method you linked. It uses https://www.slf4j.org/apidocs/org/slf4j/Logger.html#error(java.lang.String, java.lang.Object, java.lang.Object).",
+      "parentUuid": "1b9b27a1_8610e2c8",
       "range": {
         "startLine": 90,
         "startChar": 80,
