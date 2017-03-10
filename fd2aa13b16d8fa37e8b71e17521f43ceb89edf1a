@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f5597d15_8d8dc8ac",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 24
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1030912
+      },
+      "writtenOn": "2017-03-10T12:17:07Z",
+      "side": 1,
+      "message": "nit: Update the commit message according to the applied modifications to this change (e.g. mention that the standard plugin config mechanism is used and hence also the format moved away from yaml).",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 44
+      },
+      "revId": "fd2aa13b16d8fa37e8b71e17521f43ceb89edf1a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "273c5ed5_2e0423ab",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 24
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1030912
+      },
+      "writtenOn": "2017-03-10T12:17:07Z",
+      "side": 1,
+      "message": "nit: Description isn\u0027t accurate anymore.",
+      "range": {
+        "startLine": 51,
+        "startChar": 5,
+        "endLine": 51,
+        "endChar": 32
+      },
+      "revId": "fd2aa13b16d8fa37e8b71e17521f43ceb89edf1a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "38825545_bfa9e7d7",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 24
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 1030912
+      },
+      "writtenOn": "2017-03-10T12:17:07Z",
+      "side": 1,
+      "message": "Please don\u0027t forget to address this todo in another change.",
+      "range": {
+        "startLine": 102,
+        "startChar": 4,
+        "endLine": 102,
+        "endChar": 88
+      },
+      "revId": "fd2aa13b16d8fa37e8b71e17521f43ceb89edf1a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}

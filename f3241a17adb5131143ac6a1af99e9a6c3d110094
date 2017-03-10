@@ -93,6 +93,30 @@
       "revId": "f3241a17adb5131143ac6a1af99e9a6c3d110094",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b6eb7d8c_0f7143c5",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 23
+      },
+      "lineNbr": 224,
+      "author": {
+        "id": 1030912
+      },
+      "writtenOn": "2017-03-10T12:17:07Z",
+      "side": 1,
+      "message": "Okay. I just wanted to make sure the code is doing what you want it to do.\n\nRegarding the test case: I don\u0027t understand why you added a test case with \u0027ignoreSourceManifest \u003d true\u0027 upon my comment (as the code I was referring to is only executed for \u0027false\u0027) but having this test case doesn\u0027t hurt.",
+      "parentUuid": "8a60e6ad_f2caba0b",
+      "range": {
+        "startLine": 221,
+        "startChar": 4,
+        "endLine": 224,
+        "endChar": 24
+      },
+      "revId": "f3241a17adb5131143ac6a1af99e9a6c3d110094",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
