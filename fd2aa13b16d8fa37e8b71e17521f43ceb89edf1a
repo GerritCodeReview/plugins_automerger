@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "ba55e5e2_78333f4f",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 24
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2017-03-10T19:03:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f5597d15_8d8dc8ac",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 10,
+        "endChar": 44
+      },
+      "revId": "fd2aa13b16d8fa37e8b71e17521f43ceb89edf1a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "273c5ed5_2e0423ab",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
         "patchSetId": 24
@@ -48,6 +72,30 @@
     },
     {
       "key": {
+        "uuid": "ae9aa104_4c9b486a",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 24
+      },
+      "lineNbr": 51,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2017-03-10T19:03:11Z",
+      "side": 1,
+      "message": "Fixed",
+      "parentUuid": "273c5ed5_2e0423ab",
+      "range": {
+        "startLine": 51,
+        "startChar": 5,
+        "endLine": 51,
+        "endChar": 32
+      },
+      "revId": "fd2aa13b16d8fa37e8b71e17521f43ceb89edf1a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "38825545_bfa9e7d7",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
         "patchSetId": 24
@@ -59,6 +107,30 @@
       "writtenOn": "2017-03-10T12:17:07Z",
       "side": 1,
       "message": "Please don\u0027t forget to address this todo in another change.",
+      "range": {
+        "startLine": 102,
+        "startChar": 4,
+        "endLine": 102,
+        "endChar": 88
+      },
+      "revId": "fd2aa13b16d8fa37e8b71e17521f43ceb89edf1a",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "80132034_b5a7e5ac",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 24
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2017-03-10T19:03:11Z",
+      "side": 1,
+      "message": "Ah, whoops. Deleting this line. This was a note to myself to make sure that not specifying blankMerge in the config didn\u0027t cause it to match any valid string. It does not.\n\nAdded a test case for it because more test cases never hurts.",
+      "parentUuid": "38825545_bfa9e7d7",
       "range": {
         "startLine": 102,
         "startChar": 4,
