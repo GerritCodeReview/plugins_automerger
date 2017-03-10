@@ -851,6 +851,30 @@
     },
     {
       "key": {
+        "uuid": "68407cda_f7af0252",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/DownstreamCreator.java",
+        "patchSetId": 20
+      },
+      "lineNbr": 90,
+      "author": {
+        "id": 1030912
+      },
+      "writtenOn": "2017-03-10T12:17:07Z",
+      "side": 1,
+      "message": "Thank you.",
+      "parentUuid": "67eecc9b_cec2c971",
+      "range": {
+        "startLine": 90,
+        "startChar": 80,
+        "endLine": 90,
+        "endChar": 81
+      },
+      "revId": "89ef5a511cc8378e4b660127d6caf0f183ab5228",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "7120727d_fe1a7a10",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/DownstreamCreator.java",
         "patchSetId": 20
