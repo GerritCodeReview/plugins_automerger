@@ -48,6 +48,30 @@
     },
     {
       "key": {
+        "uuid": "e75aad06_45763273",
+        "filename": "external_plugin_deps.bzl",
+        "patchSetId": 25
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2017-03-13T18:29:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f06a3381_c8a90c14",
+      "range": {
+        "startLine": 6,
+        "startChar": 2,
+        "endLine": 6,
+        "endChar": 6
+      },
+      "revId": "dee8cdd429efa350cf51e664beea908280de40da",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "f7aef8f2_881cc9d8",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
         "patchSetId": 25
@@ -71,6 +95,30 @@
     },
     {
       "key": {
+        "uuid": "6f0e2e9f_e4807f35",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 25
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2017-03-13T18:29:02Z",
+      "side": 1,
+      "message": "Done.",
+      "parentUuid": "f7aef8f2_881cc9d8",
+      "range": {
+        "startLine": 123,
+        "startChar": 0,
+        "endLine": 126,
+        "endChar": 26
+      },
+      "revId": "dee8cdd429efa350cf51e664beea908280de40da",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "6e710764_d8dd8748",
         "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/ConfigLoaderTest.java",
         "patchSetId": 25
@@ -82,6 +130,30 @@
       "writtenOn": "2017-03-13T15:12:24Z",
       "side": 1,
       "message": "you should have access to RefNames (which is part of com.google.gerrit.reviewdb.client) and can use RefNames.REFS_CONFIG instead",
+      "range": {
+        "startLine": 105,
+        "startChar": 50,
+        "endLine": 105,
+        "endChar": 66
+      },
+      "revId": "dee8cdd429efa350cf51e664beea908280de40da",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2e130a9e_057dffd4",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/ConfigLoaderTest.java",
+        "patchSetId": 25
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2017-03-13T18:29:02Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "6e710764_d8dd8748",
       "range": {
         "startLine": 105,
         "startChar": 50,
