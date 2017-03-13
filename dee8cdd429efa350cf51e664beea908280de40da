@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "46fdc182_f6aec9b3",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 25
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1026112
+      },
+      "writtenOn": "2017-03-13T15:12:24Z",
+      "side": 1,
+      "message": "nit: Move\n\nCommit message should be written in present. From the Git doc: \"use the imperative, present tense\"",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 5
+      },
+      "revId": "dee8cdd429efa350cf51e664beea908280de40da",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f06a3381_c8a90c14",
+        "filename": "external_plugin_deps.bzl",
+        "patchSetId": 25
+      },
+      "lineNbr": 6,
+      "author": {
+        "id": 1026112
+      },
+      "writtenOn": "2017-03-13T15:12:24Z",
+      "side": 1,
+      "message": "nit: this should be indented with two spaces starting from the indent of \u0027maven_jar\u0027 (here and below)",
+      "range": {
+        "startLine": 6,
+        "startChar": 2,
+        "endLine": 6,
+        "endChar": 6
+      },
+      "revId": "dee8cdd429efa350cf51e664beea908280de40da",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "f7aef8f2_881cc9d8",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 25
+      },
+      "lineNbr": 126,
+      "author": {
+        "id": 1026112
+      },
+      "writtenOn": "2017-03-13T15:12:24Z",
+      "side": 1,
+      "message": "nit: return automergeLabel !\u003d null ? automergeLabel : \"Verified\";",
+      "range": {
+        "startLine": 123,
+        "startChar": 0,
+        "endLine": 126,
+        "endChar": 26
+      },
+      "revId": "dee8cdd429efa350cf51e664beea908280de40da",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "6e710764_d8dd8748",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/ConfigLoaderTest.java",
+        "patchSetId": 25
+      },
+      "lineNbr": 105,
+      "author": {
+        "id": 1026112
+      },
+      "writtenOn": "2017-03-13T15:12:24Z",
+      "side": 1,
+      "message": "you should have access to RefNames (which is part of com.google.gerrit.reviewdb.client) and can use RefNames.REFS_CONFIG instead",
+      "range": {
+        "startLine": 105,
+        "startChar": 50,
+        "endLine": 105,
+        "endChar": 66
+      },
+      "revId": "dee8cdd429efa350cf51e664beea908280de40da",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
