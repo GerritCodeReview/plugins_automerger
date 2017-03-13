@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "ac8feb26_011a774d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 25
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2017-03-13T18:29:13Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "46fdc182_f6aec9b3",
+      "range": {
+        "startLine": 7,
+        "startChar": 0,
+        "endLine": 7,
+        "endChar": 5
+      },
+      "revId": "dee8cdd429efa350cf51e664beea908280de40da",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "f06a3381_c8a90c14",
         "filename": "external_plugin_deps.bzl",
         "patchSetId": 25
