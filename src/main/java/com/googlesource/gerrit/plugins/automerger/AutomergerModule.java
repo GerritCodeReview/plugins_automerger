@@ -1,4 +1,4 @@
-// Copyright (C) 2016 The Android Open Source Project
+// Copyright (C) 2017 The Android Open Source Project
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -26,6 +26,7 @@ import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.extensions.restapi.RestApiModule;
 import com.google.gerrit.extensions.webui.JavaScriptPlugin;
 import com.google.gerrit.extensions.webui.WebUiPlugin;
+import com.google.gerrit.server.git.validators.MergeValidationListener;
 import com.google.inject.AbstractModule;
 
 /** Module to bind listeners, plugins, and other modules. */
@@ -39,6 +40,7 @@ public class AutomergerModule extends AbstractModule {
     DynamicSet.bind(binder(), DraftPublishedListener.class).to(DownstreamCreator.class);
     DynamicSet.bind(binder(), RevisionCreatedListener.class).to(DownstreamCreator.class);
     DynamicSet.bind(binder(), TopicEditedListener.class).to(DownstreamCreator.class);
+    DynamicSet.bind(binder(), MergeValidationListener.class).to(MergeValidator.class);
     install(
         new RestApiModule() {
           @Override
