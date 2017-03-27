@@ -26,6 +26,7 @@ import com.google.gerrit.extensions.registration.DynamicSet;
 import com.google.gerrit.extensions.restapi.RestApiModule;
 import com.google.gerrit.extensions.webui.JavaScriptPlugin;
 import com.google.gerrit.extensions.webui.WebUiPlugin;
+import com.google.gerrit.server.git.validators.MergeValidationListener;
 import com.google.inject.AbstractModule;
 
 /** Module to bind listeners, plugins, and other modules. */
@@ -39,6 +40,8 @@ public class AutomergerModule extends AbstractModule {
     DynamicSet.bind(binder(), DraftPublishedListener.class).to(DownstreamCreator.class);
     DynamicSet.bind(binder(), RevisionCreatedListener.class).to(DownstreamCreator.class);
     DynamicSet.bind(binder(), TopicEditedListener.class).to(DownstreamCreator.class);
+
+    DynamicSet.bind(binder(), MergeValidationListener.class).to(MergeValidator.class);
     install(
         new RestApiModule() {
           @Override
