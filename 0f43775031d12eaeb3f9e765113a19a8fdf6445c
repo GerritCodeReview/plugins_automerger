@@ -357,6 +357,30 @@
       "revId": "0f43775031d12eaeb3f9e765113a19a8fdf6445c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5f4b0907_e2f20b53",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/MergeValidatorTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2017-04-03T22:57:43Z",
+      "side": 1,
+      "message": "It\u0027s now an integration test.",
+      "parentUuid": "8b1e7fa9_cc1c3989",
+      "range": {
+        "startLine": 41,
+        "startChar": 0,
+        "endLine": 42,
+        "endChar": 29
+      },
+      "revId": "0f43775031d12eaeb3f9e765113a19a8fdf6445c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
