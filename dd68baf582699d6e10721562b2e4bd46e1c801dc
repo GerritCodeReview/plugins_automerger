@@ -1,0 +1,73 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "80dae59a_ea5f7d4d",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/DownstreamCreator.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 268,
+      "author": {
+        "id": 1026112
+      },
+      "writtenOn": "2017-04-03T08:41:31Z",
+      "side": 1,
+      "message": "nit: place a comment on what key and value is e.g.\n  // Map from branch to error message",
+      "range": {
+        "startLine": 268,
+        "startChar": 4,
+        "endLine": 268,
+        "endChar": 77
+      },
+      "revId": "dd68baf582699d6e10721562b2e4bd46e1c801dc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "4d3990bc_f1ad185b",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/FailedMergeExceptionTest.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1026112
+      },
+      "writtenOn": "2017-04-03T08:41:31Z",
+      "side": 1,
+      "message": "nit: 2017",
+      "range": {
+        "startLine": 1,
+        "startChar": 17,
+        "endLine": 1,
+        "endChar": 21
+      },
+      "revId": "dd68baf582699d6e10721562b2e4bd46e1c801dc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "07042386_c9e8d46b",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/FailedMergeExceptionTest.java",
+        "patchSetId": 10
+      },
+      "lineNbr": 58,
+      "author": {
+        "id": 1026112
+      },
+      "writtenOn": "2017-04-03T08:41:31Z",
+      "side": 1,
+      "message": "optional (might be shorter):\n\n  assertThat(fme.getDisplayString().split(\"\\\\n\")).asList().containsExactly(branch1String, branch2String, branch3String);",
+      "range": {
+        "startLine": 57,
+        "startChar": 3,
+        "endLine": 58,
+        "endChar": 88
+      },
+      "revId": "dd68baf582699d6e10721562b2e4bd46e1c801dc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
