@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "0cda6259_45521042",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/AutomergerModule.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 43,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2017-04-03T19:56:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "4ed4323a_de0d6e3d",
+      "revId": "0f43775031d12eaeb3f9e765113a19a8fdf6445c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "f2b0a94a_9136a639",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/MergeValidator.java",
         "patchSetId": 1
@@ -30,6 +48,30 @@
       "writtenOn": "2017-04-03T08:54:25Z",
       "side": 1,
       "message": "nit: 2017 (here and in other files)",
+      "range": {
+        "startLine": 1,
+        "startChar": 17,
+        "endLine": 1,
+        "endChar": 21
+      },
+      "revId": "0f43775031d12eaeb3f9e765113a19a8fdf6445c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5d4061fc_ee6b800c",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/MergeValidator.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2017-04-03T19:56:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "f2b0a94a_9136a639",
       "range": {
         "startLine": 1,
         "startChar": 17,
@@ -59,6 +101,24 @@
     },
     {
       "key": {
+        "uuid": "753d9911_c1533503",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/MergeValidator.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2017-04-03T19:56:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "905cb81c_8d8b2612",
+      "revId": "0f43775031d12eaeb3f9e765113a19a8fdf6445c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "96c77364_6dbb7d29",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/MergeValidator.java",
         "patchSetId": 1
@@ -76,6 +136,24 @@
     },
     {
       "key": {
+        "uuid": "250fb3b0_7cf4e1ba",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/MergeValidator.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 83,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2017-04-03T19:56:57Z",
+      "side": 1,
+      "message": "Ooh. Privating this method in favor of this.",
+      "parentUuid": "96c77364_6dbb7d29",
+      "revId": "0f43775031d12eaeb3f9e765113a19a8fdf6445c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "e006c501_cda71c13",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/MergeValidator.java",
         "patchSetId": 1
@@ -87,6 +165,30 @@
       "writtenOn": "2017-04-03T08:54:25Z",
       "side": 1,
       "message": "nit: remove and inline where it is used",
+      "range": {
+        "startLine": 86,
+        "startChar": 4,
+        "endLine": 86,
+        "endChar": 40
+      },
+      "revId": "0f43775031d12eaeb3f9e765113a19a8fdf6445c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "9d20d691_f740a396",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/MergeValidator.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2017-04-03T19:56:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "e006c501_cda71c13",
       "range": {
         "startLine": 86,
         "startChar": 4,
@@ -122,6 +224,30 @@
     },
     {
       "key": {
+        "uuid": "efbea12a_afd9b921",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/MergeValidator.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 87,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2017-04-03T19:56:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8a5a93f4_cc7265f4",
+      "range": {
+        "startLine": 87,
+        "startChar": 4,
+        "endLine": 87,
+        "endChar": 61
+      },
+      "revId": "0f43775031d12eaeb3f9e765113a19a8fdf6445c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "5f7f630c_a0a1d62f",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/MergeValidator.java",
         "patchSetId": 1
@@ -145,6 +271,30 @@
     },
     {
       "key": {
+        "uuid": "edbe0d82_c773c7ae",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/MergeValidator.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 100,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2017-04-03T19:56:57Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "5f7f630c_a0a1d62f",
+      "range": {
+        "startLine": 100,
+        "startChar": 8,
+        "endLine": 100,
+        "endChar": 55
+      },
+      "revId": "0f43775031d12eaeb3f9e765113a19a8fdf6445c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "1623214f_5788ab61",
         "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/MergeValidatorTest.java",
         "patchSetId": 1
@@ -156,6 +306,30 @@
       "writtenOn": "2017-04-03T08:54:25Z",
       "side": 1,
       "message": "Any reason you mock the GerritApi instead of using it directly by writing an integration test?",
+      "range": {
+        "startLine": 41,
+        "startChar": 0,
+        "endLine": 42,
+        "endChar": 29
+      },
+      "revId": "0f43775031d12eaeb3f9e765113a19a8fdf6445c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "8b1e7fa9_cc1c3989",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/MergeValidatorTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2017-04-03T19:56:57Z",
+      "side": 1,
+      "message": "Mainly because when I initially set it up, it was suggested that it was okay, and because mocking is faster than an integration test:\nhttps://gerrit-review.googlesource.com/#/c/79486/24/src/test/java/com/googlesource/gerrit/plugins/automerger/ConfigLoaderIT.java@41\n\nI can look into using LightweightPluginDaemon if you think it\u0027s a good idea though.",
+      "parentUuid": "1623214f_5788ab61",
       "range": {
         "startLine": 41,
         "startChar": 0,
