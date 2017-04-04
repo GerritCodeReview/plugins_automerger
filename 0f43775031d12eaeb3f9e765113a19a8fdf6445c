@@ -381,6 +381,30 @@
       "revId": "0f43775031d12eaeb3f9e765113a19a8fdf6445c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7b146889_af0641f5",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/MergeValidatorTest.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 42,
+      "author": {
+        "id": 1026112
+      },
+      "writtenOn": "2017-04-04T07:00:43Z",
+      "side": 1,
+      "message": "Great!",
+      "parentUuid": "5f4b0907_e2f20b53",
+      "range": {
+        "startLine": 41,
+        "startChar": 0,
+        "endLine": 42,
+        "endChar": 29
+      },
+      "revId": "0f43775031d12eaeb3f9e765113a19a8fdf6445c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
