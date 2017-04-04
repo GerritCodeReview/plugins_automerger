@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "6a6716c4_a311a07e",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/ConfigLoaderIT.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2017-04-04T17:59:19Z",
+      "side": 1,
+      "message": "Do I update this whenever I update the file? Or only when I create a new file? Or throughout the whole project? What\u0027s the rule for this?",
+      "parentUuid": "f4b1363b_181005b4",
+      "range": {
+        "startLine": 1,
+        "startChar": 17,
+        "endLine": 1,
+        "endChar": 21
+      },
+      "revId": "91af2f0070e62617e4f33b181c7df36d6bc0a661",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "34f29ea9_498b7c13",
         "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/ConfigLoaderIT.java",
         "patchSetId": 3
@@ -36,6 +60,30 @@
       "writtenOn": "2017-04-04T07:08:50Z",
       "side": 1,
       "message": "please reuse \u0027exception\u0027 from AbstractDaemonTest",
+      "range": {
+        "startLine": 53,
+        "startChar": 2,
+        "endLine": 53,
+        "endChar": 67
+      },
+      "revId": "91af2f0070e62617e4f33b181c7df36d6bc0a661",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "5cd15956_b04d58c4",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/ConfigLoaderIT.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 53,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2017-04-04T17:59:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "34f29ea9_498b7c13",
       "range": {
         "startLine": 53,
         "startChar": 2,
@@ -71,6 +119,30 @@
     },
     {
       "key": {
+        "uuid": "8cfd90ac_4eaf60fb",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/ConfigLoaderIT.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 55,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2017-04-04T17:59:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "33159c71_adea827b",
+      "range": {
+        "startLine": 55,
+        "startChar": 2,
+        "endLine": 55,
+        "endChar": 9
+      },
+      "revId": "91af2f0070e62617e4f33b181c7df36d6bc0a661",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "aa57864c_91d549b5",
         "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/DownstreamCreatorIT.java",
         "patchSetId": 3
@@ -82,6 +154,30 @@
       "writtenOn": "2017-04-04T07:08:50Z",
       "side": 1,
       "message": "nit: ordering",
+      "range": {
+        "startLine": 45,
+        "startChar": 2,
+        "endLine": 45,
+        "endChar": 9
+      },
+      "revId": "91af2f0070e62617e4f33b181c7df36d6bc0a661",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "a275bda5_0702afd8",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/DownstreamCreatorIT.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 45,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2017-04-04T17:59:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "aa57864c_91d549b5",
       "range": {
         "startLine": 45,
         "startChar": 2,
@@ -117,6 +213,30 @@
     },
     {
       "key": {
+        "uuid": "8e633f6f_ed125e0f",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/DownstreamCreatorIT.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 185,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2017-04-04T17:59:19Z",
+      "side": 1,
+      "message": "Done here and elsewhere in this file.",
+      "parentUuid": "0cba1a3a_ee923fcd",
+      "range": {
+        "startLine": 185,
+        "startChar": 31,
+        "endLine": 185,
+        "endChar": 68
+      },
+      "revId": "91af2f0070e62617e4f33b181c7df36d6bc0a661",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "71e851a9_1c64a7a8",
         "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/DownstreamCreatorIT.java",
         "patchSetId": 3
@@ -128,6 +248,30 @@
       "writtenOn": "2017-04-04T07:08:50Z",
       "side": 1,
       "message": "nit: remove blank space",
+      "range": {
+        "startLine": 200,
+        "startChar": 0,
+        "endLine": 200,
+        "endChar": 4
+      },
+      "revId": "91af2f0070e62617e4f33b181c7df36d6bc0a661",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3c08df8c_0c1d1392",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/DownstreamCreatorIT.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 200,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2017-04-04T17:59:19Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "71e851a9_1c64a7a8",
       "range": {
         "startLine": 200,
         "startChar": 0,
