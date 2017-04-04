@@ -1,4 +1,4 @@
-// Copyright (C) 2016 The Android Open Source Project
+// Copyright (C) 2017 The Android Open Source Project
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -18,73 +18,38 @@ import static com.google.common.truth.Truth.assertThat;
 
 import com.google.common.base.Charsets;
 import com.google.common.io.CharStreams;
-import com.google.gerrit.extensions.api.GerritApi;
-import com.google.gerrit.extensions.restapi.ResourceNotFoundException;
+import com.google.gerrit.acceptance.GitUtil;
+import com.google.gerrit.acceptance.LightweightPluginDaemonTest;
+import com.google.gerrit.acceptance.PushOneCommit;
+import com.google.gerrit.acceptance.TestPlugin;
+import com.google.gerrit.reviewdb.client.Project;
 import com.google.gerrit.reviewdb.client.RefNames;
 import com.google.gerrit.server.config.AllProjectsName;
 import com.google.gerrit.server.config.PluginConfigFactory;
+import com.google.inject.Inject;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.HashSet;
 import java.util.Set;
 import org.eclipse.jgit.errors.ConfigInvalidException;
+import org.eclipse.jgit.internal.storage.dfs.InMemoryRepository;
+import org.eclipse.jgit.junit.TestRepository;
 import org.eclipse.jgit.lib.Config;
-import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
-import org.junit.runner.RunWith;
-import org.mockito.Answers;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.runners.MockitoJUnitRunner;
 
-@RunWith(MockitoJUnitRunner.class)
-public class ConfigLoaderTest {
-  @Mock(answer = Answers.RETURNS_DEEP_STUBS)
-  private GerritApi gApiMock;
-
+@TestPlugin(
+  name = "automerger",
+  sysModule = "com.googlesource.gerrit.plugins.automerger.AutomergerModule"
+)
+public class ConfigLoaderIT extends LightweightPluginDaemonTest {
   private ConfigLoader configLoader;
-  private AllProjectsName allProjectsName;
-  @Mock private PluginConfigFactory cfgFactory;
-
-  @Rule public ExpectedException thrown = ExpectedException.none();
-
-  @Before
-  public void setUp() throws Exception {
-    allProjectsName = new AllProjectsName("All-Projects");
-    mockFile("automerger.config", allProjectsName.get(), RefNames.REFS_CONFIG, "automerger.config");
-    mockFile("default.xml", "platform/manifest", "master", "default.xml");
-    mockFile("ds_one.xml", "platform/manifest", "ds_one", "default.xml");
-    mockFile("ds_two.xml", "platform/manifest", "ds_two", "default.xml");
-  }
-
-  private void mockFile(String resourceName, String projectName, String branchName, String filename)
-      throws Exception {
-    try (InputStream in = getClass().getResourceAsStream(resourceName)) {
-      String resourceString = CharStreams.toString(new InputStreamReader(in, Charsets.UTF_8));
-      Mockito.when(
-              gApiMock.projects().name(projectName).branch(branchName).file(filename).asString())
-          .thenReturn(resourceString);
-    }
-  }
-
-  private void loadConfig() throws Exception {
-    Config cfg = new Config();
-    cfg.fromText(
-        gApiMock
-            .projects()
-            .name(allProjectsName.get())
-            .branch(RefNames.REFS_CONFIG)
-            .file("automerger.config")
-            .asString());
-    Mockito.when(cfgFactory.getProjectPluginConfig(allProjectsName, "automerger")).thenReturn(cfg);
-    configLoader = new ConfigLoader(gApiMock, allProjectsName, "automerger", cfgFactory);
-  }
+  @Inject private AllProjectsName allProjectsName;
+  @Inject private PluginConfigFactory cfgFactory;
+  private Project.NameKey manifestNameKey;
 
   @Test
   public void getProjectsInScopeTest_addProjects() throws Exception {
-    loadConfig();
+    defaultSetup("automerger.config");
     Set<String> expectedProjects = new HashSet<String>();
     expectedProjects.add("platform/whee");
     expectedProjects.add("platform/added/project");
@@ -93,7 +58,7 @@ public class ConfigLoaderTest {
 
   @Test
   public void getProjectsInScopeTest_setProjects() throws Exception {
-    loadConfig();
+    defaultSetup("automerger.config");
     Set<String> otherExpectedProjects = new HashSet<String>();
     otherExpectedProjects.add("platform/some/project");
     otherExpectedProjects.add("platform/other/project");
@@ -103,17 +68,17 @@ public class ConfigLoaderTest {
 
   @Test
   public void getProjectsInScope_missingSourceManifest() throws Exception {
-    mockFile("alternate.config", allProjectsName.get(), RefNames.REFS_CONFIG, "automerger.config");
-    Mockito.when(gApiMock.projects().name("platform/manifest").branch("master"))
-        .thenThrow(new ResourceNotFoundException());
-    loadConfig();
+    createProject("All-Projects");
+    manifestNameKey = createProject("platform/manifest");
+    setupTestRepo("ds_one.xml", manifestNameKey, "ds_one", "default.xml");
+    setupTestRepo("ds_two.xml", manifestNameKey, "ds_two", "default.xml");
+    loadConfig("alternate.config");
     assertThat(configLoader.getProjectsInScope("master", "ds_one").isEmpty()).isTrue();
   }
 
   @Test
   public void getProjectsInScope_ignoreSourceManifest() throws Exception {
-    mockFile("alternate.config", allProjectsName.get(), RefNames.REFS_CONFIG, "automerger.config");
-    loadConfig();
+    defaultSetup("alternate.config");
     Set<String> expectedProjects = new HashSet<String>();
     expectedProjects.add("platform/whee");
     expectedProjects.add("whuu");
@@ -122,36 +87,33 @@ public class ConfigLoaderTest {
 
   @Test
   public void getProjectsInScope_ignoreSourceManifestWithMissingDestManifest() throws Exception {
-    mockFile("alternate.config", allProjectsName.get(), RefNames.REFS_CONFIG, "automerger.config");
-    Mockito.when(gApiMock.projects().name("platform/manifest").branch("ds_four"))
-        .thenThrow(new ResourceNotFoundException());
-    loadConfig();
+    defaultSetup("alternate.config");
     assertThat(configLoader.getProjectsInScope("master", "ds_four").isEmpty()).isTrue();
   }
 
   @Test
   public void isSkipMergeTest_noSkip() throws Exception {
-    loadConfig();
+    defaultSetup("automerger.config");
     assertThat(configLoader.isSkipMerge("ds_two", "ds_three", "bla")).isFalse();
   }
 
   @Test
   public void isSkipMergeTest_blankMerge() throws Exception {
-    loadConfig();
+    defaultSetup("automerger.config");
     assertThat(configLoader.isSkipMerge("ds_two", "ds_three", "test test \n \n DO NOT MERGE lala"))
         .isTrue();
   }
 
   @Test
   public void isSkipMergeTest_blankMergeWithMergeAll() throws Exception {
-    loadConfig();
+    defaultSetup("automerger.config");
     assertThat(configLoader.isSkipMerge("master", "ds_two", "test test \n \n DO NOT MERGE"))
         .isFalse();
   }
 
   @Test
   public void isSkipMergeTest_alwaysBlankMerge() throws Exception {
-    loadConfig();
+    defaultSetup("automerger.config");
     assertThat(
             configLoader.isSkipMerge("master", "ds_one", "test test \n \n DO NOT MERGE ANYWHERE"))
         .isTrue();
@@ -159,31 +121,27 @@ public class ConfigLoaderTest {
 
   @Test
   public void isSkipMergeTest_alwaysBlankMergeDummy() throws Exception {
-    mockFile("alternate.config", allProjectsName.get(), RefNames.REFS_CONFIG, "automerger.config");
-    loadConfig();
+    defaultSetup("alternate.config");
     assertThat(configLoader.isSkipMerge("master", "ds_two", "test test")).isFalse();
   }
 
   @Test
   public void isSkipMergeTest_alwaysBlankMergeNull() throws Exception {
-    mockFile("alternate.config", allProjectsName.get(), RefNames.REFS_CONFIG, "automerger.config");
-    loadConfig();
+    defaultSetup("alternate.config");
     assertThat(configLoader.isSkipMerge("master", "ds_two", "test test \n \n BLANK ANYWHERE"))
         .isTrue();
   }
 
   @Test
   public void isSkipMergeTest_noBlankMergeSpecified() throws Exception {
-    mockFile(
-        "empty_blank.config", allProjectsName.get(), RefNames.REFS_CONFIG, "automerger.config");
-    loadConfig();
+    defaultSetup("empty_blank.config");
     assertThat(configLoader.isSkipMerge("master", "ds_one", "test test \n \n DO NOT MERGE"))
         .isFalse();
   }
 
   @Test
   public void downstreamBranchesTest() throws Exception {
-    loadConfig();
+    defaultSetup("automerger.config");
     Set<String> expectedBranches = new HashSet<String>();
     expectedBranches.add("ds_two");
     assertThat(configLoader.getDownstreamBranches("master", "platform/some/project"))
@@ -192,7 +150,7 @@ public class ConfigLoaderTest {
 
   @Test
   public void downstreamBranchesTest_nonexistentBranch() throws Exception {
-    loadConfig();
+    defaultSetup("automerger.config");
     Set<String> expectedBranches = new HashSet<String>();
     assertThat(configLoader.getDownstreamBranches("idontexist", "platform/some/project"))
         .isEqualTo(expectedBranches);
@@ -200,11 +158,56 @@ public class ConfigLoaderTest {
 
   @Test
   public void downstreamBranchesTest_configException() throws Exception {
-    mockFile("wrong.config", allProjectsName.get(), RefNames.REFS_CONFIG, "automerger.config");
-    loadConfig();
+    defaultSetup("wrong.config");
 
-    thrown.expect(ConfigInvalidException.class);
-    thrown.expectMessage("Automerger config branch pair malformed: master..ds_one");
+    exception.expect(ConfigInvalidException.class);
+    exception.expectMessage("Automerger config branch pair malformed: master..ds_one");
     configLoader.getDownstreamBranches("master", "platform/some/project");
+  }
+
+  private void defaultSetup(String resourceName) throws Exception {
+    createProject("All-Projects");
+    manifestNameKey = createProject("platform/manifest");
+    setupTestRepo("default.xml", manifestNameKey, "master", "default.xml");
+    setupTestRepo("ds_one.xml", manifestNameKey, "ds_one", "default.xml");
+    setupTestRepo("ds_two.xml", manifestNameKey, "ds_two", "default.xml");
+    loadConfig(resourceName);
+  }
+
+  private void setupTestRepo(
+      String resourceName, Project.NameKey projectNameKey, String branchName, String filename)
+      throws Exception {
+    TestRepository<InMemoryRepository> repo = cloneProject(projectNameKey, admin);
+    try (InputStream in = getClass().getResourceAsStream(resourceName)) {
+      String resourceString = CharStreams.toString(new InputStreamReader(in, Charsets.UTF_8));
+
+      PushOneCommit push =
+          pushFactory.create(db, admin.getIdent(), repo, "some subject", filename, resourceString);
+      push.to("refs/heads/" + branchName).assertOkStatus();
+    }
+  }
+
+  private void pushConfig(String resourceName) throws Exception {
+    TestRepository<InMemoryRepository> allProjectRepo = cloneProject(allProjects, admin);
+    GitUtil.fetch(allProjectRepo, RefNames.REFS_CONFIG + ":config");
+    allProjectRepo.reset("config");
+    try (InputStream in = getClass().getResourceAsStream(resourceName)) {
+      String resourceString = CharStreams.toString(new InputStreamReader(in, Charsets.UTF_8));
+
+      Config cfg = new Config();
+      cfg.fromText(resourceString);
+      // Update manifest project path to the result of createProject(resourceName), since it is
+      // scoped to the test method
+      cfg.setString("global", null, "manifestProject", manifestNameKey.get());
+      PushOneCommit push =
+          pushFactory.create(
+              db, admin.getIdent(), allProjectRepo, "Subject", "automerger.config", cfg.toText());
+      push.to("refs/meta/config").assertOkStatus();
+    }
+  }
+
+  private void loadConfig(String configFilename) throws Exception {
+    pushConfig(configFilename);
+    configLoader = new ConfigLoader(gApi, allProjectsName, "automerger", cfgFactory);
   }
 }
