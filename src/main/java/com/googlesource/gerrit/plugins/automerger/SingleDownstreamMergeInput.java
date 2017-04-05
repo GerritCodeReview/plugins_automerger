@@ -17,7 +17,7 @@ package com.googlesource.gerrit.plugins.automerger;
 /** Class to hold input for a merge for a single source change and destination branch. */
 public class SingleDownstreamMergeInput {
   public String currentRevision;
-  public String sourceId;
+  public int sourceId;
   public String project;
   public String topic;
   public String subject;

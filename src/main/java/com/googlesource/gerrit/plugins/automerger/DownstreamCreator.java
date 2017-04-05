@@ -424,7 +424,7 @@ public class DownstreamCreator
 
     MultipleDownstreamMergeInput mdsMergeInput = new MultipleDownstreamMergeInput();
     mdsMergeInput.dsBranchMap = dsBranchMap;
-    mdsMergeInput.sourceId = change.id;
+    mdsMergeInput.sourceId = change._number;
     mdsMergeInput.project = change.project;
     mdsMergeInput.topic = change.topic;
     mdsMergeInput.subject = change.subject;
@@ -524,7 +524,7 @@ public class DownstreamCreator
     gApi.changes().id(changeNumber).abandon(abandonInput);
   }
 
-  private String setTopic(String sourceId, String topic) throws RestApiException {
+  private String setTopic(int sourceId, String topic) throws RestApiException {
     if (topic == null || topic.isEmpty()) {
       topic = "am-" + UUID.randomUUID().toString();
       log.debug("Setting original change {} topic to {}", sourceId, topic);

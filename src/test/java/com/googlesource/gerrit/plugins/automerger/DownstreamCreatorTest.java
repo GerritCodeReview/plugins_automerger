@@ -43,7 +43,7 @@ import org.mockito.runners.MockitoJUnitRunner;
 
 @RunWith(MockitoJUnitRunner.class)
 public class DownstreamCreatorTest {
-  private final String changeId = "testid";
+  private final int changeId = 1234;
   private final String changeProject = "testproject";
   private final String changeTopic = "testtopic";
   private final String changeSubject = "testmessage";
