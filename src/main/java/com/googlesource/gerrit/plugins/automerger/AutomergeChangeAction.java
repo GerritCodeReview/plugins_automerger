@@ -71,7 +71,7 @@ class AutomergeChangeAction
 
     MultipleDownstreamMergeInput mdsMergeInput = new MultipleDownstreamMergeInput();
     mdsMergeInput.dsBranchMap = branchMap;
-    mdsMergeInput.sourceId = change.getKey().get();
+    mdsMergeInput.sourceId = change.getId().get();
     mdsMergeInput.project = change.getProject().get();
     mdsMergeInput.topic = change.getTopic();
     mdsMergeInput.subject = change.getSubject();
