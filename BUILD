@@ -23,6 +23,5 @@ junit_tests(
     tags = ["automerger"],
     deps = PLUGIN_DEPS + PLUGIN_TEST_DEPS + [
         ":automerger__plugin",
-        "@mockito//jar",
     ],
 )
