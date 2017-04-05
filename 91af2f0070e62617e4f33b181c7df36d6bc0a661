@@ -49,6 +49,30 @@
     },
     {
       "key": {
+        "uuid": "1bf95263_da772bdb",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/ConfigLoaderIT.java",
+        "patchSetId": 3
+      },
+      "lineNbr": 1,
+      "author": {
+        "id": 1026112
+      },
+      "writtenOn": "2017-04-05T07:02:26Z",
+      "side": 1,
+      "message": "IIRC this gets update whenever you create a new file. In Gerrit Core people create a change every once in a while to update it to the current year for all existing files.",
+      "parentUuid": "6a6716c4_a311a07e",
+      "range": {
+        "startLine": 1,
+        "startChar": 17,
+        "endLine": 1,
+        "endChar": 21
+      },
+      "revId": "91af2f0070e62617e4f33b181c7df36d6bc0a661",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "34f29ea9_498b7c13",
         "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/ConfigLoaderIT.java",
         "patchSetId": 3
