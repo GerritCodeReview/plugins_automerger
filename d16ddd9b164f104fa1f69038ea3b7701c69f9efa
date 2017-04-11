@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c6c5d683_ea9e47c2",
+        "filename": "src/main/resources/static/automerger.js",
+        "patchSetId": 1
+      },
+      "lineNbr": 74,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2017-04-11T23:19:34Z",
+      "side": 1,
+      "message": "whitespace changed?",
+      "revId": "d16ddd9b164f104fa1f69038ea3b7701c69f9efa",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
