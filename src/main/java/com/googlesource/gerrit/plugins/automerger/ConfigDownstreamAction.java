@@ -19,7 +19,7 @@ import com.google.gerrit.extensions.restapi.DefaultInput;
 import com.google.gerrit.extensions.restapi.Response;
 import com.google.gerrit.extensions.restapi.RestApiException;
 import com.google.gerrit.extensions.restapi.RestModifyView;
-import com.google.gerrit.server.change.RevisionResource;
+import com.google.gerrit.server.change.ChangeResource;
 import com.google.inject.Inject;
 import java.io.IOException;
 import java.util.HashMap;
@@ -29,7 +29,7 @@ import org.eclipse.jgit.errors.ConfigInvalidException;
 
 /** The logic behind auto-filling the branch map, aka the input to AutomergeChangeAction. */
 class ConfigDownstreamAction
-    implements RestModifyView<RevisionResource, ConfigDownstreamAction.Input> {
+    implements RestModifyView<ChangeResource, ConfigDownstreamAction.Input> {
 
   protected ConfigLoader config;
 
@@ -46,18 +46,18 @@ class ConfigDownstreamAction
   /**
    * Return the map of branch names to whether or not we should merge with "-s ours".
    *
-   * @param rev RevisionResource of the change whose page we are on.
+   * @param change ChangeResource of the change whose page we are on.
    * @param input The subject of the change (since it can modify our map, i.e. DO NOT MERGE)
    * @return The map of branch names to whether or not to skip them (i.e. merge with "-s ours")
    * @throws RestApiException
    * @throws IOException
    */
   @Override
-  public Response<Map<String, Boolean>> apply(RevisionResource rev, Input input)
+  public Response<Map<String, Boolean>> apply(ChangeResource change, Input input)
       throws RestApiException, IOException {
 
-    String branchName = rev.getChange().getDest().getShortName();
-    String projectName = rev.getProject().get();
+    String branchName = change.getChange().getDest().getShortName();
+    String projectName = change.getProject().get();
 
     try {
       Set<String> downstreamBranches = config.getDownstreamBranches(branchName, projectName);
