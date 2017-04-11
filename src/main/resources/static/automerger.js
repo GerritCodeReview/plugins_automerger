@@ -71,7 +71,7 @@ Gerrit.install(function(self) {
     }
 
     function getDownstreamConfigMap() {
-        var changeId = currentChange.id;
+        var changeId = currentChange._number;
         var revisionId = currentChange.current_revision;
         var url = `/changes/${changeId}/revisions/${revisionId}` +
                    `/automerger~config-downstream`;
