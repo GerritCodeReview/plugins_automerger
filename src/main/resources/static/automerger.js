@@ -31,7 +31,7 @@ Gerrit.install(function(self) {
             branchToCheckbox[branch] = c.label(checkbox, branch);
         });
 
-        //Add checkboxes to box for each downstream branch
+        // Add checkboxes to box for each downstream branch
         var checkboxes = [];
         Object.keys(branchToCheckbox).forEach(function(branch) {
             checkboxes.push(branchToCheckbox[branch])
@@ -71,7 +71,7 @@ Gerrit.install(function(self) {
     }
 
     function getDownstreamConfigMap() {
-        var changeId = currentChange.id;
+        var changeId = currentChange._number;
         var revisionId = currentChange.current_revision;
         var url = `/changes/${changeId}/revisions/${revisionId}` +
                    `/automerger~config-downstream`;
