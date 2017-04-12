@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c4fc8e13_51048f7d",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1026112
+      },
+      "writtenOn": "2017-04-12T06:48:27Z",
+      "side": 1,
+      "message": "The triplet is always unique. If you leave out project/branch it is not unique anymore. From what I see from the code I guess you just used the ChangeId which is not unique. Would have been good to clarify that in the commit message but it\u0027s also not super important.",
+      "range": {
+        "startLine": 10,
+        "startChar": 21,
+        "endLine": 10,
+        "endChar": 38
+      },
+      "revId": "3638dcf0ba78aec357adeeb6d0cbe553f937834d",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
