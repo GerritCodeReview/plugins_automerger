@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "0e81b57f_62c90ef1",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 129,
+      "author": {
+        "id": 1026112
+      },
+      "writtenOn": "2017-04-20T07:58:53Z",
+      "side": 1,
+      "message": "Ack",
+      "parentUuid": "5eed0a84_9358f8a8",
+      "range": {
+        "startLine": 129,
+        "startChar": 54,
+        "endLine": 129,
+        "endChar": 65
+      },
+      "revId": "c097439e8f6a37b325eae39d5d854c007a0e9ecc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "caebc778_99502e00",
         "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/DownstreamCreatorIT.java",
         "patchSetId": 4
@@ -36,6 +60,30 @@
       "writtenOn": "2017-04-20T01:55:18Z",
       "side": 1,
       "message": "Could not figure out a better way of doing this.\n\ndownstreamChange.get(EnumSet.of(ListChangesOption.DETAILED_LABELS)).labels.get(\"Code-Review\").value just gave me null. I couldn\u0027t figure out how to make it give me a value :[",
+      "range": {
+        "startLine": 93,
+        "startChar": 16,
+        "endLine": 99,
+        "endChar": 27
+      },
+      "revId": "c097439e8f6a37b325eae39d5d854c007a0e9ecc",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "7da24794_b01f629d",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/DownstreamCreatorIT.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 99,
+      "author": {
+        "id": 1026112
+      },
+      "writtenOn": "2017-04-20T07:58:53Z",
+      "side": 1,
+      "message": "Unfortunately not :(\n\nYou could have a static helper function to do this dance since you are doing it twice.",
+      "parentUuid": "caebc778_99502e00",
       "range": {
         "startLine": 93,
         "startChar": 16,
