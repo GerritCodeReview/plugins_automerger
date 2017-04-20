@@ -167,7 +167,7 @@ public class DownstreamCreator
           ChangeInfo downstreamChange =
               gApi.changes().id(changeNumber).get(EnumSet.of(ListChangesOption.CURRENT_REVISION));
           for (Map.Entry<String, ApprovalInfo> label : approvals.entrySet()) {
-            updateVote(downstreamChange, label.getKey(), label.getValue().value.shortValue());
+            propagateVote(downstreamChange, label.getKey(), label.getValue().value.shortValue());
           }
         }
       } catch (RestApiException | ConfigInvalidException e) {
@@ -222,7 +222,7 @@ public class DownstreamCreator
   }
 
   /**
-   * Creates merges downstream, and votes -1 on the automerge label if we have a failed merge.
+   * Creates merges downstream, and votes on the automerge label if we have a failed merge.
    *
    * @param mdsMergeInput Input containing the downstream branch map and source change ID.
    * @throws RestApiException Throws if we fail a REST API call.
@@ -244,9 +244,9 @@ public class DownstreamCreator
     } catch (FailedMergeException e) {
       reviewInput.message = e.getDisplayString();
       reviewInput.notify = NotifyHandling.ALL;
-      vote = -1;
+      // Vote minAutomergeVote if we hit a conflict.
+      vote = config.getMinAutomergeVote();
     }
-    // Zero out automerge label if success, -1 vote if fail.
     labels.put(config.getAutomergeLabel(), vote);
     reviewInput.labels = labels;
     gApi.changes()
@@ -367,9 +367,10 @@ public class DownstreamCreator
    *
    * @param sdsMergeInput Input containing metadata for the merge.
    * @throws RestApiException
+   * @throws ConfigInvalidException
    */
   public void createSingleDownstreamMerge(SingleDownstreamMergeInput sdsMergeInput)
-      throws RestApiException {
+      throws RestApiException, ConfigInvalidException {
 
     String currentTopic = setTopic(sdsMergeInput.sourceId, sdsMergeInput.topic);
 
@@ -396,7 +397,10 @@ public class DownstreamCreator
           sdsMergeInput.downstreamBranch);
     }
 
-    gApi.changes().create(downstreamChangeInput);
+    ChangeApi downstreamChange = gApi.changes().create(downstreamChangeInput);
+
+    // Vote maxAutomergeVote on the change so we know it was successful.
+    updateVote(downstreamChange.get(), config.getAutomergeLabel(), config.getMaxAutomergeVote());
   }
 
   private void automergeChanges(ChangeInfo change, RevisionInfo revisionInfo)
@@ -460,13 +464,18 @@ public class DownstreamCreator
       log.error("Failed to abandon downstreams of {}", change.id, e);
     }
   }
-
-  private void updateVote(ChangeInfo change, String label, short vote)
+  
+  private void propagateVote(ChangeInfo change, String label, short vote)
       throws RestApiException, ConfigInvalidException {
     if (label.equals(config.getAutomergeLabel())) {
       log.debug("Not updating automerge label, as it blocks when there is a merge conflict.");
       return;
     }
+    updateVote(change, label, vote);
+  }
+
+  private void updateVote(ChangeInfo change, String label, short vote)
+      throws RestApiException {
     log.debug("Giving {} for label {} to {}", vote, label, change.id);
     // Vote on all downstream branches unless merge conflict.
     ReviewInput reviewInput = new ReviewInput();
@@ -478,7 +487,7 @@ public class DownstreamCreator
 
   private void updateDownstreamMerge(
       String newParentRevision, String upstreamSubject, Integer sourceNum, boolean doMerge)
-      throws RestApiException {
+      throws RestApiException, ConfigInvalidException {
     MergeInput mergeInput = new MergeInput();
     mergeInput.source = newParentRevision;
 
@@ -500,7 +509,8 @@ public class DownstreamCreator
       originalChange.restore(restoreInput);
     }
 
-    originalChange.createMergePatchSet(mergePatchSetInput);
+    ChangeInfo downstreamChange = originalChange.createMergePatchSet(mergePatchSetInput);
+    updateVote(downstreamChange, config.getAutomergeLabel(), config.getMaxAutomergeVote());
   }
 
   private String getPreviousRevision(ChangeApi change, int currentPatchSetNumber)
