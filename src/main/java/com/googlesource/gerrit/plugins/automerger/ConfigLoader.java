@@ -213,6 +213,14 @@ public class ConfigLoader {
     return downstreamBranches;
   }
 
+  public short getMaxAutomergeVote() throws ConfigInvalidException {
+    return (short) getConfig().getInt("global", "maxAutomergeVote", 1);
+  }
+
+  public short getMinAutomergeVote() throws ConfigInvalidException {
+    return (short) getConfig().getInt("global", "minAutomergeVote", 1);
+  }
+
   // Returns overriden manifest config if specified, default if not
   private String getManifestFile() throws ConfigInvalidException {
     String manifestFile = getConfig().getString("global", null, "manifestFile");

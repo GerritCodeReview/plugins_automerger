@@ -232,7 +232,7 @@ public class DownstreamCreator
       throws RestApiException, ConfigInvalidException {
     ReviewInput reviewInput = new ReviewInput();
     Map<String, Short> labels = new HashMap<String, Short>();
-    short vote = 0;
+    short vote = config.getMaxAutomergeVote();
     try {
       createDownstreamMerges(mdsMergeInput);
 
@@ -244,7 +244,7 @@ public class DownstreamCreator
     } catch (FailedMergeException e) {
       reviewInput.message = e.getDisplayString();
       reviewInput.notify = NotifyHandling.ALL;
-      vote = -1;
+      vote = config.getMinAutomergeVote();
     }
     // Zero out automerge label if success, -1 vote if fail.
     labels.put(config.getAutomergeLabel(), vote);
