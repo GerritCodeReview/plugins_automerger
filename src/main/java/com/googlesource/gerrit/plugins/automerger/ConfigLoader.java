@@ -126,7 +126,7 @@ public class ConfigLoader {
    */
   public String getAutomergeLabel() throws ConfigInvalidException {
     String automergeLabel = getConfig().getString("global", null, "automergeLabel");
-    return automergeLabel != null ? automergeLabel : "Verified";
+    return automergeLabel != null ? automergeLabel : "Code-Review";
   }
 
   /**
@@ -211,6 +211,14 @@ public class ConfigLoader {
       }
     }
     return downstreamBranches;
+  }
+
+  public short getMaxAutomergeVote() throws ConfigInvalidException {
+    return (short) getConfig().getInt("global", "maxAutomergeVote", 1);
+  }
+
+  public short getMinAutomergeVote() throws ConfigInvalidException {
+    return (short) getConfig().getInt("global", "minAutomergeVote", 1);
   }
 
   // Returns overriden manifest config if specified, default if not

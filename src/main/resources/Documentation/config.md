@@ -25,10 +25,24 @@ the `@PLUGIN@.config` file of the project.
 ```
 
 global.automergeLabel
-: Label to vote -1 on when there is a merge conflict.
+: Label to vote minAutomergeVote on when there is a merge conflict.
 
   When the automerger detects a merge conflict from one branch to another, it
-  will vote -1 on this label.
+  will vote minAutomergeVote on this label.
+
+global.maxAutomergeVote
+: Value to vote on a successful automerge.
+
+  When the automerger succeeds in merging downstream, it will vote
+  maxAutomergeVote on the downstream change. The original change uploaded by
+  the user will have a vote of 0, so that it can be easily programatically
+  distinguished from the otheres.
+
+global.minAutomergeVote
+: Value to vote on a failed automerge.
+
+  When the automerger detects a merge conflict from one branch to another, it
+  will vote minAutomergeVote for the configured automergeLabel.
 
 global.hostName
 : Hostname to use in a custom conflict message.

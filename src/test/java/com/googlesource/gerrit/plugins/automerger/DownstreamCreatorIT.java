@@ -23,13 +23,16 @@ import com.google.gerrit.acceptance.LightweightPluginDaemonTest;
 import com.google.gerrit.acceptance.PushOneCommit;
 import com.google.gerrit.acceptance.TestPlugin;
 import com.google.gerrit.extensions.api.changes.ChangeApi;
+import com.google.gerrit.extensions.client.ListChangesOption;
 import com.google.gerrit.extensions.common.ChangeInfo;
 import com.google.gerrit.extensions.restapi.BinaryResult;
+import com.google.gerrit.extensions.restapi.RestApiException;
 import com.google.gerrit.reviewdb.client.Branch;
 import com.google.gerrit.reviewdb.client.Project;
 import com.google.gerrit.reviewdb.client.RefNames;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.EnumSet;
 import java.util.List;
 import org.eclipse.jgit.internal.storage.dfs.InMemoryRepository;
 import org.eclipse.jgit.junit.TestRepository;
@@ -87,15 +90,18 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
       ChangeApi downstreamChange = gApi.changes().id(c._number);
       // It should skip ds_one, since this is a DO NOT MERGE
       if (c.branch.equals("ds_one")) {
+        assertThat(getVote(downstreamChange, "Code-Review")).isEqualTo(1);
         assertThat(downstreamChange.get().subject).contains("skipped:");
         assertThat(downstreamChange.current().files().keySet()).contains("filename");
         assertThat(downstreamChange.current().files().get("filename").linesDeleted).isEqualTo(1);
       } else if (c.branch.equals("ds_two")) {
+        assertThat(getVote(downstreamChange, "Code-Review")).isEqualTo(1);
         // It should not skip ds_two, since it is marked with mergeAll: true
         assertThat(downstreamChange.get().subject).doesNotContain("skipped:");
         BinaryResult downstreamContent = downstreamChange.current().file("filename").content();
         assertThat(downstreamContent.asString()).isEqualTo(content.asString());
       } else {
+        assertThat(getVote(downstreamChange, "Code-Review")).isEqualTo(0);
         assertThat(c.branch).isEqualTo("master");
       }
     }
@@ -211,5 +217,15 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
               db, admin.getIdent(), allProjectRepo, "Subject", "automerger.config", cfg.toText());
       push.to(RefNames.REFS_CONFIG).assertOkStatus();
     }
+  }
+
+  private int getVote(ChangeApi change, String label) throws RestApiException {
+    return change
+        .get(EnumSet.of(ListChangesOption.DETAILED_LABELS))
+        .labels
+        .get(label)
+        .all
+        .get(0)
+        .value;
   }
 }
