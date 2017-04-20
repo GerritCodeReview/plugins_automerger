@@ -188,6 +188,18 @@ public class ConfigLoaderIT extends LightweightPluginDaemonTest {
         .isEqualTo("line1\n" + "line2\n" + "line3 ${branch}\n" + "line4");
   }
 
+  @Test
+  public void getMaxAutomergeVoteTest() throws Exception {
+    defaultSetup("alternate.config");
+    assertThat(configLoader.getMaxAutomergeVote()).isEqualTo(5);
+  }
+
+  @Test
+  public void getMinAutomergeVoteTest() throws Exception {
+    defaultSetup("alternate.config");
+    assertThat(configLoader.getMinAutomergeVote()).isEqualTo(-3);
+  }
+
   private void setupTestRepo(
       String resourceName, Project.NameKey projectNameKey, String branchName, String filename)
       throws Exception {
