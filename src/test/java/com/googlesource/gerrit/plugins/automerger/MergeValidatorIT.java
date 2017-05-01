@@ -74,11 +74,29 @@ public class MergeValidatorIT extends LightweightPluginDaemonTest {
     PushOneCommit.Result result = createChange("subject", "filename", "content", "testtopic");
     pushConfig("automerger.config", result.getChange().project().get());
     result.assertOkStatus();
+    int changeNumber = result.getChange().getId().id;
     // Assert we are missing downstreams
     exception.expect(ResourceConflictException.class);
     exception.expectMessage(
-        "Failed to submit 1 change due to the following problems:\n"
-            + "Change 1: Missing downstream branches for [ds_one]. Please recreate the automerges.");
+        "Failed to submit 1 change due to the following problems:\nChange "
+            + changeNumber
+            + ": Missing downstream branches ds_one. Please recreate the automerges.");
+    merge(result);
+  }
+
+  @Test
+  public void testMissingDownstreamMerges_custom() throws Exception {
+    // Create initial change
+    PushOneCommit.Result result = createChange("subject", "filename", "content", "testtopic");
+    pushConfig("alternate.config", result.getChange().project().get());
+    result.assertOkStatus();
+    int changeNumber = result.getChange().getId().id;
+    // Assert we are missing downstreams
+    exception.expect(ResourceConflictException.class);
+    exception.expectMessage(
+        "Failed to submit 1 change due to the following problems:\nChange "
+            + changeNumber
+            + ": there is no ds_one");
     merge(result);
   }
 }

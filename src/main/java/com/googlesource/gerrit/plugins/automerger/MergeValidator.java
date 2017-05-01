@@ -15,6 +15,8 @@
 package com.googlesource.gerrit.plugins.automerger;
 
 import com.google.common.annotations.VisibleForTesting;
+import com.google.common.base.Joiner;
+import com.google.gerrit.common.data.ParameterizedString;
 import com.google.gerrit.extensions.api.GerritApi;
 import com.google.gerrit.extensions.client.ListChangesOption;
 import com.google.gerrit.extensions.common.ChangeInfo;
@@ -31,8 +33,10 @@ import com.google.gerrit.server.project.ProjectState;
 import com.google.inject.Inject;
 import java.io.IOException;
 import java.util.EnumSet;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import org.eclipse.jgit.errors.ConfigInvalidException;
 import org.eclipse.jgit.lib.Repository;
@@ -70,16 +74,26 @@ public class MergeValidator implements MergeValidationListener {
           gApi.changes().id(changeId).get(EnumSet.of(ListChangesOption.CURRENT_REVISION));
       Set<String> missingDownstreams = getMissingDownstreamMerges(upstreamChange);
       if (!missingDownstreams.isEmpty()) {
-        throw new MergeValidationException(
-            "Missing downstream branches for "
-                + missingDownstreams
-                + ". Please recreate the automerges.");
+        throw new MergeValidationException(getMissingDownstreamsMessage(missingDownstreams));
       }
     } catch (RestApiException | IOException | ConfigInvalidException e) {
       log.error("Automerger plugin failed onPreMerge for {}", changeId, e);
       e.printStackTrace();
       throw new MergeValidationException("Error when validating merge for: " + changeId);
     }
+  }
+  
+  private String getMissingDownstreamsMessage(Set<String> missingDownstreams)
+      throws ConfigInvalidException {
+    String missingDownstreamsMessage = config.getMissingDownstreamsMessage();
+    ParameterizedString pattern = new ParameterizedString(missingDownstreamsMessage);
+    return pattern.replace(getSubstitutionMap(missingDownstreams));
+  }
+
+  private Map<String, String> getSubstitutionMap(Set<String> missingDownstreams) {
+    Map<String, String> substitutionMap = new HashMap<>();
+    substitutionMap.put("missingDownstreams", Joiner.on(", ").join(missingDownstreams));
+    return substitutionMap;
   }
 
   @VisibleForTesting
