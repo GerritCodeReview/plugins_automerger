@@ -15,6 +15,7 @@ the `@PLUGIN@.config` file of the project.
     alwaysBlankMerge = .*SKIP ME ALWAYS.*
     blankMerge = .*RESTRICT AUTOMERGE.*
     blankMerge = .*SKIP UNLESS MERGEALL SET.*
+    missingDownstreamsMessage = there is no ${missingDownstreams}
 
   [@PLUGIN@ "branch1:branch2"]
     setProjects = some/project
@@ -101,6 +102,22 @@ global.alwaysBlankMerge
 
   Even if mergeAll is set to True for a branch, it will still merge with
   "-s ours".
+
+global.missingDownstreamsMessage
+: Message to display when attempting to submit a change without downstreams.
+
+  If a change has downstream branches configured for a project, but those
+  downstreams have not been uploaded for review or are abandoned, this message
+  will display as an error message on submit.
+
+  The message can be custom configured to include the missing downstream
+  branches.
+
+  For example, you could configure the @PLUGIN@.config to include:
+
+  ```
+    missingDownstreamsMessage = Missing downstreams ${missingDownstreams}
+  ```
 
 @PLUGIN@.branch1:branch2.setProjects
 : Projects to automerge for.
