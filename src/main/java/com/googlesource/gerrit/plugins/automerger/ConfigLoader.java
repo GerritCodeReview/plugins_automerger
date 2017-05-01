@@ -213,6 +213,15 @@ public class ConfigLoader {
     return downstreamBranches;
   }
 
+  public String getMissingDownstreamsMessage() throws ConfigInvalidException {
+    String message = getConfig().getString("global", null, "missingDownstreamsMessage");
+    if (message == null) {
+      message =
+          "Missing downstream branches ${missingDownstreams}. Please recreate the automerges.";
+    }
+    return message;
+  }
+
   public short getMaxAutomergeVote() throws ConfigInvalidException {
     return (short) getConfig().getInt("global", "maxAutomergeVote", 1);
   }
