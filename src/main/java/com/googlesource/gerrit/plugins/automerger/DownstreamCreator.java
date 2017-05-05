@@ -386,6 +386,7 @@ public class DownstreamCreator
         sdsMergeInput.subject + " am: " + sdsMergeInput.currentRevision.substring(0, 10);
     downstreamChangeInput.topic = currentTopic;
     downstreamChangeInput.merge = mergeInput;
+    downstreamChangeInput.notify = NotifyHandling.NONE;
 
     if (!sdsMergeInput.doMerge) {
       mergeInput.strategy = "ours";
@@ -481,6 +482,7 @@ public class DownstreamCreator
     Map<String, Short> labels = new HashMap<String, Short>();
     labels.put(label, vote);
     reviewInput.labels = labels;
+    reviewInput.notify = NotifyHandling.NONE;
     gApi.changes().id(change.id).revision(change.currentRevision).review(reviewInput);
   }
 
