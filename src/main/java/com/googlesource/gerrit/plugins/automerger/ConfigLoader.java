@@ -223,11 +223,11 @@ public class ConfigLoader {
   }
 
   public short getMaxAutomergeVote() throws ConfigInvalidException {
-    return (short) getConfig().getInt("global", "maxAutomergeVote", 1);
+    return (short) getConfig().getInt("global", "maxAutomergeVote", 2);
   }
 
   public short getMinAutomergeVote() throws ConfigInvalidException {
-    return (short) getConfig().getInt("global", "minAutomergeVote", 1);
+    return (short) getConfig().getInt("global", "minAutomergeVote", -2);
   }
 
   // Returns overriden manifest config if specified, default if not
