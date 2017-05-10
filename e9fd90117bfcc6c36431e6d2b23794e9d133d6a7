@@ -1,0 +1,61 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "075ffa69_764f74a1",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/DownstreamCreator.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1012422
+      },
+      "writtenOn": "2017-05-10T01:43:31Z",
+      "side": 1,
+      "message": "Please sync with @yuwenma on the tag name and agree on a name (her code has a different name in the review)",
+      "revId": "e9fd90117bfcc6c36431e6d2b23794e9d133d6a7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "6dbaf7df_ffd6f97c",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/DownstreamCreatorIT.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1012422
+      },
+      "writtenOn": "2017-05-10T01:43:31Z",
+      "side": 1,
+      "message": "If you can, it\u0027d probably be better to drop the loop to avoid control structures in tests. If you\u0027re needing to have loops they usually belong in functions that can be tested individually.\n\nBut this isn\u0027t serious so I wouldn\u0027t block the change on it.",
+      "revId": "e9fd90117bfcc6c36431e6d2b23794e9d133d6a7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "e8dfce37_719e1c5f",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/DownstreamCreatorIT.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 1012422
+      },
+      "writtenOn": "2017-05-10T01:43:31Z",
+      "side": 1,
+      "message": "Indent!",
+      "range": {
+        "startLine": 81,
+        "startChar": 23,
+        "endLine": 81,
+        "endChar": 25
+      },
+      "revId": "e9fd90117bfcc6c36431e6d2b23794e9d133d6a7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
