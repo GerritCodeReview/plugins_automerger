@@ -37,6 +37,24 @@
     },
     {
       "key": {
+        "uuid": "cb8d057c_1f01eacb",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/DownstreamCreator.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2017-05-10T22:11:38Z",
+      "side": 1,
+      "message": "Ack. Will keep.",
+      "parentUuid": "a96de806_950f6968",
+      "revId": "e9fd90117bfcc6c36431e6d2b23794e9d133d6a7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "ac7ba40e_e256c1df",
         "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/DownstreamCreatorIT.java",
         "patchSetId": 1
@@ -48,6 +66,24 @@
       "writtenOn": "2017-05-10T02:06:08Z",
       "side": 1,
       "message": "Can we also check that in \"testDownstreamMergeConflict\" :\n\nif CL(branch\u003dds_one) has merge conflict, it is labelled \u0027Code-Review\u0027 \u003d -2.",
+      "revId": "e9fd90117bfcc6c36431e6d2b23794e9d133d6a7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "eba2740a_3409f8f6",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/DownstreamCreatorIT.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2017-05-10T22:11:38Z",
+      "side": 1,
+      "message": "Oh, thanks for that. Looks like the test was actually wrong before.",
+      "parentUuid": "ac7ba40e_e256c1df",
       "revId": "e9fd90117bfcc6c36431e6d2b23794e9d133d6a7",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
@@ -71,6 +107,24 @@
     },
     {
       "key": {
+        "uuid": "2bd473bb_06a6c4c5",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/DownstreamCreatorIT.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2017-05-10T22:11:38Z",
+      "side": 1,
+      "message": "Essentially I have a loop here because I can\u0027t guarantee what order I get back my changes, so I\u0027m basically doing a switch statement. Any ideas how to make this better?",
+      "parentUuid": "6dbaf7df_ffd6f97c",
+      "revId": "e9fd90117bfcc6c36431e6d2b23794e9d133d6a7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "e8dfce37_719e1c5f",
         "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/DownstreamCreatorIT.java",
         "patchSetId": 1
@@ -82,6 +136,30 @@
       "writtenOn": "2017-05-10T01:43:31Z",
       "side": 1,
       "message": "Indent!",
+      "range": {
+        "startLine": 81,
+        "startChar": 23,
+        "endLine": 81,
+        "endChar": 25
+      },
+      "revId": "e9fd90117bfcc6c36431e6d2b23794e9d133d6a7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "e4285841_bb0bb30e",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/DownstreamCreatorIT.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 81,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2017-05-10T22:11:38Z",
+      "side": 1,
+      "message": "This shouldn\u0027t actually even need to be a newline. Whoops. Forgot to run google-java-format after the last change.",
+      "parentUuid": "e8dfce37_719e1c5f",
       "range": {
         "startLine": 81,
         "startChar": 23,
