@@ -19,6 +19,41 @@
     },
     {
       "key": {
+        "uuid": "a96de806_950f6968",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/DownstreamCreator.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 68,
+      "author": {
+        "id": 1042037
+      },
+      "writtenOn": "2017-05-10T02:06:08Z",
+      "side": 1,
+      "message": "I\u0027m using the tag defined in b/37874442. I can update my CL to match this. No worries :D",
+      "parentUuid": "075ffa69_764f74a1",
+      "revId": "e9fd90117bfcc6c36431e6d2b23794e9d133d6a7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "ac7ba40e_e256c1df",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/DownstreamCreatorIT.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1042037
+      },
+      "writtenOn": "2017-05-10T02:06:08Z",
+      "side": 1,
+      "message": "Can we also check that in \"testDownstreamMergeConflict\" :\n\nif CL(branch\u003dds_one) has merge conflict, it is labelled \u0027Code-Review\u0027 \u003d -2.",
+      "revId": "e9fd90117bfcc6c36431e6d2b23794e9d133d6a7",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "6dbaf7df_ffd6f97c",
         "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/DownstreamCreatorIT.java",
         "patchSetId": 1
