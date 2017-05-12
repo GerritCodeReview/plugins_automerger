@@ -217,7 +217,8 @@ public class ConfigLoader {
     String message = getConfig().getString("global", null, "missingDownstreamsMessage");
     if (message == null) {
       message =
-          "Missing downstream branches ${missingDownstreams}. Please recreate the automerges.";
+          "Missing downstream branches ${missingDownstreams}. Please recreate the automerges. "
+              + "If your topic contains quotes or braces, please remove them.";
     }
     return message;
   }

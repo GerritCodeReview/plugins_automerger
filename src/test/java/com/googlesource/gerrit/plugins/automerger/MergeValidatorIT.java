@@ -35,7 +35,7 @@ import org.junit.Test;
   sysModule = "com.googlesource.gerrit.plugins.automerger.AutomergerModule"
 )
 public class MergeValidatorIT extends LightweightPluginDaemonTest {
-  private void pushConfig(String resourceName, String project) throws Exception {
+  private void pushConfig(String resourceName, String project, String branch) throws Exception {
     TestRepository<InMemoryRepository> allProjectRepo = cloneProject(allProjects, admin);
     GitUtil.fetch(allProjectRepo, RefNames.REFS_CONFIG + ":config");
     allProjectRepo.reset("config");
@@ -46,7 +46,7 @@ public class MergeValidatorIT extends LightweightPluginDaemonTest {
       cfg.fromText(resourceString);
       // Update manifest project path to the result of createProject(resourceName), since it is
       // scoped to the test method
-      cfg.setString("automerger", "master:ds_one", "setProjects", project);
+      cfg.setString("automerger", "master:" + branch, "setProjects", project);
       PushOneCommit push =
           pushFactory.create(
               db, admin.getIdent(), allProjectRepo, "Subject", "automerger.config", cfg.toText());
@@ -61,7 +61,7 @@ public class MergeValidatorIT extends LightweightPluginDaemonTest {
     // Project name is scoped by test, so we need to get it from our initial change
     String projectName = result.getChange().change().getProject().get();
     createBranch(new Branch.NameKey(projectName, "ds_one"));
-    pushConfig("automerger.config", projectName);
+    pushConfig("automerger.config", projectName, "ds_one");
     // After we upload our config, we upload a new patchset to create the downstreams
     amendChange(result.getChangeId());
     result.assertOkStatus();
@@ -69,10 +69,55 @@ public class MergeValidatorIT extends LightweightPluginDaemonTest {
   }
 
   @Test
+  public void testNoMissingDownstreamMerges_branchWithQuotes() throws Exception {
+    // Create initial change
+    PushOneCommit.Result result = createChange("subject", "filename", "content", "testtopic");
+    // Project name is scoped by test, so we need to get it from our initial change
+    String projectName = result.getChange().change().getProject().get();
+    createBranch(new Branch.NameKey(projectName, "branch\"quotes"));
+    pushConfig("automerger.config", projectName, "branch\"quotes");
+    // After we upload our config, we upload a new patchset to create the downstreams
+    amendChange(result.getChangeId());
+    result.assertOkStatus();
+    merge(result);
+  }
+
+  @Test
+  public void testNoMissingDownstreamMerges_branchWithBraces() throws Exception {
+    // Create initial change
+    PushOneCommit.Result result = createChange("subject", "filename", "content", "testtopic");
+    // Project name is scoped by test, so we need to get it from our initial change
+    String projectName = result.getChange().change().getProject().get();
+    createBranch(new Branch.NameKey(projectName, "branch{}braces"));
+    pushConfig("automerger.config", projectName, "branch{}braces");
+    // After we upload our config, we upload a new patchset to create the downstreams
+    amendChange(result.getChangeId());
+    result.assertOkStatus();
+    merge(result);
+  }
+
+  @Test
+  public void testMultiWordTopic() throws Exception {
+    // Create initial change
+    PushOneCommit.Result result = createChange("subject", "filename", "content", "testtopic");
+    // Project name is scoped by test, so we need to get it from our initial change
+    String projectName = result.getChange().change().getProject().get();
+    createBranch(new Branch.NameKey(projectName, "ds_one"));
+    pushConfig("automerger.config", projectName, "ds_one");
+    // After we upload our config, we upload a new patchset to create the downstreams
+    amendChange(result.getChangeId());
+    result.assertOkStatus();
+    
+    gApi.changes().id(result.getChangeId()).topic("multiple words");
+    merge(result);
+    
+  }
+
+  @Test
   public void testMissingDownstreamMerges() throws Exception {
     // Create initial change
     PushOneCommit.Result result = createChange("subject", "filename", "content", "testtopic");
-    pushConfig("automerger.config", result.getChange().project().get());
+    pushConfig("automerger.config", result.getChange().project().get(), "ds_one");
     result.assertOkStatus();
     int changeNumber = result.getChange().getId().id;
     // Assert we are missing downstreams
@@ -88,7 +133,7 @@ public class MergeValidatorIT extends LightweightPluginDaemonTest {
   public void testMissingDownstreamMerges_custom() throws Exception {
     // Create initial change
     PushOneCommit.Result result = createChange("subject", "filename", "content", "testtopic");
-    pushConfig("alternate.config", result.getChange().project().get());
+    pushConfig("alternate.config", result.getChange().project().get(), "ds_one");
     result.assertOkStatus();
     int changeNumber = result.getChange().getId().id;
     // Assert we are missing downstreams
