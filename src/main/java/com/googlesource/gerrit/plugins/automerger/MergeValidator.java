@@ -105,7 +105,7 @@ public class MergeValidator implements MergeValidationListener {
         config.getDownstreamBranches(upstreamChange.branch, upstreamChange.project);
     for (String downstreamBranch : downstreamBranches) {
       boolean dsExists = false;
-      String query = "topic:" + upstreamChange.topic + " status:open branch:" + downstreamBranch;
+      String query = "topic:\"" + upstreamChange.topic + "\" status:open branch:" + downstreamBranch;
       List<ChangeInfo> changes =
           gApi.changes()
               .query(query)
