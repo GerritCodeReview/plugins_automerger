@@ -123,8 +123,8 @@ public class DownstreamCreator
           log.debug("Setting topic {} on {}", change.topic, changeNumber);
           gApi.changes().id(changeNumber).topic(change.topic);
         }
-      } catch (RestApiException e) {
-        log.error("RestApiException when editing downstream topics of {}", change.id, e);
+      } catch (RestApiException | InvalidQueryParameterException e) {
+        log.error("Failed to edit downstream topics of {}", change.id, e);
       }
     }
   }
@@ -170,7 +170,7 @@ public class DownstreamCreator
             propagateVote(downstreamChange, label.getKey(), label.getValue().value.shortValue());
           }
         }
-      } catch (RestApiException | ConfigInvalidException e) {
+      } catch (RestApiException | ConfigInvalidException | InvalidQueryParameterException e) {
         log.error("Exception when updating downstream votes of {}", change.id, e);
       }
     }
@@ -186,7 +186,10 @@ public class DownstreamCreator
     ChangeInfo change = event.getChange();
     try {
       automergeChanges(change, event.getRevision());
-    } catch (RestApiException | IOException | ConfigInvalidException e) {
+    } catch (RestApiException
+        | IOException
+        | ConfigInvalidException
+        | InvalidQueryParameterException e) {
       log.error("Automerger plugin failed onChangeRestored for {}", change.id, e);
     }
   }
@@ -201,7 +204,10 @@ public class DownstreamCreator
     ChangeInfo change = event.getChange();
     try {
       automergeChanges(change, event.getRevision());
-    } catch (RestApiException | IOException | ConfigInvalidException e) {
+    } catch (RestApiException
+        | IOException
+        | ConfigInvalidException
+        | InvalidQueryParameterException e) {
       log.error("Automerger plugin failed onDraftPublished for {}", change.id, e);
     }
   }
@@ -216,7 +222,10 @@ public class DownstreamCreator
     ChangeInfo change = event.getChange();
     try {
       automergeChanges(change, event.getRevision());
-    } catch (RestApiException | IOException | ConfigInvalidException e) {
+    } catch (RestApiException
+        | IOException
+        | ConfigInvalidException
+        | InvalidQueryParameterException e) {
       log.error("Automerger plugin failed onRevisionCreated for {}", change.id, e);
     }
   }
@@ -227,9 +236,10 @@ public class DownstreamCreator
    * @param mdsMergeInput Input containing the downstream branch map and source change ID.
    * @throws RestApiException Throws if we fail a REST API call.
    * @throws ConfigInvalidException Throws if we get a malformed configuration
+   * @throws InvalidQueryParameterException Throws if we attempt to add an invalid value to query.
    */
   public void createMergesAndHandleConflicts(MultipleDownstreamMergeInput mdsMergeInput)
-      throws RestApiException, ConfigInvalidException {
+      throws RestApiException, ConfigInvalidException, InvalidQueryParameterException {
     ReviewInput reviewInput = new ReviewInput();
     Map<String, Short> labels = new HashMap<String, Short>();
     short vote = 0;
@@ -262,9 +272,11 @@ public class DownstreamCreator
    * @throws RestApiException Throws if we fail a REST API call.
    * @throws FailedMergeException Throws if we get a merge conflict when merging downstream.
    * @throws ConfigInvalidException Throws if we get a malformed config file
+   * @throws InvalidQueryParameterException Throws if we attempt to add an invalid value to query.
    */
   public void createDownstreamMerges(MultipleDownstreamMergeInput mdsMergeInput)
-      throws RestApiException, FailedMergeException, ConfigInvalidException {
+      throws RestApiException, FailedMergeException, ConfigInvalidException,
+          InvalidQueryParameterException {
     // Map from branch to error message
     Map<String, String> failedMergeBranchMap = new TreeMap<String, String>();
 
@@ -336,15 +348,20 @@ public class DownstreamCreator
    * @param downstreamBranch Branch to check for existing merge CLs.
    * @return List of change numbers that are downstream of the given branch.
    * @throws RestApiException Throws when we fail a REST API call.
+   * @throws InvalidQueryParameterException Throws when we try to add an invalid value to the query.
    */
   public List<Integer> getExistingMergesOnBranch(
-      String upstreamRevision, String topic, String downstreamBranch) throws RestApiException {
+      String upstreamRevision, String topic, String downstreamBranch)
+      throws RestApiException, InvalidQueryParameterException {
     List<Integer> downstreamChangeNumbers = new ArrayList<Integer>();
+    QueryBuilder queryBuilder = new QueryBuilder();
+    queryBuilder.addParameter("topic", topic);
+    queryBuilder.addParameter("branch", downstreamBranch);
+    queryBuilder.addParameter("status", "open");
     // get changes in same topic and check if their parent is upstreamRevision
-    String query = "topic:" + topic + " status:open branch:" + downstreamBranch;
     List<ChangeInfo> changes =
         gApi.changes()
-            .query(query)
+            .query(queryBuilder.get())
             .withOptions(ListChangesOption.ALL_REVISIONS, ListChangesOption.CURRENT_COMMIT)
             .get();
 
@@ -405,7 +422,7 @@ public class DownstreamCreator
   }
 
   private void automergeChanges(ChangeInfo change, RevisionInfo revisionInfo)
-      throws RestApiException, IOException, ConfigInvalidException {
+      throws RestApiException, IOException, ConfigInvalidException, InvalidQueryParameterException {
     if (revisionInfo.draft != null && revisionInfo.draft) {
       log.debug("Patchset {} is draft change, ignoring.", revisionInfo.commit.commit);
       return;
@@ -461,7 +478,7 @@ public class DownstreamCreator
           abandonChange(changeNumber);
         }
       }
-    } catch (RestApiException | IOException e) {
+    } catch (RestApiException | IOException | InvalidQueryParameterException e) {
       log.error("Failed to abandon downstreams of {}", change.id, e);
     }
   }

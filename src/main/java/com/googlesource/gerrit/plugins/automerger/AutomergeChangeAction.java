@@ -85,6 +85,9 @@ class AutomergeChangeAction
     } catch (ConfigInvalidException e) {
       throw new ResourceConflictException(
           "Automerger configuration file is invalid: " + e.getMessage());
+    } catch (InvalidQueryParameterException e) {
+      throw new ResourceConflictException(
+          "Topic or branch cannot have both braces and quotes: " + e.getMessage());      
     }
     return Response.none();
   }

@@ -54,7 +54,7 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
     String projectName = result.getChange().project().get();
     createBranch(new Branch.NameKey(projectName, "ds_one"));
     createBranch(new Branch.NameKey(projectName, "ds_two"));
-    pushConfig("automerger.config", manifestNameKey.get(), projectName);
+    pushConfig("automerger.config", manifestNameKey.get(), projectName, "ds_one", "ds_two");
     // After we upload our config, we upload a new patchset to create the downstreams
     amendChange(result.getChangeId());
     result.assertOkStatus();
@@ -76,7 +76,7 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
     String projectName = result.getChange().project().get();
     createBranch(new Branch.NameKey(projectName, "ds_one"));
     createBranch(new Branch.NameKey(projectName, "ds_two"));
-    pushConfig("automerger.config", manifestNameKey.get(), projectName);
+    pushConfig("automerger.config", manifestNameKey.get(), projectName, "ds_one", "ds_two");
     // After we upload our config, we upload a new patchset to create the downstreams
     amendChange(result.getChangeId(), "DO NOT MERGE subject", "filename", "content");
     result.assertOkStatus();
@@ -117,7 +117,7 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
     String projectName = result.getChange().project().get();
     createBranch(new Branch.NameKey(projectName, "ds_one"));
     createBranch(new Branch.NameKey(projectName, "ds_two"));
-    pushConfig("automerger.config", manifestNameKey.get(), projectName);
+    pushConfig("automerger.config", manifestNameKey.get(), projectName, "ds_one", "ds_two");
     // After we upload our config, we upload a new patchset to create the downstreams
     amendChange(result.getChangeId(), "DO NOT MERGE ANYWHERE subject", "filename", "content");
     result.assertOkStatus();
@@ -161,7 +161,7 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
     merge(ds1Result);
     // Reset to allow our merge conflict to come
     testRepo.reset(initial);
-    pushConfig("automerger.config", manifestNameKey.get(), projectName);
+    pushConfig("automerger.config", manifestNameKey.get(), projectName, "ds_one", "ds_two");
     // After we upload our config, we upload a new change to create the downstreams
     PushOneCommit.Result masterResult =
         pushFactory
@@ -174,6 +174,111 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
             .query("topic: " + gApi.changes().id(masterResult.getChangeId()).topic())
             .get();
     assertThat(changesInTopic).hasSize(2);
+  }
+
+  @Test
+  public void testTopicEditedListener() throws Exception {
+    Project.NameKey manifestNameKey = defaultSetup();
+    // Create initial change
+    PushOneCommit.Result result = createChange("subject", "filename", "content", "testtopic");
+    // Project name is scoped by test, so we need to get it from our initial change
+    String projectName = result.getChange().project().get();
+    createBranch(new Branch.NameKey(projectName, "ds_one"));
+    createBranch(new Branch.NameKey(projectName, "ds_two"));
+    pushConfig("automerger.config", manifestNameKey.get(), projectName, "ds_one", "ds_two");
+    // After we upload our config, we upload a new patchset to create the downstreams
+    amendChange(result.getChangeId());
+    result.assertOkStatus();
+    gApi.changes().id(result.getChangeId()).topic("multiple words");
+    gApi.changes().id(result.getChangeId()).topic("singlewordagain");
+    // Check that there are the correct number of changes in the topic
+    List<ChangeInfo> changesInTopic =
+        gApi.changes()
+            .query("topic:\"" + gApi.changes().id(result.getChangeId()).topic() + "\"")
+            .get();
+    assertThat(changesInTopic).hasSize(3);
+    // +2 and submit
+    merge(result);
+  }
+
+  @Test
+  public void testTopicEditedListener_withQuotes() throws Exception {
+    Project.NameKey manifestNameKey = defaultSetup();
+    // Create initial change
+    PushOneCommit.Result result = createChange("subject", "filename", "content", "testtopic");
+    // Project name is scoped by test, so we need to get it from our initial change
+    String projectName = result.getChange().project().get();
+    createBranch(new Branch.NameKey(projectName, "ds_one"));
+    createBranch(new Branch.NameKey(projectName, "ds_two"));
+    pushConfig("automerger.config", manifestNameKey.get(), projectName, "ds_one", "ds_two");
+    // After we upload our config, we upload a new patchset to create the downstreams
+    amendChange(result.getChangeId());
+    result.assertOkStatus();
+    gApi.changes().id(result.getChangeId()).topic("multiple words");
+    gApi.changes().id(result.getChangeId()).topic("with\"quotes\"inside");
+    // Gerrit fails to submit changes in the same topic together if it contains quotes.
+    gApi.changes().id(result.getChangeId()).topic("without quotes anymore");
+    // Check that there are the correct number of changes in the topic
+    List<ChangeInfo> changesInTopic =
+        gApi.changes()
+            .query("topic:{" + gApi.changes().id(result.getChangeId()).topic() + "}")
+            .get();
+    assertThat(changesInTopic).hasSize(3);
+    // +2 and submit
+    merge(result);
+  }
+
+  @Test
+  public void testTopicEditedListener_withBraces() throws Exception {
+    Project.NameKey manifestNameKey = defaultSetup();
+    // Create initial change
+    PushOneCommit.Result result = createChange("subject", "filename", "content", "testtopic");
+    // Project name is scoped by test, so we need to get it from our initial change
+    String projectName = result.getChange().project().get();
+    createBranch(new Branch.NameKey(projectName, "ds_one"));
+    createBranch(new Branch.NameKey(projectName, "ds_two"));
+    pushConfig("automerger.config", manifestNameKey.get(), projectName, "ds_one", "ds_two");
+    // After we upload our config, we upload a new patchset to create the downstreams
+    amendChange(result.getChangeId());
+    result.assertOkStatus();
+    gApi.changes().id(result.getChangeId()).topic("multiple words");
+    gApi.changes().id(result.getChangeId()).topic("with{braces}inside");
+    // Check that there are the correct number of changes in the topic
+    List<ChangeInfo> changesInTopic =
+        gApi.changes()
+            .query("topic:\"" + gApi.changes().id(result.getChangeId()).topic() + "\"")
+            .get();
+    assertThat(changesInTopic).hasSize(3);
+    // +2 and submit
+    merge(result);
+  }
+
+  @Test
+  public void testTopicEditedListener_branchWithBracesAndQuotes() throws Exception {
+    Project.NameKey manifestNameKey = defaultSetup();
+    // Create initial change
+    PushOneCommit.Result result = createChange("subject", "filename", "content", "testtopic");
+    // Project name is scoped by test, so we need to get it from our initial change
+    String projectName = result.getChange().project().get();
+    createBranch(new Branch.NameKey(projectName, "branch{}braces"));
+    createBranch(new Branch.NameKey(projectName, "branch\"quotes"));
+    pushConfig(
+        "automerger.config",
+        manifestNameKey.get(),
+        projectName,
+        "branch{}braces",
+        "branch\"quotes");
+    // After we upload our config, we upload a new patchset to create the downstreams
+    amendChange(result.getChangeId());
+    result.assertOkStatus();
+    // Check that there are the correct number of changes in the topic
+    List<ChangeInfo> changesInTopic =
+        gApi.changes()
+            .query("topic:\"" + gApi.changes().id(result.getChangeId()).topic() + "\"")
+            .get();
+    assertThat(changesInTopic).hasSize(3);
+    // +2 and submit
+    merge(result);
   }
 
   private Project.NameKey defaultSetup() throws Exception {
@@ -197,7 +302,8 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
     }
   }
 
-  private void pushConfig(String resourceName, String manifestName, String project)
+  private void pushConfig(
+      String resourceName, String manifestName, String project, String branch1, String branch2)
       throws Exception {
     TestRepository<InMemoryRepository> allProjectRepo = cloneProject(allProjects, admin);
     GitUtil.fetch(allProjectRepo, RefNames.REFS_CONFIG + ":config");
@@ -210,8 +316,8 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
       // Update manifest project path to the result of createProject(resourceName), since it is
       // scoped to the test method
       cfg.setString("global", null, "manifestProject", manifestName);
-      cfg.setString("automerger", "master:ds_one", "setProjects", project);
-      cfg.setString("automerger", "master:ds_two", "setProjects", project);
+      cfg.setString("automerger", "master:" + branch1, "setProjects", project);
+      cfg.setString("automerger", "master:" + branch2, "setProjects", project);
       PushOneCommit push =
           pushFactory.create(
               db, admin.getIdent(), allProjectRepo, "Subject", "automerger.config", cfg.toText());

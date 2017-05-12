@@ -76,7 +76,10 @@ public class MergeValidator implements MergeValidationListener {
       if (!missingDownstreams.isEmpty()) {
         throw new MergeValidationException(getMissingDownstreamsMessage(missingDownstreams));
       }
-    } catch (RestApiException | IOException | ConfigInvalidException e) {
+    } catch (RestApiException
+        | IOException
+        | ConfigInvalidException
+        | InvalidQueryParameterException e) {
       log.error("Automerger plugin failed onPreMerge for {}", changeId, e);
       e.printStackTrace();
       throw new MergeValidationException("Error when validating merge for: " + changeId);
@@ -98,17 +101,20 @@ public class MergeValidator implements MergeValidationListener {
 
   @VisibleForTesting
   protected Set<String> getMissingDownstreamMerges(ChangeInfo upstreamChange)
-      throws RestApiException, IOException, ConfigInvalidException {
+      throws RestApiException, IOException, ConfigInvalidException, InvalidQueryParameterException {
     Set<String> missingDownstreamBranches = new HashSet<>();
 
     Set<String> downstreamBranches =
         config.getDownstreamBranches(upstreamChange.branch, upstreamChange.project);
     for (String downstreamBranch : downstreamBranches) {
       boolean dsExists = false;
-      String query = "topic:" + upstreamChange.topic + " status:open branch:" + downstreamBranch;
+      QueryBuilder queryBuilder = new QueryBuilder();
+      queryBuilder.addParameter("topic", upstreamChange.topic);
+      queryBuilder.addParameter("branch", downstreamBranch);
+      queryBuilder.addParameter("status", "open");
       List<ChangeInfo> changes =
           gApi.changes()
-              .query(query)
+              .query(queryBuilder.get())
               .withOptions(ListChangesOption.ALL_REVISIONS, ListChangesOption.CURRENT_COMMIT)
               .get();
       for (ChangeInfo change : changes) {
