@@ -69,6 +69,23 @@ public class MergeValidatorIT extends LightweightPluginDaemonTest {
   }
 
   @Test
+  public void testMultiWordTopic() throws Exception {
+    // Create initial change
+    PushOneCommit.Result result = createChange("subject", "filename", "content", "testtopic");
+    // Project name is scoped by test, so we need to get it from our initial change
+    String projectName = result.getChange().change().getProject().get();
+    createBranch(new Branch.NameKey(projectName, "ds_one"));
+    pushConfig("automerger.config", projectName);
+    // After we upload our config, we upload a new patchset to create the downstreams
+    amendChange(result.getChangeId());
+    result.assertOkStatus();
+    
+    gApi.changes().id(result.getChangeId()).topic("multiple words");
+    merge(result);
+    
+  }
+
+  @Test
   public void testMissingDownstreamMerges() throws Exception {
     // Create initial change
     PushOneCommit.Result result = createChange("subject", "filename", "content", "testtopic");

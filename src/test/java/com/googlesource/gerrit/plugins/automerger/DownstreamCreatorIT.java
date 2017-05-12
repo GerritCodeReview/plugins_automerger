@@ -176,6 +176,83 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
     assertThat(changesInTopic).hasSize(2);
   }
 
+  @Test
+  public void testTopicEditedListener() throws Exception {
+    Project.NameKey manifestNameKey = defaultSetup();
+    // Create initial change
+    PushOneCommit.Result result = createChange("subject", "filename", "content", "testtopic");
+    // Project name is scoped by test, so we need to get it from our initial change
+    String projectName = result.getChange().project().get();
+    createBranch(new Branch.NameKey(projectName, "ds_one"));
+    createBranch(new Branch.NameKey(projectName, "ds_two"));
+    pushConfig("automerger.config", manifestNameKey.get(), projectName);
+    // After we upload our config, we upload a new patchset to create the downstreams
+    amendChange(result.getChangeId());
+    result.assertOkStatus();
+    gApi.changes().id(result.getChangeId()).topic("multiple words");
+    gApi.changes().id(result.getChangeId()).topic("singlewordagain");
+    // Check that there are the correct number of changes in the topic
+    List<ChangeInfo> changesInTopic =
+        gApi.changes()
+            .query("topic:\"" + gApi.changes().id(result.getChangeId()).topic() + "\"")
+            .get();
+    assertThat(changesInTopic).hasSize(3);
+    // +2 and submit
+    merge(result);
+  }
+
+  @Test
+  public void testTopicEditedListener_withQuotes() throws Exception {
+    Project.NameKey manifestNameKey = defaultSetup();
+    // Create initial change
+    PushOneCommit.Result result = createChange("subject", "filename", "content", "testtopic");
+    // Project name is scoped by test, so we need to get it from our initial change
+    String projectName = result.getChange().project().get();
+    createBranch(new Branch.NameKey(projectName, "ds_one"));
+    createBranch(new Branch.NameKey(projectName, "ds_two"));
+    pushConfig("automerger.config", manifestNameKey.get(), projectName);
+    // After we upload our config, we upload a new patchset to create the downstreams
+    amendChange(result.getChangeId());
+    result.assertOkStatus();
+    gApi.changes().id(result.getChangeId()).topic("multiple words");
+    gApi.changes().id(result.getChangeId()).topic("with\"quotes\"inside");
+    // Gerrit fails to submit changes in the same topic together if it contains quotes.
+    gApi.changes().id(result.getChangeId()).topic("without quotes anymore");
+    // Check that there are the correct number of changes in the topic
+    List<ChangeInfo> changesInTopic =
+        gApi.changes()
+            .query("topic:{" + gApi.changes().id(result.getChangeId()).topic() + "}")
+            .get();
+    assertThat(changesInTopic).hasSize(3);
+    // +2 and submit
+    merge(result);
+  }
+
+  @Test
+  public void testTopicEditedListener_withBraces() throws Exception {
+    Project.NameKey manifestNameKey = defaultSetup();
+    // Create initial change
+    PushOneCommit.Result result = createChange("subject", "filename", "content", "testtopic");
+    // Project name is scoped by test, so we need to get it from our initial change
+    String projectName = result.getChange().project().get();
+    createBranch(new Branch.NameKey(projectName, "ds_one"));
+    createBranch(new Branch.NameKey(projectName, "ds_two"));
+    pushConfig("automerger.config", manifestNameKey.get(), projectName);
+    // After we upload our config, we upload a new patchset to create the downstreams
+    amendChange(result.getChangeId());
+    result.assertOkStatus();
+    gApi.changes().id(result.getChangeId()).topic("multiple words");
+    gApi.changes().id(result.getChangeId()).topic("with{braces}inside");
+    // Check that there are the correct number of changes in the topic
+    List<ChangeInfo> changesInTopic =
+        gApi.changes()
+            .query("topic:\"" + gApi.changes().id(result.getChangeId()).topic() + "\"")
+            .get();
+    assertThat(changesInTopic).hasSize(3);
+    // +2 and submit
+    merge(result);
+  }
+
   private Project.NameKey defaultSetup() throws Exception {
     Project.NameKey manifestNameKey = createProject("platform/manifest");
     setupTestRepo("default.xml", manifestNameKey, "master", "default.xml");

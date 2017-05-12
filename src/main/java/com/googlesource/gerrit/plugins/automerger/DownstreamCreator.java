@@ -340,8 +340,18 @@ public class DownstreamCreator
   public List<Integer> getExistingMergesOnBranch(
       String upstreamRevision, String topic, String downstreamBranch) throws RestApiException {
     List<Integer> downstreamChangeNumbers = new ArrayList<Integer>();
+    String escapedTopic = topic;
+    if (topic.contains("\"") && (topic.contains("{") || topic.contains("}"))) {
+      // Gerrit does not support search string escaping as of 5/16/2017
+      // see https://bugs.chromium.org/p/gerrit/issues/detail?id=5617
+      throw new RestApiException("Gerrit does not support both quotes and braces in topic query.");
+    } else if (topic.contains("\"")) {
+      escapedTopic = "{" + topic + "}";
+    } else {
+      escapedTopic = "\"" + topic + "\"";
+    }
+    String query = "topic:" + escapedTopic + " status:open branch:" + downstreamBranch;
     // get changes in same topic and check if their parent is upstreamRevision
-    String query = "topic:" + topic + " status:open branch:" + downstreamBranch;
     List<ChangeInfo> changes =
         gApi.changes()
             .query(query)
