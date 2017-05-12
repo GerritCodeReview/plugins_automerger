@@ -22,6 +22,30 @@
       "revId": "cf4ba8b253340f98da4ef02f110e89e5f17c2b4e",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "bb939b39_a2926878",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/DownstreamCreator.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 344,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2017-05-12T22:25:27Z",
+      "side": 1,
+      "message": "!@#@, that\u0027s possible?? (No I did not, will do so)",
+      "parentUuid": "54557105_eab62c37",
+      "range": {
+        "startLine": 344,
+        "startChar": 44,
+        "endLine": 344,
+        "endChar": 55
+      },
+      "revId": "cf4ba8b253340f98da4ef02f110e89e5f17c2b4e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
