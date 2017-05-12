@@ -341,7 +341,7 @@ public class DownstreamCreator
       String upstreamRevision, String topic, String downstreamBranch) throws RestApiException {
     List<Integer> downstreamChangeNumbers = new ArrayList<Integer>();
     // get changes in same topic and check if their parent is upstreamRevision
-    String query = "topic:" + topic + " status:open branch:" + downstreamBranch;
+    String query = "topic:\"" + topic + "\" status:open branch:" + downstreamBranch;
     List<ChangeInfo> changes =
         gApi.changes()
             .query(query)
