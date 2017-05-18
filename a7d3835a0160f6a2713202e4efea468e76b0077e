@@ -22,6 +22,30 @@
       "revId": "a7d3835a0160f6a2713202e4efea468e76b0077e",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "7042077a_a608ab6f",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/DownstreamCreator.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 353,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2017-05-18T23:59:46Z",
+      "side": 1,
+      "message": "Apparently yes. Why are quotes and braces valid characters in branches?! \u003e:[",
+      "parentUuid": "cea66c8f_c9be7d1a",
+      "range": {
+        "startLine": 353,
+        "startChar": 70,
+        "endLine": 353,
+        "endChar": 86
+      },
+      "revId": "a7d3835a0160f6a2713202e4efea468e76b0077e",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
