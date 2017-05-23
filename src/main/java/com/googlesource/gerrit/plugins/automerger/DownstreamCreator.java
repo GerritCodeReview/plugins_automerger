@@ -285,49 +285,52 @@ public class DownstreamCreator
     for (String downstreamBranch : mdsMergeInput.dsBranchMap.keySet()) {
       // If there are existing downstream merges, update them
       // Otherwise, create them.
-      try {
-        boolean createDownstreams = true;
-        if (mdsMergeInput.obsoleteRevision != null) {
-          existingDownstream =
-              getExistingMergesOnBranch(
-                  mdsMergeInput.obsoleteRevision, mdsMergeInput.topic, downstreamBranch);
-          if (!existingDownstream.isEmpty()) {
-            log.debug(
-                "Attempting to update downstream merge of {} on branch {}",
-                mdsMergeInput.currentRevision,
-                downstreamBranch);
-            // existingDownstream should almost always be of length one, but
-            // it's possible to construct it so that it's not
-            for (Integer dsChangeNumber : existingDownstream) {
+      boolean createDownstreams = true;
+      if (mdsMergeInput.obsoleteRevision != null) {
+        existingDownstream =
+            getExistingMergesOnBranch(
+                mdsMergeInput.obsoleteRevision, mdsMergeInput.topic, downstreamBranch);
+        if (!existingDownstream.isEmpty()) {
+          log.debug(
+              "Attempting to update downstream merge of {} on branch {}",
+              mdsMergeInput.currentRevision,
+              downstreamBranch);
+          // existingDownstream should almost always be of length one, but
+          // it's possible to construct it so that it's not
+          for (Integer dsChangeNumber : existingDownstream) {
+            try {
               updateDownstreamMerge(
                   mdsMergeInput.currentRevision,
                   mdsMergeInput.subject,
                   dsChangeNumber,
                   mdsMergeInput.dsBranchMap.get(downstreamBranch));
               createDownstreams = false;
+            } catch (MergeConflictException e) {
+              failedMergeBranchMap.put(downstreamBranch, e.getMessage());
+              log.debug("Abandoning existing, obsolete {} due to merge conflict.", dsChangeNumber);
+              abandonChange(dsChangeNumber);
             }
           }
         }
-        if (createDownstreams) {
-          log.debug(
-              "Attempting to create downstream merge of {} on branch {}",
-              mdsMergeInput.currentRevision,
-              downstreamBranch);
-          SingleDownstreamMergeInput sdsMergeInput = new SingleDownstreamMergeInput();
-          sdsMergeInput.currentRevision = mdsMergeInput.currentRevision;
-          sdsMergeInput.changeNumber = mdsMergeInput.changeNumber;
-          sdsMergeInput.project = mdsMergeInput.project;
-          sdsMergeInput.topic = mdsMergeInput.topic;
-          sdsMergeInput.subject = mdsMergeInput.subject;
-          sdsMergeInput.downstreamBranch = downstreamBranch;
-          sdsMergeInput.doMerge = mdsMergeInput.dsBranchMap.get(downstreamBranch);
+      }
+      if (createDownstreams) {
+        log.debug(
+            "Attempting to create downstream merge of {} on branch {}",
+            mdsMergeInput.currentRevision,
+            downstreamBranch);
+        SingleDownstreamMergeInput sdsMergeInput = new SingleDownstreamMergeInput();
+        sdsMergeInput.currentRevision = mdsMergeInput.currentRevision;
+        sdsMergeInput.changeNumber = mdsMergeInput.changeNumber;
+        sdsMergeInput.project = mdsMergeInput.project;
+        sdsMergeInput.topic = mdsMergeInput.topic;
+        sdsMergeInput.subject = mdsMergeInput.subject;
+        sdsMergeInput.downstreamBranch = downstreamBranch;
+        sdsMergeInput.doMerge = mdsMergeInput.dsBranchMap.get(downstreamBranch);
+        try {
           createSingleDownstreamMerge(sdsMergeInput);
+        } catch (MergeConflictException e) {
+          failedMergeBranchMap.put(downstreamBranch, e.getMessage());
         }
-      } catch (MergeConflictException e) {
-        failedMergeBranchMap.put(downstreamBranch, e.getMessage());
-        log.debug("Abandoning downstream of {}", mdsMergeInput.changeNumber);
-        abandonDownstream(
-            gApi.changes().id(mdsMergeInput.changeNumber).info(), mdsMergeInput.currentRevision);
       }
     }
 
