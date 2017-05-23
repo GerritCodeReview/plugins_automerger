@@ -242,8 +242,6 @@ public class DownstreamCreator
    */
   public void createMergesAndHandleConflicts(MultipleDownstreamMergeInput mdsMergeInput)
       throws RestApiException, ConfigInvalidException, InvalidQueryParameterException {
-    // If topic is not set at this point, set it.
-    setTopic(mdsMergeInput.sourceId, mdsMergeInput.topic);
     ReviewInput reviewInput = new ReviewInput();
     Map<String, Short> labels = new HashMap<String, Short>();
     try {
@@ -392,7 +390,7 @@ public class DownstreamCreator
   public void createSingleDownstreamMerge(SingleDownstreamMergeInput sdsMergeInput)
       throws RestApiException, ConfigInvalidException {
 
-    String currentTopic = setTopic(sdsMergeInput.sourceId, sdsMergeInput.topic);
+    String currentTopic = getOrSetTopic(sdsMergeInput.sourceId, sdsMergeInput.topic);
 
     MergeInput mergeInput = new MergeInput();
     mergeInput.source = sdsMergeInput.currentRevision;
@@ -422,6 +420,15 @@ public class DownstreamCreator
 
     // Vote maxAutomergeVote on the change so we know it was successful.
     updateVote(downstreamChange.get(), config.getAutomergeLabel(), config.getMaxAutomergeVote());
+  }
+
+  public String getOrSetTopic(int sourceId, String topic) throws RestApiException {
+    if (topic == null || topic.isEmpty()) {
+      topic = "am-" + UUID.randomUUID().toString();
+      log.debug("Setting original change {} topic to {}", sourceId, topic);
+      gApi.changes().id(sourceId).topic(topic);
+    }
+    return topic;
   }
 
   private void automergeChanges(ChangeInfo change, RevisionInfo revisionInfo)
@@ -551,14 +558,5 @@ public class DownstreamCreator
     abandonInput.notify = NotifyHandling.NONE;
     abandonInput.message = "Merge parent updated; abandoning due to upstream conflict.";
     gApi.changes().id(changeNumber).abandon(abandonInput);
-  }
-
-  private String setTopic(int sourceId, String topic) throws RestApiException {
-    if (topic == null || topic.isEmpty()) {
-      topic = "am-" + UUID.randomUUID().toString();
-      log.debug("Setting original change {} topic to {}", sourceId, topic);
-      gApi.changes().id(sourceId).topic(topic);
-    }
-    return topic;
   }
 }

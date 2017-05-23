@@ -73,7 +73,7 @@ class AutomergeChangeAction
     mdsMergeInput.dsBranchMap = branchMap;
     mdsMergeInput.sourceId = change.getId().get();
     mdsMergeInput.project = change.getProject().get();
-    mdsMergeInput.topic = change.getTopic();
+    mdsMergeInput.topic = dsCreator.getOrSetTopic(change.getId().get(), change.getTopic());
     mdsMergeInput.subject = change.getSubject();
     mdsMergeInput.obsoleteRevision = revision;
     mdsMergeInput.currentRevision = revision;
