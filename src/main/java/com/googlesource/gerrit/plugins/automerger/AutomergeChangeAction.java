@@ -73,7 +73,7 @@ class AutomergeChangeAction
     mdsMergeInput.dsBranchMap = branchMap;
     mdsMergeInput.sourceId = change.getId().get();
     mdsMergeInput.project = change.getProject().get();
-    mdsMergeInput.topic = change.getTopic();
+    mdsMergeInput.topic = dsCreator.getOrSetTopic(change.getId().get(), change.getTopic());
     mdsMergeInput.subject = change.getSubject();
     mdsMergeInput.obsoleteRevision = revision;
     mdsMergeInput.currentRevision = revision;
@@ -87,7 +87,7 @@ class AutomergeChangeAction
           "Automerger configuration file is invalid: " + e.getMessage());
     } catch (InvalidQueryParameterException e) {
       throw new ResourceConflictException(
-          "Topic or branch cannot have both braces and quotes: " + e.getMessage());      
+          "Topic or branch cannot have both braces and quotes: " + e.getMessage());
     }
     return Response.none();
   }
