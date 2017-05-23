@@ -26,7 +26,7 @@ public class QueryBuilder {
   public QueryBuilder() {
     this.queryStringMap = new HashMap<String, String>();
   }
-  
+
   public void addParameter(String key, String value) throws InvalidQueryParameterException {
     if (value.contains("\"") && (value.contains("{") || value.contains("}"))) {
       // Gerrit does not support search string escaping as of 5/16/2017
@@ -39,7 +39,7 @@ public class QueryBuilder {
       queryStringMap.put(key, "\"" + value + "\"");
     }
   }
-  
+
   public String removeParameter(String key) {
     return queryStringMap.remove(key);
   }

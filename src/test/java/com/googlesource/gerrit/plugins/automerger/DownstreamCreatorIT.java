@@ -216,7 +216,6 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
             .create(db, admin.getIdent(), testRepo, "subject", "filename", "echo 'Hello World!'")
             .to("refs/for/master");
     masterResult.assertOkStatus();
-    
 
     // Since there's a conflict with ds_one, there should only be two changes in the topic
     List<ChangeInfo> changesInTopic =
