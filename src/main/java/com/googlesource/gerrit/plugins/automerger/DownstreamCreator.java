@@ -242,6 +242,8 @@ public class DownstreamCreator
    */
   public void createMergesAndHandleConflicts(MultipleDownstreamMergeInput mdsMergeInput)
       throws RestApiException, ConfigInvalidException, InvalidQueryParameterException {
+    // If topic is not set at this point, set it.
+    setTopic(mdsMergeInput.sourceId, mdsMergeInput.topic);
     ReviewInput reviewInput = new ReviewInput();
     Map<String, Short> labels = new HashMap<String, Short>();
     try {
