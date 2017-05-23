@@ -21,7 +21,8 @@ import java.util.Map;
  */
 public class MultipleDownstreamMergeInput {
   public Map<String, Boolean> dsBranchMap;
-  public int sourceId;
+  public int number;
+  public int patchsetNumber;
   public String project;
   public String topic;
   public String subject;

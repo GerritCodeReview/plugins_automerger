@@ -25,6 +25,9 @@ public class FailedMergeExceptionTest {
   private Map<String, String> failedMergeBranches;
   private String currentRevision;
   private String hostName;
+  private String projectName;
+  private int changeNumber;
+  private int patchsetNumber;
   private String topic;
 
   @Before
@@ -35,6 +38,9 @@ public class FailedMergeExceptionTest {
     failedMergeBranches.put("branch3", "branch3 merge conflict");
     currentRevision = "d3adb33f";
     hostName = "livingbeef.example.com";
+    projectName = "testproject";
+    changeNumber = 15;
+    patchsetNumber = 2;
     topic = "testtopic";
   }
 
@@ -45,6 +51,9 @@ public class FailedMergeExceptionTest {
             failedMergeBranches,
             currentRevision,
             hostName,
+            projectName,
+            changeNumber,
+            patchsetNumber,
             "Merge conflict found on ${branch}",
             topic);
     String branch1String = "Merge conflict found on branch1";
@@ -58,7 +67,15 @@ public class FailedMergeExceptionTest {
   @Test
   public void customConflictMessageTest() throws Exception {
     FailedMergeException fme =
-        new FailedMergeException(failedMergeBranches, currentRevision, hostName, "asdf", topic);
+        new FailedMergeException(
+            failedMergeBranches,
+            currentRevision,
+            hostName,
+            projectName,
+            changeNumber,
+            patchsetNumber,
+            "asdf",
+            topic);
     assertThat(fme.getDisplayString().split("\\n"))
         .asList()
         .containsExactly("asdf", "asdf", "asdf");
@@ -68,7 +85,14 @@ public class FailedMergeExceptionTest {
   public void customConflictMessageWithRevisionSubstitutionTest() throws Exception {
     FailedMergeException fme =
         new FailedMergeException(
-            failedMergeBranches, currentRevision, hostName, "${branch} ${revision}", topic);
+            failedMergeBranches,
+            currentRevision,
+            hostName,
+            projectName,
+            changeNumber,
+            patchsetNumber,
+            "${branch} ${revision}",
+            topic);
     String branch1String = "branch1 " + currentRevision;
     String branch2String = "branch2 " + currentRevision;
     String branch3String = "branch3 " + currentRevision;
@@ -81,7 +105,14 @@ public class FailedMergeExceptionTest {
   public void customConflictMessageWithConflictSubstitutionTest() throws Exception {
     FailedMergeException fme =
         new FailedMergeException(
-            failedMergeBranches, currentRevision, hostName, "${branch}: ${conflict}", topic);
+            failedMergeBranches,
+            currentRevision,
+            hostName,
+            projectName,
+            changeNumber,
+            patchsetNumber,
+            "${branch}: ${conflict}",
+            topic);
     String branch1String = "branch1: branch1 merge conflict";
     String branch2String = "branch2: branch2 merge conflict";
     String branch3String = "branch3: branch3 merge conflict";
@@ -94,7 +125,14 @@ public class FailedMergeExceptionTest {
   public void customConflictMessageWithHostNameTest() throws Exception {
     FailedMergeException fme =
         new FailedMergeException(
-            failedMergeBranches, currentRevision, hostName, "${hostname}: ${conflict}", topic);
+            failedMergeBranches,
+            currentRevision,
+            hostName,
+            projectName,
+            changeNumber,
+            patchsetNumber,
+            "${hostname}: ${conflict}",
+            topic);
     String branch1String = hostName + ": branch1 merge conflict";
     String branch2String = hostName + ": branch2 merge conflict";
     String branch3String = hostName + ": branch3 merge conflict";
@@ -104,21 +142,91 @@ public class FailedMergeExceptionTest {
   }
 
   @Test
+  public void customConflictMessageWithProjectNameTest() throws Exception {
+    FailedMergeException fme =
+        new FailedMergeException(
+            failedMergeBranches,
+            currentRevision,
+            hostName,
+            projectName,
+            changeNumber,
+            patchsetNumber,
+            "${project}: ${conflict}",
+            topic);
+    String branch1String = projectName + ": branch1 merge conflict";
+    String branch2String = projectName + ": branch2 merge conflict";
+    String branch3String = projectName + ": branch3 merge conflict";
+    assertThat(fme.getDisplayString().split("\\n"))
+        .asList()
+        .containsExactly(branch1String, branch2String, branch3String);
+  }
+
+  @Test
+  public void customConflictMessageWithChangeNumberTest() throws Exception {
+    FailedMergeException fme =
+        new FailedMergeException(
+            failedMergeBranches,
+            currentRevision,
+            hostName,
+            projectName,
+            changeNumber,
+            patchsetNumber,
+            "${changeNumber}: hooray",
+            topic);
+    String changeNumberString = "15: hooray";
+    assertThat(fme.getDisplayString().split("\\n"))
+        .asList()
+        .containsExactly(changeNumberString, changeNumberString, changeNumberString);
+  }
+
+  @Test
+  public void customConflictMessageWithPatchsetNumberTest() throws Exception {
+    FailedMergeException fme =
+        new FailedMergeException(
+            failedMergeBranches,
+            currentRevision,
+            hostName,
+            projectName,
+            changeNumber,
+            patchsetNumber,
+            "${patchsetNumber}: hooray",
+            topic);
+    String patchsetNumberString = "2: hooray";
+    assertThat(fme.getDisplayString().split("\\n"))
+        .asList()
+        .containsExactly(patchsetNumberString, patchsetNumberString, patchsetNumberString);
+  }
+
+  @Test
   public void customConflictMessageWitTopicTest() throws Exception {
     FailedMergeException fme =
         new FailedMergeException(
-            failedMergeBranches, currentRevision, hostName, "i am ${topic}", topic);
+            failedMergeBranches,
+            currentRevision,
+            hostName,
+            projectName,
+            changeNumber,
+            patchsetNumber,
+            "i am ${topic}",
+            topic);
     String conflictMessage = "i am testtopic";
     assertThat(fme.getDisplayString().split("\\n"))
         .asList()
-        .containsExactly("i am testtopic", "i am testtopic", "i am testtopic");
+        .containsExactly(conflictMessage, conflictMessage, conflictMessage);
   }
 
   @Test
   public void customConflictMessageMultilineTest() throws Exception {
     FailedMergeException fme =
         new FailedMergeException(
-            failedMergeBranches, currentRevision, hostName, "${branch}a\nb\nc\nd", topic);
+            failedMergeBranches,
+            currentRevision,
+            hostName,
+            projectName,
+            changeNumber,
+            patchsetNumber,
+            "${branch}a\nb\nc\nd",
+            topic);
     assertThat(fme.getDisplayString().split("\\n"))
         .asList()
         .containsExactly(
