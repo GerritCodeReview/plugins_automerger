@@ -261,7 +261,7 @@ public class DownstreamCreator
     }
     reviewInput.labels = labels;
     gApi.changes()
-        .id(mdsMergeInput.sourceId)
+        .id(mdsMergeInput.changeNumber)
         .revision(mdsMergeInput.currentRevision)
         .review(reviewInput);
   }
@@ -315,7 +315,7 @@ public class DownstreamCreator
               downstreamBranch);
           SingleDownstreamMergeInput sdsMergeInput = new SingleDownstreamMergeInput();
           sdsMergeInput.currentRevision = mdsMergeInput.currentRevision;
-          sdsMergeInput.sourceId = mdsMergeInput.sourceId;
+          sdsMergeInput.changeNumber = mdsMergeInput.changeNumber;
           sdsMergeInput.project = mdsMergeInput.project;
           sdsMergeInput.topic = mdsMergeInput.topic;
           sdsMergeInput.subject = mdsMergeInput.subject;
@@ -325,9 +325,9 @@ public class DownstreamCreator
         }
       } catch (MergeConflictException e) {
         failedMergeBranchMap.put(downstreamBranch, e.getMessage());
-        log.debug("Abandoning downstream of {}", mdsMergeInput.sourceId);
+        log.debug("Abandoning downstream of {}", mdsMergeInput.changeNumber);
         abandonDownstream(
-            gApi.changes().id(mdsMergeInput.sourceId).info(), mdsMergeInput.currentRevision);
+            gApi.changes().id(mdsMergeInput.changeNumber).info(), mdsMergeInput.currentRevision);
       }
     }
 
@@ -336,6 +336,9 @@ public class DownstreamCreator
           failedMergeBranchMap,
           mdsMergeInput.currentRevision,
           config.getHostName(),
+          mdsMergeInput.project,
+          mdsMergeInput.changeNumber,
+          mdsMergeInput.patchsetNumber,
           config.getConflictMessage(),
           mdsMergeInput.topic);
     }
@@ -389,8 +392,7 @@ public class DownstreamCreator
    */
   public void createSingleDownstreamMerge(SingleDownstreamMergeInput sdsMergeInput)
       throws RestApiException, ConfigInvalidException {
-
-    String currentTopic = getOrSetTopic(sdsMergeInput.sourceId, sdsMergeInput.topic);
+    String currentTopic = getOrSetTopic(sdsMergeInput.changeNumber, sdsMergeInput.topic);
 
     MergeInput mergeInput = new MergeInput();
     mergeInput.source = sdsMergeInput.currentRevision;
@@ -462,7 +464,8 @@ public class DownstreamCreator
 
     MultipleDownstreamMergeInput mdsMergeInput = new MultipleDownstreamMergeInput();
     mdsMergeInput.dsBranchMap = dsBranchMap;
-    mdsMergeInput.sourceId = change._number;
+    mdsMergeInput.changeNumber = change._number;
+    mdsMergeInput.patchsetNumber = revisionInfo._number;
     mdsMergeInput.project = change.project;
     mdsMergeInput.topic = change.topic;
     mdsMergeInput.subject = change.subject;
