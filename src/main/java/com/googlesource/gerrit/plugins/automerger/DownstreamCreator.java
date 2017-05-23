@@ -261,7 +261,7 @@ public class DownstreamCreator
     }
     reviewInput.labels = labels;
     gApi.changes()
-        .id(mdsMergeInput.sourceId)
+        .id(mdsMergeInput.number)
         .revision(mdsMergeInput.currentRevision)
         .review(reviewInput);
   }
@@ -315,7 +315,7 @@ public class DownstreamCreator
               downstreamBranch);
           SingleDownstreamMergeInput sdsMergeInput = new SingleDownstreamMergeInput();
           sdsMergeInput.currentRevision = mdsMergeInput.currentRevision;
-          sdsMergeInput.sourceId = mdsMergeInput.sourceId;
+          sdsMergeInput.number = mdsMergeInput.number;
           sdsMergeInput.project = mdsMergeInput.project;
           sdsMergeInput.topic = mdsMergeInput.topic;
           sdsMergeInput.subject = mdsMergeInput.subject;
@@ -325,9 +325,9 @@ public class DownstreamCreator
         }
       } catch (MergeConflictException e) {
         failedMergeBranchMap.put(downstreamBranch, e.getMessage());
-        log.debug("Abandoning downstream of {}", mdsMergeInput.sourceId);
+        log.debug("Abandoning downstream of {}", mdsMergeInput.number);
         abandonDownstream(
-            gApi.changes().id(mdsMergeInput.sourceId).info(), mdsMergeInput.currentRevision);
+            gApi.changes().id(mdsMergeInput.number).info(), mdsMergeInput.currentRevision);
       }
     }
 
@@ -336,6 +336,9 @@ public class DownstreamCreator
           failedMergeBranchMap,
           mdsMergeInput.currentRevision,
           config.getHostName(),
+          mdsMergeInput.project,
+          mdsMergeInput.number,
+          mdsMergeInput.patchsetNumber,
           config.getConflictMessage(),
           mdsMergeInput.topic);
     }
@@ -390,7 +393,7 @@ public class DownstreamCreator
   public void createSingleDownstreamMerge(SingleDownstreamMergeInput sdsMergeInput)
       throws RestApiException, ConfigInvalidException {
 
-    String currentTopic = setTopic(sdsMergeInput.sourceId, sdsMergeInput.topic);
+    String currentTopic = setTopic(sdsMergeInput.number, sdsMergeInput.topic);
 
     MergeInput mergeInput = new MergeInput();
     mergeInput.source = sdsMergeInput.currentRevision;
@@ -453,7 +456,8 @@ public class DownstreamCreator
 
     MultipleDownstreamMergeInput mdsMergeInput = new MultipleDownstreamMergeInput();
     mdsMergeInput.dsBranchMap = dsBranchMap;
-    mdsMergeInput.sourceId = change._number;
+    mdsMergeInput.number = change._number;
+    mdsMergeInput.patchsetNumber = revisionInfo._number;
     mdsMergeInput.project = change.project;
     mdsMergeInput.topic = change.topic;
     mdsMergeInput.subject = change.subject;
@@ -551,11 +555,11 @@ public class DownstreamCreator
     gApi.changes().id(changeNumber).abandon(abandonInput);
   }
 
-  private String setTopic(int sourceId, String topic) throws RestApiException {
+  private String setTopic(int number, String topic) throws RestApiException {
     if (topic == null || topic.isEmpty()) {
       topic = "am-" + UUID.randomUUID().toString();
-      log.debug("Setting original change {} topic to {}", sourceId, topic);
-      gApi.changes().id(sourceId).topic(topic);
+      log.debug("Setting original change {} topic to {}", number, topic);
+      gApi.changes().id(number).topic(topic);
     }
     return topic;
   }

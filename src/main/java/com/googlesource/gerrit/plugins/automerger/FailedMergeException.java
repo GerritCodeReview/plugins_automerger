@@ -26,6 +26,9 @@ class FailedMergeException extends Exception {
   public final String currentRevision;
   public final String conflictMessage;
   public final String hostName;
+  public final String project;
+  public final int changeNumber;
+  public final int patchsetNumber;
   public final String topic;
   public final Map<String, String> failedMergeBranchMap;
 
@@ -33,11 +36,17 @@ class FailedMergeException extends Exception {
       Map<String, String> failedMergeBranchMap,
       String currentRevision,
       String hostName,
+      String project,
+      int changeNumber,
+      int patchsetNumber,
       String conflictMessage,
       String topic) {
     this.failedMergeBranchMap = failedMergeBranchMap;
     this.currentRevision = currentRevision;
     this.hostName = hostName;
+    this.project = project;
+    this.changeNumber = changeNumber;
+    this.patchsetNumber = patchsetNumber;
     this.conflictMessage = conflictMessage;
     this.topic = topic;
   }
@@ -74,6 +83,9 @@ class FailedMergeException extends Exception {
     Map<String, String> substitutionMap = new HashMap<>();
     substitutionMap.put("branch", branch);
     substitutionMap.put("revision", currentRevision);
+    substitutionMap.put("project", project);
+    substitutionMap.put("changeNumber", Integer.toString(changeNumber));
+    substitutionMap.put("patchsetNumber", Integer.toString(patchsetNumber));
     substitutionMap.put("conflict", mergeConflictMessage);
     substitutionMap.put("hostname", hostName);
     substitutionMap.put("topic", topic);
