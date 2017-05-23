@@ -14,13 +14,16 @@
 
 package com.googlesource.gerrit.plugins.automerger;
 
-import java.util.TreeMap;
-import java.util.Map;
-import org.junit.Before;
-import org.junit.Test;
-
 import static com.google.common.truth.Truth.assertThat;
 
+import java.util.Map;
+import java.util.TreeMap;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
+
+@RunWith(JUnit4.class)
 public class FailedMergeExceptionTest {
   private Map<String, String> failedMergeBranches;
   private String currentRevision;

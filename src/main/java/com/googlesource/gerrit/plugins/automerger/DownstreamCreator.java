@@ -13,6 +13,8 @@
 // limitations under the License.
 package com.googlesource.gerrit.plugins.automerger;
 
+import static com.google.common.base.Strings.isNullOrEmpty;
+
 import com.google.common.base.Joiner;
 import com.google.gerrit.extensions.api.GerritApi;
 import com.google.gerrit.extensions.api.changes.AbandonInput;
@@ -428,8 +430,8 @@ public class DownstreamCreator
   }
 
   public String getOrSetTopic(int sourceId, String topic) throws RestApiException {
-    if (topic == null || topic.isEmpty()) {
-      topic = "am-" + UUID.randomUUID().toString();
+    if (isNullOrEmpty(topic)) {
+      topic = "am-" + UUID.randomUUID();
       log.debug("Setting original change {} topic to {}", sourceId, topic);
       gApi.changes().id(sourceId).topic(topic);
     }
