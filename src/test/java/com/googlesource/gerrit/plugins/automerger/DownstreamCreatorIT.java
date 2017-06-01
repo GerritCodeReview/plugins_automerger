@@ -27,6 +27,7 @@ import com.google.gerrit.extensions.client.ListChangesOption;
 import com.google.gerrit.extensions.common.ApprovalInfo;
 import com.google.gerrit.extensions.common.ChangeInfo;
 import com.google.gerrit.extensions.restapi.BinaryResult;
+import com.google.gerrit.extensions.restapi.ResourceConflictException;
 import com.google.gerrit.extensions.restapi.RestApiException;
 import com.google.gerrit.reviewdb.client.Branch;
 import com.google.gerrit.reviewdb.client.Project;
@@ -340,6 +341,54 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
             .query("topic:\"" + gApi.changes().id(result.getChangeId()).topic() + "\"")
             .get();
     assertThat(changesInTopic).hasSize(3);
+    // +2 and submit
+    merge(result);
+  }
+
+  @Test
+  public void testTopicEditedListener_nullTopic() throws Exception {
+    Project.NameKey manifestNameKey = defaultSetup();
+    // Create initial change
+    PushOneCommit.Result result = createChange("subject", "filename", "content", "testtopic");
+    // Project name is scoped by test, so we need to get it from our initial change
+    String projectName = result.getChange().project().get();
+    createBranch(new Branch.NameKey(projectName, "ds_one"));
+    createBranch(new Branch.NameKey(projectName, "ds_two"));
+    pushConfig("automerger.config", manifestNameKey.get(), projectName, "ds_one", "ds_two");
+    // After we upload our config, we upload a new patchset to create the downstreams
+    amendChange(result.getChangeId());
+    result.assertOkStatus();
+    gApi.changes().id(result.getChangeId()).topic(null);
+    int changeNumber = result.getChange().getId().id;
+    exception.expect(ResourceConflictException.class);
+    exception.expectMessage(
+        "Failed to submit 1 change due to the following problems:\nChange "
+            + changeNumber
+            + ": Missing downstream branches ds_one, ds_two. Please recreate the automerges.");
+    // +2 and submit
+    merge(result);
+  }
+
+  @Test
+  public void testTopicEditedListener_emptyTopic() throws Exception {
+    Project.NameKey manifestNameKey = defaultSetup();
+    // Create initial change
+    PushOneCommit.Result result = createChange("subject", "filename", "content", "testtopic");
+    // Project name is scoped by test, so we need to get it from our initial change
+    String projectName = result.getChange().project().get();
+    createBranch(new Branch.NameKey(projectName, "ds_one"));
+    createBranch(new Branch.NameKey(projectName, "ds_two"));
+    pushConfig("automerger.config", manifestNameKey.get(), projectName, "ds_one", "ds_two");
+    // After we upload our config, we upload a new patchset to create the downstreams
+    amendChange(result.getChangeId());
+    result.assertOkStatus();
+    gApi.changes().id(result.getChangeId()).topic("");
+    int changeNumber = result.getChange().getId().id;
+    exception.expect(ResourceConflictException.class);
+    exception.expectMessage(
+        "Failed to submit 1 change due to the following problems:\nChange "
+            + changeNumber
+            + ": Missing downstream branches ds_one, ds_two. Please recreate the automerges.");
     // +2 and submit
     merge(result);
   }

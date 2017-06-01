@@ -28,6 +28,9 @@ public class QueryBuilder {
   }
 
   public void addParameter(String key, String value) throws InvalidQueryParameterException {
+    if (key == null || value == null) {
+      throw new InvalidQueryParameterException("Cannot use null value for key or value of query.");
+    }
     if (value.contains("\"") && (value.contains("{") || value.contains("}"))) {
       // Gerrit does not support search string escaping as of 5/16/2017
       // see https://bugs.chromium.org/p/gerrit/issues/detail?id=5617

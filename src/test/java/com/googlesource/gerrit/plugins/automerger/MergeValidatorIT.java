@@ -69,6 +69,48 @@ public class MergeValidatorIT extends LightweightPluginDaemonTest {
   }
 
   @Test
+  public void testNoMissingDownstreamMerges_nullTopic() throws Exception {
+    // Create initial change
+    PushOneCommit.Result result = createChange("subject", "filename", "content");
+    // Project name is scoped by test, so we need to get it from our initial change
+    String projectName = result.getChange().change().getProject().get();
+    createBranch(new Branch.NameKey(projectName, "ds_one"));
+    pushConfig("automerger.config", projectName, "ds_one");
+    // After we upload our config, we upload a new patchset to create the downstreams
+    amendChange(result.getChangeId());
+    result.assertOkStatus();
+    gApi.changes().id(result.getChangeId()).topic(null);
+    int changeNumber = result.getChange().getId().id;
+    exception.expect(ResourceConflictException.class);
+    exception.expectMessage(
+        "Failed to submit 1 change due to the following problems:\nChange "
+            + changeNumber
+            + ": Missing downstream branches ds_one. Please recreate the automerges.");
+    merge(result);
+  }
+
+  @Test
+  public void testNoMissingDownstreamMerges_emptyTopic() throws Exception {
+    // Create initial change
+    PushOneCommit.Result result = createChange("subject", "filename", "content");
+    // Project name is scoped by test, so we need to get it from our initial change
+    String projectName = result.getChange().change().getProject().get();
+    createBranch(new Branch.NameKey(projectName, "ds_one"));
+    pushConfig("automerger.config", projectName, "ds_one");
+    // After we upload our config, we upload a new patchset to create the downstreams
+    amendChange(result.getChangeId());
+    result.assertOkStatus();
+    gApi.changes().id(result.getChangeId()).topic("");
+    int changeNumber = result.getChange().getId().id;
+    exception.expect(ResourceConflictException.class);
+    exception.expectMessage(
+        "Failed to submit 1 change due to the following problems:\nChange "
+            + changeNumber
+            + ": Missing downstream branches ds_one. Please recreate the automerges.");
+    merge(result);
+  }
+
+  @Test
   public void testNoMissingDownstreamMerges_branchWithQuotes() throws Exception {
     // Create initial change
     PushOneCommit.Result result = createChange("subject", "filename", "content", "testtopic");
