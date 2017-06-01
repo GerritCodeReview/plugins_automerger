@@ -37,6 +37,14 @@ public class QueryBuilderTest {
   }
 
   @Test
+  public void nullTest() throws Exception {
+    queryBuilder.addParameter("status", "open");
+    exception.expect(InvalidQueryParameterException.class);
+    exception.expectMessage("Cannot use null value for key or value of query.");
+    queryBuilder.addParameter("topic", null);
+  }
+
+  @Test
   public void removeParameterTest() throws Exception {
     queryBuilder.addParameter("status", "open");
     queryBuilder.addParameter("branch", "master");
