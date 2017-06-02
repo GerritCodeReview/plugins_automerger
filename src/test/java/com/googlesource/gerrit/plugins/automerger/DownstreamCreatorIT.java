@@ -377,8 +377,7 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
     // Project name is scoped by test, so we need to get it from our initial change
     String projectName = result.getChange().project().get();
     createBranch(new Branch.NameKey(projectName, "ds_one"));
-    createBranch(new Branch.NameKey(projectName, "ds_two"));
-    pushConfig("automerger.config", manifestNameKey.get(), projectName, "ds_one", "ds_two");
+    pushConfig("automerger.config", manifestNameKey.get(), projectName, "ds_one", null);
     // After we upload our config, we upload a new patchset to create the downstreams
     amendChange(result.getChangeId());
     result.assertOkStatus();
@@ -388,7 +387,7 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
     exception.expectMessage(
         "Failed to submit 1 change due to the following problems:\nChange "
             + changeNumber
-            + ": Missing downstream branches ds_one, ds_two. Please recreate the automerges.");
+            + ": Missing downstream branches ds_one. Please recreate the automerges.");
     // +2 and submit
     merge(result);
   }
@@ -428,8 +427,12 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
       // Update manifest project path to the result of createProject(resourceName), since it is
       // scoped to the test method
       cfg.setString("global", null, "manifestProject", manifestName);
-      cfg.setString("automerger", "master:" + branch1, "setProjects", project);
-      cfg.setString("automerger", "master:" + branch2, "setProjects", project);
+      if (branch1 != null) {
+        cfg.setString("automerger", "master:" + branch1, "setProjects", project);
+      }
+      if (branch2 != null) {
+        cfg.setString("automerger", "master:" + branch2, "setProjects", project);
+      }
       PushOneCommit push =
           pushFactory.create(
               db, admin.getIdent(), allProjectRepo, "Subject", "automerger.config", cfg.toText());
