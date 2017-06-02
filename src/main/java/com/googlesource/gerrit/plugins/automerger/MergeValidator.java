@@ -109,7 +109,7 @@ public class MergeValidator implements MergeValidationListener {
     for (String downstreamBranch : downstreamBranches) {
       boolean dsExists = false;
       QueryBuilder queryBuilder = new QueryBuilder();
-      if (upstreamChange.topic == null || upstreamChange.topic == "") {
+      if (upstreamChange.topic == null || upstreamChange.topic.equals("")) {
         // If topic is null or empty, we immediately know that downstream is missing.
         missingDownstreamBranches.add(downstreamBranch);
         continue;

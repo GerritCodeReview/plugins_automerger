@@ -14,13 +14,16 @@
 
 package com.googlesource.gerrit.plugins.automerger;
 
+import static com.google.common.truth.Truth.assertThat;
+
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import org.junit.runner.RunWith;
+import org.junit.runners.JUnit4;
 
-import static com.google.common.truth.Truth.assertThat;
-
+@RunWith(JUnit4.class)
 public class QueryBuilderTest {
   @Rule public ExpectedException exception = ExpectedException.none();
   private QueryBuilder queryBuilder;
