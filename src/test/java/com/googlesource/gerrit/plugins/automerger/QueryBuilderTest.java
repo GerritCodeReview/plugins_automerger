@@ -46,9 +46,8 @@ public class QueryBuilderTest {
 
   @Test
   public void emptyStringTest() throws Exception {
-    queryBuilder.addParameter("status", "open");
     queryBuilder.addParameter("topic", "");
-    assertThat(queryBuilder.get()).isEqualTo("topic:\"\" status:\"open\"");
+    assertThat(queryBuilder.get()).isEqualTo("topic:\"\"");
   }
 
   @Test
