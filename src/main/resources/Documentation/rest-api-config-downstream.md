@@ -1,4 +1,4 @@
-@PLUGIN@ config-downstream
+automerger config-downstream
 =============================
 
 NAME
@@ -7,7 +7,7 @@ config-downstream - Get the downstream config map
 
 SYNOPSIS
 --------
->     POST /projects/{project-name}/@PLUGIN@~config-downstream
+>     POST /projects/{project-name}/automerger~config-downstream
 
 DESCRIPTION
 -----------
@@ -23,7 +23,7 @@ OPTIONS
 REQUEST
 -----------
 ```
-  POST /projects/{project-name}/@PLUGIN@~config-downstream HTTP/1.0
+  POST /projects/{project-name}/automerger~config-downstream HTTP/1.0
   Content-Type application/json;charset=UTF-8
 
   {

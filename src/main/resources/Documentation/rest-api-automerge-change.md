@@ -1,4 +1,4 @@
-@PLUGIN@ automerge-change
+automerger automerge-change
 =============================
 
 NAME
@@ -7,7 +7,7 @@ automerge-change - Automerge a change downstream
 
 SYNOPSIS
 --------
->     POST /projects/{project-name}/@PLUGIN@~automerge-change
+>     POST /projects/{project-name}/automerger~automerge-change
 
 DESCRIPTION
 -----------
@@ -21,7 +21,7 @@ OPTIONS
 REQUEST
 -----------
 ```
-  POST /projects/{project-name}/@PLUGIN@~automerge-change HTTP/1.0
+  POST /projects/{project-name}/automerger~automerge-change HTTP/1.0
   Content-Type application/json;charset=UTF-8
 
   {

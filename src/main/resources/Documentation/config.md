@@ -1,8 +1,8 @@
-@PLUGIN@ Configuration
+Automerger Configuration
 ======================
 
-The configuration of the @PLUGIN@ plugin is done on the project level in
-the `@PLUGIN@.config` file of the project.
+The configuration of the automerger plugin is done on the project level in
+the `automerger.config` file of the project.
 
 ```
   [global]
@@ -17,7 +17,7 @@ the `@PLUGIN@.config` file of the project.
     blankMerge = .*SKIP UNLESS MERGEALL SET.*
     missingDownstreamsMessage = there is no ${missingDownstreams}
 
-  [@PLUGIN@ "branch1:branch2"]
+  [automerger "branch1:branch2"]
     setProjects = some/project
     addProjects = some/other/project
     ignoreProjects = some/ignored/project
@@ -65,7 +65,7 @@ global.conflictMessage
   - topic
   - conflict
 
-  For example, you could configure the @PLUGIN@.config to include:
+  For example, you could configure the automerger.config to include:
 
   ```
     conflictMessage = Conflict message ${conflict} found on branch ${branch}
@@ -113,37 +113,37 @@ global.missingDownstreamsMessage
   The message can be custom configured to include the missing downstream
   branches.
 
-  For example, you could configure the @PLUGIN@.config to include:
+  For example, you could configure the automerger.config to include:
 
   ```
     missingDownstreamsMessage = Missing downstreams ${missingDownstreams}
   ```
 
-@PLUGIN@.branch1:branch2.setProjects
+automerger.branch1:branch2.setProjects
 : Projects to automerge for.
 
   If setProjects is set, it overrides the default scope.
 
-@PLUGIN@.branch1:branch2.addProjects
+automerger.branch1:branch2.addProjects
 : Projects to add on top of the projects already in scope.
 
   If setProjects is set, this will add projects on top of the setProjects.
   If setProjects is not set, this will add projects on top of the default scope.
 
-@PLUGIN@.branch1:branch2.ignoreProjects
+automerger.branch1:branch2.ignoreProjects
 : Projects to ignore on top of the projects already in scope
 
   If setProjects is set, this will ignore projects on top of the setProjects.
   If setProjects is not set, this will ignore projects on top of the default
   scope.
 
-@PLUGIN@.branch1:branch2.mergeAll
+automerger.branch1:branch2.mergeAll
 : If this is true, the blankMerge regex will be ignored.
 
   When mergeAll is true, the blankMerge regex will be ignored but the
   alwaysBlankMerge regex will still be honored.
 
-@PLUGIN@.branch1:branch2.ignoreSourceManifest
+automerger.branch1:branch2.ignoreSourceManifest
 : If this is true, the default scope will be modified.
 
   The default scope normally includes the intersection of all projects in the
