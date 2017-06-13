@@ -166,6 +166,16 @@ public class ConfigLoaderIT extends LightweightPluginDaemonTest {
     configLoader.getDownstreamBranches("master", "platform/some/project");
   }
 
+  @Test
+  public void getAllDownstreamBranchesTest() throws Exception {
+    defaultSetup("automerger.config");
+    Set<String> expectedBranches = new HashSet<String>();
+    expectedBranches.add("ds_two");
+    expectedBranches.add("ds_three");
+    assertThat(configLoader.getAllDownstreamBranches("master", "platform/some/project"))
+        .isEqualTo(expectedBranches);
+  }
+
   private void defaultSetup(String resourceName) throws Exception {
     createProject("All-Projects");
     manifestNameKey = createProject("platform/manifest");
