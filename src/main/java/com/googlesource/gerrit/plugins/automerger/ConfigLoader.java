@@ -213,6 +213,17 @@ public class ConfigLoader {
     return downstreamBranches;
   }
 
+  public Set<String> getAllDownstreamBranches(String branch, String project)
+      throws RestApiException, IOException, ConfigInvalidException {
+    Set<String> downstreamBranches = new HashSet<String>();
+    Set<String> immediateDownstreams = getDownstreamBranches(branch, project);
+    downstreamBranches.addAll(immediateDownstreams);
+    for (String immediateDownstream : immediateDownstreams) {
+      downstreamBranches.addAll(getAllDownstreamBranches(immediateDownstream, project));
+    }
+    return downstreamBranches;
+  }
+
   public String getMissingDownstreamsMessage() throws ConfigInvalidException {
     String message = getConfig().getString("global", null, "missingDownstreamsMessage");
     if (message == null) {
