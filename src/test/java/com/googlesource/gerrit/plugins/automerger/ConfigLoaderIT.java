@@ -169,7 +169,7 @@ public class ConfigLoaderIT extends LightweightPluginDaemonTest {
   @Test
   public void getAllDownstreamBranchesTest() throws Exception {
     defaultSetup("automerger.config");
-    Set<String> expectedBranches = new HashSet<String>();
+    Set<String> expectedBranches = new HashSet<>();
     expectedBranches.add("ds_two");
     expectedBranches.add("ds_three");
     assertThat(configLoader.getAllDownstreamBranches("master", "platform/some/project"))
@@ -213,19 +213,19 @@ public class ConfigLoaderIT extends LightweightPluginDaemonTest {
   @Test
   public void maxAutomergeVoteDisabledTest() throws Exception {
     defaultSetup("automerger.config");
-    assertThat(configLoader.maxAutomergeVoteDisabled()).isEqualTo(false);
+    assertThat(configLoader.maxAutomergeVoteDisabled()).isFalse();
   }
 
   @Test
   public void maxAutomergeVoteDisabledTest_isDisabled() throws Exception {
     defaultSetup("alternate.config");
-    assertThat(configLoader.maxAutomergeVoteDisabled()).isEqualTo(true);
+    assertThat(configLoader.maxAutomergeVoteDisabled()).isTrue();
   }
 
   @Test
   public void minAutomergeVoteDisabledTest() throws Exception {
     defaultSetup("automerger.config");
-    assertThat(configLoader.minAutomergeVoteDisabled()).isEqualTo(false);
+    assertThat(configLoader.minAutomergeVoteDisabled()).isFalse();
   }
 
   private void setupTestRepo(

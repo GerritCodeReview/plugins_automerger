@@ -215,7 +215,7 @@ public class ConfigLoader {
 
   public Set<String> getAllDownstreamBranches(String branch, String project)
       throws RestApiException, IOException, ConfigInvalidException {
-    Set<String> downstreamBranches = new HashSet<String>();
+    Set<String> downstreamBranches = new HashSet<>();
     Set<String> immediateDownstreams = getDownstreamBranches(branch, project);
     downstreamBranches.addAll(immediateDownstreams);
     for (String immediateDownstream : immediateDownstreams) {

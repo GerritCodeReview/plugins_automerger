@@ -22,7 +22,6 @@ import com.google.gerrit.extensions.restapi.RestReadView;
 import com.google.gerrit.server.project.BranchResource;
 import com.google.inject.Inject;
 import java.io.IOException;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import org.eclipse.jgit.errors.ConfigInvalidException;
