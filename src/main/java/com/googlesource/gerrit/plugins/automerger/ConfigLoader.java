@@ -242,6 +242,14 @@ public class ConfigLoader {
     return (short) getConfig().getInt("global", "minAutomergeVote", -2);
   }
 
+  public boolean maxAutomergeVoteDisabled() throws ConfigInvalidException {
+    return getConfig().getBoolean("global", "disableMaxAutomergeVote", false);
+  }
+
+  public boolean minAutomergeVoteDisabled() throws ConfigInvalidException {
+    return getConfig().getBoolean("global", "disableMinAutomergeVote", false);
+  }
+
   // Returns overriden manifest config if specified, default if not
   private String getManifestFile() throws ConfigInvalidException {
     String manifestFile = getConfig().getString("global", null, "manifestFile");

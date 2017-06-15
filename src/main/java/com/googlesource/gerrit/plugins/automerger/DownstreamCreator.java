@@ -259,7 +259,9 @@ public class DownstreamCreator
       reviewInput.notify = NotifyHandling.ALL;
       reviewInput.tag = MERGE_CONFLICT_TAG;
       // Vote minAutomergeVote if we hit a conflict.
-      labels.put(config.getAutomergeLabel(), config.getMinAutomergeVote());
+      if (!config.minAutomergeVoteDisabled()) {
+        labels.put(config.getAutomergeLabel(), config.getMinAutomergeVote());
+      }
     }
     reviewInput.labels = labels;
     gApi.changes()
@@ -426,7 +428,9 @@ public class DownstreamCreator
     ChangeApi downstreamChange = gApi.changes().create(downstreamChangeInput);
 
     // Vote maxAutomergeVote on the change so we know it was successful.
-    updateVote(downstreamChange.get(), config.getAutomergeLabel(), config.getMaxAutomergeVote());
+    if (!config.maxAutomergeVoteDisabled()) {
+      updateVote(downstreamChange.get(), config.getAutomergeLabel(), config.getMaxAutomergeVote());
+    }
   }
 
   public String getOrSetTopic(int sourceId, String topic) throws RestApiException {
@@ -538,7 +542,9 @@ public class DownstreamCreator
     }
 
     ChangeInfo downstreamChange = originalChange.createMergePatchSet(mergePatchSetInput);
-    updateVote(downstreamChange, config.getAutomergeLabel(), config.getMaxAutomergeVote());
+    if (!config.maxAutomergeVoteDisabled()) {
+      updateVote(downstreamChange, config.getAutomergeLabel(), config.getMaxAutomergeVote());
+    }
   }
 
   private String getPreviousRevision(ChangeApi change, int currentPatchSetNumber)
