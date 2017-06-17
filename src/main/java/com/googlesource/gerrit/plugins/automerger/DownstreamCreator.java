@@ -365,16 +365,7 @@ public class DownstreamCreator
       String upstreamRevision, String topic, String downstreamBranch)
       throws RestApiException, InvalidQueryParameterException {
     List<Integer> downstreamChangeNumbers = new ArrayList<Integer>();
-    QueryBuilder queryBuilder = new QueryBuilder();
-    queryBuilder.addParameter("topic", topic);
-    queryBuilder.addParameter("branch", downstreamBranch);
-    queryBuilder.addParameter("status", "open");
-    // get changes in same topic and check if their parent is upstreamRevision
-    List<ChangeInfo> changes =
-        gApi.changes()
-            .query(queryBuilder.get())
-            .withOptions(ListChangesOption.ALL_REVISIONS, ListChangesOption.CURRENT_COMMIT)
-            .get();
+    List<ChangeInfo> changes = getChangesInTopic(topic, downstreamBranch);
 
     for (ChangeInfo change : changes) {
       String changeRevision = change.currentRevision;
@@ -396,10 +387,19 @@ public class DownstreamCreator
    * @param sdsMergeInput Input containing metadata for the merge.
    * @throws RestApiException
    * @throws ConfigInvalidException
+   * @throws InvalidQueryParameterException
    */
   public void createSingleDownstreamMerge(SingleDownstreamMergeInput sdsMergeInput)
-      throws RestApiException, ConfigInvalidException {
+      throws RestApiException, ConfigInvalidException, InvalidQueryParameterException {
     String currentTopic = getOrSetTopic(sdsMergeInput.changeNumber, sdsMergeInput.topic);
+
+    if (isAlreadyMerged(sdsMergeInput, currentTopic)) {
+      log.info(
+          "Commit {} already merged into {}, not automerging again.",
+          sdsMergeInput.currentRevision,
+          sdsMergeInput.downstreamBranch);
+      return;
+    }
 
     MergeInput mergeInput = new MergeInput();
     mergeInput.source = sdsMergeInput.currentRevision;
@@ -572,5 +572,35 @@ public class DownstreamCreator
     abandonInput.notify = NotifyHandling.NONE;
     abandonInput.message = "Merge parent updated; abandoning due to upstream conflict.";
     gApi.changes().id(changeNumber).abandon(abandonInput);
+  }
+
+  private List<ChangeInfo> getChangesInTopic(String topic, String downstreamBranch)
+      throws InvalidQueryParameterException, RestApiException {
+    QueryBuilder queryBuilder = new QueryBuilder();
+    queryBuilder.addParameter("topic", topic);
+    queryBuilder.addParameter("branch", downstreamBranch);
+    queryBuilder.addParameter("status", "open");
+    return gApi.changes()
+        .query(queryBuilder.get())
+        .withOptions(ListChangesOption.ALL_REVISIONS, ListChangesOption.CURRENT_COMMIT)
+        .get();
+  }
+
+  private boolean isAlreadyMerged(SingleDownstreamMergeInput sdsMergeInput, String currentTopic)
+      throws InvalidQueryParameterException, RestApiException {
+    // If we've already merged this commit to this branch, don't do it again.
+    List<ChangeInfo> changes = getChangesInTopic(currentTopic, sdsMergeInput.downstreamBranch);
+    for (ChangeInfo change : changes) {
+      if (change.branch.equals(sdsMergeInput.downstreamBranch)) {
+        List<CommitInfo> parents = change.revisions.get(change.currentRevision).commit.parents;
+        if (parents.size() > 1) {
+          String secondParent = parents.get(1).commit;
+          if (secondParent.equals(sdsMergeInput.currentRevision)) {
+            return true;
+          }
+        }
+      }
+    }
+    return false;
   }
 }
