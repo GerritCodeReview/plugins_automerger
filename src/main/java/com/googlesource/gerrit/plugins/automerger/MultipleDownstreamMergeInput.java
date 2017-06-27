@@ -14,6 +14,7 @@
 
 package com.googlesource.gerrit.plugins.automerger;
 
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -28,4 +29,5 @@ public class MultipleDownstreamMergeInput {
   public String subject;
   public String obsoleteRevision;
   public String currentRevision;
+  public List<String> parents;
 }
