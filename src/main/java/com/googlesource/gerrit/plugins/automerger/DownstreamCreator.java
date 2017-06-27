@@ -330,6 +330,7 @@ public class DownstreamCreator
         sdsMergeInput.subject = mdsMergeInput.subject;
         sdsMergeInput.downstreamBranch = downstreamBranch;
         sdsMergeInput.doMerge = mdsMergeInput.dsBranchMap.get(downstreamBranch);
+        sdsMergeInput.parents = mdsMergeInput.parents;
         try {
           createSingleDownstreamMerge(sdsMergeInput);
         } catch (MergeConflictException e) {
@@ -365,7 +366,7 @@ public class DownstreamCreator
       String upstreamRevision, String topic, String downstreamBranch)
       throws RestApiException, InvalidQueryParameterException {
     List<Integer> downstreamChangeNumbers = new ArrayList<Integer>();
-    List<ChangeInfo> changes = getChangesInTopic(topic, downstreamBranch);
+    List<ChangeInfo> changes = getChangesInTopicAndBranch(topic, downstreamBranch);
 
     for (ChangeInfo change : changes) {
       String changeRevision = change.currentRevision;
@@ -414,6 +415,7 @@ public class DownstreamCreator
     downstreamChangeInput.topic = currentTopic;
     downstreamChangeInput.merge = mergeInput;
     downstreamChangeInput.notify = NotifyHandling.NONE;
+    downstreamChangeInput.baseChange = getBaseChangeId(sdsMergeInput.parents, currentTopic);
 
     if (!sdsMergeInput.doMerge) {
       mergeInput.strategy = "ours";
@@ -440,6 +442,38 @@ public class DownstreamCreator
       gApi.changes().id(sourceId).topic(topic);
     }
     return topic;
+  }
+
+  /**
+   * Get the base change ID that the downstream change should be based off of, given the parents.
+   * @param parents Parent commit SHAs of the change
+   * @param topic Topic of the change
+   * @return The base change ID that the change should be based off of, null if there is none.
+   * @throws InvalidQueryParameterException
+   * @throws RestApiException
+   */
+  private String getBaseChangeId(List<String> parents, String topic)
+      throws InvalidQueryParameterException, RestApiException {
+    if (parents.size() == 0) {
+      log.info("No base change id for change with no parents.");
+      return null;
+    }
+    List<ChangeInfo> changesInTopic = getChangesInTopic(topic);
+    // this is A
+    String firstParent = parents.get(0);
+    // find change whose second parent is A
+    for (ChangeInfo change : changesInTopic) {
+      List<CommitInfo> topicChangeParents =
+          change.revisions.get(change.currentRevision).commit.parents;
+      if (topicChangeParents.size() > 1) {
+        // if the second parent of the change in the topic equals my first parent, then that's the
+        // change i need to base myself off of
+        if (topicChangeParents.get(1).commit.equals(firstParent)) {
+          return String.valueOf(change._number);
+        }
+      }
+    }
+    return null;
   }
 
   private void automergeChanges(ChangeInfo change, RevisionInfo revisionInfo)
@@ -480,6 +514,7 @@ public class DownstreamCreator
     mdsMergeInput.subject = change.subject;
     mdsMergeInput.obsoleteRevision = previousRevision;
     mdsMergeInput.currentRevision = currentRevision;
+    mdsMergeInput.parents = getChangeParents(currentChange, currentRevision);
 
     createMergesAndHandleConflicts(mdsMergeInput);
   }
@@ -566,6 +601,18 @@ public class DownstreamCreator
     return previousRevision;
   }
 
+  private List<String> getChangeParents(ChangeApi change, String currentRevision)
+      throws RestApiException {
+    List<String> parents = new ArrayList<>();
+    Map<String, RevisionInfo> revisionMap =
+        change.get(EnumSet.of(ListChangesOption.ALL_REVISIONS, ListChangesOption.CURRENT_COMMIT)).revisions;
+    List<CommitInfo> changeParents = revisionMap.get(currentRevision).commit.parents;
+    for (CommitInfo commit : changeParents) {
+      parents.add(commit.commit);
+    }
+    return parents;
+  }
+
   private void abandonChange(Integer changeNumber) throws RestApiException {
     log.debug("Abandoning change: {}", changeNumber);
     AbandonInput abandonInput = new AbandonInput();
@@ -574,7 +621,18 @@ public class DownstreamCreator
     gApi.changes().id(changeNumber).abandon(abandonInput);
   }
 
-  private List<ChangeInfo> getChangesInTopic(String topic, String downstreamBranch)
+  private List<ChangeInfo> getChangesInTopic(String topic)
+      throws InvalidQueryParameterException, RestApiException {
+    QueryBuilder queryBuilder = new QueryBuilder();
+    queryBuilder.addParameter("topic", topic);
+    queryBuilder.addParameter("status", "open");
+    return gApi.changes()
+        .query(queryBuilder.get())
+        .withOptions(ListChangesOption.ALL_REVISIONS, ListChangesOption.CURRENT_COMMIT)
+        .get();
+  }
+
+  private List<ChangeInfo> getChangesInTopicAndBranch(String topic, String downstreamBranch)
       throws InvalidQueryParameterException, RestApiException {
     QueryBuilder queryBuilder = new QueryBuilder();
     queryBuilder.addParameter("topic", topic);
@@ -589,7 +647,8 @@ public class DownstreamCreator
   private boolean isAlreadyMerged(SingleDownstreamMergeInput sdsMergeInput, String currentTopic)
       throws InvalidQueryParameterException, RestApiException {
     // If we've already merged this commit to this branch, don't do it again.
-    List<ChangeInfo> changes = getChangesInTopic(currentTopic, sdsMergeInput.downstreamBranch);
+    List<ChangeInfo> changes =
+        getChangesInTopicAndBranch(currentTopic, sdsMergeInput.downstreamBranch);
     for (ChangeInfo change : changes) {
       if (change.branch.equals(sdsMergeInput.downstreamBranch)) {
         List<CommitInfo> parents = change.revisions.get(change.currentRevision).commit.parents;
