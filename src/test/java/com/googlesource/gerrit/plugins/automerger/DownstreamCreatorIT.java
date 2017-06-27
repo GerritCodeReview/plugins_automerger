@@ -224,6 +224,73 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
   }
 
   @Test
+  public void testChangeStack() throws Exception {
+    Project.NameKey manifestNameKey = defaultSetup();
+    // Create initial change
+    PushOneCommit.Result result = createChange("subject", "filename", "content", "testtopic");
+    // Project name is scoped by test, so we need to get it from our initial change
+    String projectName = result.getChange().project().get();
+    createBranch(new Branch.NameKey(projectName, "ds_one"));
+    createBranch(new Branch.NameKey(projectName, "ds_two"));
+    pushConfig("automerger.config", manifestNameKey.get(), projectName, "ds_one", "ds_two");
+    // After we upload our config, we upload a new patchset to create the downstreams
+    amendChange(result.getChangeId());
+    result.assertOkStatus();
+    PushOneCommit.Result result2 = createChange("subject2", "filename2", "content2", "testtopic");
+    result2.assertOkStatus();
+    // Check that there are the correct number of changes in the topic
+    List<ChangeInfo> changesInTopic =
+        gApi.changes()
+            .query("topic: " + gApi.changes().id(result.getChangeId()).topic())
+            .withOptions(ListChangesOption.ALL_REVISIONS, ListChangesOption.CURRENT_COMMIT)
+            .get();
+    assertThat(changesInTopic).hasSize(6);
+    List<ChangeInfo> sortedChanges = sortedChanges(changesInTopic);
+
+    ChangeInfo dsOneChangeInfo = sortedChanges.get(0);
+    assertThat(dsOneChangeInfo.branch).isEqualTo("ds_one");
+    ChangeInfo dsOneChangeInfo2 = sortedChanges.get(1);
+    assertThat(dsOneChangeInfo2.branch).isEqualTo("ds_one");
+    String dsOneChangeInfo2FirstParentSha =
+        dsOneChangeInfo2
+            .revisions
+            .get(dsOneChangeInfo2.currentRevision)
+            .commit
+            .parents
+            .get(0)
+            .commit;
+    assertThat(dsOneChangeInfo.currentRevision).isEqualTo(dsOneChangeInfo2FirstParentSha);
+
+    ChangeInfo dsTwoChangeInfo = sortedChanges.get(2);
+    assertThat(dsTwoChangeInfo.branch).isEqualTo("ds_two");
+    ChangeInfo dsTwoChangeInfo2 = sortedChanges.get(3);
+    assertThat(dsTwoChangeInfo2.branch).isEqualTo("ds_two");
+    String dsTwoChangeInfoFirstParentSha =
+        dsTwoChangeInfo2
+            .revisions
+            .get(dsOneChangeInfo2.currentRevision)
+            .commit
+            .parents
+            .get(0)
+            .commit;
+    assertThat(dsTwoChangeInfo.currentRevision).isEqualTo(dsTwoChangeInfoFirstParentSha);
+
+    ChangeInfo masterChangeInfo = sortedChanges.get(4);
+    assertThat(masterChangeInfo.branch).isEqualTo("master");
+    ChangeInfo masterChangeInfo2 = sortedChanges.get(5);
+    assertThat(masterChangeInfo2.branch).isEqualTo("master");
+    String masterChangeInfoFirstParentSha =
+        masterChangeInfo2
+            .revisions
+            .get(masterChangeInfo2.currentRevision)
+            .commit
+            .parents
+            .get(0)
+            .commit;
+    assertThat(masterChangeInfo.currentRevision).isEqualTo(masterChangeInfoFirstParentSha);
+  }
+
+  @Test
   public void testBlankMerge() throws Exception {
     Project.NameKey manifestNameKey = defaultSetup();
     // Create initial change
@@ -605,7 +672,11 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
         new Comparator<ChangeInfo>() {
           @Override
           public int compare(ChangeInfo c1, ChangeInfo c2) {
-            return c1.branch.compareTo(c2.branch);
+            int compareResult = c1.branch.compareTo(c2.branch);
+            if (compareResult == 0) {
+              return Integer.compare(c1._number, c2._number);
+            }
+            return compareResult;
           }
         });
     return listCopy;
