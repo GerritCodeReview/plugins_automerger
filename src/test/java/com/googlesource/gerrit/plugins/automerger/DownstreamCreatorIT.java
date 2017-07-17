@@ -370,8 +370,11 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
     ChangeApi change = gApi.changes().id(result.getChangeId());
     BinaryResult content = change.current().file("filename").content();
 
-    List<ChangeInfo> changesInTopic = gApi.changes().query("topic: " + change.topic())
-        .withOption(ListChangesOption.CURRENT_REVISION).get();
+    List<ChangeInfo> changesInTopic =
+        gApi.changes()
+            .query("topic: " + change.topic())
+            .withOption(ListChangesOption.CURRENT_REVISION)
+            .get();
     assertThat(changesInTopic).hasSize(3);
 
     List<ChangeInfo> sortedChanges = sortedChanges(changesInTopic);
@@ -428,8 +431,11 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
     result.assertOkStatus();
 
     ChangeApi change = gApi.changes().id(result.getChangeId());
-    List<ChangeInfo> changesInTopic = gApi.changes().query("topic: " + change.topic())
-        .withOption(ListChangesOption.CURRENT_REVISION).get();
+    List<ChangeInfo> changesInTopic =
+        gApi.changes()
+            .query("topic: " + change.topic())
+            .withOption(ListChangesOption.CURRENT_REVISION)
+            .get();
     assertThat(changesInTopic).hasSize(3);
 
     List<ChangeInfo> sortedChanges = sortedChanges(changesInTopic);
@@ -636,29 +642,6 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
   }
 
   @Test
-  public void testTopicEditedListener_nullTopic() throws Exception {
-    Project.NameKey manifestNameKey = defaultSetup();
-    // Create initial change
-    PushOneCommit.Result result = createChange("subject", "filename", "content", "testtopic");
-    // Project name is scoped by test, so we need to get it from our initial change
-    String projectName = result.getChange().project().get();
-    createBranch(new Branch.NameKey(projectName, "ds_one"));
-    pushConfig("automerger.config", manifestNameKey.get(), projectName, "ds_one", null);
-    // After we upload our config, we upload a new patchset to create the downstreams
-    amendChange(result.getChangeId());
-    result.assertOkStatus();
-    gApi.changes().id(result.getChangeId()).topic(null);
-    int changeNumber = result.getChange().getId().id;
-    exception.expect(ResourceConflictException.class);
-    exception.expectMessage(
-        "Failed to submit 1 change due to the following problems:\nChange "
-            + changeNumber
-            + ": Missing downstream branches ds_one. Please recreate the automerges.");
-    // +2 and submit
-    merge(result);
-  }
-
-  @Test
   public void testTopicEditedListener_emptyTopic() throws Exception {
     Project.NameKey manifestNameKey = defaultSetup();
     // Create initial change
@@ -670,13 +653,10 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
     // After we upload our config, we upload a new patchset to create the downstreams
     amendChange(result.getChangeId());
     result.assertOkStatus();
+    // Setting the topic to empty should be a no-op.
     gApi.changes().id(result.getChangeId()).topic("");
-    int changeNumber = result.getChange().getId().id;
-    exception.expect(ResourceConflictException.class);
-    exception.expectMessage(
-        "Failed to submit 1 change due to the following problems:\nChange "
-            + changeNumber
-            + ": Missing downstream branches ds_one. Please recreate the automerges.");
+    assertThat(gApi.changes().id(result.getChangeId()).topic())
+        .isEqualTo(gApi.changes().id(result.getChangeId()).topic());
     // +2 and submit
     merge(result);
   }
