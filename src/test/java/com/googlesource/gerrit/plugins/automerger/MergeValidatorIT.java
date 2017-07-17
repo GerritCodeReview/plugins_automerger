@@ -14,17 +14,25 @@
 
 package com.googlesource.gerrit.plugins.automerger;
 
+import static com.google.common.truth.Truth.assertThat;
+
 import com.google.common.base.Charsets;
 import com.google.common.io.CharStreams;
 import com.google.gerrit.acceptance.GitUtil;
 import com.google.gerrit.acceptance.LightweightPluginDaemonTest;
 import com.google.gerrit.acceptance.PushOneCommit;
 import com.google.gerrit.acceptance.TestPlugin;
+import com.google.gerrit.extensions.client.ListChangesOption;
+import com.google.gerrit.extensions.common.ChangeInfo;
 import com.google.gerrit.extensions.restapi.ResourceConflictException;
 import com.google.gerrit.reviewdb.client.Branch;
 import com.google.gerrit.reviewdb.client.RefNames;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import org.eclipse.jgit.internal.storage.dfs.InMemoryRepository;
 import org.eclipse.jgit.junit.TestRepository;
 import org.eclipse.jgit.lib.Config;
@@ -69,7 +77,7 @@ public class MergeValidatorIT extends LightweightPluginDaemonTest {
   }
 
   @Test
-  public void testNoMissingDownstreamMerges_nullTopic() throws Exception {
+  public void testNoMissingDownstreamMerges_abandonedDownstream() throws Exception {
     // Create initial change
     PushOneCommit.Result result = createChange("subject", "filename", "content");
     // Project name is scoped by test, so we need to get it from our initial change
@@ -79,28 +87,18 @@ public class MergeValidatorIT extends LightweightPluginDaemonTest {
     // After we upload our config, we upload a new patchset to create the downstreams
     amendChange(result.getChangeId());
     result.assertOkStatus();
-    gApi.changes().id(result.getChangeId()).topic(null);
-    int changeNumber = result.getChange().getId().id;
-    exception.expect(ResourceConflictException.class);
-    exception.expectMessage(
-        "Failed to submit 1 change due to the following problems:\nChange "
-            + changeNumber
-            + ": Missing downstream branches ds_one. Please recreate the automerges.");
-    merge(result);
-  }
 
-  @Test
-  public void testNoMissingDownstreamMerges_emptyTopic() throws Exception {
-    // Create initial change
-    PushOneCommit.Result result = createChange("subject", "filename", "content");
-    // Project name is scoped by test, so we need to get it from our initial change
-    String projectName = result.getChange().change().getProject().get();
-    createBranch(new Branch.NameKey(projectName, "ds_one"));
-    pushConfig("automerger.config", projectName, "ds_one");
-    // After we upload our config, we upload a new patchset to create the downstreams
-    amendChange(result.getChangeId());
-    result.assertOkStatus();
-    gApi.changes().id(result.getChangeId()).topic("");
+    // Abandon downstream change.
+    List<ChangeInfo> changesInTopic =
+        gApi.changes()
+            .query("topic: " + gApi.changes().id(result.getChangeId()).topic())
+            .withOption(ListChangesOption.CURRENT_REVISION)
+            .get();
+    assertThat(changesInTopic).hasSize(2);
+    List<ChangeInfo> sortedChanges = sortedChanges(changesInTopic);
+    assertThat(sortedChanges.get(0).branch).isEqualTo("ds_one");
+    gApi.changes().id(sortedChanges.get(0)._number).abandon();
+    
     int changeNumber = result.getChange().getId().id;
     exception.expect(ResourceConflictException.class);
     exception.expectMessage(
@@ -185,5 +183,22 @@ public class MergeValidatorIT extends LightweightPluginDaemonTest {
             + changeNumber
             + ": there is no ds_one");
     merge(result);
+  }
+  
+  private List<ChangeInfo> sortedChanges(List<ChangeInfo> changes) {
+    List<ChangeInfo> listCopy = new ArrayList<ChangeInfo>(changes);
+    Collections.sort(
+        listCopy,
+        new Comparator<ChangeInfo>() {
+          @Override
+          public int compare(ChangeInfo c1, ChangeInfo c2) {
+            int compareResult = c1.branch.compareTo(c2.branch);
+            if (compareResult == 0) {
+              return Integer.compare(c1._number, c2._number);
+            }
+            return compareResult;
+          }
+        });
+    return listCopy;
   }
 }
