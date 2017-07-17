@@ -104,7 +104,18 @@ public class DownstreamCreator
    */
   @Override
   public void onTopicEdited(TopicEditedListener.Event event) {
-    ChangeInfo change = event.getChange();
+    ChangeInfo eventChange = event.getChange();
+    // We have to re-query for this in order to include the current revision
+    ChangeInfo change;
+    try {
+      change =
+          gApi.changes()
+              .id(eventChange._number)
+              .get(EnumSet.of(ListChangesOption.CURRENT_REVISION));
+    } catch (RestApiException e) {
+      log.error("Automerger could not get change with current revision for onTopicEdited: ", e);
+      return;
+    }
     String oldTopic = event.getOldTopic();
     String revision = change.currentRevision;
     Set<String> downstreamBranches;
@@ -120,16 +131,31 @@ public class DownstreamCreator
       return;
     }
 
-    for (String downstreamBranch : downstreamBranches) {
+    // If change is empty, prevent someone breaking topic.
+    if (isNullOrEmpty(change.topic)) {
       try {
-        List<Integer> existingDownstream =
-            getExistingMergesOnBranch(revision, oldTopic, downstreamBranch);
-        for (Integer changeNumber : existingDownstream) {
-          log.debug("Setting topic {} on {}", change.topic, changeNumber);
-          gApi.changes().id(changeNumber).topic(change.topic);
+        gApi.changes().id(change._number).topic(oldTopic);
+        ReviewInput reviewInput = new ReviewInput();
+        reviewInput.message(
+            "Automerger prevented the topic from changing. Topic can only be modified on "
+                + "non-automerger-created CLs to a non-empty value.");
+        reviewInput.notify = NotifyHandling.NONE;
+        gApi.changes().id(change._number).revision(change.currentRevision).review(reviewInput);
+      } catch (RestApiException e) {
+        log.error("Failed to prevent setting empty topic for automerger plugin.", e);
+      }
+    } else {
+      for (String downstreamBranch : downstreamBranches) {
+        try {
+          List<Integer> existingDownstream =
+              getExistingMergesOnBranch(revision, oldTopic, downstreamBranch);
+          for (Integer changeNumber : existingDownstream) {
+            log.debug("Setting topic {} on {}", change.topic, changeNumber);
+            gApi.changes().id(changeNumber).topic(change.topic);
+          }
+        } catch (RestApiException | InvalidQueryParameterException e) {
+          log.error("Failed to edit downstream topics of {}", change.id, e);
         }
-      } catch (RestApiException | InvalidQueryParameterException e) {
-        log.error("Failed to edit downstream topics of {}", change.id, e);
       }
     }
   }
