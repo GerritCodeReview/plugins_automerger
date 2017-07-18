@@ -138,7 +138,7 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
     List<ChangeInfo> changesInTopic =
         gApi.changes()
             .query("topic: " + gApi.changes().id(result.getChangeId()).topic())
-            .withOption(ListChangesOption.CURRENT_REVISION)
+            .withOptions(ListChangesOption.CURRENT_REVISION, ListChangesOption.CURRENT_COMMIT)
             .get();
     assertThat(changesInTopic).hasSize(5);
     // +2 and submit
@@ -186,12 +186,32 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
         .isEqualTo("[automerger] " + masterSubject + " am: " + shortMasterSha);
     assertThat(rightChangeInfo.subject)
         .isEqualTo("[automerger] " + masterSubject + " am: " + shortMasterSha);
-    assertThat(bottomChangeInfoA.subject)
-        .isEqualTo(
-            "[automerger] " + masterSubject + " am: " + shortMasterSha + " am: " + shortLeftSha);
-    assertThat(bottomChangeInfoB.subject)
-        .isEqualTo(
-            "[automerger] " + masterSubject + " am: " + shortMasterSha + " am: " + shortRightSha);
+
+    // Either bottomChangeInfoA came from left and bottomChangeInfoB came from right, or vice versa
+    // We don't know which, so we use the if condition to check
+    String bottomChangeInfoASecondParent =
+        bottomChangeInfoA
+            .revisions
+            .get(bottomChangeInfoA.currentRevision)
+            .commit
+            .parents
+            .get(1)
+            .commit;
+    if (bottomChangeInfoASecondParent.equals(leftChangeInfo.currentRevision)) {
+      assertThat(bottomChangeInfoA.subject)
+          .isEqualTo(
+              "[automerger] " + masterSubject + " am: " + shortMasterSha + " am: " + shortLeftSha);
+      assertThat(bottomChangeInfoB.subject)
+          .isEqualTo(
+              "[automerger] " + masterSubject + " am: " + shortMasterSha + " am: " + shortRightSha);
+    } else {
+      assertThat(bottomChangeInfoA.subject)
+          .isEqualTo(
+              "[automerger] " + masterSubject + " am: " + shortMasterSha + " am: " + shortRightSha);
+      assertThat(bottomChangeInfoB.subject)
+          .isEqualTo(
+              "[automerger] " + masterSubject + " am: " + shortMasterSha + " am: " + shortLeftSha);
+    }
   }
 
   @Test
