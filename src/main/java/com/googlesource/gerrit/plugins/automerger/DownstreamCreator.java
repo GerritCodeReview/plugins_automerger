@@ -488,7 +488,7 @@ public class DownstreamCreator
    */
   private String getBaseChangeId(List<String> parents, String branch)
       throws InvalidQueryParameterException, RestApiException {
-    if (parents.size() == 0) {
+    if (parents.isEmpty()) {
       log.info("No base change id for change with no parents.");
       return null;
     }
@@ -666,9 +666,9 @@ public class DownstreamCreator
             .query(queryBuilder.get())
             .withOption(ListChangesOption.CURRENT_REVISION)
             .get();
-    if (changes.size() > 0) {
+    if (!changes.isEmpty()) {
       for (ChangeInfo change : changes) {
-        if (change.currentRevision.equals(revision) && change.topic != "") {
+        if (change.currentRevision.equals(revision) && !"".equals(change.topic)) {
           return change.topic;
         }
       }
