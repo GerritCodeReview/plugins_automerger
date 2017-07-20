@@ -37,6 +37,7 @@ import com.google.gerrit.extensions.events.CommentAddedListener;
 import com.google.gerrit.extensions.events.DraftPublishedListener;
 import com.google.gerrit.extensions.events.RevisionCreatedListener;
 import com.google.gerrit.extensions.events.TopicEditedListener;
+import com.google.gerrit.extensions.restapi.AuthException;
 import com.google.gerrit.extensions.restapi.MergeConflictException;
 import com.google.gerrit.extensions.restapi.RestApiException;
 import com.google.inject.Inject;
@@ -291,10 +292,19 @@ public class DownstreamCreator
       }
     }
     reviewInput.labels = labels;
-    gApi.changes()
-        .id(mdsMergeInput.changeNumber)
-        .revision(mdsMergeInput.currentRevision)
-        .review(reviewInput);
+    // if this fails, i.e. -2 is restricted, catch it and still post message without a vote.
+    try {
+      gApi.changes()
+          .id(mdsMergeInput.changeNumber)
+          .revision(mdsMergeInput.currentRevision)
+          .review(reviewInput);
+    } catch (AuthException e) {
+      reviewInput.labels = null;
+      gApi.changes()
+          .id(mdsMergeInput.changeNumber)
+          .revision(mdsMergeInput.currentRevision)
+          .review(reviewInput);
+    }
   }
 
   /**
@@ -582,7 +592,11 @@ public class DownstreamCreator
     reviewInput.labels = labels;
     reviewInput.notify = NotifyHandling.NONE;
     reviewInput.tag = AUTOMERGER_TAG;
-    gApi.changes().id(change.id).revision(change.currentRevision).review(reviewInput);
+    try {
+      gApi.changes().id(change.id).revision(change.currentRevision).review(reviewInput);
+    } catch (AuthException e) {
+      log.error("Automerger could not set label, but still continuing.", e);
+    }
   }
 
   private void updateDownstreamMerge(
