@@ -34,7 +34,6 @@ import com.google.gerrit.extensions.common.RevisionInfo;
 import com.google.gerrit.extensions.events.ChangeAbandonedListener;
 import com.google.gerrit.extensions.events.ChangeRestoredListener;
 import com.google.gerrit.extensions.events.CommentAddedListener;
-import com.google.gerrit.extensions.events.DraftPublishedListener;
 import com.google.gerrit.extensions.events.RevisionCreatedListener;
 import com.google.gerrit.extensions.events.TopicEditedListener;
 import com.google.gerrit.extensions.restapi.AuthException;
@@ -69,7 +68,6 @@ public class DownstreamCreator
     implements ChangeAbandonedListener,
         ChangeRestoredListener,
         CommentAddedListener,
-        DraftPublishedListener,
         RevisionCreatedListener,
         TopicEditedListener {
   private static final Logger log = LoggerFactory.getLogger(DownstreamCreator.class);
@@ -257,25 +255,6 @@ public class DownstreamCreator
         | InvalidQueryParameterException
         | OrmException e) {
       log.error("Automerger plugin failed onChangeRestored for {}", event.getChange().id, e);
-    }
-  }
-
-  /**
-   * Automerges changes downstream if a draft is published.
-   *
-   * @param event Event we are listening to.
-   */
-  @Override
-  public void onDraftPublished(DraftPublishedListener.Event event) {
-    try (ManualRequestContext ctx = oneOffRequestContext.openAs(config.getContextUserId())) {
-      ChangeInfo change = event.getChange();
-      automergeChanges(change, event.getRevision());
-    } catch (RestApiException
-        | IOException
-        | ConfigInvalidException
-        | InvalidQueryParameterException
-        | OrmException e) {
-      log.error("Automerger plugin failed onDraftPublished for {}", event.getChange().id, e);
     }
   }
 
