@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0438be9e_7f1f01d9",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1003935
+      },
+      "writtenOn": "2017-07-25T08:51:20Z",
+      "side": 1,
+      "message": "[1] only disallows creation of new draft changes. Existing draft changes can still be published and the plugin still wants to know about this, right?",
+      "range": {
+        "startLine": 9,
+        "startChar": 0,
+        "endLine": 12,
+        "endChar": 54
+      },
+      "revId": "fd34c013ad97be4adeff36df0dad9c69f2a2fabe",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
