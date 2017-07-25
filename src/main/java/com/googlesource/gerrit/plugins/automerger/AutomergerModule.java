@@ -20,7 +20,6 @@ import static com.google.gerrit.server.project.BranchResource.BRANCH_KIND;
 import com.google.gerrit.extensions.events.ChangeAbandonedListener;
 import com.google.gerrit.extensions.events.ChangeRestoredListener;
 import com.google.gerrit.extensions.events.CommentAddedListener;
-import com.google.gerrit.extensions.events.DraftPublishedListener;
 import com.google.gerrit.extensions.events.RevisionCreatedListener;
 import com.google.gerrit.extensions.events.TopicEditedListener;
 import com.google.gerrit.extensions.registration.DynamicSet;
@@ -38,7 +37,6 @@ public class AutomergerModule extends AbstractModule {
     DynamicSet.bind(binder(), CommentAddedListener.class).to(DownstreamCreator.class);
     DynamicSet.bind(binder(), ChangeAbandonedListener.class).to(DownstreamCreator.class);
     DynamicSet.bind(binder(), ChangeRestoredListener.class).to(DownstreamCreator.class);
-    DynamicSet.bind(binder(), DraftPublishedListener.class).to(DownstreamCreator.class);
     DynamicSet.bind(binder(), RevisionCreatedListener.class).to(DownstreamCreator.class);
     DynamicSet.bind(binder(), TopicEditedListener.class).to(DownstreamCreator.class);
     DynamicSet.bind(binder(), MergeValidationListener.class).to(MergeValidator.class);
