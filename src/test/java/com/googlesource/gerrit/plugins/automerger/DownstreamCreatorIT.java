@@ -431,7 +431,7 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
     String shortMasterSha = masterChangeInfo.currentRevision.substring(0, 10);
     assertThat(masterChangeInfo.subject).doesNotContainMatch("automerger");
     assertThat(dsOneChangeInfo.subject)
-        .isEqualTo("[automerger] " + masterSubject + " skipped: " + shortMasterSha);
+        .isEqualTo("[automerger skipped] " + masterSubject + " skipped: " + shortMasterSha);
     assertThat(dsTwoChangeInfo.subject)
         .isEqualTo("[automerger] " + masterSubject + " am: " + shortMasterSha);
   }
@@ -492,9 +492,9 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
     String shortMasterSha = masterChangeInfo.currentRevision.substring(0, 10);
     assertThat(masterChangeInfo.subject).doesNotContainMatch("automerger");
     assertThat(dsOneChangeInfo.subject)
-        .isEqualTo("[automerger] " + masterSubject + " skipped: " + shortMasterSha);
+        .isEqualTo("[automerger skipped] " + masterSubject + " skipped: " + shortMasterSha);
     assertThat(dsTwoChangeInfo.subject)
-        .isEqualTo("[automerger] " + masterSubject + " skipped: " + shortMasterSha);
+        .isEqualTo("[automerger skipped] " + masterSubject + " skipped: " + shortMasterSha);
   }
 
   @Test
