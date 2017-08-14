@@ -22,11 +22,14 @@ import com.google.gerrit.acceptance.GitUtil;
 import com.google.gerrit.acceptance.LightweightPluginDaemonTest;
 import com.google.gerrit.acceptance.PushOneCommit;
 import com.google.gerrit.acceptance.TestPlugin;
+import com.google.gerrit.reviewdb.client.Account;
 import com.google.gerrit.reviewdb.client.Project;
 import com.google.gerrit.reviewdb.client.RefNames;
+import com.google.gerrit.server.CurrentUser;
 import com.google.gerrit.server.config.AllProjectsName;
 import com.google.gerrit.server.config.PluginConfigFactory;
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.HashSet;
@@ -46,6 +49,7 @@ public class ConfigLoaderIT extends LightweightPluginDaemonTest {
   @Inject private AllProjectsName allProjectsName;
   @Inject private PluginConfigFactory cfgFactory;
   @Inject private String canonicalWebUrl;
+  @Inject private Provider<CurrentUser> user;
   private Project.NameKey manifestNameKey;
 
   @Test
@@ -229,6 +233,18 @@ public class ConfigLoaderIT extends LightweightPluginDaemonTest {
     assertThat(configLoader.minAutomergeVoteDisabled()).isFalse();
   }
 
+  @Test
+  public void getContextUserIdTest() throws Exception {
+    defaultSetup("context_user.config");
+    assertThat(configLoader.getContextUserId()).isEqualTo(new Account.Id(102304));
+  }
+
+  @Test
+  public void getContextUserIdTest_noContextUser() throws Exception {
+    defaultSetup("automerger.config");
+    assertThat(configLoader.getContextUserId()).isEqualTo(user.get().getAccountId());
+  }
+
   private void setupTestRepo(
       String resourceName, Project.NameKey projectNameKey, String branchName, String filename)
       throws Exception {
@@ -264,6 +280,6 @@ public class ConfigLoaderIT extends LightweightPluginDaemonTest {
   private void loadConfig(String configFilename) throws Exception {
     pushConfig(configFilename);
     configLoader =
-        new ConfigLoader(gApi, allProjectsName, "automerger", canonicalWebUrl, cfgFactory);
+        new ConfigLoader(gApi, allProjectsName, "automerger", canonicalWebUrl, cfgFactory, user);
   }
 }
