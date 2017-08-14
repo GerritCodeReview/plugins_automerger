@@ -23,6 +23,7 @@ import com.google.gerrit.reviewdb.client.Change;
 import com.google.gerrit.server.CurrentUser;
 import com.google.gerrit.server.IdentifiedUser;
 import com.google.gerrit.server.change.RevisionResource;
+import com.google.gwtorm.server.OrmException;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import java.io.IOException;
@@ -57,9 +58,12 @@ class AutomergeChangeAction
    * @return HTTP 200 on success.
    * @throws IOException
    * @throws RestApiException
+   * @throws ConfigInvalidException
+   * @throws OrmException
    */
   @Override
-  public Object apply(RevisionResource rev, Input input) throws IOException, RestApiException {
+  public Object apply(RevisionResource rev, Input input)
+      throws IOException, RestApiException, OrmException, ConfigInvalidException {
     Map<String, Boolean> branchMap = input.branchMap;
 
     Change change = rev.getChange();
