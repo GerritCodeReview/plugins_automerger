@@ -21,11 +21,14 @@ import com.google.gerrit.extensions.api.GerritApi;
 import com.google.gerrit.extensions.restapi.BinaryResult;
 import com.google.gerrit.extensions.restapi.ResourceNotFoundException;
 import com.google.gerrit.extensions.restapi.RestApiException;
+import com.google.gerrit.reviewdb.client.Account;
+import com.google.gerrit.server.CurrentUser;
 import com.google.gerrit.server.config.AllProjectsName;
 import com.google.gerrit.server.config.CanonicalWebUrl;
 import com.google.gerrit.server.config.PluginConfigFactory;
 import com.google.gerrit.server.project.NoSuchProjectException;
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 import com.google.inject.Singleton;
 import com.google.re2j.Pattern;
 import java.io.IOException;
@@ -50,6 +53,7 @@ public class ConfigLoader {
   private final String canonicalWebUrl;
   private final AllProjectsName allProjectsName;
   private final PluginConfigFactory cfgFactory;
+  private Provider<CurrentUser> user;
 
   /**
    * Class to handle getting information from the config.
@@ -65,12 +69,14 @@ public class ConfigLoader {
       AllProjectsName allProjectsName,
       @PluginName String pluginName,
       @CanonicalWebUrl String canonicalWebUrl,
-      PluginConfigFactory cfgFactory) {
+      PluginConfigFactory cfgFactory,
+      Provider<CurrentUser> user) {
     this.gApi = gApi;
     this.canonicalWebUrl = canonicalWebUrl;
     this.pluginName = pluginName;
     this.cfgFactory = cfgFactory;
     this.allProjectsName = allProjectsName;
+    this.user = user;
   }
 
   private Config getConfig() throws ConfigInvalidException {
@@ -248,6 +254,14 @@ public class ConfigLoader {
 
   public boolean minAutomergeVoteDisabled() throws ConfigInvalidException {
     return getConfig().getBoolean("global", "disableMinAutomergeVote", false);
+  }
+
+  public Account.Id getContextUserId() throws ConfigInvalidException {
+    int contextUserId = getConfig().getInt("global", "contextUserId", -1);
+    if (contextUserId > 0) {
+      return new Account.Id(contextUserId);
+    }
+    return user.get().getAccountId();
   }
 
   // Returns overriden manifest config if specified, default if not
