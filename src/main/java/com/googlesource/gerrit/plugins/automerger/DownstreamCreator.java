@@ -40,7 +40,6 @@ import com.google.gerrit.extensions.events.TopicEditedListener;
 import com.google.gerrit.extensions.restapi.AuthException;
 import com.google.gerrit.extensions.restapi.MergeConflictException;
 import com.google.gerrit.extensions.restapi.RestApiException;
-import com.google.gerrit.reviewdb.client.Account;
 import com.google.gerrit.server.CurrentUser;
 import com.google.gerrit.server.util.ManualRequestContext;
 import com.google.gerrit.server.util.OneOffRequestContext;
@@ -294,7 +293,7 @@ public class DownstreamCreator
           OrmException {
     try (ManualRequestContext ctx = oneOffRequestContext.openAs(config.getContextUserId())) {
       ReviewInput reviewInput = new ReviewInput();
-      Map<String, Short> labels = new HashMap<String, Short>();
+      Map<String, Short> labels = new HashMap<>();
       try {
         createDownstreamMerges(mdsMergeInput);
 
@@ -344,7 +343,7 @@ public class DownstreamCreator
           InvalidQueryParameterException, OrmException {
     try (ManualRequestContext ctx = oneOffRequestContext.openAs(config.getContextUserId())) {
       // Map from branch to error message
-      Map<String, String> failedMergeBranchMap = new TreeMap<String, String>();
+      Map<String, String> failedMergeBranchMap = new TreeMap<>();
 
       List<Integer> existingDownstream;
       for (String downstreamBranch : mdsMergeInput.dsBranchMap.keySet()) {
@@ -431,7 +430,7 @@ public class DownstreamCreator
       throws RestApiException, InvalidQueryParameterException, OrmException,
           ConfigInvalidException {
     try (ManualRequestContext ctx = oneOffRequestContext.openAs(config.getContextUserId())) {
-      List<Integer> downstreamChangeNumbers = new ArrayList<Integer>();
+      List<Integer> downstreamChangeNumbers = new ArrayList<>();
       List<ChangeInfo> changes = getChangesInTopicAndBranch(topic, downstreamBranch);
 
       for (ChangeInfo change : changes) {

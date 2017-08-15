@@ -53,7 +53,7 @@ public class ConfigLoader {
   private final String canonicalWebUrl;
   private final AllProjectsName allProjectsName;
   private final PluginConfigFactory cfgFactory;
-  private Provider<CurrentUser> user;
+  private final Provider<CurrentUser> user;
 
   /**
    * Class to handle getting information from the config.
