@@ -813,15 +813,10 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
 
     List<ChangeInfo> sortedChanges = sortedChanges(changesInTopic);
 
-    // Try to +2 downstream and see it fail
+    // Check that downstream is at Code-Review 0
     ChangeInfo dsOneChangeInfo = sortedChanges.get(0);
     assertThat(dsOneChangeInfo.branch).isEqualTo("ds_one");
     ChangeApi dsOneChange = gApi.changes().id(dsOneChangeInfo._number);
-    assertThat(getVote(dsOneChange, "Code-Review").value).isEqualTo(0);
-
-    exception.expect(AuthException.class);
-    exception.expectMessage("Applying label \"Code-Review\": 2 is restricted");
-    approve(dsOneChangeInfo.id);
     assertThat(getVote(dsOneChange, "Code-Review").value).isEqualTo(0);
 
     // Try to +2 master and see it succeed to +2 master and ds_one
@@ -832,6 +827,11 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
     approve(masterChangeInfo.id);
     assertThat(getVote(masterChange, "Code-Review").value).isEqualTo(2);
     assertThat(getVote(dsOneChange, "Code-Review").value).isEqualTo(2);
+
+    // Try to +2 downstream and see it fail
+    exception.expect(AuthException.class);
+    exception.expectMessage("Applying label \"Code-Review\": 2 is restricted");
+    approve(dsOneChangeInfo.id);
   }
 
   private Project.NameKey defaultSetup() throws Exception {
@@ -928,7 +928,8 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
   }
 
   private ApprovalInfo getVote(ChangeApi change, String label) throws RestApiException {
-    return change.get(EnumSet.of(ListChangesOption.DETAILED_LABELS)).labels.get(label).all.get(0);
+    List<ApprovalInfo> approvals = change.get(EnumSet.of(ListChangesOption.DETAILED_LABELS)).labels.get(label).all;
+    return approvals.get(approvals.size() - 1);
   }
 
   private List<ChangeInfo> sortedChanges(List<ChangeInfo> changes) {
