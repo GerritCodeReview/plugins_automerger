@@ -63,6 +63,7 @@ public class ConfigLoaderIT extends LightweightPluginDaemonTest {
     Set<String> otherExpectedProjects = new HashSet<String>();
     otherExpectedProjects.add("platform/some/project");
     otherExpectedProjects.add("platform/other/project");
+    otherExpectedProjects.add("platform/added/project");
     assertThat(configLoader.getProjectsInScope("master", "ds_two"))
         .isEqualTo(otherExpectedProjects);
   }

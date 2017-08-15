@@ -316,8 +316,6 @@ public class ConfigLoader {
     if (!setProjects.isEmpty()) {
       projects.clear();
       projects.addAll(setProjects);
-      // if we set projects we can ignore the rest
-      return projects;
     }
     List<String> addProjects =
         Arrays.asList(
