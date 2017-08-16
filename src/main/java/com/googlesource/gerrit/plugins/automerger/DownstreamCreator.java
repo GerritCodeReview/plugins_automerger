@@ -24,7 +24,6 @@ import com.google.gerrit.extensions.api.changes.RestoreInput;
 import com.google.gerrit.extensions.api.changes.ReviewInput;
 import com.google.gerrit.extensions.client.ChangeStatus;
 import com.google.gerrit.extensions.client.ListChangesOption;
-import com.google.gerrit.extensions.common.ApprovalInfo;
 import com.google.gerrit.extensions.common.ChangeInfo;
 import com.google.gerrit.extensions.common.ChangeInput;
 import com.google.gerrit.extensions.common.CommitInfo;
@@ -33,7 +32,6 @@ import com.google.gerrit.extensions.common.MergePatchSetInput;
 import com.google.gerrit.extensions.common.RevisionInfo;
 import com.google.gerrit.extensions.events.ChangeAbandonedListener;
 import com.google.gerrit.extensions.events.ChangeRestoredListener;
-import com.google.gerrit.extensions.events.CommentAddedListener;
 import com.google.gerrit.extensions.events.DraftPublishedListener;
 import com.google.gerrit.extensions.events.RevisionCreatedListener;
 import com.google.gerrit.extensions.events.TopicEditedListener;
@@ -67,7 +65,6 @@ import org.slf4j.LoggerFactory;
 public class DownstreamCreator
     implements ChangeAbandonedListener,
         ChangeRestoredListener,
-        CommentAddedListener,
         DraftPublishedListener,
         RevisionCreatedListener,
         TopicEditedListener {
@@ -172,53 +169,6 @@ public class DownstreamCreator
       }
     } catch (OrmException | ConfigInvalidException e) {
       log.error("Automerger plugin failed onTopicEdited for {}", event.getChange().id, e);
-    }
-  }
-
-  /**
-   * Updates downstream votes for a change each time a comment is made.
-   *
-   * @param event Event we are listening to.
-   */
-  @Override
-  public void onCommentAdded(CommentAddedListener.Event event) {
-    try (ManualRequestContext ctx = oneOffRequestContext.openAs(config.getContextUserId())) {
-      RevisionInfo eventRevision = event.getRevision();
-      if (!eventRevision.isCurrent) {
-        log.info(
-            "Not updating downstream votes since revision {} is not current.",
-            eventRevision._number);
-        return;
-      }
-      ChangeInfo change = event.getChange();
-      String revision = change.currentRevision;
-      Set<String> downstreamBranches;
-      downstreamBranches = config.getDownstreamBranches(change.branch, change.project);
-
-      if (downstreamBranches.isEmpty()) {
-        log.debug("Downstream branches of {} on {} are empty", change.branch, change.project);
-        return;
-      }
-
-      Map<String, ApprovalInfo> approvals = event.getApprovals();
-
-      for (String downstreamBranch : downstreamBranches) {
-        try {
-          List<Integer> existingDownstream =
-              getExistingMergesOnBranch(revision, change.topic, downstreamBranch);
-          for (Integer changeNumber : existingDownstream) {
-            ChangeInfo downstreamChange =
-                gApi.changes().id(changeNumber).get(EnumSet.of(ListChangesOption.CURRENT_REVISION));
-            for (Map.Entry<String, ApprovalInfo> label : approvals.entrySet()) {
-              updateVote(downstreamChange, label.getKey(), label.getValue().value.shortValue());
-            }
-          }
-        } catch (RestApiException | InvalidQueryParameterException e) {
-          log.error("Exception when updating downstream votes of {}", change.id, e);
-        }
-      }
-    } catch (OrmException | ConfigInvalidException | RestApiException | IOException e) {
-      log.error("Automerger plugin failed onCommentAdded for {}", event.getChange().id, e);
     }
   }
 

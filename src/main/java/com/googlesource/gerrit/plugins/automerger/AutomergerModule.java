@@ -35,7 +35,6 @@ public class AutomergerModule extends AbstractModule {
 
   @Override
   protected void configure() {
-    DynamicSet.bind(binder(), CommentAddedListener.class).to(DownstreamCreator.class);
     DynamicSet.bind(binder(), ChangeAbandonedListener.class).to(DownstreamCreator.class);
     DynamicSet.bind(binder(), ChangeRestoredListener.class).to(DownstreamCreator.class);
     DynamicSet.bind(binder(), DraftPublishedListener.class).to(DownstreamCreator.class);
