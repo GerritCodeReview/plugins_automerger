@@ -135,6 +135,13 @@ global.missingDownstreamsMessage
     missingDownstreamsMessage = Missing downstreams ${missingDownstreams}
   ```
 
+global.contextUserId
+: User ID to use for doing all automerger operations.
+
+  If set to a valid user ID, all automerger operations will be done using the
+  credentials of this user ID instead of the credentials of the user doing the
+  upstream operation.
+
 automerger.branch1:branch2.setProjects
 : Projects to automerge for.
 
