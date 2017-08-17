@@ -28,6 +28,7 @@ import com.google.gerrit.extensions.common.ApprovalInfo;
 import com.google.gerrit.extensions.common.ChangeInfo;
 import com.google.gerrit.extensions.common.ChangeInput;
 import com.google.gerrit.extensions.common.CommitInfo;
+import com.google.gerrit.extensions.common.LabelInfo;
 import com.google.gerrit.extensions.common.MergeInput;
 import com.google.gerrit.extensions.common.MergePatchSetInput;
 import com.google.gerrit.extensions.common.RevisionInfo;
@@ -47,10 +48,12 @@ import com.google.gwtorm.server.OrmException;
 import com.google.inject.Inject;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.OptionalInt;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.UUID;
@@ -200,7 +203,11 @@ public class DownstreamCreator
         return;
       }
 
-      Map<String, ApprovalInfo> approvals = event.getApprovals();
+      Map<String, LabelInfo> labels =
+          gApi.changes()
+              .id(change._number)
+              .get(EnumSet.of(ListChangesOption.DETAILED_LABELS))
+              .labels;
 
       for (String downstreamBranch : downstreamBranches) {
         try {
@@ -209,8 +216,21 @@ public class DownstreamCreator
           for (Integer changeNumber : existingDownstream) {
             ChangeInfo downstreamChange =
                 gApi.changes().id(changeNumber).get(EnumSet.of(ListChangesOption.CURRENT_REVISION));
-            for (Map.Entry<String, ApprovalInfo> label : approvals.entrySet()) {
-              updateVote(downstreamChange, label.getKey(), label.getValue().value.shortValue());
+            for (Map.Entry<String, LabelInfo> labelEntry : labels.entrySet()) {
+              if (labelEntry.getValue().all.size() > 0) {
+                OptionalInt maxVote =
+                    labelEntry
+                        .getValue()
+                        .all
+                        .stream()
+                        .filter(o -> o.value != null)
+                        .mapToInt(i -> i.value)
+                        .max();
+
+                if (maxVote.isPresent()) {
+                  updateVote(downstreamChange, labelEntry.getKey(), (short) maxVote.getAsInt());
+                }
+              }
             }
           }
         } catch (RestApiException | InvalidQueryParameterException e) {
