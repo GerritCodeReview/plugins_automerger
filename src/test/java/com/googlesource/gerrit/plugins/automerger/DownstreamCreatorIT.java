@@ -24,6 +24,7 @@ import com.google.gerrit.acceptance.PushOneCommit;
 import com.google.gerrit.acceptance.TestPlugin;
 import com.google.gerrit.extensions.api.accounts.AccountApi;
 import com.google.gerrit.extensions.api.changes.ChangeApi;
+import com.google.gerrit.extensions.api.changes.ReviewInput;
 import com.google.gerrit.extensions.client.ListChangesOption;
 import com.google.gerrit.extensions.common.ApprovalInfo;
 import com.google.gerrit.extensions.common.ChangeInfo;
@@ -770,6 +771,7 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
 
   @Test
   public void testContextUser() throws Exception {
+    // Branch flow for contextUser is master -> ds_one -> ds_two
     Project.NameKey manifestNameKey = defaultSetup();
     // Create initial change
     PushOneCommit.Result initialResult = createChange("subject", "filename", "echo Hello");
@@ -832,6 +834,82 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
     exception.expect(AuthException.class);
     exception.expectMessage("Applying label \"Code-Review\": 2 is restricted");
     approve(dsOneChangeInfo.id);
+  }
+
+  @Test
+  public void testContextUser_downstreamHighestVote() throws Exception {
+    // Branch flow for contextUser is master -> ds_one -> ds_two
+    Project.NameKey manifestNameKey = defaultSetup();
+    // Create initial change
+    PushOneCommit.Result initialResult = createChange("subject", "filename", "echo Hello");
+    // Project name is scoped by test, so we need to get it from our initial change
+    Project.NameKey projectNameKey = initialResult.getChange().project();
+    String projectName = projectNameKey.get();
+    createBranch(new Branch.NameKey(projectName, "ds_one"));
+    createBranch(new Branch.NameKey(projectName, "ds_two"));
+    initialResult.assertOkStatus();
+    merge(initialResult);
+
+    // Create normalUserGroup, containing current user, and contextUserGroup, containing contextUser
+    String normalUserGroup = createGroup("normalUserGroup");
+    gApi.groups().id(normalUserGroup).addMembers(user.get().getAccountId().toString());
+    AccountApi contextUserApi = gApi.accounts().create("randomContextUser");
+    String contextUserGroup = createGroup("contextUserGroup");
+    gApi.groups().id(contextUserGroup).addMembers(contextUserApi.get().name);
+
+    // Grant +2 to context user, since it doesn't have it by default
+    grantLabel(
+        "Code-Review",
+        -2,
+        2,
+        projectNameKey,
+        "refs/heads/*",
+        false,
+        AccountGroup.UUID.parse(gApi.groups().id(contextUserGroup).get().id),
+        false);
+    pushContextUserConfig(manifestNameKey.get(), projectName, contextUserApi.get()._accountId);
+
+    // After we upload our config, we upload a new patchset to create the downstreams
+    PushOneCommit.Result result = createChange("subject", "filename2", "echo Hello", "sometopic");
+    result.assertOkStatus();
+    // Check that there are the correct number of changes in the topic
+    List<ChangeInfo> changesInTopic =
+        gApi.changes()
+            .query("topic: " + gApi.changes().id(result.getChangeId()).topic())
+            .withOptions(ListChangesOption.CURRENT_REVISION, ListChangesOption.CURRENT_COMMIT)
+            .get();
+    assertThat(changesInTopic).hasSize(3);
+
+    List<ChangeInfo> sortedChanges = sortedChanges(changesInTopic);
+
+    // Check that downstream is at Code-Review 0
+    ChangeInfo dsOneChangeInfo = sortedChanges.get(0);
+    assertThat(dsOneChangeInfo.branch).isEqualTo("ds_one");
+    ChangeApi dsOneChange = gApi.changes().id(dsOneChangeInfo._number);
+    assertThat(getVote(dsOneChange, "Code-Review").value).isEqualTo(0);
+
+    // Try to +1 master and see it succeed to +1 master and ds_one
+    ChangeInfo masterChangeInfo = sortedChanges.get(2);
+    assertThat(masterChangeInfo.branch).isEqualTo("master");
+    ChangeApi masterChange = gApi.changes().id(masterChangeInfo._number);
+    assertThat(getVote(masterChange, "Code-Review").value).isEqualTo(0);
+    recommend(masterChangeInfo.id);
+    assertThat(getVote(masterChange, "Code-Review").value).isEqualTo(1);
+    assertThat(getVote(dsOneChange, "Code-Review").value).isEqualTo(1);
+
+    ChangeInfo dsTwoChangeInfo = sortedChanges.get(1);
+    assertThat(dsTwoChangeInfo.branch).isEqualTo("ds_two");
+    ChangeApi dsTwoChange = gApi.changes().id(dsTwoChangeInfo._number);
+    assertThat(getVote(dsTwoChange, "Code-Review").value).isEqualTo(1);
+
+    // +2 ds_one and see that it overrides the +1 of the contextUser
+    approve(dsOneChangeInfo.id);
+    assertThat(getVote(dsOneChange, "Code-Review").value).isEqualTo(2);
+    assertThat(getVote(dsTwoChange, "Code-Review").value).isEqualTo(2);
+    // +0 ds_one and see that it goes back to the +1 of the contextUser
+    gApi.changes().id(dsOneChangeInfo.id).revision("current").review(ReviewInput.noScore());
+    assertThat(getVote(dsOneChange, "Code-Review").value).isEqualTo(1);
+    assertThat(getVote(dsTwoChange, "Code-Review").value).isEqualTo(1);
   }
 
   private Project.NameKey defaultSetup() throws Exception {
@@ -919,7 +997,7 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
       cfg.setString("global", null, "manifestProject", manifestName);
       cfg.setInt("global", null, "contextUserId", contextUserId);
       cfg.setString("automerger", "master:ds_one", "setProjects", project);
-      cfg.setString("automerger", "master:ds_two", "setProjects", project);
+      cfg.setString("automerger", "ds_one:ds_two", "setProjects", project);
       PushOneCommit push =
           pushFactory.create(
               db, admin.getIdent(), allProjectRepo, "Subject", "automerger.config", cfg.toText());
@@ -928,8 +1006,17 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
   }
 
   private ApprovalInfo getVote(ChangeApi change, String label) throws RestApiException {
-    List<ApprovalInfo> approvals = change.get(EnumSet.of(ListChangesOption.DETAILED_LABELS)).labels.get(label).all;
-    return approvals.get(approvals.size() - 1);
+    List<ApprovalInfo> approvals =
+        change.get(EnumSet.of(ListChangesOption.DETAILED_LABELS)).labels.get(label).all;
+    ApprovalInfo maxApproval = null;
+    for (ApprovalInfo approval : approvals) {
+      if (maxApproval == null) {
+        maxApproval = approval;
+      } else if (approval.value != null && approval.value > maxApproval.value) {
+        maxApproval = approval;
+      }
+    }
+    return maxApproval;
   }
 
   private List<ChangeInfo> sortedChanges(List<ChangeInfo> changes) {
