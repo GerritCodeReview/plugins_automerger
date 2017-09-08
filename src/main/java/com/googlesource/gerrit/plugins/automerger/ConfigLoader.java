@@ -255,6 +255,11 @@ public class ConfigLoader {
   public boolean minAutomergeVoteDisabled() throws ConfigInvalidException {
     return getConfig().getBoolean("global", "disableMinAutomergeVote", false);
   }
+  
+  public boolean contextUserIdIsSet() throws ConfigInvalidException {
+    int contextUserId = getConfig().getInt("global", "contextUserId", -1);
+    return contextUserId > 0;
+  }
 
   public Account.Id getContextUserId() throws ConfigInvalidException {
     int contextUserId = getConfig().getInt("global", "contextUserId", -1);
