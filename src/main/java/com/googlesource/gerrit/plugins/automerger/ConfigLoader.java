@@ -240,16 +240,8 @@ public class ConfigLoader {
     return message;
   }
 
-  public short getMaxAutomergeVote() throws ConfigInvalidException {
-    return (short) getConfig().getInt("global", "maxAutomergeVote", 2);
-  }
-
   public short getMinAutomergeVote() throws ConfigInvalidException {
     return (short) getConfig().getInt("global", "minAutomergeVote", -2);
-  }
-
-  public boolean maxAutomergeVoteDisabled() throws ConfigInvalidException {
-    return getConfig().getBoolean("global", "disableMaxAutomergeVote", false);
   }
 
   public boolean minAutomergeVoteDisabled() throws ConfigInvalidException {

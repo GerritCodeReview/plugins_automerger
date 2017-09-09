@@ -31,16 +31,6 @@ global.automergeLabel
   When the automerger detects a merge conflict from one branch to another, it
   will vote minAutomergeVote on this label.
 
-global.maxAutomergeVote
-: Value to vote on a successful automerge.
-
-  When the automerger succeeds in merging downstream, it will vote
-  maxAutomergeVote on the downstream change. The original change uploaded by
-  the user will have a vote of 0, so that it can be easily programatically
-  distinguished from the otheres.
-
-  Will not vote if disableMaxAutomergeVote is true.
-
 global.minAutomergeVote
 : Value to vote on a failed automerge.
 
@@ -48,12 +38,6 @@ global.minAutomergeVote
   will vote minAutomergeVote for the configured automergeLabel.
 
   Will not vote if disableMinAutomergeVote is true.
-
-global.disableMaxAutomergeVote
-: Whether to vote on a successful automerge.
-
-  If true, will not vote maxAutomergeVote on a successful downstream merge.
-  Defaults to false.
 
 global.disableMinAutomergeVote
 : Whether to vote on a failed automerge.

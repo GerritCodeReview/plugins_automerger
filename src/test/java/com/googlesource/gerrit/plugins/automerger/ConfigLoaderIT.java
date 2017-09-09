@@ -204,27 +204,9 @@ public class ConfigLoaderIT extends LightweightPluginDaemonTest {
   }
 
   @Test
-  public void getMaxAutomergeVoteTest() throws Exception {
-    defaultSetup("alternate.config");
-    assertThat(configLoader.getMaxAutomergeVote()).isEqualTo(5);
-  }
-
-  @Test
   public void getMinAutomergeVoteTest() throws Exception {
     defaultSetup("alternate.config");
     assertThat(configLoader.getMinAutomergeVote()).isEqualTo(-3);
-  }
-
-  @Test
-  public void maxAutomergeVoteDisabledTest() throws Exception {
-    defaultSetup("automerger.config");
-    assertThat(configLoader.maxAutomergeVoteDisabled()).isFalse();
-  }
-
-  @Test
-  public void maxAutomergeVoteDisabledTest_isDisabled() throws Exception {
-    defaultSetup("alternate.config");
-    assertThat(configLoader.maxAutomergeVoteDisabled()).isTrue();
   }
 
   @Test

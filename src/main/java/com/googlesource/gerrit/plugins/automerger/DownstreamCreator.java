@@ -529,13 +529,7 @@ public class DownstreamCreator
             sdsMergeInput.downstreamBranch);
       }
 
-      ChangeApi downstreamChange = gApi.changes().create(downstreamChangeInput);
-
-      // Vote maxAutomergeVote on the change so we know it was successful.
-      if (!config.maxAutomergeVoteDisabled()) {
-        updateVote(
-            downstreamChange.get(), config.getAutomergeLabel(), config.getMaxAutomergeVote());
-      }
+      gApi.changes().create(downstreamChangeInput);
     }
   }
 
@@ -685,7 +679,7 @@ public class DownstreamCreator
 
   private void updateDownstreamMerge(
       String newParentRevision, String upstreamSubject, Integer sourceNum, boolean doMerge)
-      throws RestApiException, ConfigInvalidException {
+      throws RestApiException {
     MergeInput mergeInput = new MergeInput();
     mergeInput.source = newParentRevision;
 
@@ -709,10 +703,7 @@ public class DownstreamCreator
       originalChange.restore(restoreInput);
     }
 
-    ChangeInfo downstreamChange = originalChange.createMergePatchSet(mergePatchSetInput);
-    if (!config.maxAutomergeVoteDisabled()) {
-      updateVote(downstreamChange, config.getAutomergeLabel(), config.getMaxAutomergeVote());
-    }
+    originalChange.createMergePatchSet(mergePatchSetInput);
   }
 
   private String getPreviousRevision(ChangeApi change, int currentPatchSetNumber)
