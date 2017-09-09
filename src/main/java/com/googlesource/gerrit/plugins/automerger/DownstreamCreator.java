@@ -529,7 +529,9 @@ public class DownstreamCreator
             sdsMergeInput.downstreamBranch);
       }
 
-      gApi.changes().create(downstreamChangeInput);
+      ChangeApi downstreamChange = gApi.changes().create(downstreamChangeInput);
+      tagChange(downstreamChange.get(), "Automerger change created!");
+      
     }
   }
 
@@ -668,6 +670,18 @@ public class DownstreamCreator
     Map<String, Short> labels = new HashMap<String, Short>();
     labels.put(label, vote);
     reviewInput.labels = labels;
+    reviewInput.notify = NotifyHandling.NONE;
+    reviewInput.tag = AUTOMERGER_TAG;
+    try {
+      gApi.changes().id(change.id).revision(CURRENT).review(reviewInput);
+    } catch (AuthException e) {
+      log.error("Automerger could not set label, but still continuing.", e);
+    }
+  }
+  
+  private void tagChange(ChangeInfo change, String message) throws RestApiException {
+    ReviewInput reviewInput = new ReviewInput();
+    reviewInput.message(message);
     reviewInput.notify = NotifyHandling.NONE;
     reviewInput.tag = AUTOMERGER_TAG;
     try {
