@@ -333,16 +333,10 @@ public class DownstreamCreator
       reviewInput.labels = labels;
       // if this fails, i.e. -2 is restricted, catch it and still post message without a vote.
       try {
-        gApi.changes()
-            .id(mdsMergeInput.changeNumber)
-            .revision(CURRENT)
-            .review(reviewInput);
+        gApi.changes().id(mdsMergeInput.changeNumber).revision(CURRENT).review(reviewInput);
       } catch (AuthException e) {
         reviewInput.labels = null;
-        gApi.changes()
-            .id(mdsMergeInput.changeNumber)
-            .revision(CURRENT)
-            .review(reviewInput);
+        gApi.changes().id(mdsMergeInput.changeNumber).revision(CURRENT).review(reviewInput);
       }
     }
   }
@@ -522,7 +516,6 @@ public class DownstreamCreator
 
       ChangeApi downstreamChange = gApi.changes().create(downstreamChangeInput);
       tagChange(downstreamChange.get(), "Automerger change created!");
-      
     }
   }
 
@@ -577,11 +570,6 @@ public class DownstreamCreator
   private void automergeChanges(ChangeInfo change, RevisionInfo revisionInfo)
       throws RestApiException, IOException, ConfigInvalidException, InvalidQueryParameterException,
           OrmException {
-    if (revisionInfo.draft != null && revisionInfo.draft) {
-      log.debug("Patchset {} is draft change, ignoring.", revisionInfo.commit.commit);
-      return;
-    }
-
     String currentRevision = revisionInfo.commit.commit;
     log.debug(
         "Handling patchsetevent with change id {} and revision {}", change.id, currentRevision);
@@ -654,7 +642,7 @@ public class DownstreamCreator
       log.error("Automerger could not set label, but still continuing.", e);
     }
   }
-  
+
   private void tagChange(ChangeInfo change, String message) throws RestApiException {
     ReviewInput reviewInput = new ReviewInput();
     reviewInput.message(message);
