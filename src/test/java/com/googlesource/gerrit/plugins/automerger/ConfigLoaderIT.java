@@ -245,18 +245,6 @@ public class ConfigLoaderIT extends LightweightPluginDaemonTest {
     assertThat(configLoader.getContextUserId()).isEqualTo(user.get().getAccountId());
   }
 
-  @Test
-  public void contextUserIdIsSetTest() throws Exception {
-    defaultSetup("context_user.config");
-    assertThat(configLoader.contextUserIdIsSet()).isEqualTo(true);
-  }
-
-  @Test
-  public void contextUserIdIsSetTest_noContextUser() throws Exception {
-    defaultSetup("automerger.config");
-    assertThat(configLoader.contextUserIdIsSet()).isEqualTo(false);
-  }
-
   private void setupTestRepo(
       String resourceName, Project.NameKey projectNameKey, String branchName, String filename)
       throws Exception {

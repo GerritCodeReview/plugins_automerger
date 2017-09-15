@@ -82,7 +82,6 @@ public class DownstreamCreator
   protected GerritApi gApi;
   protected ConfigLoader config;
   protected CurrentUser user;
-  protected MergeValidator mergeValidator;
 
   private final OneOffRequestContext oneOffRequestContext;
 
@@ -92,7 +91,6 @@ public class DownstreamCreator
     this.gApi = gApi;
     this.config = config;
     this.oneOffRequestContext = oneOffRequestContext;
-    mergeValidator = new MergeValidator(gApi, config);
   }
 
   /**
@@ -217,33 +215,20 @@ public class DownstreamCreator
           for (Integer changeNumber : existingDownstream) {
             ChangeInfo downstreamChange =
                 gApi.changes().id(changeNumber).get(EnumSet.of(ListChangesOption.CURRENT_REVISION));
-            if (shouldReceivePropagatedVote(downstreamChange)) {
-              for (Map.Entry<String, LabelInfo> labelEntry : labels.entrySet()) {
-                if (labelEntry.getValue().all.size() > 0) {
-                  OptionalInt maxVote =
-                      labelEntry
-                          .getValue()
-                          .all
-                          .stream()
-                          .filter(o -> o.value != null)
-                          .mapToInt(i -> i.value)
-                          .max();
+            for (Map.Entry<String, LabelInfo> labelEntry : labels.entrySet()) {
+              if (labelEntry.getValue().all.size() > 0) {
+                OptionalInt maxVote =
+                    labelEntry
+                        .getValue()
+                        .all
+                        .stream()
+                        .filter(o -> o.value != null)
+                        .mapToInt(i -> i.value)
+                        .max();
 
-                  if (maxVote.isPresent()) {
-                    updateVote(downstreamChange, labelEntry.getKey(), (short) maxVote.getAsInt());
-                  }
+                if (maxVote.isPresent()) {
+                  updateVote(downstreamChange, labelEntry.getKey(), (short) maxVote.getAsInt());
                 }
-              }
-            } else {
-              try {
-                ReviewInput reviewInput = new ReviewInput();
-                reviewInput.message(
-                    "Downstream change is missing. Vote will not be propagated to this change "
-                        + "until all merge conflicts are resolved and added to the topic.");
-                reviewInput.notify = NotifyHandling.NONE;
-                gApi.changes().id(downstreamChange._number).revision(CURRENT).review(reviewInput);
-              } catch (RestApiException e) {
-                log.error("Failed to comment on change for automerger plugin.", e);
               }
             }
           }
@@ -348,10 +333,16 @@ public class DownstreamCreator
       reviewInput.labels = labels;
       // if this fails, i.e. -2 is restricted, catch it and still post message without a vote.
       try {
-        gApi.changes().id(mdsMergeInput.changeNumber).revision(CURRENT).review(reviewInput);
+        gApi.changes()
+            .id(mdsMergeInput.changeNumber)
+            .revision(CURRENT)
+            .review(reviewInput);
       } catch (AuthException e) {
         reviewInput.labels = null;
-        gApi.changes().id(mdsMergeInput.changeNumber).revision(CURRENT).review(reviewInput);
+        gApi.changes()
+            .id(mdsMergeInput.changeNumber)
+            .revision(CURRENT)
+            .review(reviewInput);
       }
     }
   }
@@ -585,21 +576,6 @@ public class DownstreamCreator
       }
     }
     return null;
-  }
-
-  private boolean shouldReceivePropagatedVote(ChangeInfo change)
-      throws RestApiException, IOException, ConfigInvalidException, InvalidQueryParameterException {
-    boolean shouldPropagate = true;
-    // Check change is created by contextUser if contextUser is set
-    if (config.contextUserIdIsSet()) {
-      Integer accountId = change.revisions.get(change.currentRevision).uploader._accountId;
-
-      shouldPropagate = accountId == config.getContextUserId().get();
-    }
-    // Check that the change does not have any downstream conflicts
-    shouldPropagate =
-        shouldPropagate && mergeValidator.getMissingDownstreamMerges(change).isEmpty();
-    return shouldPropagate;
   }
 
   private void automergeChanges(ChangeInfo change, RevisionInfo revisionInfo)
