@@ -83,7 +83,7 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
             .withOption(ListChangesOption.CURRENT_REVISION)
             .get();
     assertThat(changesInTopic).hasSize(3);
-    
+
     List<ChangeInfo> sortedChanges = sortedChanges(changesInTopic);
 
     ChangeInfo dsOneChangeInfo = sortedChanges.get(0);
@@ -112,7 +112,7 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
         .isEqualTo("[automerger] " + masterSubject + " am: " + shortMasterSha);
     assertThat(dsTwoChangeInfo.subject)
         .isEqualTo("[automerger] " + masterSubject + " am: " + shortMasterSha);
-    
+
     // +2 and submit
     merge(result);
     assertThat(getVote(masterChange, "Code-Review").value).isEqualTo(2);
@@ -915,6 +915,77 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
     gApi.changes().id(dsOneChangeInfo.id).revision("current").review(ReviewInput.noScore());
     assertThat(getVote(dsOneChange, "Code-Review").value).isEqualTo(1);
     assertThat(getVote(dsTwoChange, "Code-Review").value).isEqualTo(1);
+  }
+
+  @Test
+  public void testContextUser_mergeConflictOnDownstreamVotesOnTopLevel() throws Exception {
+    // Branch flow for contextUser is master -> ds_one -> ds_two
+    Project.NameKey manifestNameKey = defaultSetup();
+    // Create initial change
+    PushOneCommit.Result initialResult = createChange("subject", "filename", "echo Hello");
+    // Project name is scoped by test, so we need to get it from our initial change
+    Project.NameKey projectNameKey = initialResult.getChange().project();
+    String projectName = projectNameKey.get();
+    createBranch(new Branch.NameKey(projectName, "ds_one"));
+    createBranch(new Branch.NameKey(projectName, "ds_two"));
+    initialResult.assertOkStatus();
+    merge(initialResult);
+
+    // Reset to create a sibling
+    ObjectId initial = repo().exactRef("HEAD").getLeaf().getObjectId();
+    PushOneCommit.Result ds1Result =
+        createChange(
+            testRepo, "ds_one", "subject", "filename", "echo \"Hello asdfsd World\"", "randtopic");
+    ds1Result.assertOkStatus();
+    merge(ds1Result);
+    // Reset to allow our merge conflict to come
+    testRepo.reset(initial);
+    // Set up a merge conflict between ds_one and ds_two
+    PushOneCommit.Result ds2Result =
+        createChange(
+            testRepo, "ds_two", "subject", "filename", "echo yo World wutup wutup", "randtopic");
+    ds2Result.assertOkStatus();
+    merge(ds2Result);
+    testRepo.reset(initial);
+
+    // Create normalUserGroup, containing current user, and contextUserGroup, containing contextUser
+    String normalUserGroup = createGroup("normalUserGroup");
+    gApi.groups().id(normalUserGroup).addMembers(user.get().getAccountId().toString());
+    AccountApi contextUserApi = gApi.accounts().create("asdfContextUser");
+    String contextUserGroup = createGroup("contextUserGroup");
+    gApi.groups().id(contextUserGroup).addMembers(contextUserApi.get().name);
+
+    // Grant +2 to context user, since it doesn't have it by default
+    grantLabel(
+        "Code-Review",
+        -2,
+        2,
+        projectNameKey,
+        "refs/heads/*",
+        false,
+        AccountGroup.UUID.parse(gApi.groups().id(contextUserGroup).get().id),
+        false);
+    pushContextUserConfig(manifestNameKey.get(), projectName, contextUserApi.get()._accountId);
+
+    // After we upload our config, we upload a new patchset to create the downstreams
+    PushOneCommit.Result result = createChange("subject", "filename2", "echo Hello", "sometopic");
+    result.assertOkStatus();
+    // Check that there are the correct number of changes in the topic
+    List<ChangeInfo> changesInTopic =
+        gApi.changes()
+            .query("topic: " + gApi.changes().id(result.getChangeId()).topic())
+            .withOptions(ListChangesOption.CURRENT_REVISION, ListChangesOption.CURRENT_COMMIT)
+            .get();
+    // There should only be two, as ds_one to ds_two should be a merge conflict
+    assertThat(changesInTopic).hasSize(2);
+
+    List<ChangeInfo> sortedChanges = sortedChanges(changesInTopic);
+
+    // Check that master is at Code-Review -2
+    ChangeInfo masterChangeInfo = sortedChanges.get(1);
+    assertThat(masterChangeInfo.branch).isEqualTo("master");
+    ChangeApi masterChange = gApi.changes().id(masterChangeInfo._number);
+    assertThat(getVote(masterChange, "Code-Review").value).isEqualTo(-2);
   }
 
   private Project.NameKey defaultSetup() throws Exception {

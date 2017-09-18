@@ -317,7 +317,9 @@ public class DownstreamCreator
         createDownstreamMerges(mdsMergeInput);
 
         reviewInput.message =
-            "Automerging to "
+            "Automerging change "
+                + mdsMergeInput.changeNumber
+                + " to "
                 + Joiner.on(", ").join(mdsMergeInput.dsBranchMap.keySet())
                 + " succeeded!";
         reviewInput.notify = NotifyHandling.NONE;
@@ -331,18 +333,16 @@ public class DownstreamCreator
         }
       }
       reviewInput.labels = labels;
+
+      // Make the vote on the original change
+      ChangeInfo originalChange =
+          getOriginalChange(mdsMergeInput.changeNumber, mdsMergeInput.currentRevision);
       // if this fails, i.e. -2 is restricted, catch it and still post message without a vote.
       try {
-        gApi.changes()
-            .id(mdsMergeInput.changeNumber)
-            .revision(CURRENT)
-            .review(reviewInput);
+        gApi.changes().id(originalChange._number).revision(CURRENT).review(reviewInput);
       } catch (AuthException e) {
         reviewInput.labels = null;
-        gApi.changes()
-            .id(mdsMergeInput.changeNumber)
-            .revision(CURRENT)
-            .review(reviewInput);
+        gApi.changes().id(originalChange._number).revision(CURRENT).review(reviewInput);
       }
     }
   }
@@ -522,7 +522,6 @@ public class DownstreamCreator
 
       ChangeApi downstreamChange = gApi.changes().create(downstreamChangeInput);
       tagChange(downstreamChange.get(), "Automerger change created!");
-      
     }
   }
 
@@ -654,7 +653,7 @@ public class DownstreamCreator
       log.error("Automerger could not set label, but still continuing.", e);
     }
   }
-  
+
   private void tagChange(ChangeInfo change, String message) throws RestApiException {
     ReviewInput reviewInput = new ReviewInput();
     reviewInput.message(message);
@@ -715,6 +714,22 @@ public class DownstreamCreator
     return previousRevision;
   }
 
+  private ChangeInfo getOriginalChange(int changeNumber, String currentRevision)
+      throws RestApiException, InvalidQueryParameterException {
+    List<String> parents = getChangeParents(changeNumber, currentRevision);
+    if (parents.size() >= 2) {
+      String secondParentRevision = parents.get(1);
+      String topic = gApi.changes().id(changeNumber).topic();
+      List<ChangeInfo> changesInTopic = getChangesInTopic(topic);
+      for (ChangeInfo change : changesInTopic) {
+        if (change.currentRevision.equals(secondParentRevision)) {
+          return getOriginalChange(change._number, secondParentRevision);
+        }
+      }
+    }
+    return gApi.changes().id(changeNumber).get();
+  }
+
   private List<String> getChangeParents(int changeNumber, String currentRevision)
       throws RestApiException {
     ChangeApi change = gApi.changes().id(changeNumber);
@@ -755,12 +770,26 @@ public class DownstreamCreator
     return null;
   }
 
-  private List<ChangeInfo> getChangesInTopicAndBranch(String topic, String downstreamBranch)
-      throws InvalidQueryParameterException, RestApiException {
+  private QueryBuilder constructTopicQuery(String topic) throws InvalidQueryParameterException {
     QueryBuilder queryBuilder = new QueryBuilder();
     queryBuilder.addParameter("topic", topic);
-    queryBuilder.addParameter("branch", downstreamBranch);
     queryBuilder.addParameter("status", "open");
+    return queryBuilder;
+  }
+
+  private List<ChangeInfo> getChangesInTopic(String topic)
+      throws InvalidQueryParameterException, RestApiException {
+    QueryBuilder queryBuilder = constructTopicQuery(topic);
+    return gApi.changes()
+        .query(queryBuilder.get())
+        .withOptions(ListChangesOption.ALL_REVISIONS, ListChangesOption.CURRENT_COMMIT)
+        .get();
+  }
+
+  private List<ChangeInfo> getChangesInTopicAndBranch(String topic, String downstreamBranch)
+      throws InvalidQueryParameterException, RestApiException {
+    QueryBuilder queryBuilder = constructTopicQuery(topic);
+    queryBuilder.addParameter("branch", downstreamBranch);
     return gApi.changes()
         .query(queryBuilder.get())
         .withOptions(ListChangesOption.ALL_REVISIONS, ListChangesOption.CURRENT_COMMIT)
