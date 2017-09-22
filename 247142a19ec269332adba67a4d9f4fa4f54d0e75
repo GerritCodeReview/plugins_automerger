@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8dc85086_265eb464",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2017-09-22T09:34:49Z",
+      "side": 1,
+      "message": "Remove this. \"importing\" is a google internal concept that is not relevant to the open source plugin.",
+      "range": {
+        "startLine": 9,
+        "startChar": 41,
+        "endLine": 12,
+        "endChar": 51
+      },
+      "revId": "247142a19ec269332adba67a4d9f4fa4f54d0e75",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
