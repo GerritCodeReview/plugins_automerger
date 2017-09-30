@@ -22,6 +22,30 @@
       "revId": "247142a19ec269332adba67a4d9f4fa4f54d0e75",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "e8fc6c9b_47996f1c",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 3
+      },
+      "lineNbr": 12,
+      "author": {
+        "id": 1031898
+      },
+      "writtenOn": "2017-09-30T09:14:08Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "8dc85086_265eb464",
+      "range": {
+        "startLine": 9,
+        "startChar": 41,
+        "endLine": 12,
+        "endChar": 51
+      },
+      "revId": "247142a19ec269332adba67a4d9f4fa4f54d0e75",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
