@@ -251,7 +251,7 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
 
     // Freeze time so that the merge commit from left->bottom and right->bottom have same SHA
     TestTimeUtil.resetWithClockStep(0, TimeUnit.MILLISECONDS);
-    TestTimeUtil.setClock(new Timestamp(TestTimeUtil.START.getMillis()));
+    TestTimeUtil.setClock(new Timestamp(TestTimeUtil.START.toEpochMilli()));
     // After we upload our config, we upload a new patchset to create the downstreams.
     PushOneCommit.Result result = createChange("subject", "filename2", "echo Hello", "sometopic");
     TestTimeUtil.useSystemTime();
