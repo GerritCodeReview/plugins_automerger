@@ -555,11 +555,6 @@ public class DownstreamCreator
   private void automergeChanges(ChangeInfo change, RevisionInfo revisionInfo)
       throws RestApiException, IOException, ConfigInvalidException, InvalidQueryParameterException,
           OrmException {
-    if (revisionInfo.draft != null && revisionInfo.draft) {
-      log.debug("Patchset {} is draft change, ignoring.", revisionInfo.commit.commit);
-      return;
-    }
-
     String currentRevision = revisionInfo.commit.commit;
     log.debug(
         "Handling patchsetevent with change id {} and revision {}", change.id, currentRevision);
