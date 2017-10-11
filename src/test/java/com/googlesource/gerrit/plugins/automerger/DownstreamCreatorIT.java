@@ -38,7 +38,7 @@ import com.google.gerrit.reviewdb.client.Project;
 import com.google.gerrit.reviewdb.client.RefNames;
 import com.google.gerrit.server.CurrentUser;
 import com.google.gerrit.server.group.SystemGroupBackend;
-import com.google.gerrit.testutil.TestTimeUtil;
+import com.google.gerrit.testing.TestTimeUtil;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import java.io.InputStream;
