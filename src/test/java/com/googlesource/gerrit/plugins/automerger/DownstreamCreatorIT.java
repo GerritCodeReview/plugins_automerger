@@ -41,6 +41,7 @@ import com.google.gerrit.server.group.SystemGroupBackend;
 import com.google.gerrit.testutil.TestTimeUtil;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+import com.googlesource.gerrit.plugins.automerger.helpers.ConfigOption;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.sql.Timestamp;
@@ -72,7 +73,7 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
     String projectName = result.getChange().project().get();
     createBranch(new Branch.NameKey(projectName, "ds_one"));
     createBranch(new Branch.NameKey(projectName, "ds_two"));
-    pushConfig("automerger.config", manifestNameKey.get(), projectName, "ds_one", "ds_two");
+    pushDefaultConfig("automerger.config", manifestNameKey.get(), projectName, "ds_one", "ds_two");
     // After we upload our config, we upload a new patchset to create the downstreams
     amendChange(result.getChangeId());
     result.assertOkStatus();
@@ -315,7 +316,7 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
     String projectName = result.getChange().project().get();
     createBranch(new Branch.NameKey(projectName, "ds_one"));
     createBranch(new Branch.NameKey(projectName, "ds_two"));
-    pushConfig("automerger.config", manifestNameKey.get(), projectName, "ds_one", "ds_two");
+    pushDefaultConfig("automerger.config", manifestNameKey.get(), projectName, "ds_one", "ds_two");
     // After we upload our config, we upload a new patchset to create the downstreams
     amendChange(result.getChangeId());
     result.assertOkStatus();
@@ -397,7 +398,7 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
     String projectName = result.getChange().project().get();
     createBranch(new Branch.NameKey(projectName, "ds_one"));
     createBranch(new Branch.NameKey(projectName, "ds_two"));
-    pushConfig("automerger.config", manifestNameKey.get(), projectName, "ds_one", "ds_two");
+    pushDefaultConfig("automerger.config", manifestNameKey.get(), projectName, "ds_one", "ds_two");
     // After we upload our config, we upload a new patchset to create the downstreams
     amendChange(result.getChangeId(), "DO NOT MERGE subject", "filename", "content");
     result.assertOkStatus();
@@ -460,7 +461,7 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
     String projectName = result.getChange().project().get();
     createBranch(new Branch.NameKey(projectName, "ds_one"));
     createBranch(new Branch.NameKey(projectName, "ds_two"));
-    pushConfig("automerger.config", manifestNameKey.get(), projectName, "ds_one", "ds_two");
+    pushDefaultConfig("automerger.config", manifestNameKey.get(), projectName, "ds_one", "ds_two");
     // After we upload our config, we upload a new patchset to create the downstreams
     amendChange(result.getChangeId(), "DO NOT MERGE ANYWHERE subject", "filename", "content");
     result.assertOkStatus();
@@ -533,7 +534,7 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
     merge(ds1Result);
     // Reset to allow our merge conflict to come
     testRepo.reset(initial);
-    pushConfig("automerger.config", manifestNameKey.get(), projectName, "ds_one", "ds_two");
+    pushDefaultConfig("automerger.config", manifestNameKey.get(), projectName, "ds_one", "ds_two");
     // After we upload our config, we upload a new change to create the downstreams
     PushOneCommit.Result masterResult =
         pushFactory
@@ -600,7 +601,7 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
     merge(ds1Result);
     // Reset to allow our merge conflict to come
     testRepo.reset(initial);
-    pushConfig("automerger.config", manifestNameKey.get(), projectName, "ds_one", "ds_two");
+    pushDefaultConfig("automerger.config", manifestNameKey.get(), projectName, "ds_one", "ds_two");
 
     // Block Code Review label to test restrictions
     blockLabel("Code-Review", -2, 2, SystemGroupBackend.CHANGE_OWNER, "refs/heads/*", project);
@@ -658,7 +659,7 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
     String projectName = result.getChange().project().get();
     createBranch(new Branch.NameKey(projectName, "ds_one"));
     createBranch(new Branch.NameKey(projectName, "ds_two"));
-    pushConfig("automerger.config", manifestNameKey.get(), projectName, "ds_one", "ds_two");
+    pushDefaultConfig("automerger.config", manifestNameKey.get(), projectName, "ds_one", "ds_two");
     // After we upload our config, we upload a new patchset to create the downstreams
     amendChange(result.getChangeId());
     result.assertOkStatus();
@@ -683,7 +684,7 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
     String projectName = result.getChange().project().get();
     createBranch(new Branch.NameKey(projectName, "ds_one"));
     createBranch(new Branch.NameKey(projectName, "ds_two"));
-    pushConfig("automerger.config", manifestNameKey.get(), projectName, "ds_one", "ds_two");
+    pushDefaultConfig("automerger.config", manifestNameKey.get(), projectName, "ds_one", "ds_two");
     // After we upload our config, we upload a new patchset to create the downstreams
     amendChange(result.getChangeId());
     result.assertOkStatus();
@@ -710,7 +711,7 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
     String projectName = result.getChange().project().get();
     createBranch(new Branch.NameKey(projectName, "ds_one"));
     createBranch(new Branch.NameKey(projectName, "ds_two"));
-    pushConfig("automerger.config", manifestNameKey.get(), projectName, "ds_one", "ds_two");
+    pushDefaultConfig("automerger.config", manifestNameKey.get(), projectName, "ds_one", "ds_two");
     // After we upload our config, we upload a new patchset to create the downstreams
     amendChange(result.getChangeId());
     result.assertOkStatus();
@@ -735,7 +736,7 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
     String projectName = result.getChange().project().get();
     createBranch(new Branch.NameKey(projectName, "branch{}braces"));
     createBranch(new Branch.NameKey(projectName, "branch\"quotes"));
-    pushConfig(
+    pushDefaultConfig(
         "automerger.config",
         manifestNameKey.get(),
         projectName,
@@ -762,7 +763,7 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
     // Project name is scoped by test, so we need to get it from our initial change
     String projectName = result.getChange().project().get();
     createBranch(new Branch.NameKey(projectName, "ds_one"));
-    pushConfig("automerger.config", manifestNameKey.get(), projectName, "ds_one", null);
+    pushSimpleConfig("automerger.config", manifestNameKey.get(), projectName, "ds_one");
     // After we upload our config, we upload a new patchset to create the downstreams
     amendChange(result.getChangeId());
     result.assertOkStatus();
@@ -805,7 +806,8 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
         false,
         AccountGroup.UUID.parse(gApi.groups().id(contextUserGroup).get().id),
         true);
-    pushContextUserConfig(manifestNameKey.get(), projectName, contextUserApi.get()._accountId);
+    pushContextUserConfig(
+        manifestNameKey.get(), projectName, contextUserApi.get()._accountId.toString());
 
     // After we upload our config, we upload a new patchset to create the downstreams
     PushOneCommit.Result result = createChange("subject", "filename2", "echo Hello", "sometopic");
@@ -872,7 +874,8 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
         false,
         AccountGroup.UUID.parse(gApi.groups().id(contextUserGroup).get().id),
         false);
-    pushContextUserConfig(manifestNameKey.get(), projectName, contextUserApi.get()._accountId);
+    pushContextUserConfig(
+        manifestNameKey.get(), projectName, contextUserApi.get()._accountId.toString());
 
     // After we upload our config, we upload a new patchset to create the downstreams
     PushOneCommit.Result result = createChange("subject", "filename2", "echo Hello", "sometopic");
@@ -965,7 +968,8 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
         false,
         AccountGroup.UUID.parse(gApi.groups().id(contextUserGroup).get().id),
         false);
-    pushContextUserConfig(manifestNameKey.get(), projectName, contextUserApi.get()._accountId);
+    pushContextUserConfig(
+        manifestNameKey.get(), projectName, contextUserApi.get()._accountId.toString());
 
     // After we upload our config, we upload a new patchset to create the downstreams
     PushOneCommit.Result result = createChange("subject", "filename2", "echo Hello", "sometopic");
@@ -1009,9 +1013,7 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
     }
   }
 
-  private void pushConfig(
-      String resourceName, String manifestName, String project, String branch1, String branch2)
-      throws Exception {
+  private void pushConfig(List<ConfigOption> cfgOptions, String resourceName) throws Exception {
     TestRepository<InMemoryRepository> allProjectRepo = cloneProject(allProjects, admin);
     GitUtil.fetch(allProjectRepo, RefNames.REFS_CONFIG + ":config");
     allProjectRepo.reset("config");
@@ -1020,65 +1022,54 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
 
       Config cfg = new Config();
       cfg.fromText(resourceString);
-      // Update manifest project path to the result of createProject(resourceName), since it is
-      // scoped to the test method
-      cfg.setString("global", null, "manifestProject", manifestName);
-      if (branch1 != null) {
-        cfg.setString("automerger", "master:" + branch1, "setProjects", project);
+
+      for (ConfigOption cfgOption : cfgOptions) {
+        cfg.setString(cfgOption.section, cfgOption.subsection, cfgOption.key, cfgOption.value);
       }
-      if (branch2 != null) {
-        cfg.setString("automerger", "master:" + branch2, "setProjects", project);
-      }
+
       PushOneCommit push =
           pushFactory.create(
               db, admin.getIdent(), allProjectRepo, "Subject", "automerger.config", cfg.toText());
       push.to(RefNames.REFS_CONFIG).assertOkStatus();
     }
+  }
+
+  private void pushSimpleConfig(
+      String resourceName, String manifestName, String project, String branch1) throws Exception {
+    List<ConfigOption> options = new ArrayList<>();
+    options.add(new ConfigOption("global", null, "manifestProject", manifestName));
+    options.add(new ConfigOption("automerger", "master:" + branch1, "setProjects", project));
+    pushConfig(options, resourceName);
+  }
+
+  private void pushDefaultConfig(
+      String resourceName, String manifestName, String project, String branch1, String branch2)
+      throws Exception {
+    List<ConfigOption> options = new ArrayList<>();
+    options.add(new ConfigOption("global", null, "manifestProject", manifestName));
+    options.add(new ConfigOption("automerger", "master:" + branch1, "setProjects", project));
+    options.add(new ConfigOption("automerger", "master:" + branch2, "setProjects", project));
+    pushConfig(options, resourceName);
   }
 
   private void pushDiamondConfig(String manifestName, String project) throws Exception {
-    TestRepository<InMemoryRepository> allProjectRepo = cloneProject(allProjects, admin);
-    GitUtil.fetch(allProjectRepo, RefNames.REFS_CONFIG + ":config");
-    allProjectRepo.reset("config");
-    try (InputStream in = getClass().getResourceAsStream("diamond.config")) {
-      String resourceString = CharStreams.toString(new InputStreamReader(in, Charsets.UTF_8));
-      Config cfg = new Config();
-      cfg.fromText(resourceString);
-      // Update manifest project path to the result of createProject(resourceName), since it is
-      // scoped to the test method
-      cfg.setString("global", null, "manifestProject", manifestName);
-      cfg.setString("automerger", "master:left", "setProjects", project);
-      cfg.setString("automerger", "master:right", "setProjects", project);
-      cfg.setString("automerger", "left:bottom", "setProjects", project);
-      cfg.setString("automerger", "right:bottom", "setProjects", project);
-      PushOneCommit push =
-          pushFactory.create(
-              db, admin.getIdent(), allProjectRepo, "Subject", "automerger.config", cfg.toText());
-      push.to(RefNames.REFS_CONFIG).assertOkStatus();
-    }
+    List<ConfigOption> options = new ArrayList<>();
+    options.add(new ConfigOption("global", null, "manifestProject", manifestName));
+    options.add(new ConfigOption("automerger", "master:left", "setProjects", project));
+    options.add(new ConfigOption("automerger", "master:right", "setProjects", project));
+    options.add(new ConfigOption("automerger", "left:bottom", "setProjects", project));
+    options.add(new ConfigOption("automerger", "right:bottom", "setProjects", project));
+    pushConfig(options, "diamond.config");
   }
 
-  private void pushContextUserConfig(String manifestName, String project, int contextUserId)
+  private void pushContextUserConfig(String manifestName, String project, String contextUserId)
       throws Exception {
-    TestRepository<InMemoryRepository> allProjectRepo = cloneProject(allProjects, admin);
-    GitUtil.fetch(allProjectRepo, RefNames.REFS_CONFIG + ":config");
-    allProjectRepo.reset("config");
-    try (InputStream in = getClass().getResourceAsStream("context_user.config")) {
-      String resourceString = CharStreams.toString(new InputStreamReader(in, Charsets.UTF_8));
-
-      Config cfg = new Config();
-      cfg.fromText(resourceString);
-      // Update manifest project path to the result of createProject(resourceName), since it is
-      // scoped to the test method
-      cfg.setString("global", null, "manifestProject", manifestName);
-      cfg.setInt("global", null, "contextUserId", contextUserId);
-      cfg.setString("automerger", "master:ds_one", "setProjects", project);
-      cfg.setString("automerger", "ds_one:ds_two", "setProjects", project);
-      PushOneCommit push =
-          pushFactory.create(
-              db, admin.getIdent(), allProjectRepo, "Subject", "automerger.config", cfg.toText());
-      push.to(RefNames.REFS_CONFIG).assertOkStatus();
-    }
+    List<ConfigOption> options = new ArrayList<>();
+    options.add(new ConfigOption("global", null, "manifestProject", manifestName));
+    options.add(new ConfigOption("global", null, "contextUserId", contextUserId));
+    options.add(new ConfigOption("automerger", "master:ds_one", "setProjects", project));
+    options.add(new ConfigOption("automerger", "ds_one:ds_two", "setProjects", project));
+    pushConfig(options, "context_user.config");
   }
 
   private ApprovalInfo getVote(ChangeApi change, String label) throws RestApiException {
