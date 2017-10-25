@@ -24,13 +24,16 @@ java_library(
 junit_tests(
     name = "automerger_tests",
     srcs = glob([
-        "src/test/java/**/*Test.java",
-        "src/test/java/**/*IT.java",
+        "src/test/java/**/*.java",
     ]),
     resources = glob(["src/test/resources/**/*"]),
     tags = ["automerger"],
+    test_class = glob([
+        "src/test/java/**/*Test.java",
+        "src/test/java/**/*IT.java",
+    ]),
     deps = PLUGIN_DEPS + PLUGIN_TEST_DEPS + [
-        ":automerger_test_helpers",
+        #        ":automerger_test_helpers",
         ":automerger__plugin",
         "@commons_net//jar",
     ],
