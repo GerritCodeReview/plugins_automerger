@@ -16,12 +16,21 @@ gerrit_plugin(
     ],
 )
 
+java_library(
+    name = "automerger_test_helpers",
+    srcs = glob(["src/test/java/**/helpers/*.java"]),
+)
+
 junit_tests(
     name = "automerger_tests",
-    srcs = glob(["src/test/java/**/*.java"]),
+    srcs = glob([
+        "src/test/java/**/*Test.java",
+        "src/test/java/**/*IT.java",
+    ]),
     resources = glob(["src/test/resources/**/*"]),
     tags = ["automerger"],
     deps = PLUGIN_DEPS + PLUGIN_TEST_DEPS + [
+        ":automerger_test_helpers",
         ":automerger__plugin",
         "@commons_net//jar",
     ],
