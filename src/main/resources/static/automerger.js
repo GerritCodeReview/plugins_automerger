@@ -75,12 +75,21 @@ Gerrit.install(function(self) {
         var revisionId = currentChange.current_revision;
         var url = `/changes/${changeId}/revisions/${revisionId}` +
                    `/automerger~config-downstream`;
-        Gerrit.post(
+        if (window.Polymer) {
+          self.post(
             url, {'subject': currentChange.subject},
             function(resp) {
                 downstreamConfigMap = resp;
                 styleRelatedChanges();
             });
+        } else {
+          Gerrit.post(
+            url, {'subject': currentChange.subject},
+            function(resp) {
+                downstreamConfigMap = resp;
+                styleRelatedChanges();
+            });
+        }
     }
 
     function onShowChange(e) {
@@ -88,6 +97,12 @@ Gerrit.install(function(self) {
         getDownstreamConfigMap();
     }
 
+    if (window.Polymer) {
+        self.deprecated.install();
+        self.on('showchange', onShowChange);
+    } else {
+        Gerrit.on('showchange', onShowChange);
+    }
+
     self.onAction('revision', 'automerge-change', onAutomergeChange);
-    Gerrit.on('showchange', onShowChange);
 });
