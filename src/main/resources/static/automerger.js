@@ -52,7 +52,7 @@ Gerrit.install(function(self) {
             });
             // gerrit converts to camelcase on the java end
             c.call({'branch_map': branchMap},
-                function(r){ Gerrit.refresh(); });
+                function(r){ c.refresh(); });
         }});
     }
 
@@ -75,7 +75,7 @@ Gerrit.install(function(self) {
         var revisionId = currentChange.current_revision;
         var url = `/changes/${changeId}/revisions/${revisionId}` +
                    `/automerger~config-downstream`;
-        Gerrit.post(
+        self.post(
             url, {'subject': currentChange.subject},
             function(resp) {
                 downstreamConfigMap = resp;
@@ -88,6 +88,10 @@ Gerrit.install(function(self) {
         getDownstreamConfigMap();
     }
 
+    if (window.Polymer) {
+        self.deprecated.install();
+    }
+
     self.onAction('revision', 'automerge-change', onAutomergeChange);
-    Gerrit.on('showchange', onShowChange);
+    self.on('showchange', onShowChange);
 });
