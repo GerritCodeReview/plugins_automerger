@@ -88,6 +88,10 @@ Gerrit.install(function(self) {
         getDownstreamConfigMap();
     }
 
+    if (window.Polymer) {
+        self.deprecated.install();
+    }
+
     self.onAction('revision', 'automerge-change', onAutomergeChange);
     Gerrit.on('showchange', onShowChange);
 });
