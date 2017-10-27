@@ -206,14 +206,7 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
 
     // Either bottomChangeInfoA came from left and bottomChangeInfoB came from right, or vice versa
     // We don't know which, so we use the if condition to check
-    String bottomChangeInfoASecondParent =
-        bottomChangeInfoA
-            .revisions
-            .get(bottomChangeInfoA.currentRevision)
-            .commit
-            .parents
-            .get(1)
-            .commit;
+    String bottomChangeInfoASecondParent = getParent(bottomChangeInfoA, 1);
     if (bottomChangeInfoASecondParent.equals(leftChangeInfo.currentRevision)) {
       assertThat(bottomChangeInfoA.subject)
           .isEqualTo(
@@ -315,8 +308,7 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
     // Project name is scoped by test, so we need to get it from our initial change
     String projectName = result.getChange().project().get();
     createBranch(new Branch.NameKey(projectName, "ds_one"));
-    createBranch(new Branch.NameKey(projectName, "ds_two"));
-    pushDefaultConfig("automerger.config", manifestNameKey.get(), projectName, "ds_one", "ds_two");
+    pushSimpleConfig("automerger.config", manifestNameKey.get(), projectName, "ds_one");
     // After we upload our config, we upload a new patchset to create the downstreams
     amendChange(result.getChangeId());
     result.assertOkStatus();
@@ -328,64 +320,32 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
             .query("topic: " + gApi.changes().id(result.getChangeId()).topic())
             .withOptions(ListChangesOption.ALL_REVISIONS, ListChangesOption.CURRENT_COMMIT)
             .get();
-    assertThat(changesInTopic).hasSize(6);
+    assertThat(changesInTopic).hasSize(4);
     List<ChangeInfo> sortedChanges = sortedChanges(changesInTopic);
 
-    // Change A
-    ChangeInfo dsOneChangeInfo = sortedChanges.get(0);
-    assertThat(dsOneChangeInfo.branch).isEqualTo("ds_one");
-    // Change B
-    ChangeInfo dsOneChangeInfo2 = sortedChanges.get(1);
-    assertThat(dsOneChangeInfo2.branch).isEqualTo("ds_one");
-    String dsOneChangeInfo2FirstParentSha =
-        dsOneChangeInfo2
-            .revisions
-            .get(dsOneChangeInfo2.currentRevision)
-            .commit
-            .parents
-            .get(0)
-            .commit;
-    assertThat(dsOneChangeInfo.currentRevision).isEqualTo(dsOneChangeInfo2FirstParentSha);
-
     // Change A'
-    ChangeInfo dsTwoChangeInfo = sortedChanges.get(2);
-    assertThat(dsTwoChangeInfo.branch).isEqualTo("ds_two");
+    ChangeInfo aPrime = sortedChanges.get(0);
+    assertThat(aPrime.branch).isEqualTo("ds_one");
     // Change B'
-    ChangeInfo dsTwoChangeInfo2 = sortedChanges.get(3);
-    assertThat(dsTwoChangeInfo2.branch).isEqualTo("ds_two");
-    String dsTwoChangeInfo2FirstParentSha =
-        dsTwoChangeInfo2
-            .revisions
-            .get(dsTwoChangeInfo2.currentRevision)
-            .commit
-            .parents
-            .get(0)
-            .commit;
-    // Check that first parent of B' is A'
-    assertThat(dsTwoChangeInfo.currentRevision).isEqualTo(dsTwoChangeInfo2FirstParentSha);
+    ChangeInfo bPrime = sortedChanges.get(1);
+    assertThat(bPrime.branch).isEqualTo("ds_one");
+    String bPrimeFirstParent = getParent(bPrime, 0);
+    assertThat(aPrime.currentRevision).isEqualTo(bPrimeFirstParent);
 
-    // Change A''
-    ChangeInfo masterChangeInfo = sortedChanges.get(4);
-    assertThat(masterChangeInfo.branch).isEqualTo("master");
-    // Change B''
-    ChangeInfo masterChangeInfo2 = sortedChanges.get(5);
-    assertThat(masterChangeInfo2.branch).isEqualTo("master");
-    String masterChangeInfo2FirstParentSha =
-        masterChangeInfo2
-            .revisions
-            .get(masterChangeInfo2.currentRevision)
-            .commit
-            .parents
-            .get(0)
-            .commit;
-    // Check that first parent of B'' is A''
-    assertThat(masterChangeInfo.currentRevision).isEqualTo(masterChangeInfo2FirstParentSha);
+    // Change A
+    ChangeInfo a = sortedChanges.get(2);
+    assertThat(a.branch).isEqualTo("master");
+    // Change B
+    ChangeInfo b = sortedChanges.get(3);
+    assertThat(b.branch).isEqualTo("master");
+    String bFirstParent = getParent(b, 0);
+    // Check that first parent of B is A
+    assertThat(bFirstParent).isEqualTo(a.currentRevision);
 
     // Ensure that commit subjects are correct
-    String shortMasterSha = masterChangeInfo.currentRevision.substring(0, 10);
-    assertThat(masterChangeInfo.subject).doesNotContainMatch("automerger");
-    assertThat(dsOneChangeInfo.subject).isEqualTo("[automerger] test commit am: " + shortMasterSha);
-    assertThat(dsTwoChangeInfo.subject).isEqualTo("[automerger] test commit am: " + shortMasterSha);
+    String shortASha = a.currentRevision.substring(0, 10);
+    assertThat(a.subject).doesNotContainMatch("automerger");
+    assertThat(aPrime.subject).isEqualTo("[automerger] test commit am: " + shortASha);
   }
 
   @Test
@@ -1101,5 +1061,9 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
           }
         });
     return listCopy;
+  }
+
+  public String getParent(ChangeInfo info, int number) {
+    return info.revisions.get(info.currentRevision).commit.parents.get(number).commit;
   }
 }
