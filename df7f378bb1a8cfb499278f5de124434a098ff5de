@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "8c0ed4e2_2393e39d",
+        "filename": "src/main/resources/static/automerger.js",
+        "patchSetId": 5
+      },
+      "lineNbr": 86,
+      "author": {
+        "id": 1024777
+      },
+      "writtenOn": "2017-10-27T17:51:00Z",
+      "side": 1,
+      "message": "Since Gerrit.post() is the same as self.post(), you can just use self.post() always.",
+      "revId": "df7f378bb1a8cfb499278f5de124434a098ff5de",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b7d78974_4e8b8d09",
+        "filename": "src/main/resources/static/automerger.js",
+        "patchSetId": 5
+      },
+      "lineNbr": 102,
+      "author": {
+        "id": 1024777
+      },
+      "writtenOn": "2017-10-27T17:51:00Z",
+      "side": 1,
+      "message": "Since self.on() does exactly the same as Gerrit.on(), you can just use self.on() always.",
+      "revId": "df7f378bb1a8cfb499278f5de124434a098ff5de",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
