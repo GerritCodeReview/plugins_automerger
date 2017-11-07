@@ -24,6 +24,7 @@ import com.google.gerrit.acceptance.PushOneCommit;
 import com.google.gerrit.acceptance.TestPlugin;
 import com.google.gerrit.extensions.api.accounts.AccountApi;
 import com.google.gerrit.extensions.api.changes.ChangeApi;
+import com.google.gerrit.extensions.api.changes.RebaseInput;
 import com.google.gerrit.extensions.api.changes.ReviewInput;
 import com.google.gerrit.extensions.client.ListChangesOption;
 import com.google.gerrit.extensions.common.ApprovalInfo;
@@ -346,6 +347,71 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
     String shortASha = a.currentRevision.substring(0, 10);
     assertThat(a.subject).doesNotContainMatch("automerger");
     assertThat(aPrime.subject).isEqualTo("[automerger] test commit am: " + shortASha);
+  }
+
+  @Test
+  public void testChangeStack_rebaseAfterUpload() throws Exception {
+    Project.NameKey manifestNameKey = defaultSetup();
+    // Save initial ref at HEAD
+    ObjectId initial = repo().exactRef("HEAD").getLeaf().getObjectId();
+    // Create initial change
+    PushOneCommit.Result result = createChange("subject", "filename", "content", "testtopic");
+    // Project name is scoped by test, so we need to get it from our initial change
+    String projectName = result.getChange().project().get();
+    createBranch(new Branch.NameKey(projectName, "ds_one"));
+    pushSimpleConfig("automerger.config", manifestNameKey.get(), projectName, "ds_one");
+    // After we upload our config, we upload a new patchset to create the downstreams
+    amendChange(result.getChangeId());
+    result.assertOkStatus();
+
+    // Reset to initial ref to create a sibling
+    testRepo.reset(initial);
+
+    PushOneCommit.Result result2 =
+        createChange(testRepo, "master", "subject2", "filename2", "content2", "testtopic");
+    result2.assertOkStatus();
+    // Check that there are the correct number of changes in the topic
+    List<ChangeInfo> changesInTopic =
+        gApi.changes()
+            .query("topic: " + gApi.changes().id(result.getChangeId()).topic())
+            .withOptions(ListChangesOption.ALL_REVISIONS, ListChangesOption.CURRENT_COMMIT)
+            .get();
+    assertThat(changesInTopic).hasSize(4);
+    List<ChangeInfo> sortedChanges = sortedChanges(changesInTopic);
+
+    // Check the first downstream change A'
+    ChangeInfo aPrime = sortedChanges.get(0);
+    assertThat(aPrime.branch).isEqualTo("ds_one");
+    // Check the second downstream change B'
+    ChangeInfo bPrime = sortedChanges.get(1);
+    assertThat(bPrime.branch).isEqualTo("ds_one");
+    // Check that B' does not have a first parent of A' yet
+    String bPrimeFirstParent = getParent(bPrime, 0);
+    assertThat(aPrime.currentRevision).isNotEqualTo(bPrimeFirstParent);
+
+    // Change A
+    ChangeInfo a = sortedChanges.get(2);
+    assertThat(a.branch).isEqualTo("master");
+    // Change B
+    ChangeInfo b = sortedChanges.get(3);
+    assertThat(b.branch).isEqualTo("master");
+    String masterChangeInfo2FirstParentSha = getParent(b, 0);
+    // Check that first parent of B is not A
+    assertThat(a.currentRevision).isNotEqualTo(masterChangeInfo2FirstParentSha);
+
+    // Rebase B on A
+    RebaseInput rebaseInput = new RebaseInput();
+    rebaseInput.base = a.currentRevision;
+    gApi.changes().id(b.changeId).rebase(rebaseInput);
+
+    // Check that B is now based on A, and B' is now based on A'
+    ChangeInfo bAfterRebase = gApi.changes().id(b.changeId).get();
+    String bAfterRebaseFirstParent = getParent(bAfterRebase, 0);
+    assertThat(bAfterRebaseFirstParent).isEqualTo(a.currentRevision);
+
+    ChangeInfo bPrimeAfterRebase = gApi.changes().id(bPrime.changeId).get();
+    String bPrimeAfterRebaseFirstParent = getParent(bPrimeAfterRebase, 0);
+    assertThat(bPrimeAfterRebaseFirstParent).isEqualTo(aPrime.currentRevision);
   }
 
   @Test

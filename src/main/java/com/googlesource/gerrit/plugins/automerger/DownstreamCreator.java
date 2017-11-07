@@ -365,7 +365,9 @@ public class DownstreamCreator
                     mdsMergeInput.currentRevision,
                     mdsMergeInput.subject,
                     dsChangeNumber,
-                    mdsMergeInput.dsBranchMap.get(downstreamBranch));
+                    mdsMergeInput.dsBranchMap.get(downstreamBranch),
+                    mdsMergeInput.changeNumber,
+                    downstreamBranch);
                 createDownstreams = false;
               } catch (MergeConflictException e) {
                 failedMergeBranchMap.put(downstreamBranch, e.getMessage());
@@ -641,8 +643,13 @@ public class DownstreamCreator
   }
 
   private void updateDownstreamMerge(
-      String newParentRevision, String upstreamSubject, Integer sourceNum, boolean doMerge)
-      throws RestApiException {
+      String newParentRevision,
+      String upstreamSubject,
+      Integer sourceNum,
+      boolean doMerge,
+      Integer upstreamChangeNumber,
+      String downstreamBranch)
+      throws RestApiException, InvalidQueryParameterException {
     MergeInput mergeInput = new MergeInput();
     mergeInput.source = newParentRevision;
 
@@ -657,6 +664,10 @@ public class DownstreamCreator
       log.debug("Skipping merge for {} on {}", newParentRevision, sourceNum);
     }
     mergePatchSetInput.merge = mergeInput;
+
+    mergePatchSetInput.baseChange =
+        getBaseChangeId(
+            getChangeParents(upstreamChangeNumber, newParentRevision), downstreamBranch);
 
     ChangeApi originalChange = gApi.changes().id(sourceNum);
 
