@@ -16,6 +16,7 @@ package com.googlesource.gerrit.plugins.automerger;
 import static com.google.common.base.Strings.isNullOrEmpty;
 
 import com.google.common.base.Joiner;
+import com.google.common.io.CharStreams;
 import com.google.gerrit.extensions.api.GerritApi;
 import com.google.gerrit.extensions.api.changes.AbandonInput;
 import com.google.gerrit.extensions.api.changes.ChangeApi;
@@ -30,6 +31,7 @@ import com.google.gerrit.extensions.common.CommitInfo;
 import com.google.gerrit.extensions.common.LabelInfo;
 import com.google.gerrit.extensions.common.MergeInput;
 import com.google.gerrit.extensions.common.MergePatchSetInput;
+import com.google.gerrit.extensions.common.ProjectInfo;
 import com.google.gerrit.extensions.common.RevisionInfo;
 import com.google.gerrit.extensions.events.ChangeAbandonedListener;
 import com.google.gerrit.extensions.events.ChangeRestoredListener;
@@ -40,11 +42,16 @@ import com.google.gerrit.extensions.restapi.AuthException;
 import com.google.gerrit.extensions.restapi.MergeConflictException;
 import com.google.gerrit.extensions.restapi.RestApiException;
 import com.google.gerrit.server.CurrentUser;
+import com.google.gerrit.server.OutputFormat;
 import com.google.gerrit.server.util.ManualRequestContext;
 import com.google.gerrit.server.util.OneOffRequestContext;
+import com.google.gson.reflect.TypeToken;
 import com.google.gwtorm.server.OrmException;
 import com.google.inject.Inject;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.EnumSet;
 import java.util.HashMap;
@@ -54,6 +61,8 @@ import java.util.OptionalInt;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.UUID;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.ClientProtocolException;
 import org.eclipse.jgit.errors.ConfigInvalidException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -116,62 +125,81 @@ public class DownstreamCreator
   @Override
   public void onTopicEdited(TopicEditedListener.Event event) {
     try (ManualRequestContext ctx = oneOffRequestContext.openAs(config.getContextUserId())) {
-      ChangeInfo eventChange = event.getChange();
-      // We have to re-query for this in order to include the current revision
-      ChangeInfo change;
-      try {
-        change =
-            gApi.changes()
-                .id(eventChange._number)
-                .get(EnumSet.of(ListChangesOption.CURRENT_REVISION));
-      } catch (RestApiException e) {
-        log.error("Automerger could not get change with current revision for onTopicEdited: ", e);
-        return;
-      }
-      String oldTopic = event.getOldTopic();
-      String revision = change.currentRevision;
-      Set<String> downstreamBranches;
-      try {
-        downstreamBranches = config.getDownstreamBranches(change.branch, change.project);
-      } catch (RestApiException | IOException | ConfigInvalidException e) {
-        log.error("Failed to edit downstream topics of {}", change.id, e);
-        return;
-      }
-
-      if (downstreamBranches.isEmpty()) {
-        log.debug("Downstream branches of {} on {} are empty", change.branch, change.project);
-        return;
-      }
-
-      // If change is empty, prevent someone breaking topic.
-      if (isNullOrEmpty(change.topic)) {
-        try {
-          gApi.changes().id(change._number).topic(oldTopic);
-          ReviewInput reviewInput = new ReviewInput();
-          reviewInput.message(
-              "Automerger prevented the topic from changing. Topic can only be modified on "
-                  + "non-automerger-created CLs to a non-empty value.");
-          reviewInput.notify = NotifyHandling.NONE;
-          gApi.changes().id(change._number).revision(CURRENT).review(reviewInput);
-        } catch (RestApiException e) {
-          log.error("Failed to prevent setting empty topic for automerger plugin.", e);
-        }
-      } else {
-        for (String downstreamBranch : downstreamBranches) {
-          try {
-            List<Integer> existingDownstream =
-                getExistingMergesOnBranch(revision, oldTopic, downstreamBranch);
-            for (Integer changeNumber : existingDownstream) {
-              log.debug("Setting topic {} on {}", change.topic, changeNumber);
-              gApi.changes().id(changeNumber).topic(change.topic);
-            }
-          } catch (RestApiException | InvalidQueryParameterException e) {
-            log.error("Failed to edit downstream topics of {}", change.id, e);
-          }
-        }
-      }
+      RemoteApi api = new RemoteApi("android-review.googlesource.com");
+      
+//      HttpResponse response = api.createMergeChange("platform/vendor/google_experimental/automerger", "master-downstream", "a5d4b1df08e488178e23c11c9debc2f8aa5b3728");
+      HttpResponse response = api.getChange("526655");
+      InputStreamReader reader = new InputStreamReader(response.getEntity().getContent());
+      
+//      Reader reader = new InputStreamReader(response.getEntity().getContent());
+//      ChangeInfo info = OutputFormat.JSON_COMPACT.newGson().fromJson(reader, new TypeToken<ChangeInfo>() {}.getType());
+      
+      log.info("code: {}, {}", response.getStatusLine().getStatusCode(), response.getStatusLine().getReasonPhrase());
+      log.info("wadafa: {}", CharStreams.toString(reader));
+//      ChangeInfo eventChange = event.getChange();
+//      // We have to re-query for this in order to include the current revision
+//      ChangeInfo change;
+//      try {
+//        change =
+//            gApi.changes()
+//                .id(eventChange._number)
+//                .get(EnumSet.of(ListChangesOption.CURRENT_REVISION));
+//      } catch (RestApiException e) {
+//        log.error("Automerger could not get change with current revision for onTopicEdited: ", e);
+//        return;
+//      }
+//      String oldTopic = event.getOldTopic();
+//      String revision = change.currentRevision;
+//      Set<String> downstreamBranches;
+//      try {
+//        downstreamBranches = config.getDownstreamBranches(change.branch, change.project);
+//      } catch (RestApiException | IOException | ConfigInvalidException e) {
+//        log.error("Failed to edit downstream topics of {}", change.id, e);
+//        return;
+//      }
+//
+//      if (downstreamBranches.isEmpty()) {
+//        log.debug("Downstream branches of {} on {} are empty", change.branch, change.project);
+//        return;
+//      }
+//
+//      // If change is empty, prevent someone breaking topic.
+//      if (isNullOrEmpty(change.topic)) {
+//        try {
+//          gApi.changes().id(change._number).topic(oldTopic);
+//          ReviewInput reviewInput = new ReviewInput();
+//          reviewInput.message(
+//              "Automerger prevented the topic from changing. Topic can only be modified on "
+//                  + "non-automerger-created CLs to a non-empty value.");
+//          reviewInput.notify = NotifyHandling.NONE;
+//          gApi.changes().id(change._number).revision(CURRENT).review(reviewInput);
+//        } catch (RestApiException e) {
+//          log.error("Failed to prevent setting empty topic for automerger plugin.", e);
+//        }
+//      } else {
+//        for (String downstreamBranch : downstreamBranches) {
+//          try {
+//            List<Integer> existingDownstream =
+//                getExistingMergesOnBranch(revision, oldTopic, downstreamBranch);
+//            for (Integer changeNumber : existingDownstream) {
+//              log.debug("Setting topic {} on {}", change.topic, changeNumber);
+//              gApi.changes().id(changeNumber).topic(change.topic);
+//            }
+//          } catch (RestApiException | InvalidQueryParameterException e) {
+//            log.error("Failed to edit downstream topics of {}", change.id, e);
+//          }
+//        }
+//      }
     } catch (OrmException | ConfigInvalidException e) {
       log.error("Automerger plugin failed onTopicEdited for {}", event.getChange().id, e);
+    } catch (ClientProtocolException e) {
+      // TODO(stephenli): Auto-generated catch block
+      log.error("Automerger asdf failed onTopicEdited for {}", event.getChange().id, e);
+      e.printStackTrace();
+    } catch (IOException e) {
+      // TODO(stephenli): Auto-generated catch block
+      log.error("Automerger fdsa failed onTopicEdited for {}", event.getChange().id, e);
+      e.printStackTrace();
     }
   }
 
