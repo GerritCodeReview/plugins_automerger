@@ -50,5 +50,6 @@ public class AutomergerModule extends AbstractModule {
           }
         });
     DynamicSet.bind(binder(), WebUiPlugin.class).toInstance(new JavaScriptPlugin("automerger.js"));
+    bind(ApiManager.class).to(ApiManager.DefaultApiManager.class);
   }
 }

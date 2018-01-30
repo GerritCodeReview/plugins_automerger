@@ -113,6 +113,18 @@ public class ConfigLoader {
     return false;
   }
 
+  // Returns cross host URL if specified, null if not
+  public String getFromCrossHost(String fromBranch, String toBranch) throws ConfigInvalidException {
+    return getConfig()
+        .getString("automerger", fromBranch + BRANCH_DELIMITER + toBranch, "fromCrossHost");
+  }
+
+  // Returns cross host URL if specified, null if not
+  public String getToCrossHost(String fromBranch, String toBranch) throws ConfigInvalidException {
+    return getConfig()
+        .getString("automerger", fromBranch + BRANCH_DELIMITER + toBranch, "toCrossHost");
+  }
+
   private Pattern getConfigPattern(String key) throws ConfigInvalidException {
     String[] patternList = getConfig().getStringList("global", null, key);
     Set<String> mergeStrings = new HashSet<>(Arrays.asList(patternList));
