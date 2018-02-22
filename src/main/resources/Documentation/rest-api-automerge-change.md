@@ -7,7 +7,7 @@ automerge-change - Automerge a change downstream
 
 SYNOPSIS
 --------
->     POST /projects/{project-name}/automerger~automerge-change
+>     POST /changes/${changeId}/revisions/${revisionId}/automerger~automerge-change
 
 DESCRIPTION
 -----------
@@ -21,7 +21,7 @@ OPTIONS
 REQUEST
 -----------
 ```
-  POST /projects/{project-name}/automerger~automerge-change HTTP/1.0
+  POST /changes/${changeId}/revisions/${revisionId}/automerger~automerge-change HTTP/1.0
   Content-Type application/json;charset=UTF-8
 
   {
