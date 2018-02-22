@@ -1,13 +1,13 @@
-automerger config-downstream
+automerger immediate-config-downstream
 =============================
 
 NAME
 ----
-config-downstream - Get the downstream config map
+immediate-config-downstream - Get the downstream config map
 
 SYNOPSIS
 --------
->     POST /projects/{project-name}/automerger~config-downstream
+>     POST /projects/{project-name}/branches/{branch-id}/automerger~immediate-config-downstream
 
 DESCRIPTION
 -----------
@@ -23,7 +23,7 @@ OPTIONS
 REQUEST
 -----------
 ```
-  POST /projects/{project-name}/automerger~config-downstream HTTP/1.0
+  POST /projects/{project-name}/branches/{branch-id}/automerger~config-downstream HTTP/1.0
   Content-Type application/json;charset=UTF-8
 
   {
