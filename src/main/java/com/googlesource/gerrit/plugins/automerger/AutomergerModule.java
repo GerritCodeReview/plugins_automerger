@@ -47,6 +47,8 @@ public class AutomergerModule extends AbstractModule {
             post(REVISION_KIND, "automerge-change").to(AutomergeChangeAction.class);
             post(REVISION_KIND, "config-downstream").to(ConfigDownstreamAction.class);
             get(BRANCH_KIND, "all-config-downstream").to(AllConfigDownstreamAction.class);
+            post(BRANCH_KIND, "immediate-config-downstream").to(
+                ImmediateConfigDownstreamAction.class);
           }
         });
     DynamicSet.bind(binder(), WebUiPlugin.class).toInstance(new JavaScriptPlugin("automerger.js"));

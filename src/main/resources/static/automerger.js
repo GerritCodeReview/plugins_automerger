@@ -71,10 +71,10 @@ Gerrit.install(function(self) {
     }
 
     function getDownstreamConfigMap() {
-        var changeId = currentChange._number;
-        var revisionId = currentChange.current_revision;
-        var url = `/changes/${changeId}/revisions/${revisionId}` +
-                   `/automerger~config-downstream`;
+        var projectName = currentChange.project;
+        var branchName = currentChange.branch;
+        var url = `/projects/${projectName}/branches/${branchName}` +
+                   `/automerger~immediate-config-downstream`;
         Gerrit.post(
             url, {'subject': currentChange.subject},
             function(resp) {
