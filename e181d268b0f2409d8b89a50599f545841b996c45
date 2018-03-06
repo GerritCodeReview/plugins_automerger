@@ -48,6 +48,30 @@
     },
     {
       "key": {
+        "uuid": "58dd6ae6_4406b993",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2018-03-06T23:59:35Z",
+      "side": 1,
+      "message": "Comments cribbed from https://gerrit-review.googlesource.com/#/c/plugins/automerger/+/155512/:\n\n\u003e No, the map is always from the branch to whatever host it\u0027s on. But it definitely should have a test. I tested getFromCrossHost but neglected to add a test to getFromCrossHostMap. Will fix.\n\nWhat should happen if there are multiple matches? Should it diagnose the collision, or should this be a multimap instead of a map?",
+      "parentUuid": "e1a5a83f_f457efa8",
+      "range": {
+        "startLine": 130,
+        "startChar": 29,
+        "endLine": 130,
+        "endChar": 39
+      },
+      "revId": "e181d268b0f2409d8b89a50599f545841b996c45",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "193e65ab_1f9fb541",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
         "patchSetId": 1
