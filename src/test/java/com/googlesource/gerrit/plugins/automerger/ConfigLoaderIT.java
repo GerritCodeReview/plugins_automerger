@@ -181,20 +181,6 @@ public class ConfigLoaderIT extends LightweightPluginDaemonTest {
         .isEqualTo(expectedBranches);
   }
 
-  @Test
-  public void getFromCrossHostTest() throws Exception {
-    defaultSetup("automerger.config");
-    assertThat(configLoader.getFromCrossHost("other_host_branch", "this_host_branch"))
-        .isEqualTo("https://boogieplex-android.example.com");
-  }
-
-  @Test
-  public void getToCrossHostTest() throws Exception {
-    defaultSetup("automerger.config");
-    assertThat(configLoader.getToCrossHost("this_host_branch", "that_host_branch"))
-        .isEqualTo("https://boogieplex-chrome.example.com");
-  }
-
   private void defaultSetup(String resourceName) throws Exception {
     createProject("All-Projects");
     manifestNameKey = createProject("platform/manifest");
