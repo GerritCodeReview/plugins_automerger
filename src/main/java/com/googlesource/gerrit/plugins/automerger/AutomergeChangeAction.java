@@ -27,7 +27,6 @@ import com.google.gwtorm.server.OrmException;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
 import org.eclipse.jgit.errors.ConfigInvalidException;
 import org.slf4j.Logger;
