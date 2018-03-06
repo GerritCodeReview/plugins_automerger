@@ -24,6 +24,4 @@ public class SingleDownstreamMergeInput {
   public String subject;
   public String downstreamBranch;
   public boolean doMerge;
-  public String fromCrossHost;
-  public String toCrossHost;
 }
