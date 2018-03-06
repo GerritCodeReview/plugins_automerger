@@ -78,6 +78,7 @@ public class DownstreamCreator
   private static final String CURRENT = "current";
 
   protected GerritApi gApi;
+  protected ApiManager apiManager;
   protected ConfigLoader config;
   protected CurrentUser user;
 
@@ -85,8 +86,12 @@ public class DownstreamCreator
 
   @Inject
   public DownstreamCreator(
-      GerritApi gApi, ConfigLoader config, OneOffRequestContext oneOffRequestContext) {
+      GerritApi gApi,
+      ApiManager apiManager,
+      ConfigLoader config,
+      OneOffRequestContext oneOffRequestContext) {
     this.gApi = gApi;
+    this.apiManager = apiManager;
     this.config = config;
     this.oneOffRequestContext = oneOffRequestContext;
   }
@@ -159,11 +164,12 @@ public class DownstreamCreator
       } else {
         for (String downstreamBranch : downstreamBranches) {
           try {
+            String toCrossHost = config.getToCrossHost(change.branch, downstreamBranch);
             List<Integer> existingDownstream =
-                getExistingMergesOnBranch(revision, oldTopic, downstreamBranch);
+                getExistingMergesOnBranch(revision, oldTopic, downstreamBranch, toCrossHost);
             for (Integer changeNumber : existingDownstream) {
               log.debug("Setting topic {} on {}", change.topic, changeNumber);
-              gApi.changes().id(changeNumber).topic(change.topic);
+              apiManager.forHostname(toCrossHost).changes().id(changeNumber).topic(change.topic);
             }
           } catch (RestApiException | InvalidQueryParameterException e) {
             log.error("Failed to edit downstream topics of {}", change.id, e);
@@ -208,11 +214,16 @@ public class DownstreamCreator
 
       for (String downstreamBranch : downstreamBranches) {
         try {
+          String toCrossHost = config.getToCrossHost(change.branch, downstreamBranch);
           List<Integer> existingDownstream =
-              getExistingMergesOnBranch(revision, change.topic, downstreamBranch);
+              getExistingMergesOnBranch(revision, change.topic, downstreamBranch, toCrossHost);
           for (Integer changeNumber : existingDownstream) {
             ChangeInfo downstreamChange =
-                gApi.changes().id(changeNumber).get(EnumSet.of(ListChangesOption.CURRENT_REVISION));
+                apiManager
+                    .forHostname(toCrossHost)
+                    .changes()
+                    .id(changeNumber)
+                    .get(EnumSet.of(ListChangesOption.CURRENT_REVISION));
             for (Map.Entry<String, LabelInfo> labelEntry : labels.entrySet()) {
               if (labelEntry.getValue().all.size() > 0) {
                 OptionalInt maxVote =
@@ -225,7 +236,11 @@ public class DownstreamCreator
                         .max();
 
                 if (maxVote.isPresent()) {
-                  updateVote(downstreamChange, labelEntry.getKey(), (short) maxVote.getAsInt());
+                  updateVote(
+                      downstreamChange,
+                      labelEntry.getKey(),
+                      (short) maxVote.getAsInt(),
+                      toCrossHost);
                 }
               }
             }
@@ -327,13 +342,27 @@ public class DownstreamCreator
 
       // Make the vote on the original change
       ChangeInfo originalChange =
-          getOriginalChange(mdsMergeInput.changeNumber, mdsMergeInput.currentRevision);
+          getOriginalChange(
+              mdsMergeInput.changeNumber,
+              mdsMergeInput.currentRevision,
+              mdsMergeInput.sourceBranch,
+              null);
       // if this fails, i.e. -2 is restricted, catch it and still post message without a vote.
       try {
-        gApi.changes().id(originalChange._number).revision(CURRENT).review(reviewInput);
+        apiManager
+            .forHostname(mdsMergeInput.fromCrossHostMap.get(originalChange.branch))
+            .changes()
+            .id(originalChange._number)
+            .revision(CURRENT)
+            .review(reviewInput);
       } catch (AuthException e) {
         reviewInput.labels = null;
-        gApi.changes().id(originalChange._number).revision(CURRENT).review(reviewInput);
+        apiManager
+            .forHostname(mdsMergeInput.fromCrossHostMap.get(originalChange.branch))
+            .changes()
+            .id(originalChange._number)
+            .revision(CURRENT)
+            .review(reviewInput);
       }
     }
   }
@@ -360,10 +389,14 @@ public class DownstreamCreator
         // If there are existing downstream merges, update them
         // Otherwise, create them.
         boolean createDownstreams = true;
+        String toCrossHost = config.getToCrossHost(mdsMergeInput.sourceBranch, downstreamBranch);
         if (mdsMergeInput.obsoleteRevision != null) {
           existingDownstream =
               getExistingMergesOnBranch(
-                  mdsMergeInput.obsoleteRevision, mdsMergeInput.topic, downstreamBranch);
+                  mdsMergeInput.obsoleteRevision,
+                  mdsMergeInput.topic,
+                  downstreamBranch,
+                  toCrossHost);
           if (!existingDownstream.isEmpty()) {
             log.debug(
                 "Attempting to update downstream merge of {} on branch {}",
@@ -373,19 +406,26 @@ public class DownstreamCreator
             // it's possible to construct it so that it's not
             for (Integer dsChangeNumber : existingDownstream) {
               try {
+                log.info("mds merge input: {}", mdsMergeInput);
+                log.info("mds merge input crosshmap: {}", mdsMergeInput.toCrossHostMap);
+                log.info(
+                    "mds merge input crosshmap: {}",
+                    mdsMergeInput.toCrossHostMap.get(downstreamBranch));
                 updateDownstreamMerge(
                     mdsMergeInput.currentRevision,
                     mdsMergeInput.subject,
                     dsChangeNumber,
                     mdsMergeInput.dsBranchMap.get(downstreamBranch),
                     mdsMergeInput.changeNumber,
-                    downstreamBranch);
+                    downstreamBranch,
+                    mdsMergeInput.toCrossHostMap.get(downstreamBranch),
+                    mdsMergeInput.fromCrossHostMap.get(mdsMergeInput.sourceBranch));
                 createDownstreams = false;
               } catch (MergeConflictException e) {
                 failedMergeBranchMap.put(downstreamBranch, e.getMessage());
                 log.debug(
                     "Abandoning existing, obsolete {} due to merge conflict.", dsChangeNumber);
-                abandonChange(dsChangeNumber);
+                abandonChange(dsChangeNumber, toCrossHost);
               }
             }
           }
@@ -403,6 +443,8 @@ public class DownstreamCreator
           sdsMergeInput.subject = mdsMergeInput.subject;
           sdsMergeInput.downstreamBranch = downstreamBranch;
           sdsMergeInput.doMerge = mdsMergeInput.dsBranchMap.get(downstreamBranch);
+          sdsMergeInput.fromCrossHost = mdsMergeInput.fromCrossHostMap.get(downstreamBranch);
+          sdsMergeInput.toCrossHost = mdsMergeInput.toCrossHostMap.get(downstreamBranch);
           try {
             createSingleDownstreamMerge(sdsMergeInput);
           } catch (MergeConflictException e) {
@@ -437,13 +479,13 @@ public class DownstreamCreator
    * @throws ConfigInvalidException Throws if we fail to read the config
    * @throws OrmException Throws if we fail to open the request context
    */
-  private List<Integer> getExistingMergesOnBranch(
-      String upstreamRevision, String topic, String downstreamBranch)
+  public List<Integer> getExistingMergesOnBranch(
+      String upstreamRevision, String topic, String downstreamBranch, String hostname)
       throws RestApiException, InvalidQueryParameterException, OrmException,
           ConfigInvalidException {
     try (ManualRequestContext ctx = oneOffRequestContext.openAs(config.getContextUserId())) {
       List<Integer> downstreamChangeNumbers = new ArrayList<>();
-      List<ChangeInfo> changes = getChangesInTopicAndBranch(topic, downstreamBranch);
+      List<ChangeInfo> changes = getChangesInTopicAndBranch(topic, downstreamBranch, hostname);
 
       for (ChangeInfo change : changes) {
         String changeRevision = change.currentRevision;
@@ -500,7 +542,9 @@ public class DownstreamCreator
       downstreamChangeInput.baseChange =
           getBaseChangeId(
               getChangeParents(sdsMergeInput.changeNumber, sdsMergeInput.currentRevision),
-              sdsMergeInput.downstreamBranch);
+              sdsMergeInput.downstreamBranch,
+              sdsMergeInput.fromCrossHost,
+              sdsMergeInput.toCrossHost);
 
       if (!sdsMergeInput.doMerge) {
         mergeInput.strategy = "ours";
@@ -513,8 +557,9 @@ public class DownstreamCreator
             sdsMergeInput.downstreamBranch);
       }
 
-      ChangeApi downstreamChange = gApi.changes().create(downstreamChangeInput);
-      tagChange(downstreamChange.get(), "Automerger change created!");
+      ChangeApi downstreamChange =
+          apiManager.forHostname(sdsMergeInput.toCrossHost).changes().create(downstreamChangeInput);
+      tagChange(downstreamChange.get(), "Automerger change created!", sdsMergeInput.toCrossHost);
     }
   }
 
@@ -530,19 +575,21 @@ public class DownstreamCreator
    * @throws InvalidQueryParameterException
    * @throws RestApiException
    */
-  private String getBaseChangeId(List<String> parents, String branch)
+  private String getBaseChangeId(
+      List<String> parents, String branch, String fromCrossHost, String toCrossHost)
       throws InvalidQueryParameterException, RestApiException {
     if (parents.isEmpty()) {
       log.info("No base change id for change with no parents.");
       return null;
     }
     // 1) Get topic of first parent
-    String firstParentTopic = getTopic(parents.get(0));
+    String firstParentTopic = getTopic(parents.get(0), fromCrossHost);
     if (firstParentTopic == null) {
       return null;
     }
     // 2) query that topic and use that to find A'
-    List<ChangeInfo> changesInTopic = getChangesInTopicAndBranch(firstParentTopic, branch);
+    List<ChangeInfo> changesInTopic =
+        getChangesInTopicAndBranch(firstParentTopic, branch, toCrossHost);
     String firstParent = parents.get(0);
     for (ChangeInfo change : changesInTopic) {
       List<CommitInfo> topicChangeParents =
@@ -568,8 +615,9 @@ public class DownstreamCreator
       return;
     }
 
-    // Map whether or not we should merge it or skip it for each downstream
+    // Map of whether or not we should merge it or skip it for each downstream
     Map<String, Boolean> dsBranchMap = new HashMap<String, Boolean>();
+    // Map of downstream branch to corresponding API to use.
     for (String downstreamBranch : downstreamBranches) {
       boolean isSkipMerge = config.isSkipMerge(change.branch, downstreamBranch, change.subject);
       dsBranchMap.put(downstreamBranch, !isSkipMerge);
@@ -583,11 +631,14 @@ public class DownstreamCreator
     mdsMergeInput.dsBranchMap = dsBranchMap;
     mdsMergeInput.changeNumber = change._number;
     mdsMergeInput.patchsetNumber = revisionInfo._number;
+    mdsMergeInput.sourceBranch = change.branch;
     mdsMergeInput.project = change.project;
     mdsMergeInput.topic = getOrSetTopic(change._number, change.topic);
     mdsMergeInput.subject = change.subject;
     mdsMergeInput.obsoleteRevision = previousRevision;
     mdsMergeInput.currentRevision = currentRevision;
+    mdsMergeInput.fromCrossHostMap = config.getFromCrossHostMap(change.branch, downstreamBranches);
+    mdsMergeInput.toCrossHostMap = config.getToCrossHostMap(change.branch, downstreamBranches);
 
     createMergesAndHandleConflicts(mdsMergeInput);
   }
@@ -602,11 +653,13 @@ public class DownstreamCreator
       }
 
       for (String downstreamBranch : downstreamBranches) {
+        String toCrossHost = config.getToCrossHost(change.branch, downstreamBranch);
+
         List<Integer> existingDownstream =
-            getExistingMergesOnBranch(revision, change.topic, downstreamBranch);
+            getExistingMergesOnBranch(revision, change.topic, downstreamBranch, toCrossHost);
         log.debug("Abandoning existing downstreams: {}", existingDownstream);
         for (Integer changeNumber : existingDownstream) {
-          abandonChange(changeNumber);
+          abandonChange(changeNumber, toCrossHost);
         }
       }
     } catch (RestApiException | IOException | InvalidQueryParameterException e) {
@@ -614,7 +667,8 @@ public class DownstreamCreator
     }
   }
 
-  private void updateVote(ChangeInfo change, String label, short vote) throws RestApiException {
+  private void updateVote(ChangeInfo change, String label, short vote, String hostname)
+      throws RestApiException {
     log.debug("Giving {} for label {} to {}", vote, label, change.id);
     // Vote on all downstream branches unless merge conflict.
     ReviewInput reviewInput = new ReviewInput();
@@ -624,19 +678,30 @@ public class DownstreamCreator
     reviewInput.notify = NotifyHandling.NONE;
     reviewInput.tag = AUTOMERGER_TAG;
     try {
-      gApi.changes().id(change.id).revision(CURRENT).review(reviewInput);
+      apiManager
+          .forHostname(hostname)
+          .changes()
+          .id(change.id)
+          .revision(CURRENT)
+          .review(reviewInput);
     } catch (AuthException e) {
       log.error("Automerger could not set label, but still continuing.", e);
     }
   }
 
-  private void tagChange(ChangeInfo change, String message) throws RestApiException {
+  private void tagChange(ChangeInfo change, String message, String hostname)
+      throws RestApiException {
     ReviewInput reviewInput = new ReviewInput();
     reviewInput.message(message);
     reviewInput.notify = NotifyHandling.NONE;
     reviewInput.tag = AUTOMERGER_TAG;
     try {
-      gApi.changes().id(change.id).revision(CURRENT).review(reviewInput);
+      apiManager
+          .forHostname(hostname)
+          .changes()
+          .id(change.id)
+          .revision(CURRENT)
+          .review(reviewInput);
     } catch (AuthException e) {
       log.error("Automerger could not set label, but still continuing.", e);
     }
@@ -645,10 +710,12 @@ public class DownstreamCreator
   private void updateDownstreamMerge(
       String newParentRevision,
       String upstreamSubject,
-      Integer sourceNum,
+      Integer existingDownstreamNum,
       boolean doMerge,
       Integer upstreamChangeNumber,
-      String downstreamBranch)
+      String downstreamBranch,
+      String fromCrossHost,
+      String toCrossHost)
       throws RestApiException, InvalidQueryParameterException {
     MergeInput mergeInput = new MergeInput();
     mergeInput.source = newParentRevision;
@@ -661,15 +728,19 @@ public class DownstreamCreator
       mergeInput.strategy = "ours";
       mergePatchSetInput.subject =
           getSubjectForDownstreamMerge(upstreamSubject, newParentRevision, true);
-      log.debug("Skipping merge for {} on {}", newParentRevision, sourceNum);
+      log.debug("Skipping merge for {} on {}", newParentRevision, existingDownstreamNum);
     }
     mergePatchSetInput.merge = mergeInput;
 
     mergePatchSetInput.baseChange =
         getBaseChangeId(
-            getChangeParents(upstreamChangeNumber, newParentRevision), downstreamBranch);
+            getChangeParents(upstreamChangeNumber, newParentRevision),
+            downstreamBranch,
+            fromCrossHost,
+            toCrossHost);
 
-    ChangeApi originalChange = gApi.changes().id(sourceNum);
+    ChangeApi originalChange =
+        apiManager.forHostname(toCrossHost).changes().id(existingDownstreamNum);
 
     if (originalChange.info().status == ChangeStatus.ABANDONED) {
       RestoreInput restoreInput = new RestoreInput();
@@ -699,20 +770,28 @@ public class DownstreamCreator
     return previousRevision;
   }
 
-  private ChangeInfo getOriginalChange(int changeNumber, String currentRevision)
-      throws RestApiException, InvalidQueryParameterException {
+  private ChangeInfo getOriginalChange(
+      int changeNumber, String currentRevision, String downstreamBranch, String hostname)
+      throws RestApiException, InvalidQueryParameterException, ConfigInvalidException {
     List<String> parents = getChangeParents(changeNumber, currentRevision);
     if (parents.size() >= 2) {
       String secondParentRevision = parents.get(1);
-      String topic = gApi.changes().id(changeNumber).topic();
-      List<ChangeInfo> changesInTopic = getChangesInTopic(topic);
+      String topic = apiManager.forHostname(hostname).changes().id(changeNumber).topic();
+      List<ChangeInfo> changesInTopic = getChangesInTopic(topic, hostname);
       for (ChangeInfo change : changesInTopic) {
+        String newHostname = hostname;
+        String fromCrossHost = config.getFromCrossHost(change.branch, downstreamBranch);
+        if (fromCrossHost != null) {
+          newHostname = fromCrossHost;
+        }
         if (change.currentRevision.equals(secondParentRevision)) {
-          return getOriginalChange(change._number, secondParentRevision);
+          return getOriginalChange(
+              change._number, secondParentRevision, change.branch, newHostname);
         }
       }
     }
-    return gApi.changes().id(changeNumber).get();
+
+    return apiManager.forHostname(hostname).changes().id(changeNumber).get();
   }
 
   private List<String> getChangeParents(int changeNumber, String currentRevision)
@@ -729,19 +808,22 @@ public class DownstreamCreator
     return parents;
   }
 
-  private void abandonChange(Integer changeNumber) throws RestApiException {
+  private void abandonChange(Integer changeNumber, String toCrossHost) throws RestApiException {
     log.debug("Abandoning change: {}", changeNumber);
     AbandonInput abandonInput = new AbandonInput();
     abandonInput.notify = NotifyHandling.NONE;
     abandonInput.message = "Merge parent updated; abandoning due to upstream conflict.";
-    gApi.changes().id(changeNumber).abandon(abandonInput);
+    apiManager.forHostname(toCrossHost).changes().id(changeNumber).abandon(abandonInput);
   }
 
-  private String getTopic(String revision) throws InvalidQueryParameterException, RestApiException {
+  private String getTopic(String revision, String hostname)
+      throws InvalidQueryParameterException, RestApiException {
     QueryBuilder queryBuilder = new QueryBuilder();
     queryBuilder.addParameter("commit", revision);
     List<ChangeInfo> changes =
-        gApi.changes()
+        apiManager
+            .forHostname(hostname)
+            .changes()
             .query(queryBuilder.get())
             .withOption(ListChangesOption.CURRENT_REVISION)
             .get();
@@ -762,20 +844,25 @@ public class DownstreamCreator
     return queryBuilder;
   }
 
-  private List<ChangeInfo> getChangesInTopic(String topic)
+  private List<ChangeInfo> getChangesInTopic(String topic, String hostname)
       throws InvalidQueryParameterException, RestApiException {
     QueryBuilder queryBuilder = constructTopicQuery(topic);
-    return gApi.changes()
+    return apiManager
+        .forHostname(hostname)
+        .changes()
         .query(queryBuilder.get())
         .withOptions(ListChangesOption.ALL_REVISIONS, ListChangesOption.CURRENT_COMMIT)
         .get();
   }
 
-  private List<ChangeInfo> getChangesInTopicAndBranch(String topic, String downstreamBranch)
+  private List<ChangeInfo> getChangesInTopicAndBranch(
+      String topic, String downstreamBranch, String hostname)
       throws InvalidQueryParameterException, RestApiException {
     QueryBuilder queryBuilder = constructTopicQuery(topic);
     queryBuilder.addParameter("branch", downstreamBranch);
-    return gApi.changes()
+    return apiManager
+        .forHostname(hostname)
+        .changes()
         .query(queryBuilder.get())
         .withOptions(ListChangesOption.ALL_REVISIONS, ListChangesOption.CURRENT_COMMIT)
         .get();
@@ -785,7 +872,8 @@ public class DownstreamCreator
       throws InvalidQueryParameterException, RestApiException {
     // If we've already merged this commit to this branch, don't do it again.
     List<ChangeInfo> changes =
-        getChangesInTopicAndBranch(currentTopic, sdsMergeInput.downstreamBranch);
+        getChangesInTopicAndBranch(
+            currentTopic, sdsMergeInput.downstreamBranch, sdsMergeInput.toCrossHost);
     for (ChangeInfo change : changes) {
       if (change.branch.equals(sdsMergeInput.downstreamBranch)) {
         List<CommitInfo> parents = change.revisions.get(change.currentRevision).commit.parents;
