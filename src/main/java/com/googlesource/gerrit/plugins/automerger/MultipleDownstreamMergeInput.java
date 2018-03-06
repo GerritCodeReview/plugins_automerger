@@ -23,9 +23,12 @@ public class MultipleDownstreamMergeInput {
   public Map<String, Boolean> dsBranchMap;
   public int changeNumber;
   public int patchsetNumber;
+  public String sourceBranch;
   public String project;
   public String topic;
   public String subject;
   public String obsoleteRevision;
   public String currentRevision;
+  public Map<String, String> usBranchToHostMap;
+  public Map<String, String> dsBranchToHostMap;
 }
