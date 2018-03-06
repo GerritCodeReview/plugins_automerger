@@ -33,10 +33,8 @@ import com.google.inject.Singleton;
 import com.google.re2j.Pattern;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import org.eclipse.jgit.errors.ConfigInvalidException;
 import org.eclipse.jgit.lib.Config;
@@ -113,42 +111,6 @@ public class ConfigLoader {
       return !getMergeAll(fromBranch, toBranch);
     }
     return false;
-  }
-
-  // Returns cross host URL if specified, null if not
-  public String getFromCrossHost(String fromBranch, String toBranch) throws ConfigInvalidException {
-    return getConfig()
-        .getString("automerger", fromBranch + BRANCH_DELIMITER + toBranch, "fromCrossHost");
-  }
-
-  public Map<String, String> getFromCrossHostMap(String fromBranch, Set<String> branches)
-      throws ConfigInvalidException {
-    Map<String, String> fromCrossHostMap = new HashMap<String, String>();
-    for (String branch : branches) {
-      String fromCrossHost = getFromCrossHost(fromBranch, branch);
-      if (fromCrossHost != null) {
-        fromCrossHostMap.put(fromBranch, fromCrossHost);
-      }
-    }
-    return fromCrossHostMap;
-  }
-
-  // Returns cross host URL if specified, null if not
-  public String getToCrossHost(String fromBranch, String toBranch) throws ConfigInvalidException {
-    return getConfig()
-        .getString("automerger", fromBranch + BRANCH_DELIMITER + toBranch, "toCrossHost");
-  }
-
-  public Map<String, String> getToCrossHostMap(String toBranch, Set<String> branches)
-      throws ConfigInvalidException {
-    Map<String, String> toCrossHostMap = new HashMap<String, String>();
-    for (String branch : branches) {
-      String toCrossHost = getToCrossHost(branch, toBranch);
-      if (toCrossHost != null) {
-        toCrossHostMap.put(branch, toCrossHost);
-      }
-    }
-    return toCrossHostMap;
   }
 
   private Pattern getConfigPattern(String key) throws ConfigInvalidException {

@@ -27,7 +27,6 @@ import com.google.gwtorm.server.OrmException;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
 import org.eclipse.jgit.errors.ConfigInvalidException;
 import org.slf4j.Logger;
@@ -83,10 +82,6 @@ class AutomergeChangeAction
     mdsMergeInput.subject = change.getSubject();
     mdsMergeInput.obsoleteRevision = revision;
     mdsMergeInput.currentRevision = revision;
-
-    String changeBranch = change.getDest().get();
-    mdsMergeInput.fromCrossHostMap = config.getFromCrossHostMap(changeBranch, branchMap.keySet());
-    mdsMergeInput.toCrossHostMap = config.getToCrossHostMap(changeBranch, branchMap.keySet());
 
     log.debug("Multiple downstream merge input: {}", mdsMergeInput.dsBranchMap);
 
