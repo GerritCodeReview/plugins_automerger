@@ -17,6 +17,7 @@ package com.googlesource.gerrit.plugins.automerger;
 import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
+import com.google.common.collect.ImmutableMap;
 import com.google.gerrit.extensions.annotations.PluginName;
 import com.google.gerrit.extensions.api.GerritApi;
 import com.google.gerrit.extensions.restapi.BinaryResult;
@@ -34,8 +35,10 @@ import com.google.inject.Singleton;
 import com.google.re2j.Pattern;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import org.eclipse.jgit.errors.ConfigInvalidException;
 import org.eclipse.jgit.lib.Config;
@@ -112,6 +115,76 @@ public class ConfigLoader {
       return !getMergeAll(fromBranch, toBranch);
     }
     return false;
+  }
+
+  // Returns cross host URL if specified, null if not
+  public String getFromCrossHost(String fromBranch, String toBranch) throws ConfigInvalidException {
+    return getConfig()
+        .getString("automerger", fromBranch + BRANCH_DELIMITER + toBranch, "fromCrossHost");
+  }
+
+  /**
+   * Get a map of upstream branches to the host they exist on.
+   *
+   * @param branch
+   * @param project
+   * @return A map of upstream branches to the host they exist on.
+   * @throws ConfigInvalidException
+   * @throws RestApiException
+   * @throws IOException
+   */
+  public Map<String, String> getUpstreamBranchesToHostMap(String branch, String project)
+      throws ConfigInvalidException, RestApiException, IOException {
+    Map<String, String> usBranchToHostMap = new HashMap<>();
+    for (String usBranch : getUpstreamBranches(branch, project)) {
+      String crossHost = getFromCrossHost(usBranch, branch);
+
+      // If branch is already being used for a different host, throw error.
+      String existingHost = usBranchToHostMap.get(usBranch);
+      if (existingHost != null && !existingHost.equals(crossHost)) {
+        // If we end up needing to support this in the future, we can implement it then.
+        throw new IllegalStateException("Multiple crosshosts for " + usBranch);
+      }
+      if (crossHost != null) {
+        usBranchToHostMap.put(usBranch, crossHost);
+      }
+    }
+    return ImmutableMap.copyOf(usBranchToHostMap);
+  }
+
+  // Returns cross host URL if specified, null if not
+  public String getToCrossHost(String fromBranch, String toBranch) throws ConfigInvalidException {
+    return getConfig()
+        .getString("automerger", fromBranch + BRANCH_DELIMITER + toBranch, "toCrossHost");
+  }
+
+  /**
+   * Get a map of downstream branches to the host they exist on.
+   *
+   * @param branch
+   * @param project
+   * @return A map of downstream branches to the host they exist on.
+   * @throws ConfigInvalidException
+   * @throws RestApiException
+   * @throws IOException
+   */
+  public Map<String, String> getDownstreamBranchesToHostMap(String branch, String project)
+      throws ConfigInvalidException, RestApiException, IOException {
+    Map<String, String> dsBranchToHostMap = new HashMap<>();
+    for (String dsBranch : getDownstreamBranches(branch, project)) {
+      String crossHost = getToCrossHost(branch, dsBranch);
+
+      // If branch is already being used for a different host, throw error.
+      String existingHost = dsBranchToHostMap.get(dsBranch);
+      if (existingHost != null && !existingHost.equals(crossHost)) {
+        // If we end up needing to support this in the future, we can implement it then.
+        throw new IllegalStateException("Multiple crosshosts for " + dsBranch);
+      }
+      if (crossHost != null) {
+        dsBranchToHostMap.put(dsBranch, crossHost);
+      }
+    }
+    return ImmutableMap.copyOf(dsBranchToHostMap);
   }
 
   private Pattern getConfigPattern(String key) throws ConfigInvalidException {
