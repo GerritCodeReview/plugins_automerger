@@ -123,7 +123,7 @@ public class ConfigLoader {
 
   public Map<String, String> getFromCrossHostMap(String fromBranch, Set<String> branches)
       throws ConfigInvalidException {
-    Map<String, String> fromCrossHostMap = new HashMap<String, String>();
+    Map<String, String> fromCrossHostMap = new HashMap<>();
     for (String branch : branches) {
       String fromCrossHost = getFromCrossHost(fromBranch, branch);
       if (fromCrossHost != null) {
@@ -141,7 +141,7 @@ public class ConfigLoader {
 
   public Map<String, String> getToCrossHostMap(String toBranch, Set<String> branches)
       throws ConfigInvalidException {
-    Map<String, String> toCrossHostMap = new HashMap<String, String>();
+    Map<String, String> toCrossHostMap = new HashMap<>();
     for (String branch : branches) {
       String toCrossHost = getToCrossHost(branch, toBranch);
       if (toCrossHost != null) {
