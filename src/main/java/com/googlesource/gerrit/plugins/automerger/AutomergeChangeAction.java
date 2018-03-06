@@ -83,6 +83,12 @@ class AutomergeChangeAction
     mdsMergeInput.obsoleteRevision = revision;
     mdsMergeInput.currentRevision = revision;
 
+    String changeBranch = change.getDest().get();
+    mdsMergeInput.usBranchToHostMap =
+        config.getUpstreamBranchesToHostMap(changeBranch, mdsMergeInput.project);
+    mdsMergeInput.dsBranchToHostMap =
+        config.getDownstreamBranchesToHostMap(changeBranch, mdsMergeInput.project);
+
     log.debug("Multiple downstream merge input: {}", mdsMergeInput.dsBranchMap);
 
     try {
