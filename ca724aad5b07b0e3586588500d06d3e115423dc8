@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "cf9ab6e7_b88fd6e8",
+        "filename": "src/main/resources/Documentation/rest-api.md",
+        "patchSetId": 6
+      },
+      "lineNbr": 7,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2018-03-06T23:54:46Z",
+      "side": 1,
+      "message": "This ends up pointing to src/Documentation/ in the plugins/automerger repo.\n\nProbably simplest to use an absolute URL.",
+      "range": {
+        "startLine": 7,
+        "startChar": 11,
+        "endLine": 7,
+        "endChar": 47
+      },
+      "revId": "ca724aad5b07b0e3586588500d06d3e115423dc8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
