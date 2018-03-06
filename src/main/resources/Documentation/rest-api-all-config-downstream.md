@@ -7,7 +7,7 @@ all-config-downstream - Get set of all downstream branches
 
 SYNOPSIS
 --------
->     GET /projects/{project-name}/branches/{branch-id}/automerger~all-config-downstream
+>     GET /projects/link:rest-api-projects.html#project-name[\{project-name\}/branches/link:rest-api-projects.html#branch-id[\{branch-id\}/automerger~all-config-downstream
 
 DESCRIPTION
 -----------
@@ -17,7 +17,7 @@ hop away.
 REQUEST
 -----------
 ```
-  GET /projects/{project-name}/branches/{branch-id}/automerger~all-config-downstream HTTP/1.0
+  GET /projects/link:rest-api-projects.html#project-name[\{project-name\}/branches/link:rest-api-projects.html#branch-id[\{branch-id\}/automerger~all-config-downstream HTTP/1.0
 ```
 
 RESPONSE

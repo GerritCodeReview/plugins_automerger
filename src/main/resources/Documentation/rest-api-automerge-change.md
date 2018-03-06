@@ -7,7 +7,7 @@ automerge-change - Automerge a change downstream
 
 SYNOPSIS
 --------
->     POST /changes/${changeId}/revisions/${revisionId}/automerger~automerge-change
+>     POST /changes/link:rest-api-changes.html#change-id[\{change-id\}/revisions/link:rest-api-changes.html#revision-id[\{revision-id\}/automerger~automerge-change
 
 DESCRIPTION
 -----------
@@ -21,7 +21,7 @@ OPTIONS
 REQUEST
 -----------
 ```
-  POST /changes/${changeId}/revisions/${revisionId}/automerger~automerge-change HTTP/1.0
+  POST /changes/link:rest-api-changes.html#change-id[\{change-id\}/revisions/link:rest-api-changes.html#revision-id[\{revision-id\}/automerger~automerge-change HTTP/1.0
   Content-Type application/json;charset=UTF-8
 
   {

@@ -7,7 +7,7 @@ config-downstream - Get the downstream config map
 
 SYNOPSIS
 --------
->     POST /projects/{project-name}/automerger~config-downstream
+>     POST /projects/link:rest-api-projects.html#project-name[\{project-name\}/automerger~config-downstream
 
 DESCRIPTION
 -----------
@@ -23,7 +23,7 @@ OPTIONS
 REQUEST
 -----------
 ```
-  POST /projects/{project-name}/automerger~config-downstream HTTP/1.0
+  POST /projects/link:rest-api-projects.html#project-name[\{project-name\}/automerger~config-downstream HTTP/1.0
   Content-Type application/json;charset=UTF-8
 
   {
