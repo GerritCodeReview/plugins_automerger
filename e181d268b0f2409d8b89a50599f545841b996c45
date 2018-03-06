@@ -1,0 +1,96 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0480aa7c_3f291063",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ApiManager.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2018-03-06T23:58:05Z",
+      "side": 1,
+      "message": "Comments cribbed from https://gerrit-review.googlesource.com/#/c/plugins/automerger/+/155512/:\n\nCan/should this throw UnsupportedOperationException when the hostname doesn\u0027t match the current one?",
+      "range": {
+        "startLine": 34,
+        "startChar": 13,
+        "endLine": 34,
+        "endChar": 17
+      },
+      "revId": "e181d268b0f2409d8b89a50599f545841b996c45",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "e1a5a83f_f457efa8",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2018-03-06T23:58:05Z",
+      "side": 1,
+      "message": "Comments cribbed from https://gerrit-review.googlesource.com/#/c/plugins/automerger/+/155512/:\n\nShould this be \u0027branch\u0027?",
+      "range": {
+        "startLine": 130,
+        "startChar": 29,
+        "endLine": 130,
+        "endChar": 39
+      },
+      "revId": "e181d268b0f2409d8b89a50599f545841b996c45",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "193e65ab_1f9fb541",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2018-03-06T23:58:05Z",
+      "side": 1,
+      "message": "Comments cribbed from https://gerrit-review.googlesource.com/#/c/plugins/automerger/+/155512/:\n\nThinking out loud: I am tempted to write this as something like\n\n  Map\u003cString, String\u003e m \u003d\n     branches.stream()\n         .collect(toImmutableMap(\n              b -\u003e b, b -\u003e Optional.ofNullable(getFromCrossHost(fromBranch, b))))\n         .entrySet()\n         .stream()\n         .filter(e -\u003e e.second.isPresent())\n         .collect(toImmutableMap(e -\u003e e.first, e -\u003e e.second.get()));\n\nbut that involves some ugliness because toImmutableMap doesn\u0027t have a way of discarding entries. So an explicit loop like you have seems better.\n\nCould this use ImmutableList.copyOf to simplify the return value (by making it immutable), though?",
+      "range": {
+        "startLine": 133,
+        "startChar": 11,
+        "endLine": 133,
+        "endChar": 27
+      },
+      "revId": "e181d268b0f2409d8b89a50599f545841b996c45",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "462c9a4c_527901cb",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2018-03-06T23:58:05Z",
+      "side": 1,
+      "message": "Comments cribbed from https://gerrit-review.googlesource.com/#/c/plugins/automerger/+/155512/:\n\nlikewise: Can this return an ImmutableMap?",
+      "range": {
+        "startLine": 151,
+        "startChar": 11,
+        "endLine": 151,
+        "endChar": 25
+      },
+      "revId": "e181d268b0f2409d8b89a50599f545841b996c45",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
