@@ -1,0 +1,84 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "c4ff6a6f_fa3aca62",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ApiManager.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2018-03-06T22:28:10Z",
+      "side": 1,
+      "message": "Can/should this throw UnsupportedOperationException when the hostname doesn\u0027t match the current one?",
+      "revId": "63cbd3a4227170c44d5b83268e8d864b2883c131",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1ed51c60_1c00f452",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2018-03-06T22:28:10Z",
+      "side": 1,
+      "message": "Should this be \u0027branch\u0027?",
+      "range": {
+        "startLine": 130,
+        "startChar": 29,
+        "endLine": 130,
+        "endChar": 39
+      },
+      "revId": "63cbd3a4227170c44d5b83268e8d864b2883c131",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ce4d8a44_ae0f1ef7",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2018-03-06T22:28:10Z",
+      "side": 1,
+      "message": "Thinking out loud: I am tempted to write this as something like\n\n  Map\u003cString, String\u003e m \u003d\n     branches.stream()\n         .collect(toImmutableMap(\n              b -\u003e b, b -\u003e Optional.ofNullable(getFromCrossHost(fromBranch, b))))\n         .entrySet()\n         .stream()\n         .filter(e -\u003e e.second.isPresent())\n         .collect(toImmutableMap(e -\u003e e.first, e -\u003e e.second.get()));\n\nbut that involves some ugliness because toImmutableMap doesn\u0027t have a way of discarding entries. So an explicit loop like you have seems better.\n\nCould this use ImmutableList.copyOf to simplify the return value (by making it immutable), though?",
+      "revId": "63cbd3a4227170c44d5b83268e8d864b2883c131",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "ac3a158a_58fe722b",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 142,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2018-03-06T22:28:10Z",
+      "side": 1,
+      "message": "likewise: Can this return an ImmutableMap?",
+      "range": {
+        "startLine": 142,
+        "startChar": 9,
+        "endLine": 142,
+        "endChar": 12
+      },
+      "revId": "63cbd3a4227170c44d5b83268e8d864b2883c131",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
