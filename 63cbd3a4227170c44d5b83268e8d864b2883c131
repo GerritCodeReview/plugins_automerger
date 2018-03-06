@@ -84,6 +84,30 @@
     },
     {
       "key": {
+        "uuid": "08bfd401_d9542506",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2018-03-06T23:14:57Z",
+      "side": 1,
+      "message": "What should happen if there are multiple matches? Should it diagnose the collision, or should this be a multimap instead of a map?",
+      "parentUuid": "fa5a369b_93bdacc4",
+      "range": {
+        "startLine": 130,
+        "startChar": 29,
+        "endLine": 130,
+        "endChar": 39
+      },
+      "revId": "63cbd3a4227170c44d5b83268e8d864b2883c131",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "ce4d8a44_ae0f1ef7",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
         "patchSetId": 7
