@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "25f6e294_1f04473e",
+        "filename": "src/main/resources/Documentation/rest-api-automerge-change.md",
+        "patchSetId": 3
+      },
+      "lineNbr": 19,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2018-03-06T23:29:49Z",
+      "side": 1,
+      "message": "This looks a bit odd with its orange shading.\n\nDoes commonmark have a way to mark up a description list? https://talk.commonmark.org/t/description-list/289/10 suggests no. :/",
+      "revId": "487d87de8063f98f094ffd1ba473f5d5bd5b0e4c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
