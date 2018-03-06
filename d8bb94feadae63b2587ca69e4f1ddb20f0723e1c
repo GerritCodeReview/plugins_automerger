@@ -22,6 +22,30 @@
       "revId": "d8bb94feadae63b2587ca69e4f1ddb20f0723e1c",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "2cc01c7d_12c47fca",
+        "filename": "src/main/resources/Documentation/rest-api-automerge-change.md",
+        "patchSetId": 1
+      },
+      "lineNbr": 10,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2018-03-06T22:37:23Z",
+      "side": 1,
+      "message": "https://gerrit-review.googlesource.com/#/c/plugins/automerger/+/164470/ to fix this.",
+      "parentUuid": "6bc1441f_2b04a548",
+      "range": {
+        "startLine": 10,
+        "startChar": 20,
+        "endLine": 10,
+        "endChar": 31
+      },
+      "revId": "d8bb94feadae63b2587ca69e4f1ddb20f0723e1c",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
