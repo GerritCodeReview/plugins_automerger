@@ -19,6 +19,24 @@
     },
     {
       "key": {
+        "uuid": "6d5e86e4_495c351f",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ApiManager.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 34,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2018-03-06T23:12:32Z",
+      "side": 1,
+      "message": "Good idea, if I can figure out how to get it. I think I should be able to do something with CanonicalWebUrl...",
+      "parentUuid": "c4ff6a6f_fa3aca62",
+      "revId": "63cbd3a4227170c44d5b83268e8d864b2883c131",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "1ed51c60_1c00f452",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
         "patchSetId": 7
@@ -30,6 +48,30 @@
       "writtenOn": "2018-03-06T22:28:10Z",
       "side": 1,
       "message": "Should this be \u0027branch\u0027?",
+      "range": {
+        "startLine": 130,
+        "startChar": 29,
+        "endLine": 130,
+        "endChar": 39
+      },
+      "revId": "63cbd3a4227170c44d5b83268e8d864b2883c131",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "fa5a369b_93bdacc4",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 7
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2018-03-06T23:12:32Z",
+      "side": 1,
+      "message": "No, the map is always from the branch to whatever host it\u0027s on. But it definitely should have a test. I tested getFromCrossHost but neglected to add a test to getFromCrossHostMap. Will fix.",
+      "parentUuid": "1ed51c60_1c00f452",
       "range": {
         "startLine": 130,
         "startChar": 29,
