@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d223009a_b4151e06",
+        "filename": "src/main/resources/Documentation/rest-api.md",
+        "patchSetId": 4
+      },
+      "lineNbr": 14,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2018-03-06T23:48:43Z",
+      "side": 1,
+      "message": "This shows up as an underscore in the rendering (e.g. https://gerrit.googlesource.com/plugins/automerger/+/refs/changes/70/164470/4/src/main/resources/Documentation/rest-api.md#config-downstream). Intended?",
+      "range": {
+        "startLine": 14,
+        "startChar": 0,
+        "endLine": 14,
+        "endChar": 1
+      },
+      "revId": "e6b18181dbe63c1a24e8f6b60fa0a08b64d7b2f8",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
