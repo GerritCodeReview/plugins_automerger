@@ -96,6 +96,30 @@
     },
     {
       "key": {
+        "uuid": "67c2b1d3_a9751a85",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2018-03-08T23:41:00Z",
+      "side": 1,
+      "message": "I\u0027m confusing myself here. fromBranch is not the right thing to put in here.",
+      "parentUuid": "021b348c_01c41351",
+      "range": {
+        "startLine": 130,
+        "startChar": 29,
+        "endLine": 130,
+        "endChar": 39
+      },
+      "revId": "e181d268b0f2409d8b89a50599f545841b996c45",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "193e65ab_1f9fb541",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
         "patchSetId": 1
