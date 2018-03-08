@@ -277,6 +277,18 @@ public class DownstreamCreator
     }
   }
 
+  public String getOrSetTopic(int sourceId, String topic)
+      throws RestApiException, OrmException, ConfigInvalidException {
+    try (ManualRequestContext ctx = oneOffRequestContext.openAs(config.getContextUserId())) {
+      if (isNullOrEmpty(topic)) {
+        topic = "am-" + UUID.randomUUID();
+        log.debug("Setting original change {} topic to {}", sourceId, topic);
+        gApi.changes().id(sourceId).topic(topic);
+      }
+      return topic;
+    }
+  }
+
   /**
    * Creates merges downstream, and votes on the automerge label if we have a failed merge.
    *
@@ -336,7 +348,7 @@ public class DownstreamCreator
    * @throws InvalidQueryParameterException Throws if we attempt to add an invalid value to query.
    * @throws OrmException Throws if we fail to open the request context
    */
-  public void createDownstreamMerges(MultipleDownstreamMergeInput mdsMergeInput)
+  private void createDownstreamMerges(MultipleDownstreamMergeInput mdsMergeInput)
       throws RestApiException, FailedMergeException, ConfigInvalidException,
           InvalidQueryParameterException, OrmException {
     try (ManualRequestContext ctx = oneOffRequestContext.openAs(config.getContextUserId())) {
@@ -425,7 +437,7 @@ public class DownstreamCreator
    * @throws ConfigInvalidException Throws if we fail to read the config
    * @throws OrmException Throws if we fail to open the request context
    */
-  public List<Integer> getExistingMergesOnBranch(
+  private List<Integer> getExistingMergesOnBranch(
       String upstreamRevision, String topic, String downstreamBranch)
       throws RestApiException, InvalidQueryParameterException, OrmException,
           ConfigInvalidException {
@@ -457,7 +469,7 @@ public class DownstreamCreator
    * @throws InvalidQueryParameterException
    * @throws OrmException
    */
-  public void createSingleDownstreamMerge(SingleDownstreamMergeInput sdsMergeInput)
+  private void createSingleDownstreamMerge(SingleDownstreamMergeInput sdsMergeInput)
       throws RestApiException, ConfigInvalidException, InvalidQueryParameterException,
           OrmException {
     try (ManualRequestContext ctx = oneOffRequestContext.openAs(config.getContextUserId())) {
@@ -503,18 +515,6 @@ public class DownstreamCreator
 
       ChangeApi downstreamChange = gApi.changes().create(downstreamChangeInput);
       tagChange(downstreamChange.get(), "Automerger change created!");
-    }
-  }
-
-  public String getOrSetTopic(int sourceId, String topic)
-      throws RestApiException, OrmException, ConfigInvalidException {
-    try (ManualRequestContext ctx = oneOffRequestContext.openAs(config.getContextUserId())) {
-      if (isNullOrEmpty(topic)) {
-        topic = "am-" + UUID.randomUUID();
-        log.debug("Setting original change {} topic to {}", sourceId, topic);
-        gApi.changes().id(sourceId).topic(topic);
-      }
-      return topic;
     }
   }
 
