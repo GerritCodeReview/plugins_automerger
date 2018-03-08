@@ -188,6 +188,38 @@ public class ConfigLoader {
   }
 
   /**
+   * Gets the upstream branches of the given branch and project.
+   *
+   * @param toBranch The downstream branch we would merge to.
+   * @param project The project we are merging.
+   * @return The branches upstream of the given branch for the given project.
+   * @throws RestApiException
+   * @throws IOException
+   * @throws ConfigInvalidException
+   */
+  public Set<String> getUpstreamBranches(String toBranch, String project)
+      throws ConfigInvalidException, RestApiException, IOException {
+    Set<String> upstreamBranches = new HashSet<String>();
+    // List all subsections of automerger, split by :
+    Set<String> subsections = getConfig().getSubsections(pluginName);
+    for (String subsection : subsections) {
+      // Subsections are of the form "fromBranch:toBranch"
+      String[] branchPair = subsection.split(Pattern.quote(BRANCH_DELIMITER));
+      if (branchPair.length != 2) {
+        throw new ConfigInvalidException("Automerger config branch pair malformed: " + subsection);
+      }
+      if (toBranch.equals(branchPair[1])) {
+        // If toBranch matches, check if project is in both their manifests
+        Set<String> projectsInScope = getProjectsInScope(branchPair[0], branchPair[1]);
+        if (projectsInScope.contains(project)) {
+          upstreamBranches.add(branchPair[0]);
+        }
+      }
+    }
+    return upstreamBranches;
+  }
+
+  /**
    * Gets the downstream branches of the given branch and project.
    *
    * @param fromBranch The branch we are merging from.

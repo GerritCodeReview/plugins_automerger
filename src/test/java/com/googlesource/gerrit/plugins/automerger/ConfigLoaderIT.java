@@ -146,6 +146,23 @@ public class ConfigLoaderIT extends LightweightPluginDaemonTest {
   }
 
   @Test
+  public void upstreamBranchesTest() throws Exception {
+    defaultSetup("automerger.config");
+    Set<String> expectedBranches = new HashSet<String>();
+    expectedBranches.add("master");
+    assertThat(configLoader.getUpstreamBranches("ds_two", "platform/some/project"))
+        .isEqualTo(expectedBranches);
+  }
+
+  @Test
+  public void upstreamBranchesTest_nonexistentBranch() throws Exception {
+    defaultSetup("automerger.config");
+    Set<String> expectedBranches = new HashSet<String>();
+    assertThat(configLoader.getUpstreamBranches("master", "platform/some/project"))
+        .isEqualTo(expectedBranches);
+  }
+
+  @Test
   public void downstreamBranchesTest() throws Exception {
     defaultSetup("automerger.config");
     Set<String> expectedBranches = new HashSet<String>();
