@@ -120,6 +120,30 @@
     },
     {
       "key": {
+        "uuid": "c7c3a8dd_3971aeef",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 130,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2018-03-09T00:52:11Z",
+      "side": 1,
+      "message": "Okay. We now throw an error if there\u0027s multiple matches. Also fixed it so that it has the right key, as well as renaming it so it\u0027s less confusing what this map consists of.",
+      "parentUuid": "67c2b1d3_a9751a85",
+      "range": {
+        "startLine": 130,
+        "startChar": 29,
+        "endLine": 130,
+        "endChar": 39
+      },
+      "revId": "e181d268b0f2409d8b89a50599f545841b996c45",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "193e65ab_1f9fb541",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
         "patchSetId": 1
@@ -143,6 +167,30 @@
     },
     {
       "key": {
+        "uuid": "d163980c_5352de2b",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 133,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2018-03-09T00:52:11Z",
+      "side": 1,
+      "message": "Using ImmutableMap.copyOf to make the return value immutable.",
+      "parentUuid": "193e65ab_1f9fb541",
+      "range": {
+        "startLine": 133,
+        "startChar": 11,
+        "endLine": 133,
+        "endChar": 27
+      },
+      "revId": "e181d268b0f2409d8b89a50599f545841b996c45",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "462c9a4c_527901cb",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
         "patchSetId": 1
@@ -154,6 +202,30 @@
       "writtenOn": "2018-03-06T23:58:05Z",
       "side": 1,
       "message": "Comments cribbed from https://gerrit-review.googlesource.com/#/c/plugins/automerger/+/155512/:\n\nlikewise: Can this return an ImmutableMap?",
+      "range": {
+        "startLine": 151,
+        "startChar": 11,
+        "endLine": 151,
+        "endChar": 25
+      },
+      "revId": "e181d268b0f2409d8b89a50599f545841b996c45",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "9f82956c_ed237bd2",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 151,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2018-03-09T00:52:11Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "462c9a4c_527901cb",
       "range": {
         "startLine": 151,
         "startChar": 11,
