@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "48f80b2a_604dbf7e",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 143,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2018-03-10T00:32:42Z",
+      "side": 1,
+      "message": "I do indeed. Thanks for catching that. I\u0027ve been using too much python.",
+      "parentUuid": "675577f9_04f493cb",
+      "range": {
+        "startLine": 143,
+        "startChar": 34,
+        "endLine": 143,
+        "endChar": 59
+      },
+      "revId": "fec55891acbcc961c79b4a038fc599423f9ac402",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "b55ba700_ae423334",
         "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
         "patchSetId": 4
@@ -36,6 +60,30 @@
       "writtenOn": "2018-03-09T05:08:30Z",
       "side": 1,
       "message": "likewise",
+      "range": {
+        "startLine": 178,
+        "startChar": 34,
+        "endLine": 178,
+        "endChar": 59
+      },
+      "revId": "fec55891acbcc961c79b4a038fc599423f9ac402",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "cef284d5_bc237b14",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/ConfigLoader.java",
+        "patchSetId": 4
+      },
+      "lineNbr": 178,
+      "author": {
+        "id": 1019952
+      },
+      "writtenOn": "2018-03-10T00:32:42Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "b55ba700_ae423334",
       "range": {
         "startLine": 178,
         "startChar": 34,
