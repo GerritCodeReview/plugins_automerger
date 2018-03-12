@@ -45,7 +45,7 @@ Gerrit.install(function(self) {
     }
 
     function createMergeButton(c, branchToCheckbox) {
-        return c.button('Merge', {onclick: function(){
+        var b = c.button('Merge', {onclick: function(){
             var branchMap = {};
             Object.keys(branchToCheckbox).forEach(function(key){
                 branchMap[key] = branchToCheckbox[key].firstChild.checked;
@@ -53,7 +53,9 @@ Gerrit.install(function(self) {
             // gerrit converts to camelcase on the java end
             c.call({'branch_map': branchMap},
                 function(r){ c.refresh(); });
+            this.disabled = true;
         }});
+        return b;
     }
 
     function styleRelatedChanges() {
