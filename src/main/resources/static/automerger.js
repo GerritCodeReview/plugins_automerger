@@ -53,6 +53,7 @@ Gerrit.install(function(self) {
             // gerrit converts to camelcase on the java end
             c.call({'branch_map': branchMap},
                 function(r){ c.refresh(); });
+            this.disabled = true;
         }});
     }
 
