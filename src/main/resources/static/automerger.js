@@ -31,7 +31,7 @@ Gerrit.install(function(self) {
             branchToCheckbox[branch] = c.label(checkbox, branch);
         });
 
-        //Add checkboxes to box for each downstream branch
+        // Add checkboxes to box for each downstream branch
         var checkboxes = [];
         Object.keys(branchToCheckbox).forEach(function(branch) {
             checkboxes.push(branchToCheckbox[branch])
@@ -45,7 +45,7 @@ Gerrit.install(function(self) {
     }
 
     function createMergeButton(c, branchToCheckbox) {
-        return c.button('Merge', {onclick: function(){
+        return c.button('Merge', {onclick: function(e){
             var branchMap = {};
             Object.keys(branchToCheckbox).forEach(function(key){
                 branchMap[key] = branchToCheckbox[key].firstChild.checked;
@@ -53,6 +53,7 @@ Gerrit.install(function(self) {
             // gerrit converts to camelcase on the java end
             c.call({'branch_map': branchMap},
                 function(r){ c.refresh(); });
+            e.currentTarget.setAttribute("disabled", true);
         }});
     }
 
