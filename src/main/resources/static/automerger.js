@@ -45,7 +45,7 @@ Gerrit.install(function(self) {
     }
 
     function createMergeButton(c, branchToCheckbox) {
-        return c.button('Merge', {onclick: function(){
+        return c.button('Merge', {onclick: function(e){
             var branchMap = {};
             Object.keys(branchToCheckbox).forEach(function(key){
                 branchMap[key] = branchToCheckbox[key].firstChild.checked;
@@ -53,6 +53,8 @@ Gerrit.install(function(self) {
             // gerrit converts to camelcase on the java end
             c.call({'branch_map': branchMap},
                 function(r){ c.refresh(); });
+            // TODO(stephenli): what happens if you click the div instead of the button? does it disable the div?
+            e.currentTarget.setAttribute("disabled", true);
         }});
     }
 
