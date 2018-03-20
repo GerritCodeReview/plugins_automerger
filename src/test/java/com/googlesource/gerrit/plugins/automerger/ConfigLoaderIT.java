@@ -27,6 +27,7 @@ import com.google.gerrit.reviewdb.client.Project;
 import com.google.gerrit.reviewdb.client.RefNames;
 import com.google.gerrit.server.CurrentUser;
 import com.google.gerrit.server.config.AllProjectsName;
+import com.google.gerrit.server.config.CanonicalWebUrl;
 import com.google.gerrit.server.config.PluginConfigFactory;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -48,8 +49,8 @@ public class ConfigLoaderIT extends LightweightPluginDaemonTest {
   private ConfigLoader configLoader;
   @Inject private AllProjectsName allProjectsName;
   @Inject private PluginConfigFactory cfgFactory;
-  @Inject private String canonicalWebUrl;
-  @Inject private Provider<CurrentUser> user;
+  @Inject @CanonicalWebUrl String canonicalGerritWebUrl;
+  @Inject private Provider<CurrentUser> currentUser;
   private Project.NameKey manifestNameKey;
 
   @Test
@@ -241,7 +242,7 @@ public class ConfigLoaderIT extends LightweightPluginDaemonTest {
   @Test
   public void getContextUserIdTest_noContextUser() throws Exception {
     defaultSetup("automerger.config");
-    assertThat(configLoader.getContextUserId()).isEqualTo(user.get().getAccountId());
+    assertThat(configLoader.getContextUserId()).isEqualTo(currentUser.get().getAccountId());
   }
 
   private void setupTestRepo(
@@ -279,6 +280,7 @@ public class ConfigLoaderIT extends LightweightPluginDaemonTest {
   private void loadConfig(String configFilename) throws Exception {
     pushConfig(configFilename);
     configLoader =
-        new ConfigLoader(gApi, allProjectsName, "automerger", canonicalWebUrl, cfgFactory, user);
+        new ConfigLoader(
+            gApi, allProjectsName, "automerger", canonicalGerritWebUrl, cfgFactory, currentUser);
   }
 }
