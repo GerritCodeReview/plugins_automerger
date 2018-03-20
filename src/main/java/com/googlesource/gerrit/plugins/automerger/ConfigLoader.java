@@ -15,6 +15,7 @@
 package com.googlesource.gerrit.plugins.automerger;
 
 import com.google.common.base.Joiner;
+import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
 import com.google.gerrit.extensions.annotations.PluginName;
 import com.google.gerrit.extensions.api.GerritApi;
@@ -199,20 +200,24 @@ public class ConfigLoader {
    */
   public Set<String> getUpstreamBranches(String toBranch, String project)
       throws ConfigInvalidException, RestApiException, IOException {
+    if (toBranch == null) {
+      throw new IllegalArgumentException("toBranch cannot be null");
+    }
     Set<String> upstreamBranches = new HashSet<String>();
     // List all subsections of automerger, split by :
     Set<String> subsections = getConfig().getSubsections(pluginName);
     for (String subsection : subsections) {
       // Subsections are of the form "fromBranch:toBranch"
-      String[] branchPair = subsection.split(Pattern.quote(BRANCH_DELIMITER));
-      if (branchPair.length != 2) {
+      List<String> branchPair =
+          Splitter.on(BRANCH_DELIMITER).trimResults().omitEmptyStrings().splitToList(subsection);
+      if (branchPair.size() != 2) {
         throw new ConfigInvalidException("Automerger config branch pair malformed: " + subsection);
       }
-      if (toBranch.equals(branchPair[1])) {
+      if (toBranch.equals(branchPair.get(1))) {
         // If toBranch matches, check if project is in both their manifests
-        Set<String> projectsInScope = getProjectsInScope(branchPair[0], branchPair[1]);
+        Set<String> projectsInScope = getProjectsInScope(branchPair.get(0), branchPair.get(1));
         if (projectsInScope.contains(project)) {
-          upstreamBranches.add(branchPair[0]);
+          upstreamBranches.add(branchPair.get(0));
         }
       }
     }
