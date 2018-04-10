@@ -412,6 +412,10 @@ public class DownstreamCreator
       }
 
       if (!failedMergeBranchMap.isEmpty()) {
+        String conflictMessage = config.getConflictMessage();
+        if (mdsMergeInput.project == config.getManifestProject()) {
+          conflictMessage = config.getManifestConflictMessage();
+        }
         throw new FailedMergeException(
             failedMergeBranchMap,
             mdsMergeInput.currentRevision,
@@ -419,7 +423,7 @@ public class DownstreamCreator
             mdsMergeInput.project,
             mdsMergeInput.changeNumber,
             mdsMergeInput.patchsetNumber,
-            config.getConflictMessage(),
+            conflictMessage,
             mdsMergeInput.topic);
       }
     }

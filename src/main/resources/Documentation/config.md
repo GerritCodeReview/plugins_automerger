@@ -10,6 +10,7 @@ the `automerger.config` file of the project.
     hostName = https://hostname.example.com
     conflictMessage = Merge conflict found on ${branch}\n\
 " # Example of multiline conflict message"
+    manifestConflictMessage = Conflict found on platform/manifest
     manifestProject = platform/manifest
     manifestFile = default.xml
     alwaysBlankMerge = .*SKIP ME ALWAYS.*
@@ -70,6 +71,12 @@ global.conflictMessage
   ```
     conflictMessage = Conflict message ${conflict} found on branch ${branch}
   ```
+
+global.manifestConflictMessage
+: Like conflictMessage, but only applies to the manifestProject.
+
+  Some messages on normal projects don't apply to manifest projects. This
+  provides users the option to have a different message for manifest projects.
 
 global.manifestProject
 : Project to look for a [repo manifest][1] in.

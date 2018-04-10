@@ -222,6 +222,20 @@ public class ConfigLoaderIT extends LightweightPluginDaemonTest {
   }
 
   @Test
+  public void getDefaultManifestConflictMessageTest() throws Exception {
+    defaultSetup("automerger.config");
+    assertThat(configLoader.getManifestConflictMessage())
+        .isEqualTo("Merge conflict found on ${branch}");
+  }
+
+  @Test
+  public void getMultilineManifestConflictMessageTest() throws Exception {
+    defaultSetup("alternate.config");
+    assertThat(configLoader.getManifestConflictMessage())
+        .isEqualTo("mline1\n" + "mline2\n" + "mline3 ${branch}\n" + "mline4");
+  }
+
+  @Test
   public void getMinAutomergeVoteTest() throws Exception {
     defaultSetup("alternate.config");
     assertThat(configLoader.getMinAutomergeVote()).isEqualTo(-3);

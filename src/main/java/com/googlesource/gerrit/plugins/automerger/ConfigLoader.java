@@ -165,6 +165,20 @@ public class ConfigLoader {
   }
 
   /**
+   * Returns a string to append to the end of the merge conflict message for the manifest project.
+   *
+   * @return The message string, or the empty string if nothing is specified.
+   * @throws ConfigInvalidException
+   */
+  public String getManifestConflictMessage() throws ConfigInvalidException {
+    String conflictMessage = getConfig().getString("global", null, "manifestConflictMessage");
+    if (Strings.isNullOrEmpty(conflictMessage)) {
+      conflictMessage = getConflictMessage();
+    }
+    return conflictMessage;
+  }
+
+  /**
    * Get the projects that should be merged for the given pair of branches.
    *
    * @param fromBranch Branch we are merging from.
@@ -293,6 +307,19 @@ public class ConfigLoader {
     return user.get().getAccountId();
   }
 
+  /**
+   * Returns overriden manifest config if specified, default if not
+   * @return The string name of the manifest project.
+   * @throws ConfigInvalidException
+   */
+  public String getManifestProject() throws ConfigInvalidException {
+    String manifestProject = getConfig().getString("global", null, "manifestProject");
+    if (manifestProject == null) {
+      throw new ConfigInvalidException("manifestProject not specified.");
+    }
+    return manifestProject;
+  }
+
   // Returns overriden manifest config if specified, default if not
   private String getManifestFile() throws ConfigInvalidException {
     String manifestFile = getConfig().getString("global", null, "manifestFile");
@@ -300,15 +327,6 @@ public class ConfigLoader {
       throw new ConfigInvalidException("manifestFile not specified.");
     }
     return manifestFile;
-  }
-
-  // Returns overriden manifest config if specified, default if not
-  private String getManifestProject() throws ConfigInvalidException {
-    String manifestProject = getConfig().getString("global", null, "manifestProject");
-    if (manifestProject == null) {
-      throw new ConfigInvalidException("manifestProject not specified.");
-    }
-    return manifestProject;
   }
 
   // Returns contents of manifest file for the given branch pair
