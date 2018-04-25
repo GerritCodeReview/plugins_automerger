@@ -69,7 +69,8 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
   public void testExpectedFlow() throws Exception {
     Project.NameKey manifestNameKey = defaultSetup();
     // Create initial change
-    PushOneCommit.Result result = createChange("subject", "filename", "content", "testtopic");
+    PushOneCommit.Result result =
+        createChange(testRepo, "master", "subject", "filename", "content", "testtopic");
     // Project name is scoped by test, so we need to get it from our initial change
     String projectName = result.getChange().project().get();
     createBranch(new Branch.NameKey(projectName, "ds_one"));
@@ -150,7 +151,8 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
     createBranch(new Branch.NameKey(projectName, "bottom"));
     pushDiamondConfig(manifestNameKey.get(), projectName);
     // After we upload our config, we upload a new patchset to create the downstreams
-    PushOneCommit.Result result = createChange("subject", "filename2", "echo Hello", "sometopic");
+    PushOneCommit.Result result =
+        createChange(testRepo, "master", "subject", "filename2", "echo Hello", "sometopic");
     result.assertOkStatus();
     // Check that there are the correct number of changes in the topic
     List<ChangeInfo> changesInTopic =
@@ -248,7 +250,8 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
     TestTimeUtil.resetWithClockStep(0, TimeUnit.MILLISECONDS);
     TestTimeUtil.setClock(new Timestamp(TestTimeUtil.START.toEpochMilli()));
     // After we upload our config, we upload a new patchset to create the downstreams.
-    PushOneCommit.Result result = createChange("subject", "filename2", "echo Hello", "sometopic");
+    PushOneCommit.Result result =
+        createChange(testRepo, "master", "subject", "filename2", "echo Hello", "sometopic");
     TestTimeUtil.useSystemTime();
     result.assertOkStatus();
 
@@ -305,7 +308,8 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
   public void testChangeStack() throws Exception {
     Project.NameKey manifestNameKey = defaultSetup();
     // Create initial change
-    PushOneCommit.Result result = createChange("subject", "filename", "content", "testtopic");
+    PushOneCommit.Result result =
+        createChange(testRepo, "master", "subject", "filename", "content", "testtopic");
     // Project name is scoped by test, so we need to get it from our initial change
     String projectName = result.getChange().project().get();
     createBranch(new Branch.NameKey(projectName, "ds_one"));
@@ -313,7 +317,8 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
     // After we upload our config, we upload a new patchset to create the downstreams
     amendChange(result.getChangeId());
     result.assertOkStatus();
-    PushOneCommit.Result result2 = createChange("subject2", "filename2", "content2", "testtopic");
+    PushOneCommit.Result result2 =
+        createChange(testRepo, "master", "subject2", "filename2", "content2", "testtopic");
     result2.assertOkStatus();
     // Check that there are the correct number of changes in the topic
     List<ChangeInfo> changesInTopic =
@@ -355,7 +360,8 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
     // Save initial ref at HEAD
     ObjectId initial = repo().exactRef("HEAD").getLeaf().getObjectId();
     // Create initial change
-    PushOneCommit.Result result = createChange("subject", "filename", "content", "testtopic");
+    PushOneCommit.Result result =
+        createChange(testRepo, "master", "subject", "filename", "content", "testtopic");
     // Project name is scoped by test, so we need to get it from our initial change
     String projectName = result.getChange().project().get();
     createBranch(new Branch.NameKey(projectName, "ds_one"));
@@ -419,7 +425,13 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
     Project.NameKey manifestNameKey = defaultSetup();
     // Create initial change
     PushOneCommit.Result result =
-        createChange("DO NOT MERGE subject", "filename", "content", "testtopic");
+        createChange(
+            testRepo,
+            "master",
+            "DO NOT MERGE subject",
+            "filename",
+            "content",
+            "testtopic");
     // Project name is scoped by test, so we need to get it from our initial change
     String projectName = result.getChange().project().get();
     createBranch(new Branch.NameKey(projectName, "ds_one"));
@@ -482,7 +494,13 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
     Project.NameKey manifestNameKey = defaultSetup();
     // Create initial change
     PushOneCommit.Result result =
-        createChange("DO NOT MERGE ANYWHERE subject", "filename", "content", "testtopic");
+        createChange(
+            testRepo,
+            "master",
+            "DO NOT MERGE ANYWHERE subject",
+            "filename",
+            "content",
+            "testtopic");
     // Project name is scoped by test, so we need to get it from our initial change
     String projectName = result.getChange().project().get();
     createBranch(new Branch.NameKey(projectName, "ds_one"));
@@ -680,7 +698,8 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
   public void testTopicEditedListener() throws Exception {
     Project.NameKey manifestNameKey = defaultSetup();
     // Create initial change
-    PushOneCommit.Result result = createChange("subject", "filename", "content", "testtopic");
+    PushOneCommit.Result result =
+        createChange(testRepo, "master", "subject", "filename", "content", "testtopic");
     // Project name is scoped by test, so we need to get it from our initial change
     String projectName = result.getChange().project().get();
     createBranch(new Branch.NameKey(projectName, "ds_one"));
@@ -705,7 +724,8 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
   public void testTopicEditedListener_withQuotes() throws Exception {
     Project.NameKey manifestNameKey = defaultSetup();
     // Create initial change
-    PushOneCommit.Result result = createChange("subject", "filename", "content", "testtopic");
+    PushOneCommit.Result result =
+        createChange(testRepo, "master", "subject", "filename", "content", "testtopic");
     // Project name is scoped by test, so we need to get it from our initial change
     String projectName = result.getChange().project().get();
     createBranch(new Branch.NameKey(projectName, "ds_one"));
@@ -732,7 +752,8 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
   public void testTopicEditedListener_withBraces() throws Exception {
     Project.NameKey manifestNameKey = defaultSetup();
     // Create initial change
-    PushOneCommit.Result result = createChange("subject", "filename", "content", "testtopic");
+    PushOneCommit.Result result =
+        createChange(testRepo, "master", "subject", "filename", "content", "testtopic");
     // Project name is scoped by test, so we need to get it from our initial change
     String projectName = result.getChange().project().get();
     createBranch(new Branch.NameKey(projectName, "ds_one"));
@@ -757,7 +778,8 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
   public void testTopicEditedListener_branchWithBracesAndQuotes() throws Exception {
     Project.NameKey manifestNameKey = defaultSetup();
     // Create initial change
-    PushOneCommit.Result result = createChange("subject", "filename", "content", "testtopic");
+    PushOneCommit.Result result =
+        createChange(testRepo, "master", "subject", "filename", "content", "testtopic");
     // Project name is scoped by test, so we need to get it from our initial change
     String projectName = result.getChange().project().get();
     createBranch(new Branch.NameKey(projectName, "branch{}braces"));
@@ -785,7 +807,8 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
   public void testTopicEditedListener_emptyTopic() throws Exception {
     Project.NameKey manifestNameKey = defaultSetup();
     // Create initial change
-    PushOneCommit.Result result = createChange("subject", "filename", "content", "testtopic");
+    PushOneCommit.Result result =
+        createChange(testRepo, "master", "subject", "filename", "content", "testtopic");
     // Project name is scoped by test, so we need to get it from our initial change
     String projectName = result.getChange().project().get();
     createBranch(new Branch.NameKey(projectName, "ds_one"));
@@ -836,7 +859,8 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
         manifestNameKey.get(), projectName, contextUserApi.get()._accountId.toString());
 
     // After we upload our config, we upload a new patchset to create the downstreams
-    PushOneCommit.Result result = createChange("subject", "filename2", "echo Hello", "sometopic");
+    PushOneCommit.Result result =
+        createChange(testRepo, "master", "subject", "filename2", "echo Hello", "sometopic");
     result.assertOkStatus();
     // Check that there are the correct number of changes in the topic
     List<ChangeInfo> changesInTopic =
@@ -904,7 +928,8 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
         manifestNameKey.get(), projectName, contextUserApi.get()._accountId.toString());
 
     // After we upload our config, we upload a new patchset to create the downstreams
-    PushOneCommit.Result result = createChange("subject", "filename2", "echo Hello", "sometopic");
+    PushOneCommit.Result result =
+        createChange(testRepo, "master", "subject", "filename2", "echo Hello", "sometopic");
     result.assertOkStatus();
     // Check that there are the correct number of changes in the topic
     List<ChangeInfo> changesInTopic =
@@ -998,7 +1023,8 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
         manifestNameKey.get(), projectName, contextUserApi.get()._accountId.toString());
 
     // After we upload our config, we upload a new patchset to create the downstreams
-    PushOneCommit.Result result = createChange("subject", "filename2", "echo Hello", "sometopic");
+    PushOneCommit.Result result =
+        createChange(testRepo, "master", "subject", "filename2", "echo Hello", "sometopic");
     result.assertOkStatus();
     // Check that there are the correct number of changes in the topic
     List<ChangeInfo> changesInTopic =
