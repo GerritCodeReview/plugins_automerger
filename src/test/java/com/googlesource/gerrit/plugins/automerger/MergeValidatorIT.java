@@ -65,7 +65,8 @@ public class MergeValidatorIT extends LightweightPluginDaemonTest {
   @Test
   public void testNoMissingDownstreamMerges() throws Exception {
     // Create initial change
-    PushOneCommit.Result result = createChange("subject", "filename", "content", "testtopic");
+    PushOneCommit.Result result =
+        createChange(testRepo, "master", "subject", "filename", "content", "testtopic");
     // Project name is scoped by test, so we need to get it from our initial change
     String projectName = result.getChange().change().getProject().get();
     createBranch(new Branch.NameKey(projectName, "ds_one"));
@@ -111,7 +112,8 @@ public class MergeValidatorIT extends LightweightPluginDaemonTest {
   @Test
   public void testNoMissingDownstreamMerges_branchWithQuotes() throws Exception {
     // Create initial change
-    PushOneCommit.Result result = createChange("subject", "filename", "content", "testtopic");
+    PushOneCommit.Result result =
+        createChange(testRepo, "master", "subject", "filename", "content", "testtopic");
     // Project name is scoped by test, so we need to get it from our initial change
     String projectName = result.getChange().change().getProject().get();
     createBranch(new Branch.NameKey(projectName, "branch\"quotes"));
@@ -125,7 +127,8 @@ public class MergeValidatorIT extends LightweightPluginDaemonTest {
   @Test
   public void testNoMissingDownstreamMerges_branchWithBraces() throws Exception {
     // Create initial change
-    PushOneCommit.Result result = createChange("subject", "filename", "content", "testtopic");
+    PushOneCommit.Result result =
+        createChange(testRepo, "master", "subject", "filename", "content", "testtopic");
     // Project name is scoped by test, so we need to get it from our initial change
     String projectName = result.getChange().change().getProject().get();
     createBranch(new Branch.NameKey(projectName, "branch{}braces"));
@@ -139,7 +142,8 @@ public class MergeValidatorIT extends LightweightPluginDaemonTest {
   @Test
   public void testMultiWordTopic() throws Exception {
     // Create initial change
-    PushOneCommit.Result result = createChange("subject", "filename", "content", "testtopic");
+    PushOneCommit.Result result =
+        createChange(testRepo, "master", "subject", "filename", "content", "testtopic");
     // Project name is scoped by test, so we need to get it from our initial change
     String projectName = result.getChange().change().getProject().get();
     createBranch(new Branch.NameKey(projectName, "ds_one"));
@@ -155,7 +159,8 @@ public class MergeValidatorIT extends LightweightPluginDaemonTest {
   @Test
   public void testMissingDownstreamMerges() throws Exception {
     // Create initial change
-    PushOneCommit.Result result = createChange("subject", "filename", "content", "testtopic");
+    PushOneCommit.Result result =
+        createChange(testRepo, "master", "subject", "filename", "content", "testtopic");
     pushConfig("automerger.config", result.getChange().project().get(), "ds_one");
     result.assertOkStatus();
     int changeNumber = result.getChange().getId().id;
@@ -171,7 +176,8 @@ public class MergeValidatorIT extends LightweightPluginDaemonTest {
   @Test
   public void testMissingDownstreamMerges_custom() throws Exception {
     // Create initial change
-    PushOneCommit.Result result = createChange("subject", "filename", "content", "testtopic");
+    PushOneCommit.Result result =
+        createChange(testRepo, "master", "subject", "filename", "content", "testtopic");
     pushConfig("alternate.config", result.getChange().project().get(), "ds_one");
     result.assertOkStatus();
     int changeNumber = result.getChange().getId().id;
