@@ -14,17 +14,16 @@
 
 package com.googlesource.gerrit.plugins.automerger;
 
+import static com.google.common.truth.Truth.assertThat;
+
 import com.google.common.base.Charsets;
 import com.google.common.io.CharStreams;
-import org.junit.Before;
-import org.junit.Test;
-
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.HashSet;
 import java.util.Set;
-
-import static com.google.common.truth.Truth.assertThat;
+import org.junit.Before;
+import org.junit.Test;
 
 public class ManifestReaderTest {
   private ManifestReader manifestReader;
