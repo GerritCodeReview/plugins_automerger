@@ -309,6 +309,7 @@ public class ConfigLoader {
 
   /**
    * Returns overriden manifest config if specified, default if not
+   *
    * @return The string name of the manifest project.
    * @throws ConfigInvalidException
    */

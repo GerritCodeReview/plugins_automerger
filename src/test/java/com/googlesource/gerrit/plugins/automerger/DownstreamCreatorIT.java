@@ -426,12 +426,7 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
     // Create initial change
     PushOneCommit.Result result =
         createChange(
-            testRepo,
-            "master",
-            "DO NOT MERGE subject",
-            "filename",
-            "content",
-            "testtopic");
+            testRepo, "master", "DO NOT MERGE subject", "filename", "content", "testtopic");
     // Project name is scoped by test, so we need to get it from our initial change
     String projectName = result.getChange().project().get();
     createBranch(new Branch.NameKey(projectName, "ds_one"));
