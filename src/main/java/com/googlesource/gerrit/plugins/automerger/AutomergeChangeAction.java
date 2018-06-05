@@ -86,7 +86,7 @@ class AutomergeChangeAction
     log.debug("Multiple downstream merge input: {}", mdsMergeInput.dsBranchMap);
 
     try {
-      dsCreator.createMergesAndHandleConflicts(mdsMergeInput);
+      dsCreator.automergeChanges(mdsMergeInput);
     } catch (ConfigInvalidException e) {
       throw new ResourceConflictException(
           "Automerger configuration file is invalid: " + e.getMessage());
