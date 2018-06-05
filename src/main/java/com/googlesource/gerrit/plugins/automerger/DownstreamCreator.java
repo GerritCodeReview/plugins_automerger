@@ -269,12 +269,24 @@ public class DownstreamCreator
       try {
         createDownstreamMerges(mdsMergeInput);
 
-        reviewInput.message =
-            "Automerging change "
+        reviewInput.message = "";
+        for (String dsBranch : mdsMergeInput.dsBranchMap.keySet()) {
+          String message;
+          if (mdsMergeInput.dsBranchMap.get(dsBranch)) {
+            message = "Automerging change "
                 + mdsMergeInput.changeNumber
                 + " to "
-                + Joiner.on(", ").join(mdsMergeInput.dsBranchMap.keySet())
+                + dsBranch
                 + " succeeded!";
+          } else {
+            message = "Skip change "
+                + mdsMergeInput.changeNumber
+                + " to "
+                + dsBranch
+                + " succeeded!";
+          }
+          reviewInput.message = Joiner.on("\n").join(reviewInput.message, message);
+        }
         reviewInput.notify = NotifyHandling.NONE;
       } catch (FailedMergeException e) {
         reviewInput.message = e.getDisplayString();
