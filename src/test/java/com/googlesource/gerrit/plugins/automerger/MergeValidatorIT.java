@@ -39,9 +39,8 @@ import org.eclipse.jgit.lib.Config;
 import org.junit.Test;
 
 @TestPlugin(
-  name = "automerger",
-  sysModule = "com.googlesource.gerrit.plugins.automerger.AutomergerModule"
-)
+    name = "automerger",
+    sysModule = "com.googlesource.gerrit.plugins.automerger.AutomergerModule")
 public class MergeValidatorIT extends LightweightPluginDaemonTest {
   private void pushConfig(String resourceName, String project, String branch) throws Exception {
     TestRepository<InMemoryRepository> allProjectRepo = cloneProject(allProjects, admin);
