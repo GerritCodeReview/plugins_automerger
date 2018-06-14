@@ -59,9 +59,8 @@ import org.eclipse.jgit.lib.ObjectId;
 import org.junit.Test;
 
 @TestPlugin(
-  name = "automerger",
-  sysModule = "com.googlesource.gerrit.plugins.automerger.AutomergerModule"
-)
+    name = "automerger",
+    sysModule = "com.googlesource.gerrit.plugins.automerger.AutomergerModule")
 public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
   @Inject private Provider<CurrentUser> user;
 
