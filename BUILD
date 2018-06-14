@@ -32,6 +32,6 @@ junit_tests(
     deps = PLUGIN_DEPS + PLUGIN_TEST_DEPS + [
         ":automerger_test_helpers",
         ":automerger__plugin",
-        "@commons_net//jar",
+        "@commons-net//jar",
     ],
 )
