@@ -41,9 +41,8 @@ import org.eclipse.jgit.lib.Config;
 import org.junit.Test;
 
 @TestPlugin(
-  name = "automerger",
-  sysModule = "com.googlesource.gerrit.plugins.automerger.AutomergerModule"
-)
+    name = "automerger",
+    sysModule = "com.googlesource.gerrit.plugins.automerger.AutomergerModule")
 public class ConfigLoaderIT extends LightweightPluginDaemonTest {
   private ConfigLoader configLoader;
   @Inject private AllProjectsName allProjectsName;
