@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "d715cb45_a57e9e3d",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/DownstreamCreatorIT.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 66,
+      "author": {
+        "id": 1030912
+      },
+      "writtenOn": "2018-12-04T19:05:00Z",
+      "side": 1,
+      "message": "Please be aware that this test only works correctly under ReviewDb and has been in this state for quite some time.",
+      "range": {
+        "startLine": 66,
+        "startChar": 13,
+        "endLine": 66,
+        "endChar": 32
+      },
+      "revId": "c2e112bc92ed5e05c5548987e93450ec42add160",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
