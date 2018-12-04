@@ -23,6 +23,7 @@ import com.google.gerrit.acceptance.LightweightPluginDaemonTest;
 import com.google.gerrit.acceptance.PushOneCommit;
 import com.google.gerrit.acceptance.TestPlugin;
 import com.google.gerrit.acceptance.testsuite.group.GroupOperations;
+import com.google.gerrit.acceptance.testsuite.project.ProjectOperations;
 import com.google.gerrit.extensions.api.accounts.AccountApi;
 import com.google.gerrit.extensions.api.changes.ChangeApi;
 import com.google.gerrit.extensions.api.changes.RebaseInput;
@@ -65,6 +66,7 @@ import org.junit.Test;
 public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
   @Inject private Provider<CurrentUser> user;
   @Inject private GroupOperations groupOperations;
+  @Inject private ProjectOperations projectOperations;
 
   @Test
   public void testExpectedFlow() throws Exception {
@@ -1041,7 +1043,8 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
   }
 
   private Project.NameKey defaultSetup() throws Exception {
-    Project.NameKey manifestNameKey = createProject("platform/manifest");
+    Project.NameKey manifestNameKey =
+        projectOperations.newProject().name(name("platform/manifest")).create();
     setupTestRepo("default.xml", manifestNameKey, "master", "default.xml");
     setupTestRepo("ds_one.xml", manifestNameKey, "ds_one", "default.xml");
     setupTestRepo("ds_two.xml", manifestNameKey, "ds_two", "default.xml");

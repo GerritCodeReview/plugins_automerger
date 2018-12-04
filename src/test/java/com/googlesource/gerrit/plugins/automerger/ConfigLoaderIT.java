@@ -22,6 +22,7 @@ import com.google.gerrit.acceptance.GitUtil;
 import com.google.gerrit.acceptance.LightweightPluginDaemonTest;
 import com.google.gerrit.acceptance.PushOneCommit;
 import com.google.gerrit.acceptance.TestPlugin;
+import com.google.gerrit.acceptance.testsuite.project.ProjectOperations;
 import com.google.gerrit.reviewdb.client.Account;
 import com.google.gerrit.reviewdb.client.Project;
 import com.google.gerrit.reviewdb.client.RefNames;
@@ -50,6 +51,7 @@ public class ConfigLoaderIT extends LightweightPluginDaemonTest {
   @Inject private PluginConfigFactory cfgFactory;
   @Inject @CanonicalWebUrl String canonicalGerritWebUrl;
   @Inject private Provider<CurrentUser> currentUser;
+  @Inject private ProjectOperations projectOperations;
   private Project.NameKey manifestNameKey;
 
   @Test
@@ -74,8 +76,8 @@ public class ConfigLoaderIT extends LightweightPluginDaemonTest {
 
   @Test
   public void getProjectsInScope_missingSourceManifest() throws Exception {
-    createProject("All-Projects");
-    manifestNameKey = createProject("platform/manifest");
+    projectOperations.newProject().name(name("All-Projects")).create();
+    manifestNameKey = projectOperations.newProject().name(name("platform/manifest")).create();
     setupTestRepo("ds_one.xml", manifestNameKey, "ds_one", "default.xml");
     setupTestRepo("ds_two.xml", manifestNameKey, "ds_two", "default.xml");
     loadConfig("alternate.config");
@@ -199,8 +201,8 @@ public class ConfigLoaderIT extends LightweightPluginDaemonTest {
   }
 
   private void defaultSetup(String resourceName) throws Exception {
-    createProject("All-Projects");
-    manifestNameKey = createProject("platform/manifest");
+    projectOperations.newProject().name(name("All-Projects")).create();
+    manifestNameKey = projectOperations.newProject().name(name(("platform/manifest"))).create();
     setupTestRepo("default.xml", manifestNameKey, "master", "default.xml");
     setupTestRepo("ds_one.xml", manifestNameKey, "ds_one", "default.xml");
     setupTestRepo("ds_two.xml", manifestNameKey, "ds_two", "default.xml");
