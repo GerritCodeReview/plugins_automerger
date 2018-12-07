@@ -14,9 +14,12 @@
 
 package com.googlesource.gerrit.plugins.automerger;
 
+import static com.google.common.collect.ImmutableList.toImmutableList;
 import static com.google.common.truth.Truth.assertThat;
+import static java.util.Comparator.comparing;
 
 import com.google.common.base.Charsets;
+import com.google.common.collect.ImmutableList;
 import com.google.common.io.CharStreams;
 import com.google.gerrit.acceptance.GitUtil;
 import com.google.gerrit.acceptance.LightweightPluginDaemonTest;
@@ -49,8 +52,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -1137,21 +1138,11 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
     return maxApproval;
   }
 
-  private List<ChangeInfo> sortedChanges(List<ChangeInfo> changes) {
-    List<ChangeInfo> listCopy = new ArrayList<ChangeInfo>(changes);
-    Collections.sort(
-        listCopy,
-        new Comparator<ChangeInfo>() {
-          @Override
-          public int compare(ChangeInfo c1, ChangeInfo c2) {
-            int compareResult = c1.branch.compareTo(c2.branch);
-            if (compareResult == 0) {
-              return Integer.compare(c1._number, c2._number);
-            }
-            return compareResult;
-          }
-        });
-    return listCopy;
+  private ImmutableList<ChangeInfo> sortedChanges(List<ChangeInfo> changes) {
+    return changes
+        .stream()
+        .sorted(comparing((ChangeInfo c) -> c.branch).thenComparing(c -> c._number))
+        .collect(toImmutableList());
   }
 
   public String getParent(ChangeInfo info, int number) {
