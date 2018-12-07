@@ -1,4 +1,28 @@
 {
   "pushCert": "certificate version 0.1\npusher Dave Borowitz \u003cdborowitz@google.com\u003e 1544208160 -0800\nnonce AGLkUnAAIu80IOWUl6KfMP3hKOaMKl+ROVO0soi4JCe05aLErVULQujGGXih2MxTjGPmAKe633ju\n\n0000000000000000000000000000000000000000 83823e93f30b1dd07994036241b2d96c4397a774 refs/for/master\n-----BEGIN PGP SIGNATURE-----\n\niQJJBAABCgAzFiEEpPm/sOxWgSqG5grhX9fFmpoSiIwFAlwKvyAVHGRib3Jvd2l0\nekBnb29nbGUuY29tAAoJEF/XxZqaEoiMnLkQAKA39XJHeE8IJGWXoJIt2zRtOkDP\n2AYFQzYy7rjR+J22FhmwR/eJRhsI7RupiwjyGoCEKbFySA7Xyn+lF8TfQACjSS55\ngyLcVKwK2KOD0yqvxW2VVnyYD+hXCPzqFOWKnqRfnTkWOSpbUqfm8CzGzTvCjkwu\nNdcLxXplew71doXTzDqPSDiNd4CzGDAfJoq28kOLrAzvAG4cCytIWTSVpuVLi6y+\niy14TfOfHnFpiwqBghKPrC4il2EQjgbG5ZwbYq/HGJqO0ST8DPyFxq0roPtxHHG9\nD2lJvm6eKJxpraQe/lTdA61+BgW9A9qFA2qj3zWPWVoPOeMFLVSgT+HoDXi4dxee\nnMU+6kKkHDclrfHj1C5hSjort0nmnm33oQmmcxWmOFMnQALfxTMYA9/piqpGd6/4\nLw/dd2YpAiRLegEgkgnYC9sOQqQiqVeWjSWvwxFfyrBNxjpAdivcE6cImSiLVkk2\n/8SyoPciu+uyCPVXtm11+eBx8FkhWFtb5aFOo87Rj8U0urJqvStGh5tbK8A6XqHG\n4uG5Y0BCgNct5HXkY+dDHuH+1HUJFLLVVcHqzVFraOnSudela9q53LVcZ6mXbJRy\n2b5yCdsEd5iwq1kO/oYGimp2hxFyzGRyOp65JPi0O3KysXgizKxf/j0ODoIzIOJZ\npqjxIOnwR5WF4pLo\n\u003diEAn\n-----END PGP SIGNATURE-----\n",
-  "comments": []
+  "comments": [
+    {
+      "key": {
+        "uuid": "539ee414_b5992616",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/DownstreamCreatorIT.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 94,
+      "author": {
+        "id": 1011842
+      },
+      "writtenOn": "2018-12-07T20:17:07Z",
+      "side": 1,
+      "message": "optional: can these callers say ImmutableList as well? That would make it more obvious that they don\u0027t plan to mutate the list.",
+      "range": {
+        "startLine": 94,
+        "startChar": 4,
+        "endLine": 94,
+        "endChar": 8
+      },
+      "revId": "e95562d5bd7c99c2866f01cfabfbbb443c69f7cf",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
 }
