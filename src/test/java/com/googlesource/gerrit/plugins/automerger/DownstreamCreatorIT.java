@@ -16,6 +16,11 @@ package com.googlesource.gerrit.plugins.automerger;
 
 import static com.google.common.collect.ImmutableList.toImmutableList;
 import static com.google.common.truth.Truth.assertThat;
+import static com.google.gerrit.extensions.client.ListChangesOption.ALL_REVISIONS;
+import static com.google.gerrit.extensions.client.ListChangesOption.CURRENT_COMMIT;
+import static com.google.gerrit.extensions.client.ListChangesOption.CURRENT_REVISION;
+import static com.google.gerrit.extensions.client.ListChangesOption.DETAILED_LABELS;
+import static com.google.gerrit.extensions.client.ListChangesOption.MESSAGES;
 import static java.util.Comparator.comparing;
 
 import com.google.common.base.Charsets;
@@ -31,7 +36,6 @@ import com.google.gerrit.extensions.api.accounts.AccountApi;
 import com.google.gerrit.extensions.api.changes.ChangeApi;
 import com.google.gerrit.extensions.api.changes.RebaseInput;
 import com.google.gerrit.extensions.api.changes.ReviewInput;
-import com.google.gerrit.extensions.client.ListChangesOption;
 import com.google.gerrit.extensions.common.ApprovalInfo;
 import com.google.gerrit.extensions.common.ChangeInfo;
 import com.google.gerrit.extensions.common.ChangeMessageInfo;
@@ -87,7 +91,7 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
     List<ChangeInfo> changesInTopic =
         gApi.changes()
             .query("topic: " + gApi.changes().id(result.getChangeId()).topic())
-            .withOption(ListChangesOption.CURRENT_REVISION)
+            .withOption(CURRENT_REVISION)
             .get();
     assertThat(changesInTopic).hasSize(3);
 
@@ -162,7 +166,7 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
     List<ChangeInfo> changesInTopic =
         gApi.changes()
             .query("topic: " + gApi.changes().id(result.getChangeId()).topic())
-            .withOptions(ListChangesOption.CURRENT_REVISION, ListChangesOption.CURRENT_COMMIT)
+            .withOptions(CURRENT_REVISION, CURRENT_COMMIT)
             .get();
     assertThat(changesInTopic).hasSize(5);
     // +2 and submit
@@ -262,7 +266,7 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
     List<ChangeInfo> changesInTopic =
         gApi.changes()
             .query("topic: " + gApi.changes().id(result.getChangeId()).topic())
-            .withOption(ListChangesOption.CURRENT_REVISION)
+            .withOption(CURRENT_REVISION)
             .get();
     assertThat(changesInTopic).hasSize(4);
     // +2 and submit
@@ -328,7 +332,7 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
     List<ChangeInfo> changesInTopic =
         gApi.changes()
             .query("topic: " + gApi.changes().id(result.getChangeId()).topic())
-            .withOptions(ListChangesOption.ALL_REVISIONS, ListChangesOption.CURRENT_COMMIT)
+            .withOptions(ALL_REVISIONS, CURRENT_COMMIT)
             .get();
     assertThat(changesInTopic).hasSize(4);
     List<ChangeInfo> sortedChanges = sortedChanges(changesInTopic);
@@ -384,7 +388,7 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
     List<ChangeInfo> changesInTopic =
         gApi.changes()
             .query("topic: " + gApi.changes().id(result.getChangeId()).topic())
-            .withOptions(ListChangesOption.ALL_REVISIONS, ListChangesOption.CURRENT_COMMIT)
+            .withOptions(ALL_REVISIONS, CURRENT_COMMIT)
             .get();
     assertThat(changesInTopic).hasSize(4);
     List<ChangeInfo> sortedChanges = sortedChanges(changesInTopic);
@@ -444,10 +448,7 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
     BinaryResult content = change.current().file("filename").content();
 
     List<ChangeInfo> changesInTopic =
-        gApi.changes()
-            .query("topic: " + change.topic())
-            .withOption(ListChangesOption.CURRENT_REVISION)
-            .get();
+        gApi.changes().query("topic: " + change.topic()).withOption(CURRENT_REVISION).get();
     assertThat(changesInTopic).hasSize(3);
 
     List<ChangeInfo> sortedChanges = sortedChanges(changesInTopic);
@@ -511,10 +512,7 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
 
     ChangeApi change = gApi.changes().id(result.getChangeId());
     List<ChangeInfo> changesInTopic =
-        gApi.changes()
-            .query("topic: " + change.topic())
-            .withOption(ListChangesOption.CURRENT_REVISION)
-            .get();
+        gApi.changes().query("topic: " + change.topic()).withOption(CURRENT_REVISION).get();
     assertThat(changesInTopic).hasSize(3);
 
     List<ChangeInfo> sortedChanges = sortedChanges(changesInTopic);
@@ -589,7 +587,7 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
     List<ChangeInfo> changesInTopic =
         gApi.changes()
             .query("topic: " + gApi.changes().id(masterResult.getChangeId()).topic())
-            .withOptions(ListChangesOption.CURRENT_REVISION, ListChangesOption.MESSAGES)
+            .withOptions(CURRENT_REVISION, MESSAGES)
             .get();
     assertThat(changesInTopic).hasSize(2);
     List<ChangeInfo> sortedChanges = sortedChanges(changesInTopic);
@@ -660,7 +658,7 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
     List<ChangeInfo> changesInTopic =
         gApi.changes()
             .query("topic: " + gApi.changes().id(masterResult.getChangeId()).topic())
-            .withOptions(ListChangesOption.CURRENT_REVISION, ListChangesOption.MESSAGES)
+            .withOptions(CURRENT_REVISION, MESSAGES)
             .get();
     assertThat(changesInTopic).hasSize(2);
     List<ChangeInfo> sortedChanges = sortedChanges(changesInTopic);
@@ -865,7 +863,7 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
     List<ChangeInfo> changesInTopic =
         gApi.changes()
             .query("topic: " + gApi.changes().id(result.getChangeId()).topic())
-            .withOptions(ListChangesOption.CURRENT_REVISION, ListChangesOption.CURRENT_COMMIT)
+            .withOptions(CURRENT_REVISION, CURRENT_COMMIT)
             .get();
     assertThat(changesInTopic).hasSize(3);
 
@@ -934,7 +932,7 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
     List<ChangeInfo> changesInTopic =
         gApi.changes()
             .query("topic: " + gApi.changes().id(result.getChangeId()).topic())
-            .withOptions(ListChangesOption.CURRENT_REVISION, ListChangesOption.CURRENT_COMMIT)
+            .withOptions(CURRENT_REVISION, CURRENT_COMMIT)
             .get();
     assertThat(changesInTopic).hasSize(3);
 
@@ -1029,7 +1027,7 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
     List<ChangeInfo> changesInTopic =
         gApi.changes()
             .query("topic: " + gApi.changes().id(result.getChangeId()).topic())
-            .withOptions(ListChangesOption.CURRENT_REVISION, ListChangesOption.CURRENT_COMMIT)
+            .withOptions(CURRENT_REVISION, CURRENT_COMMIT)
             .get();
     // There should only be two, as ds_one to ds_two should be a merge conflict
     assertThat(changesInTopic).hasSize(2);
@@ -1125,8 +1123,7 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
   }
 
   private ApprovalInfo getVote(ChangeApi change, String label) throws RestApiException {
-    List<ApprovalInfo> approvals =
-        change.get(EnumSet.of(ListChangesOption.DETAILED_LABELS)).labels.get(label).all;
+    List<ApprovalInfo> approvals = change.get(EnumSet.of(DETAILED_LABELS)).labels.get(label).all;
     ApprovalInfo maxApproval = null;
     for (ApprovalInfo approval : approvals) {
       if (maxApproval == null) {
