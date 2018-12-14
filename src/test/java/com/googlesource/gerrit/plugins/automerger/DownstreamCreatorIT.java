@@ -550,7 +550,7 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
     // After we upload our config, we upload a new change to create the downstreams
     PushOneCommit.Result masterResult =
         pushFactory
-            .create(db, admin.getIdent(), testRepo, "subject", "filename", "echo 'Hello World!'")
+            .create(admin.getIdent(), testRepo, "subject", "filename", "echo 'Hello World!'")
             .to("refs/for/master");
     masterResult.assertOkStatus();
 
@@ -617,7 +617,7 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
     // After we upload our config, we upload a new change to create the downstreams
     PushOneCommit.Result masterResult =
         pushFactory
-            .create(db, admin.getIdent(), testRepo, "subject", "filename", "echo 'Hello World!'")
+            .create(admin.getIdent(), testRepo, "subject", "filename", "echo 'Hello World!'")
             .to("refs/for/master");
     masterResult.assertOkStatus();
 
@@ -1016,7 +1016,7 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
       String resourceString = CharStreams.toString(new InputStreamReader(in, Charsets.UTF_8));
 
       PushOneCommit push =
-          pushFactory.create(db, admin.getIdent(), repo, "some subject", filename, resourceString);
+          pushFactory.create(admin.getIdent(), repo, "some subject", filename, resourceString);
       push.to("refs/heads/" + branchName).assertOkStatus();
     }
   }
@@ -1037,7 +1037,7 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
 
       PushOneCommit push =
           pushFactory.create(
-              db, admin.getIdent(), allProjectRepo, "Subject", "automerger.config", cfg.toText());
+              admin.getIdent(), allProjectRepo, "Subject", "automerger.config", cfg.toText());
       push.to(RefNames.REFS_CONFIG).assertOkStatus();
     }
   }

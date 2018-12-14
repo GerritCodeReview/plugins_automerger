@@ -56,7 +56,7 @@ public class MergeValidatorIT extends LightweightPluginDaemonTest {
       cfg.setString("automerger", "master:" + branch, "setProjects", project);
       PushOneCommit push =
           pushFactory.create(
-              db, admin.getIdent(), allProjectRepo, "Subject", "automerger.config", cfg.toText());
+              admin.getIdent(), allProjectRepo, "Subject", "automerger.config", cfg.toText());
       push.to(RefNames.REFS_CONFIG).assertOkStatus();
     }
   }
