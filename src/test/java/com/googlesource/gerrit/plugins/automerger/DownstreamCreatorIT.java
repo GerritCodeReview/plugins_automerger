@@ -1114,8 +1114,7 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
   }
 
   private ImmutableList<ChangeInfo> sortedChanges(List<ChangeInfo> changes) {
-    return changes
-        .stream()
+    return changes.stream()
         .sorted(comparing((ChangeInfo c) -> c.branch).thenComparing(c -> c._number))
         .collect(toImmutableList());
   }
