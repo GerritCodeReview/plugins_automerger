@@ -216,10 +216,7 @@ public class DownstreamCreator
             for (Map.Entry<String, LabelInfo> labelEntry : labels.entrySet()) {
               if (labelEntry.getValue().all.size() > 0) {
                 OptionalInt maxVote =
-                    labelEntry
-                        .getValue()
-                        .all
-                        .stream()
+                    labelEntry.getValue().all.stream()
                         .filter(o -> o.value != null)
                         .mapToInt(i -> i.value)
                         .max();
