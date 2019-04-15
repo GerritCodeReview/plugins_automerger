@@ -57,7 +57,7 @@ public class ConfigLoaderIT extends LightweightPluginDaemonTest {
   @Test
   public void getProjectsInScopeTest_addProjects() throws Exception {
     defaultSetup("automerger.config");
-    Set<String> expectedProjects = new HashSet<String>();
+    Set<String> expectedProjects = new HashSet<>();
     expectedProjects.add("platform/whee");
     expectedProjects.add("platform/added/project");
     assertThat(configLoader.getProjectsInScope("master", "ds_one")).isEqualTo(expectedProjects);
@@ -66,7 +66,7 @@ public class ConfigLoaderIT extends LightweightPluginDaemonTest {
   @Test
   public void getProjectsInScopeTest_setProjects() throws Exception {
     defaultSetup("automerger.config");
-    Set<String> otherExpectedProjects = new HashSet<String>();
+    Set<String> otherExpectedProjects = new HashSet<>();
     otherExpectedProjects.add("platform/some/project");
     otherExpectedProjects.add("platform/other/project");
     otherExpectedProjects.add("platform/added/project");
@@ -87,7 +87,7 @@ public class ConfigLoaderIT extends LightweightPluginDaemonTest {
   @Test
   public void getProjectsInScope_ignoreSourceManifest() throws Exception {
     defaultSetup("alternate.config");
-    Set<String> expectedProjects = new HashSet<String>();
+    Set<String> expectedProjects = new HashSet<>();
     expectedProjects.add("platform/whee");
     expectedProjects.add("whuu");
     assertThat(configLoader.getProjectsInScope("master", "ds_two")).isEqualTo(expectedProjects);
@@ -150,7 +150,7 @@ public class ConfigLoaderIT extends LightweightPluginDaemonTest {
   @Test
   public void upstreamBranchesTest() throws Exception {
     defaultSetup("automerger.config");
-    Set<String> expectedBranches = new HashSet<String>();
+    Set<String> expectedBranches = new HashSet<>();
     expectedBranches.add("master");
     assertThat(configLoader.getUpstreamBranches("ds_two", "platform/some/project"))
         .isEqualTo(expectedBranches);
@@ -159,7 +159,7 @@ public class ConfigLoaderIT extends LightweightPluginDaemonTest {
   @Test
   public void upstreamBranchesTest_nonexistentBranch() throws Exception {
     defaultSetup("automerger.config");
-    Set<String> expectedBranches = new HashSet<String>();
+    Set<String> expectedBranches = new HashSet<>();
     assertThat(configLoader.getUpstreamBranches("master", "platform/some/project"))
         .isEqualTo(expectedBranches);
   }
@@ -167,7 +167,7 @@ public class ConfigLoaderIT extends LightweightPluginDaemonTest {
   @Test
   public void downstreamBranchesTest() throws Exception {
     defaultSetup("automerger.config");
-    Set<String> expectedBranches = new HashSet<String>();
+    Set<String> expectedBranches = new HashSet<>();
     expectedBranches.add("ds_two");
     assertThat(configLoader.getDownstreamBranches("master", "platform/some/project"))
         .isEqualTo(expectedBranches);
@@ -176,7 +176,7 @@ public class ConfigLoaderIT extends LightweightPluginDaemonTest {
   @Test
   public void downstreamBranchesTest_nonexistentBranch() throws Exception {
     defaultSetup("automerger.config");
-    Set<String> expectedBranches = new HashSet<String>();
+    Set<String> expectedBranches = new HashSet<>();
     assertThat(configLoader.getDownstreamBranches("idontexist", "platform/some/project"))
         .isEqualTo(expectedBranches);
   }

@@ -57,7 +57,7 @@ class FailedMergeException extends Exception {
    * @return A string representation of the conflicts.
    */
   public String getDisplayString() {
-    List<String> conflictMessages = new ArrayList<String>();
+    List<String> conflictMessages = new ArrayList<>();
     for (Map.Entry<String, String> branchMapEntry : failedMergeBranchMap.entrySet()) {
       String branch = branchMapEntry.getKey();
       String mergeConflictMessage = branchMapEntry.getValue();

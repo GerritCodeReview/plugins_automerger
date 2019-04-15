@@ -190,7 +190,7 @@ public class MergeValidatorIT extends LightweightPluginDaemonTest {
   }
 
   private List<ChangeInfo> sortedChanges(List<ChangeInfo> changes) {
-    List<ChangeInfo> listCopy = new ArrayList<ChangeInfo>(changes);
+    List<ChangeInfo> listCopy = new ArrayList<>(changes);
     Collections.sort(
         listCopy,
         new Comparator<ChangeInfo>() {
