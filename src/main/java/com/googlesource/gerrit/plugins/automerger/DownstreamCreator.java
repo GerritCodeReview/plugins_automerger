@@ -570,7 +570,7 @@ public class DownstreamCreator
     }
 
     // Map whether or not we should merge it or skip it for each downstream
-    Map<String, Boolean> dsBranchMap = new HashMap<String, Boolean>();
+    Map<String, Boolean> dsBranchMap = new HashMap<>();
     for (String downstreamBranch : downstreamBranches) {
       boolean isSkipMerge = config.isSkipMerge(change.branch, downstreamBranch, change.subject);
       dsBranchMap.put(downstreamBranch, !isSkipMerge);
@@ -619,7 +619,7 @@ public class DownstreamCreator
     log.debug("Giving {} for label {} to {}", vote, label, change.id);
     // Vote on all downstream branches unless merge conflict.
     ReviewInput reviewInput = new ReviewInput();
-    Map<String, Short> labels = new HashMap<String, Short>();
+    Map<String, Short> labels = new HashMap<>();
     labels.put(label, vote);
     reviewInput.labels = labels;
     reviewInput.notify = NotifyHandling.NONE;

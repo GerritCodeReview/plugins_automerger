@@ -217,7 +217,7 @@ public class ConfigLoader {
     if (toBranch == null) {
       throw new IllegalArgumentException("toBranch cannot be null");
     }
-    Set<String> upstreamBranches = new HashSet<String>();
+    Set<String> upstreamBranches = new HashSet<>();
     // List all subsections of automerger, split by :
     Set<String> subsections = getConfig().getSubsections(pluginName);
     for (String subsection : subsections) {
@@ -250,7 +250,7 @@ public class ConfigLoader {
    */
   public Set<String> getDownstreamBranches(String fromBranch, String project)
       throws RestApiException, IOException, ConfigInvalidException {
-    Set<String> downstreamBranches = new HashSet<String>();
+    Set<String> downstreamBranches = new HashSet<>();
     // List all subsections of automerger, split by :
     Set<String> subsections = getConfig().getSubsections(pluginName);
     for (String subsection : subsections) {

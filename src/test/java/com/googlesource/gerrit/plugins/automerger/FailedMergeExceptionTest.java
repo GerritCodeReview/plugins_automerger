@@ -35,7 +35,7 @@ public class FailedMergeExceptionTest {
 
   @Before
   public void setUp() throws Exception {
-    failedMergeBranches = new TreeMap<String, String>();
+    failedMergeBranches = new TreeMap<>();
     failedMergeBranches.put("branch1", "branch1 merge conflict");
     failedMergeBranches.put("branch2", "branch2 merge conflict");
     failedMergeBranches.put("branch3", "branch3 merge conflict");

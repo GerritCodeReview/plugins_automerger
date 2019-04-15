@@ -48,7 +48,7 @@ public class ManifestReader {
    * @return The set of projects in the manifest.
    */
   public Set<String> getProjects() {
-    Set<String> projectSet = new HashSet<String>();
+    Set<String> projectSet = new HashSet<>();
 
     try {
       DocumentBuilderFactory documentBuilderFactory = DocumentBuilderFactory.newInstance();

@@ -39,7 +39,7 @@ public class ManifestReaderTest {
 
   @Test
   public void basicParseTest() throws Exception {
-    Set<String> expectedSet = new HashSet<String>();
+    Set<String> expectedSet = new HashSet<>();
     expectedSet.add("platform/whee");
     expectedSet.add("whoo");
     assertThat(manifestReader.getProjects()).isEqualTo(expectedSet);
@@ -48,7 +48,7 @@ public class ManifestReaderTest {
   @Test
   public void branchDifferentFromDefaultRevisionTest() throws Exception {
     ManifestReader aospManifestReader = new ManifestReader("mirror-aosp-master", manifestString);
-    Set<String> expectedSet = new HashSet<String>();
+    Set<String> expectedSet = new HashSet<>();
     expectedSet.add("platform/whaa");
     assertThat(aospManifestReader.getProjects()).isEqualTo(expectedSet);
   }

@@ -24,7 +24,7 @@ public class QueryBuilder {
   private Map<String, String> queryStringMap;
 
   public QueryBuilder() {
-    this.queryStringMap = new HashMap<String, String>();
+    this.queryStringMap = new HashMap<>();
   }
 
   public void addParameter(String key, String value) throws InvalidQueryParameterException {
@@ -48,7 +48,7 @@ public class QueryBuilder {
   }
 
   public String get() {
-    List<String> queryStringList = new ArrayList<String>();
+    List<String> queryStringList = new ArrayList<>();
     for (Map.Entry<String, String> entry : queryStringMap.entrySet()) {
       queryStringList.add(entry.getKey() + ":" + entry.getValue());
     }
