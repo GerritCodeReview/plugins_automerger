@@ -25,6 +25,30 @@
     },
     {
       "key": {
+        "uuid": "ca927861_340fe0b7",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/DownstreamCreatorIT.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 799,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2019-04-15T14:49:07Z",
+      "side": 1,
+      "message": "No. I\u0027ll fix it tomorrow.",
+      "parentUuid": "b87ce3e6_94eaefaa",
+      "range": {
+        "startLine": 799,
+        "startChar": 31,
+        "endLine": 799,
+        "endChar": 55
+      },
+      "revId": "9d32b0b89c029decb75eff06fb553b2b2c244aeb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "7efc84a0_f0308213",
         "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/DownstreamCreatorIT.java",
         "patchSetId": 1
