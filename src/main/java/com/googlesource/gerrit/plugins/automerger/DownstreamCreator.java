@@ -275,7 +275,7 @@ public class DownstreamCreator
   }
 
   public String getOrSetTopic(int sourceId, String topic)
-      throws RestApiException, OrmException, ConfigInvalidException {
+      throws RestApiException, ConfigInvalidException {
     try (ManualRequestContext ctx = oneOffRequestContext.openAs(config.getContextUserId())) {
       if (isNullOrEmpty(topic)) {
         topic = "am-" + UUID.randomUUID();
