@@ -22,6 +22,7 @@ import java.util.Map;
 
 /** Exception class for merge conflicts. */
 class FailedMergeException extends Exception {
+  private static final long serialVersionUID = 1L;
   private static final int MAX_CONFLICT_MESSAGE_LENGTH = 10000;
   public final String currentRevision;
   public final String conflictMessage;
