@@ -15,6 +15,7 @@ package com.googlesource.gerrit.plugins.automerger;
 
 /** Exception class for invalid query parameters. */
 class InvalidQueryParameterException extends Exception {
+  private static final long serialVersionUID = 1L;
 
   InvalidQueryParameterException(String message) {
     super(message);
