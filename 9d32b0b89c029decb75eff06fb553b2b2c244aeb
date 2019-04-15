@@ -49,6 +49,30 @@
     },
     {
       "key": {
+        "uuid": "e35bb40e_e691ce73",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/DownstreamCreatorIT.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 799,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2019-04-15T23:21:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "ca927861_340fe0b7",
+      "range": {
+        "startLine": 799,
+        "startChar": 31,
+        "endLine": 799,
+        "endChar": 55
+      },
+      "revId": "9d32b0b89c029decb75eff06fb553b2b2c244aeb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "7efc84a0_f0308213",
         "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/DownstreamCreatorIT.java",
         "patchSetId": 1
@@ -69,6 +93,30 @@
       "revId": "9d32b0b89c029decb75eff06fb553b2b2c244aeb",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "96ba41b7_a623703b",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/DownstreamCreatorIT.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 866,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2019-04-15T23:21:24Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "7efc84a0_f0308213",
+      "range": {
+        "startLine": 866,
+        "startChar": 42,
+        "endLine": 866,
+        "endChar": 54
+      },
+      "revId": "9d32b0b89c029decb75eff06fb553b2b2c244aeb",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
