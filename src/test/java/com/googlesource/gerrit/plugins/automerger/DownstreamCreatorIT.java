@@ -49,11 +49,9 @@ import com.google.gerrit.reviewdb.client.AccountGroup;
 import com.google.gerrit.reviewdb.client.Branch;
 import com.google.gerrit.reviewdb.client.Project;
 import com.google.gerrit.reviewdb.client.RefNames;
-import com.google.gerrit.server.CurrentUser;
 import com.google.gerrit.server.group.SystemGroupBackend;
 import com.google.gerrit.testing.TestTimeUtil;
 import com.google.inject.Inject;
-import com.google.inject.Provider;
 import com.googlesource.gerrit.plugins.automerger.helpers.ConfigOption;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -72,7 +70,6 @@ import org.junit.Test;
     name = "automerger",
     sysModule = "com.googlesource.gerrit.plugins.automerger.AutomergerModule")
 public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
-  @Inject private Provider<CurrentUser> user;
   @Inject private GroupOperations groupOperations;
   @Inject private ProjectOperations projectOperations;
 
@@ -801,7 +798,7 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
 
     // Create normalUserGroup, containing current user, and contextUserGroup, containing contextUser
     String normalUserGroup = groupOperations.newGroup().name("normalUserGroup").create().get();
-    gApi.groups().id(normalUserGroup).addMembers(user.get().getAccountId().toString());
+    gApi.groups().id(normalUserGroup).addMembers(user.id().toString());
     AccountApi contextUserApi = gApi.accounts().create("someContextUser");
     String contextUserGroup = groupOperations.newGroup().name("contextUserGroup").create().get();
     gApi.groups().id(contextUserGroup).addMembers(contextUserApi.get().name);
@@ -868,7 +865,7 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
 
     // Create normalUserGroup, containing current user, and contextUserGroup, containing contextUser
     String normalUserGroup = groupOperations.newGroup().name("normalUserGroup").create().get();
-    gApi.groups().id(normalUserGroup).addMembers(user.get().getAccountId().toString());
+    gApi.groups().id(normalUserGroup).addMembers(user.id().toString());
     AccountApi contextUserApi = gApi.accounts().create("randomContextUser");
     String contextUserGroup = groupOperations.newGroup().name("contextUserGroup").create().get();
     gApi.groups().id(contextUserGroup).addMembers(contextUserApi.get().name);
@@ -960,7 +957,7 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
 
     // Create normalUserGroup, containing current user, and contextUserGroup, containing contextUser
     String normalUserGroup = groupOperations.newGroup().name("normalUserGroup").create().get();
-    gApi.groups().id(normalUserGroup).addMembers(user.get().getAccountId().toString());
+    gApi.groups().id(normalUserGroup).addMembers(user.id().toString());
     AccountApi contextUserApi = gApi.accounts().create("asdfContextUser");
     String contextUserGroup = groupOperations.newGroup().name("contextUserGroup").create().get();
     gApi.groups().id(contextUserGroup).addMembers(contextUserApi.get().name);
