@@ -251,7 +251,7 @@ public class ConfigLoaderIT extends LightweightPluginDaemonTest {
   @Test
   public void getContextUserIdTest() throws Exception {
     defaultSetup("context_user.config");
-    assertThat(configLoader.getContextUserId()).isEqualTo(new Account.Id(102304));
+    assertThat(configLoader.getContextUserId()).isEqualTo(Account.id(102304));
   }
 
   @Test
