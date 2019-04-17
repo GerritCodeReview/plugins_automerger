@@ -302,7 +302,7 @@ public class ConfigLoader {
   public Account.Id getContextUserId() throws ConfigInvalidException {
     int contextUserId = getConfig().getInt("global", "contextUserId", -1);
     if (contextUserId > 0) {
-      return new Account.Id(contextUserId);
+      return Account.id(contextUserId);
     }
     return user.get().getAccountId();
   }
