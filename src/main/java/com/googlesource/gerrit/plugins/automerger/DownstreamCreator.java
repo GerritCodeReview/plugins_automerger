@@ -16,6 +16,7 @@ package com.googlesource.gerrit.plugins.automerger;
 import static com.google.common.base.Strings.isNullOrEmpty;
 
 import com.google.common.base.Joiner;
+import com.google.gerrit.exceptions.StorageException;
 import com.google.gerrit.extensions.api.GerritApi;
 import com.google.gerrit.extensions.api.changes.AbandonInput;
 import com.google.gerrit.extensions.api.changes.ChangeApi;
@@ -42,7 +43,6 @@ import com.google.gerrit.extensions.restapi.RestApiException;
 import com.google.gerrit.server.CurrentUser;
 import com.google.gerrit.server.util.ManualRequestContext;
 import com.google.gerrit.server.util.OneOffRequestContext;
-import com.google.gwtorm.server.OrmException;
 import com.google.inject.Inject;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -103,7 +103,7 @@ public class DownstreamCreator
       String revision = event.getRevision().commit.commit;
       log.debug("Detected revision {} abandoned on {}.", revision, change.project);
       abandonDownstream(change, revision);
-    } catch (ConfigInvalidException | OrmException e) {
+    } catch (ConfigInvalidException | StorageException e) {
       log.error("Automerger plugin failed onChangeAbandoned for {}", event.getChange().id, e);
     }
   }
@@ -170,7 +170,7 @@ public class DownstreamCreator
           }
         }
       }
-    } catch (OrmException | ConfigInvalidException e) {
+    } catch (StorageException | ConfigInvalidException e) {
       log.error("Automerger plugin failed onTopicEdited for {}", event.getChange().id, e);
     }
   }
@@ -231,7 +231,7 @@ public class DownstreamCreator
           log.error("Exception when updating downstream votes of {}", change.id, e);
         }
       }
-    } catch (OrmException | ConfigInvalidException | RestApiException | IOException e) {
+    } catch (StorageException | ConfigInvalidException | RestApiException | IOException e) {
       log.error("Automerger plugin failed onCommentAdded for {}", event.getChange().id, e);
     }
   }
@@ -250,7 +250,7 @@ public class DownstreamCreator
         | IOException
         | ConfigInvalidException
         | InvalidQueryParameterException
-        | OrmException e) {
+        | StorageException e) {
       log.error("Automerger plugin failed onChangeRestored for {}", event.getChange().id, e);
     }
   }
@@ -269,7 +269,7 @@ public class DownstreamCreator
         | IOException
         | ConfigInvalidException
         | InvalidQueryParameterException
-        | OrmException e) {
+        | StorageException e) {
       log.error("Automerger plugin failed onRevisionCreated for {}", event.getChange().id, e);
     }
   }
@@ -293,11 +293,11 @@ public class DownstreamCreator
    * @throws RestApiException Throws if we fail a REST API call.
    * @throws ConfigInvalidException Throws if we get a malformed configuration
    * @throws InvalidQueryParameterException Throws if we attempt to add an invalid value to query.
-   * @throws OrmException Throws if we fail to open the request context
+   * @throws StorageException Throws if we fail to open the request context
    */
   public void createMergesAndHandleConflicts(MultipleDownstreamMergeInput mdsMergeInput)
       throws RestApiException, ConfigInvalidException, InvalidQueryParameterException,
-          OrmException {
+          StorageException {
     try (ManualRequestContext ctx = oneOffRequestContext.openAs(config.getContextUserId())) {
       ReviewInput reviewInput = new ReviewInput();
       Map<String, Short> labels = new HashMap<>();
@@ -343,11 +343,11 @@ public class DownstreamCreator
    * @throws FailedMergeException Throws if we get a merge conflict when merging downstream.
    * @throws ConfigInvalidException Throws if we get a malformed config file
    * @throws InvalidQueryParameterException Throws if we attempt to add an invalid value to query.
-   * @throws OrmException Throws if we fail to open the request context
+   * @throws StorageException Throws if we fail to open the request context
    */
   private void createDownstreamMerges(MultipleDownstreamMergeInput mdsMergeInput)
       throws RestApiException, FailedMergeException, ConfigInvalidException,
-          InvalidQueryParameterException, OrmException {
+          InvalidQueryParameterException, StorageException {
     try (ManualRequestContext ctx = oneOffRequestContext.openAs(config.getContextUserId())) {
       // Map from branch to error message
       Map<String, String> failedMergeBranchMap = new TreeMap<>();
@@ -436,11 +436,11 @@ public class DownstreamCreator
    * @throws RestApiException Throws when we fail a REST API call.
    * @throws InvalidQueryParameterException Throws when we try to add an invalid value to the query.
    * @throws ConfigInvalidException Throws if we fail to read the config
-   * @throws OrmException Throws if we fail to open the request context
+   * @throws StorageException Throws if we fail to open the request context
    */
   private List<Integer> getExistingMergesOnBranch(
       String upstreamRevision, String topic, String downstreamBranch)
-      throws RestApiException, InvalidQueryParameterException, OrmException,
+      throws RestApiException, InvalidQueryParameterException, StorageException,
           ConfigInvalidException {
     try (ManualRequestContext ctx = oneOffRequestContext.openAs(config.getContextUserId())) {
       List<Integer> downstreamChangeNumbers = new ArrayList<>();
@@ -468,11 +468,11 @@ public class DownstreamCreator
    * @throws RestApiException
    * @throws ConfigInvalidException
    * @throws InvalidQueryParameterException
-   * @throws OrmException
+   * @throws StorageException
    */
   private void createSingleDownstreamMerge(SingleDownstreamMergeInput sdsMergeInput)
       throws RestApiException, ConfigInvalidException, InvalidQueryParameterException,
-          OrmException {
+          StorageException {
     try (ManualRequestContext ctx = oneOffRequestContext.openAs(config.getContextUserId())) {
       String currentTopic = getOrSetTopic(sdsMergeInput.changeNumber, sdsMergeInput.topic);
 
@@ -557,7 +557,7 @@ public class DownstreamCreator
 
   private void automergeChanges(ChangeInfo change, RevisionInfo revisionInfo)
       throws RestApiException, IOException, ConfigInvalidException, InvalidQueryParameterException,
-          OrmException {
+          StorageException {
     String currentRevision = revisionInfo.commit.commit;
     log.debug(
         "Handling patchsetevent with change id {} and revision {}", change.id, currentRevision);
@@ -594,7 +594,7 @@ public class DownstreamCreator
   }
 
   private void abandonDownstream(ChangeInfo change, String revision)
-      throws ConfigInvalidException, OrmException {
+      throws ConfigInvalidException, StorageException {
     try {
       Set<String> downstreamBranches = config.getDownstreamBranches(change.branch, change.project);
       if (downstreamBranches.isEmpty()) {

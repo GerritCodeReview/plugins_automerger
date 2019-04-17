@@ -14,6 +14,7 @@
 
 package com.googlesource.gerrit.plugins.automerger;
 
+import com.google.gerrit.exceptions.StorageException;
 import com.google.gerrit.extensions.restapi.ResourceConflictException;
 import com.google.gerrit.extensions.restapi.Response;
 import com.google.gerrit.extensions.restapi.RestApiException;
@@ -23,7 +24,6 @@ import com.google.gerrit.reviewdb.client.Change;
 import com.google.gerrit.server.CurrentUser;
 import com.google.gerrit.server.IdentifiedUser;
 import com.google.gerrit.server.change.RevisionResource;
-import com.google.gwtorm.server.OrmException;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import java.io.IOException;
@@ -59,11 +59,11 @@ class AutomergeChangeAction
    * @throws IOException
    * @throws RestApiException
    * @throws ConfigInvalidException
-   * @throws OrmException
+   * @throws StorageException
    */
   @Override
   public Object apply(RevisionResource rev, Input input)
-      throws IOException, RestApiException, OrmException, ConfigInvalidException {
+      throws IOException, RestApiException, StorageException, ConfigInvalidException {
     Map<String, Boolean> branchMap = input.branchMap;
 
     Change change = rev.getChange();
