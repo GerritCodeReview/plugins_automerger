@@ -106,7 +106,7 @@ class AutomergeChangeAction
   @Override
   public Description getDescription(RevisionResource resource) {
     String project = resource.getProject().get();
-    String branch = resource.getChange().getDest().getShortName();
+    String branch = resource.getChange().getDest().shortName();
     Description desc = new Description();
     desc = desc.setLabel("Recreate automerges").setTitle("Recreate automerges downstream");
     try {

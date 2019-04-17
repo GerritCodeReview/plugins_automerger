@@ -53,7 +53,7 @@ class AllConfigDownstreamAction implements RestReadView<BranchResource> {
   public Response<List<String>> apply(BranchResource branchResource)
       throws RestApiException, IOException {
 
-    String branchName = branchResource.getBranchKey().getShortName();
+    String branchName = branchResource.getBranchKey().shortName();
     String projectName = branchResource.getName();
 
     try {

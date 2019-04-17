@@ -56,7 +56,7 @@ class ConfigDownstreamAction
   public Response<Map<String, Boolean>> apply(RevisionResource rev, Input input)
       throws RestApiException, IOException {
 
-    String branchName = rev.getChange().getDest().getShortName();
+    String branchName = rev.getChange().getDest().shortName();
     String projectName = rev.getProject().get();
 
     try {
