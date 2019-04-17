@@ -81,8 +81,8 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
         createChange(testRepo, "master", "subject", "filename", "content", "testtopic");
     // Project name is scoped by test, so we need to get it from our initial change
     String projectName = result.getChange().project().get();
-    createBranch(new Branch.NameKey(projectName, "ds_one"));
-    createBranch(new Branch.NameKey(projectName, "ds_two"));
+    createBranch(Branch.nameKey(projectName, "ds_one"));
+    createBranch(Branch.nameKey(projectName, "ds_two"));
     pushDefaultConfig("automerger.config", manifestNameKey.get(), projectName, "ds_one", "ds_two");
     // After we upload our config, we upload a new patchset to create the downstreams
     amendChange(result.getChangeId());
@@ -132,8 +132,8 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
     PushOneCommit.Result initialResult = createChange("subject", "filename", "echo Hello");
     // Project name is scoped by test, so we need to get it from our initial change
     String projectName = initialResult.getChange().project().get();
-    createBranch(new Branch.NameKey(projectName, "left"));
-    createBranch(new Branch.NameKey(projectName, "right"));
+    createBranch(Branch.nameKey(projectName, "left"));
+    createBranch(Branch.nameKey(projectName, "right"));
     initialResult.assertOkStatus();
     merge(initialResult);
     // Reset to create a sibling
@@ -150,7 +150,7 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
     String rightRevision = gApi.projects().name(projectName).branch("right").get().revision;
     // For this test, right != left
     assertThat(leftRevision).isNotEqualTo(rightRevision);
-    createBranch(new Branch.NameKey(projectName, "bottom"));
+    createBranch(Branch.nameKey(projectName, "bottom"));
     pushDiamondConfig(manifestNameKey.get(), projectName);
     // After we upload our config, we upload a new patchset to create the downstreams
     PushOneCommit.Result result =
@@ -226,8 +226,8 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
     PushOneCommit.Result initialResult = createChange("subject", "filename", "echo Hello");
     // Project name is scoped by test, so we need to get it from our initial change
     String projectName = initialResult.getChange().project().get();
-    createBranch(new Branch.NameKey(projectName, "left"));
-    createBranch(new Branch.NameKey(projectName, "right"));
+    createBranch(Branch.nameKey(projectName, "left"));
+    createBranch(Branch.nameKey(projectName, "right"));
     initialResult.assertOkStatus();
     merge(initialResult);
 
@@ -235,7 +235,7 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
     String rightRevision = gApi.projects().name(projectName).branch("right").get().revision;
     // For this test, right == left
     assertThat(leftRevision).isEqualTo(rightRevision);
-    createBranch(new Branch.NameKey(projectName, "bottom"));
+    createBranch(Branch.nameKey(projectName, "bottom"));
     pushDiamondConfig(manifestNameKey.get(), projectName);
 
     // Freeze time so that the merge commit from left->bottom and right->bottom have same SHA
@@ -296,7 +296,7 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
         createChange(testRepo, "master", "subject", "filename", "content", "testtopic");
     // Project name is scoped by test, so we need to get it from our initial change
     String projectName = result.getChange().project().get();
-    createBranch(new Branch.NameKey(projectName, "ds_one"));
+    createBranch(Branch.nameKey(projectName, "ds_one"));
     pushSimpleConfig("automerger.config", manifestNameKey.get(), projectName, "ds_one");
     // After we upload our config, we upload a new patchset to create the downstreams
     amendChange(result.getChangeId());
@@ -348,7 +348,7 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
         createChange(testRepo, "master", "subject", "filename", "content", "testtopic");
     // Project name is scoped by test, so we need to get it from our initial change
     String projectName = result.getChange().project().get();
-    createBranch(new Branch.NameKey(projectName, "ds_one"));
+    createBranch(Branch.nameKey(projectName, "ds_one"));
     pushSimpleConfig("automerger.config", manifestNameKey.get(), projectName, "ds_one");
     // After we upload our config, we upload a new patchset to create the downstreams
     amendChange(result.getChangeId());
@@ -413,8 +413,8 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
             testRepo, "master", "DO NOT MERGE subject", "filename", "content", "testtopic");
     // Project name is scoped by test, so we need to get it from our initial change
     String projectName = result.getChange().project().get();
-    createBranch(new Branch.NameKey(projectName, "ds_one"));
-    createBranch(new Branch.NameKey(projectName, "ds_two"));
+    createBranch(Branch.nameKey(projectName, "ds_one"));
+    createBranch(Branch.nameKey(projectName, "ds_two"));
     pushDefaultConfig("automerger.config", manifestNameKey.get(), projectName, "ds_one", "ds_two");
     // After we upload our config, we upload a new patchset to create the downstreams
     amendChange(result.getChangeId(), "DO NOT MERGE subject", "filename", "content");
@@ -475,8 +475,8 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
             "testtopic");
     // Project name is scoped by test, so we need to get it from our initial change
     String projectName = result.getChange().project().get();
-    createBranch(new Branch.NameKey(projectName, "ds_one"));
-    createBranch(new Branch.NameKey(projectName, "ds_two"));
+    createBranch(Branch.nameKey(projectName, "ds_one"));
+    createBranch(Branch.nameKey(projectName, "ds_two"));
     pushDefaultConfig("automerger.config", manifestNameKey.get(), projectName, "ds_one", "ds_two");
     // After we upload our config, we upload a new patchset to create the downstreams
     amendChange(result.getChangeId(), "DO NOT MERGE ANYWHERE subject", "filename", "content");
@@ -528,8 +528,8 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
     PushOneCommit.Result result = createChange("subject", "filename", "echo Hello");
     // Project name is scoped by test, so we need to get it from our initial change
     String projectName = result.getChange().project().get();
-    createBranch(new Branch.NameKey(projectName, "ds_one"));
-    createBranch(new Branch.NameKey(projectName, "ds_two"));
+    createBranch(Branch.nameKey(projectName, "ds_one"));
+    createBranch(Branch.nameKey(projectName, "ds_two"));
     result.assertOkStatus();
     merge(result);
     // Reset to create a sibling
@@ -591,8 +591,8 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
     PushOneCommit.Result result = createChange("subject", "filename", "echo Hello");
     // Project name is scoped by test, so we need to get it from our initial change
     String projectName = result.getChange().project().get();
-    createBranch(new Branch.NameKey(projectName, "ds_one"));
-    createBranch(new Branch.NameKey(projectName, "ds_two"));
+    createBranch(Branch.nameKey(projectName, "ds_one"));
+    createBranch(Branch.nameKey(projectName, "ds_two"));
     result.assertOkStatus();
     merge(result);
     // Reset to create a sibling
@@ -660,8 +660,8 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
         createChange(testRepo, "master", "subject", "filename", "content", "testtopic");
     // Project name is scoped by test, so we need to get it from our initial change
     String projectName = result.getChange().project().get();
-    createBranch(new Branch.NameKey(projectName, "ds_one"));
-    createBranch(new Branch.NameKey(projectName, "ds_two"));
+    createBranch(Branch.nameKey(projectName, "ds_one"));
+    createBranch(Branch.nameKey(projectName, "ds_two"));
     pushDefaultConfig("automerger.config", manifestNameKey.get(), projectName, "ds_one", "ds_two");
     // After we upload our config, we upload a new patchset to create the downstreams
     amendChange(result.getChangeId());
@@ -686,8 +686,8 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
         createChange(testRepo, "master", "subject", "filename", "content", "testtopic");
     // Project name is scoped by test, so we need to get it from our initial change
     String projectName = result.getChange().project().get();
-    createBranch(new Branch.NameKey(projectName, "ds_one"));
-    createBranch(new Branch.NameKey(projectName, "ds_two"));
+    createBranch(Branch.nameKey(projectName, "ds_one"));
+    createBranch(Branch.nameKey(projectName, "ds_two"));
     pushDefaultConfig("automerger.config", manifestNameKey.get(), projectName, "ds_one", "ds_two");
     // After we upload our config, we upload a new patchset to create the downstreams
     amendChange(result.getChangeId());
@@ -714,8 +714,8 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
         createChange(testRepo, "master", "subject", "filename", "content", "testtopic");
     // Project name is scoped by test, so we need to get it from our initial change
     String projectName = result.getChange().project().get();
-    createBranch(new Branch.NameKey(projectName, "ds_one"));
-    createBranch(new Branch.NameKey(projectName, "ds_two"));
+    createBranch(Branch.nameKey(projectName, "ds_one"));
+    createBranch(Branch.nameKey(projectName, "ds_two"));
     pushDefaultConfig("automerger.config", manifestNameKey.get(), projectName, "ds_one", "ds_two");
     // After we upload our config, we upload a new patchset to create the downstreams
     amendChange(result.getChangeId());
@@ -740,8 +740,8 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
         createChange(testRepo, "master", "subject", "filename", "content", "testtopic");
     // Project name is scoped by test, so we need to get it from our initial change
     String projectName = result.getChange().project().get();
-    createBranch(new Branch.NameKey(projectName, "branch{}braces"));
-    createBranch(new Branch.NameKey(projectName, "branch\"quotes"));
+    createBranch(Branch.nameKey(projectName, "branch{}braces"));
+    createBranch(Branch.nameKey(projectName, "branch\"quotes"));
     pushDefaultConfig(
         "automerger.config",
         manifestNameKey.get(),
@@ -769,7 +769,7 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
         createChange(testRepo, "master", "subject", "filename", "content", "testtopic");
     // Project name is scoped by test, so we need to get it from our initial change
     String projectName = result.getChange().project().get();
-    createBranch(new Branch.NameKey(projectName, "ds_one"));
+    createBranch(Branch.nameKey(projectName, "ds_one"));
     pushSimpleConfig("automerger.config", manifestNameKey.get(), projectName, "ds_one");
     // After we upload our config, we upload a new patchset to create the downstreams
     amendChange(result.getChangeId());
@@ -791,8 +791,8 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
     // Project name is scoped by test, so we need to get it from our initial change
     Project.NameKey projectNameKey = initialResult.getChange().project();
     String projectName = projectNameKey.get();
-    createBranch(new Branch.NameKey(projectName, "ds_one"));
-    createBranch(new Branch.NameKey(projectName, "ds_two"));
+    createBranch(Branch.nameKey(projectName, "ds_one"));
+    createBranch(Branch.nameKey(projectName, "ds_two"));
     initialResult.assertOkStatus();
     merge(initialResult);
 
@@ -858,8 +858,8 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
     // Project name is scoped by test, so we need to get it from our initial change
     Project.NameKey projectNameKey = initialResult.getChange().project();
     String projectName = projectNameKey.get();
-    createBranch(new Branch.NameKey(projectName, "ds_one"));
-    createBranch(new Branch.NameKey(projectName, "ds_two"));
+    createBranch(Branch.nameKey(projectName, "ds_one"));
+    createBranch(Branch.nameKey(projectName, "ds_two"));
     initialResult.assertOkStatus();
     merge(initialResult);
 
@@ -933,8 +933,8 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
     // Project name is scoped by test, so we need to get it from our initial change
     Project.NameKey projectNameKey = initialResult.getChange().project();
     String projectName = projectNameKey.get();
-    createBranch(new Branch.NameKey(projectName, "ds_one"));
-    createBranch(new Branch.NameKey(projectName, "ds_two"));
+    createBranch(Branch.nameKey(projectName, "ds_one"));
+    createBranch(Branch.nameKey(projectName, "ds_two"));
     initialResult.assertOkStatus();
     merge(initialResult);
 
