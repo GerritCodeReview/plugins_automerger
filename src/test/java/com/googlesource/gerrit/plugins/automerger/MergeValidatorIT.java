@@ -99,7 +99,7 @@ public class MergeValidatorIT extends LightweightPluginDaemonTest {
     assertThat(sortedChanges.get(0).branch).isEqualTo("ds_one");
     gApi.changes().id(sortedChanges.get(0)._number).abandon();
 
-    int changeNumber = result.getChange().getId().id;
+    int changeNumber = result.getChange().getId().get();
     exception.expect(ResourceConflictException.class);
     exception.expectMessage(
         "Failed to submit 1 change due to the following problems:\nChange "
@@ -162,7 +162,7 @@ public class MergeValidatorIT extends LightweightPluginDaemonTest {
         createChange(testRepo, "master", "subject", "filename", "content", "testtopic");
     pushConfig("automerger.config", result.getChange().project().get(), "ds_one");
     result.assertOkStatus();
-    int changeNumber = result.getChange().getId().id;
+    int changeNumber = result.getChange().getId().get();
     // Assert we are missing downstreams
     exception.expect(ResourceConflictException.class);
     exception.expectMessage(
@@ -179,7 +179,7 @@ public class MergeValidatorIT extends LightweightPluginDaemonTest {
         createChange(testRepo, "master", "subject", "filename", "content", "testtopic");
     pushConfig("alternate.config", result.getChange().project().get(), "ds_one");
     result.assertOkStatus();
-    int changeNumber = result.getChange().getId().id;
+    int changeNumber = result.getChange().getId().get();
     // Assert we are missing downstreams
     exception.expect(ResourceConflictException.class);
     exception.expectMessage(
