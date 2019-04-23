@@ -25,7 +25,7 @@ import com.google.gerrit.acceptance.TestPlugin;
 import com.google.gerrit.extensions.client.ListChangesOption;
 import com.google.gerrit.extensions.common.ChangeInfo;
 import com.google.gerrit.extensions.restapi.ResourceConflictException;
-import com.google.gerrit.reviewdb.client.Branch;
+import com.google.gerrit.reviewdb.client.BranchNameKey;
 import com.google.gerrit.reviewdb.client.RefNames;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -68,7 +68,7 @@ public class MergeValidatorIT extends LightweightPluginDaemonTest {
         createChange(testRepo, "master", "subject", "filename", "content", "testtopic");
     // Project name is scoped by test, so we need to get it from our initial change
     String projectName = result.getChange().change().getProject().get();
-    createBranch(Branch.nameKey(projectName, "ds_one"));
+    createBranch(BranchNameKey.create(projectName, "ds_one"));
     pushConfig("automerger.config", projectName, "ds_one");
     // After we upload our config, we upload a new patchset to create the downstreams
     amendChange(result.getChangeId());
@@ -82,7 +82,7 @@ public class MergeValidatorIT extends LightweightPluginDaemonTest {
     PushOneCommit.Result result = createChange("subject", "filename", "content");
     // Project name is scoped by test, so we need to get it from our initial change
     String projectName = result.getChange().change().getProject().get();
-    createBranch(Branch.nameKey(projectName, "ds_one"));
+    createBranch(BranchNameKey.create(projectName, "ds_one"));
     pushConfig("automerger.config", projectName, "ds_one");
     // After we upload our config, we upload a new patchset to create the downstreams
     amendChange(result.getChangeId());
@@ -115,7 +115,7 @@ public class MergeValidatorIT extends LightweightPluginDaemonTest {
         createChange(testRepo, "master", "subject", "filename", "content", "testtopic");
     // Project name is scoped by test, so we need to get it from our initial change
     String projectName = result.getChange().change().getProject().get();
-    createBranch(Branch.nameKey(projectName, "branch\"quotes"));
+    createBranch(BranchNameKey.create(projectName, "branch\"quotes"));
     pushConfig("automerger.config", projectName, "branch\"quotes");
     // After we upload our config, we upload a new patchset to create the downstreams
     amendChange(result.getChangeId());
@@ -130,7 +130,7 @@ public class MergeValidatorIT extends LightweightPluginDaemonTest {
         createChange(testRepo, "master", "subject", "filename", "content", "testtopic");
     // Project name is scoped by test, so we need to get it from our initial change
     String projectName = result.getChange().change().getProject().get();
-    createBranch(Branch.nameKey(projectName, "branch{}braces"));
+    createBranch(BranchNameKey.create(projectName, "branch{}braces"));
     pushConfig("automerger.config", projectName, "branch{}braces");
     // After we upload our config, we upload a new patchset to create the downstreams
     amendChange(result.getChangeId());
@@ -145,7 +145,7 @@ public class MergeValidatorIT extends LightweightPluginDaemonTest {
         createChange(testRepo, "master", "subject", "filename", "content", "testtopic");
     // Project name is scoped by test, so we need to get it from our initial change
     String projectName = result.getChange().change().getProject().get();
-    createBranch(Branch.nameKey(projectName, "ds_one"));
+    createBranch(BranchNameKey.create(projectName, "ds_one"));
     pushConfig("automerger.config", projectName, "ds_one");
     // After we upload our config, we upload a new patchset to create the downstreams
     amendChange(result.getChangeId());
