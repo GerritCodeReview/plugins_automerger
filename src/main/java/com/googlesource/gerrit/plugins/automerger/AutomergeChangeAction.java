@@ -71,12 +71,12 @@ class AutomergeChangeAction
       log.debug("Branch map is empty for change {}", change.getKey().get());
       return Response.none();
     }
-    String revision = rev.getPatchSet().getCommitId().name();
+    String revision = rev.getPatchSet().commitId().name();
 
     MultipleDownstreamMergeInput mdsMergeInput = new MultipleDownstreamMergeInput();
     mdsMergeInput.dsBranchMap = branchMap;
     mdsMergeInput.changeNumber = change.getId().get();
-    mdsMergeInput.patchsetNumber = rev.getPatchSet().getPatchSetId();
+    mdsMergeInput.patchsetNumber = rev.getPatchSet().number();
     mdsMergeInput.project = change.getProject().get();
     mdsMergeInput.topic = dsCreator.getOrSetTopic(change.getId().get(), change.getTopic());
     mdsMergeInput.subject = change.getSubject();
