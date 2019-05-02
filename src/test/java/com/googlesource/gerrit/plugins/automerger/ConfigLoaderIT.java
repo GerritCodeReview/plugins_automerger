@@ -15,6 +15,7 @@
 package com.googlesource.gerrit.plugins.automerger;
 
 import static com.google.common.truth.Truth.assertThat;
+import static com.google.gerrit.testing.GerritJUnit.assertThrows;
 
 import com.google.common.base.Charsets;
 import com.google.common.io.CharStreams;
@@ -185,9 +186,13 @@ public class ConfigLoaderIT extends LightweightPluginDaemonTest {
   public void downstreamBranchesTest_configException() throws Exception {
     defaultSetup("wrong.config");
 
-    exception.expect(ConfigInvalidException.class);
-    exception.expectMessage("Automerger config branch pair malformed: master..ds_one");
-    configLoader.getDownstreamBranches("master", "platform/some/project");
+    ConfigInvalidException thrown =
+        assertThrows(
+            ConfigInvalidException.class,
+            () -> configLoader.getDownstreamBranches("master", "platform/some/project"));
+    assertThat(thrown)
+        .hasMessageThat()
+        .contains("Automerger config branch pair malformed: master..ds_one");
   }
 
   @Test

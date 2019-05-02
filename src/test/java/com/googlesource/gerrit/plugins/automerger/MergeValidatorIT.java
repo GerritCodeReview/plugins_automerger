@@ -15,6 +15,7 @@
 package com.googlesource.gerrit.plugins.automerger;
 
 import static com.google.common.truth.Truth.assertThat;
+import static com.google.gerrit.testing.GerritJUnit.assertThrows;
 
 import com.google.common.base.Charsets;
 import com.google.common.io.CharStreams;
@@ -100,12 +101,14 @@ public class MergeValidatorIT extends LightweightPluginDaemonTest {
     gApi.changes().id(sortedChanges.get(0)._number).abandon();
 
     int changeNumber = result.getChange().getId().get();
-    exception.expect(ResourceConflictException.class);
-    exception.expectMessage(
-        "Failed to submit 1 change due to the following problems:\nChange "
-            + changeNumber
-            + ": Missing downstream branches ds_one. Please recreate the automerges.");
-    merge(result);
+    ResourceConflictException thrown =
+        assertThrows(ResourceConflictException.class, () -> merge(result));
+    assertThat(thrown)
+        .hasMessageThat()
+        .contains(
+            "Failed to submit 1 change due to the following problems:\nChange "
+                + changeNumber
+                + ": Missing downstream branches ds_one. Please recreate the automerges.");
   }
 
   @Test
@@ -164,12 +167,14 @@ public class MergeValidatorIT extends LightweightPluginDaemonTest {
     result.assertOkStatus();
     int changeNumber = result.getChange().getId().get();
     // Assert we are missing downstreams
-    exception.expect(ResourceConflictException.class);
-    exception.expectMessage(
-        "Failed to submit 1 change due to the following problems:\nChange "
-            + changeNumber
-            + ": Missing downstream branches ds_one. Please recreate the automerges.");
-    merge(result);
+    ResourceConflictException thrown =
+        assertThrows(ResourceConflictException.class, () -> merge(result));
+    assertThat(thrown)
+        .hasMessageThat()
+        .contains(
+            "Failed to submit 1 change due to the following problems:\nChange "
+                + changeNumber
+                + ": Missing downstream branches ds_one. Please recreate the automerges.");
   }
 
   @Test
@@ -181,12 +186,14 @@ public class MergeValidatorIT extends LightweightPluginDaemonTest {
     result.assertOkStatus();
     int changeNumber = result.getChange().getId().get();
     // Assert we are missing downstreams
-    exception.expect(ResourceConflictException.class);
-    exception.expectMessage(
-        "Failed to submit 1 change due to the following problems:\nChange "
-            + changeNumber
-            + ": there is no ds_one");
-    merge(result);
+    ResourceConflictException thrown =
+        assertThrows(ResourceConflictException.class, () -> merge(result));
+    assertThat(thrown)
+        .hasMessageThat()
+        .contains(
+            "Failed to submit 1 change due to the following problems:\nChange "
+                + changeNumber
+                + ": there is no ds_one");
   }
 
   private List<ChangeInfo> sortedChanges(List<ChangeInfo> changes) {

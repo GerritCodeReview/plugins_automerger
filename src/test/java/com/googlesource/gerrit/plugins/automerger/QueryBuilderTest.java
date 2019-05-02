@@ -15,17 +15,15 @@
 package com.googlesource.gerrit.plugins.automerger;
 
 import static com.google.common.truth.Truth.assertThat;
+import static com.google.gerrit.testing.GerritJUnit.assertThrows;
 
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 @RunWith(JUnit4.class)
 public class QueryBuilderTest {
-  @Rule public ExpectedException exception = ExpectedException.none();
   private QueryBuilder queryBuilder;
 
   @Before
@@ -42,9 +40,12 @@ public class QueryBuilderTest {
   @Test
   public void nullTest() throws Exception {
     queryBuilder.addParameter("status", "open");
-    exception.expect(InvalidQueryParameterException.class);
-    exception.expectMessage("Cannot use null value for key or value of query.");
-    queryBuilder.addParameter("topic", null);
+    InvalidQueryParameterException thrown =
+        assertThrows(
+            InvalidQueryParameterException.class, () -> queryBuilder.addParameter("topic", null));
+    assertThat(thrown)
+        .hasMessageThat()
+        .contains("Cannot use null value for key or value of query.");
   }
 
   @Test
@@ -75,8 +76,12 @@ public class QueryBuilderTest {
 
   @Test
   public void errorOnQuotesAndBracesTest() throws Exception {
-    exception.expect(InvalidQueryParameterException.class);
-    exception.expectMessage("Gerrit does not support both quotes and braces in a query.");
-    queryBuilder.addParameter("topic", "topic{\"with\"}both");
+    InvalidQueryParameterException thrown =
+        assertThrows(
+            InvalidQueryParameterException.class,
+            () -> queryBuilder.addParameter("topic", "topic{\"with\"}both"));
+    assertThat(thrown)
+        .hasMessageThat()
+        .contains("Gerrit does not support both quotes and braces in a query.");
   }
 }
