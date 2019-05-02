@@ -15,7 +15,9 @@
 package com.googlesource.gerrit.plugins.automerger;
 
 import static com.google.common.collect.ImmutableList.toImmutableList;
+import static com.google.common.truth.OptionalSubject.optionals;
 import static com.google.common.truth.Truth.assertThat;
+import static com.google.common.truth.Truth.assertWithMessage;
 import static com.google.common.truth.Truth8.assertThat;
 import static com.google.gerrit.extensions.client.ListChangesOption.ALL_REVISIONS;
 import static com.google.gerrit.extensions.client.ListChangesOption.CURRENT_COMMIT;
@@ -1089,9 +1091,9 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
   private void assertCodeReview(String id, int expectedValue, @Nullable String expectedTag)
       throws RestApiException {
     Optional<ApprovalInfo> vote = getCodeReview(id);
-    assertThat(vote).named("Code-Review vote").isPresent();
-    assertThat(vote.get().value).named("value of Code-Review vote").isEqualTo(expectedValue);
-    assertThat(vote.get().tag).named("tag of Code-Review vote").isEqualTo(expectedTag);
+    assertWithMessage("Code-Review vote").about(optionals()).that(vote).isPresent();
+    assertWithMessage("value of Code-Review vote").that(vote.get().value).isEqualTo(expectedValue);
+    assertWithMessage("tag of Code-Review vote").that(vote.get().tag).isEqualTo(expectedTag);
   }
 
   private void assertCodeReviewMissing(String id) throws RestApiException {
