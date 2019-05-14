@@ -19,6 +19,7 @@ import static com.google.common.truth.OptionalSubject.optionals;
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 import static com.google.common.truth.Truth8.assertThat;
+import static com.google.gerrit.acceptance.testsuite.project.TestProjectUpdate.blockLabel;
 import static com.google.gerrit.extensions.client.ListChangesOption.ALL_REVISIONS;
 import static com.google.gerrit.extensions.client.ListChangesOption.CURRENT_COMMIT;
 import static com.google.gerrit.extensions.client.ListChangesOption.CURRENT_REVISION;
@@ -37,6 +38,7 @@ import com.google.gerrit.acceptance.PushOneCommit;
 import com.google.gerrit.acceptance.TestPlugin;
 import com.google.gerrit.acceptance.testsuite.group.GroupOperations;
 import com.google.gerrit.acceptance.testsuite.project.ProjectOperations;
+import com.google.gerrit.acceptance.testsuite.project.TestProjectUpdate;
 import com.google.gerrit.common.Nullable;
 import com.google.gerrit.extensions.api.accounts.AccountApi;
 import com.google.gerrit.extensions.api.changes.ChangeApi;
@@ -612,7 +614,15 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
     pushDefaultConfig("automerger.config", manifestNameKey.get(), projectName, "ds_one", "ds_two");
 
     // Block Code Review label to test restrictions
-    blockLabel("Code-Review", -2, 2, SystemGroupBackend.CHANGE_OWNER, "refs/heads/*", project);
+    projectOperations
+        .project(project)
+        .forUpdate()
+        .add(
+            blockLabel("Code-Review")
+                .ref("refs/heads/*")
+                .group(SystemGroupBackend.CHANGE_OWNER)
+                .range(-2, 2))
+        .update();
 
     // After we upload our config, we upload a new change to create the downstreams
     PushOneCommit.Result masterResult =
@@ -807,14 +817,16 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
     gApi.groups().id(contextUserGroup).addMembers(contextUserApi.get().name);
 
     // Grant exclusive +2 to context user
-    grantLabel(
-        "Code-Review",
-        -2,
-        2,
-        projectNameKey,
-        "refs/heads/ds_one",
-        AccountGroup.UUID.parse(gApi.groups().id(contextUserGroup).get().id),
-        true);
+    projectOperations
+        .project(projectNameKey)
+        .forUpdate()
+        .add(
+            TestProjectUpdate.allowLabel("Code-Review")
+                .ref("refs/heads/ds_one")
+                .group(AccountGroup.UUID.parse(gApi.groups().id(contextUserGroup).get().id))
+                .range(-2, 2)
+                .exclusive(true))
+        .update();
     pushContextUserConfig(
         manifestNameKey.get(), projectName, contextUserApi.get()._accountId.toString());
 
@@ -872,14 +884,15 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
     gApi.groups().id(contextUserGroup).addMembers(contextUserApi.get().name);
 
     // Grant +2 to context user, since it doesn't have it by default
-    grantLabel(
-        "Code-Review",
-        -2,
-        2,
-        projectNameKey,
-        "refs/heads/*",
-        AccountGroup.UUID.parse(gApi.groups().id(contextUserGroup).get().id),
-        false);
+    projectOperations
+        .project(projectNameKey)
+        .forUpdate()
+        .add(
+            TestProjectUpdate.allowLabel("Code-Review")
+                .ref("refs/heads/*")
+                .group(AccountGroup.UUID.parse(gApi.groups().id(contextUserGroup).get().id))
+                .range(-2, 2))
+        .update();
     pushContextUserConfig(
         manifestNameKey.get(), projectName, contextUserApi.get()._accountId.toString());
 
@@ -963,14 +976,15 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
     gApi.groups().id(contextUserGroup).addMembers(contextUserApi.get().name);
 
     // Grant +2 to context user, since it doesn't have it by default
-    grantLabel(
-        "Code-Review",
-        -2,
-        2,
-        projectNameKey,
-        "refs/heads/*",
-        AccountGroup.UUID.parse(gApi.groups().id(contextUserGroup).get().id),
-        false);
+    projectOperations
+        .project(projectNameKey)
+        .forUpdate()
+        .add(
+            TestProjectUpdate.allowLabel("Code-Review")
+                .ref("refs/heads/*")
+                .group(AccountGroup.UUID.parse(gApi.groups().id(contextUserGroup).get().id))
+                .range(-2, 2))
+        .update();
     pushContextUserConfig(
         manifestNameKey.get(), projectName, contextUserApi.get()._accountId.toString());
 
