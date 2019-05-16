@@ -20,6 +20,7 @@ import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 import static com.google.common.truth.Truth8.assertThat;
 import static com.google.gerrit.acceptance.testsuite.project.TestProjectUpdate.blockLabel;
+import static com.google.gerrit.acceptance.testsuite.project.TestProjectUpdate.labelPermissionKey;
 import static com.google.gerrit.extensions.client.ListChangesOption.ALL_REVISIONS;
 import static com.google.gerrit.extensions.client.ListChangesOption.CURRENT_COMMIT;
 import static com.google.gerrit.extensions.client.ListChangesOption.CURRENT_REVISION;
@@ -824,8 +825,8 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
             TestProjectUpdate.allowLabel("Code-Review")
                 .ref("refs/heads/ds_one")
                 .group(AccountGroup.UUID.parse(gApi.groups().id(contextUserGroup).get().id))
-                .range(-2, 2)
-                .exclusive(true))
+                .range(-2, 2))
+        .setExclusiveGroup(labelPermissionKey("Code-Review").ref("refs/heads/ds_one"), true)
         .update();
     pushContextUserConfig(
         manifestNameKey.get(), projectName, contextUserApi.get()._accountId.toString());
@@ -891,8 +892,7 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
             TestProjectUpdate.allowLabel("Code-Review")
                 .ref("refs/heads/*")
                 .group(AccountGroup.UUID.parse(gApi.groups().id(contextUserGroup).get().id))
-                .range(-2, 2)
-                .exclusive(false))
+                .range(-2, 2))
         .update();
     pushContextUserConfig(
         manifestNameKey.get(), projectName, contextUserApi.get()._accountId.toString());
@@ -984,8 +984,7 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
             TestProjectUpdate.allowLabel("Code-Review")
                 .ref("refs/heads/*")
                 .group(AccountGroup.UUID.parse(gApi.groups().id(contextUserGroup).get().id))
-                .range(-2, 2)
-                .exclusive(false))
+                .range(-2, 2))
         .update();
     pushContextUserConfig(
         manifestNameKey.get(), projectName, contextUserApi.get()._accountId.toString());
