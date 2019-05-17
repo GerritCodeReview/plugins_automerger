@@ -813,7 +813,6 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
         2,
         projectNameKey,
         "refs/heads/ds_one",
-        false,
         AccountGroup.UUID.parse(gApi.groups().id(contextUserGroup).get().id),
         true);
     pushContextUserConfig(
@@ -879,7 +878,6 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
         2,
         projectNameKey,
         "refs/heads/*",
-        false,
         AccountGroup.UUID.parse(gApi.groups().id(contextUserGroup).get().id),
         false);
     pushContextUserConfig(
@@ -971,7 +969,6 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
         2,
         projectNameKey,
         "refs/heads/*",
-        false,
         AccountGroup.UUID.parse(gApi.groups().id(contextUserGroup).get().id),
         false);
     pushContextUserConfig(
