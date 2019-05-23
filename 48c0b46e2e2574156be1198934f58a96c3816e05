@@ -22,6 +22,30 @@
       "revId": "48c0b46e2e2574156be1198934f58a96c3816e05",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1f4bf839_94c85588",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/DownstreamCreatorIT.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 824,
+      "author": {
+        "id": 1010008
+      },
+      "writtenOn": "2019-05-23T15:56:29Z",
+      "side": 1,
+      "message": "Done in a followup.",
+      "parentUuid": "a98ebea8_616401a2",
+      "range": {
+        "startLine": 824,
+        "startChar": 12,
+        "endLine": 824,
+        "endChar": 40
+      },
+      "revId": "48c0b46e2e2574156be1198934f58a96c3816e05",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
