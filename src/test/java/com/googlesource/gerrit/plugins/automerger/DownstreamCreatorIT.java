@@ -19,6 +19,7 @@ import static com.google.common.truth.OptionalSubject.optionals;
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.common.truth.Truth.assertWithMessage;
 import static com.google.common.truth.Truth8.assertThat;
+import static com.google.gerrit.acceptance.testsuite.project.TestProjectUpdate.allowLabel;
 import static com.google.gerrit.acceptance.testsuite.project.TestProjectUpdate.blockLabel;
 import static com.google.gerrit.acceptance.testsuite.project.TestProjectUpdate.labelPermissionKey;
 import static com.google.gerrit.extensions.client.ListChangesOption.ALL_REVISIONS;
@@ -39,7 +40,6 @@ import com.google.gerrit.acceptance.PushOneCommit;
 import com.google.gerrit.acceptance.TestPlugin;
 import com.google.gerrit.acceptance.testsuite.group.GroupOperations;
 import com.google.gerrit.acceptance.testsuite.project.ProjectOperations;
-import com.google.gerrit.acceptance.testsuite.project.TestProjectUpdate;
 import com.google.gerrit.common.Nullable;
 import com.google.gerrit.extensions.api.accounts.AccountApi;
 import com.google.gerrit.extensions.api.changes.ChangeApi;
@@ -822,7 +822,7 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
         .project(projectNameKey)
         .forUpdate()
         .add(
-            TestProjectUpdate.allowLabel("Code-Review")
+            allowLabel("Code-Review")
                 .ref("refs/heads/ds_one")
                 .group(AccountGroup.UUID.parse(gApi.groups().id(contextUserGroup).get().id))
                 .range(-2, 2))
@@ -889,7 +889,7 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
         .project(projectNameKey)
         .forUpdate()
         .add(
-            TestProjectUpdate.allowLabel("Code-Review")
+            allowLabel("Code-Review")
                 .ref("refs/heads/*")
                 .group(AccountGroup.UUID.parse(gApi.groups().id(contextUserGroup).get().id))
                 .range(-2, 2))
@@ -981,7 +981,7 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
         .project(projectNameKey)
         .forUpdate()
         .add(
-            TestProjectUpdate.allowLabel("Code-Review")
+            allowLabel("Code-Review")
                 .ref("refs/heads/*")
                 .group(AccountGroup.UUID.parse(gApi.groups().id(contextUserGroup).get().id))
                 .range(-2, 2))
