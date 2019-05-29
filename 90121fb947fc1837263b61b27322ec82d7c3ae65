@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "3b7657bb_c4db908e",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/MergeValidator.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1011123
+      },
+      "writtenOn": "2019-05-29T23:59:23Z",
+      "side": 1,
+      "message": "Import only PatchSet?",
+      "revId": "90121fb947fc1837263b61b27322ec82d7c3ae65",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
