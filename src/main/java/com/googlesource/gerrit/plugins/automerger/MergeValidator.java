@@ -24,7 +24,7 @@ import com.google.gerrit.extensions.common.CommitInfo;
 import com.google.gerrit.extensions.common.RevisionInfo;
 import com.google.gerrit.extensions.restapi.RestApiException;
 import com.google.gerrit.reviewdb.client.BranchNameKey;
-import com.google.gerrit.reviewdb.client.PatchSet.Id;
+import com.google.gerrit.reviewdb.client.PatchSet;
 import com.google.gerrit.server.IdentifiedUser;
 import com.google.gerrit.server.git.CodeReviewCommit;
 import com.google.gerrit.server.git.validators.MergeValidationException;
@@ -65,7 +65,7 @@ public class MergeValidator implements MergeValidationListener {
       CodeReviewCommit commit,
       ProjectState destProject,
       BranchNameKey destBranch,
-      Id patchSetId,
+      PatchSet.Id patchSetId,
       IdentifiedUser caller)
       throws MergeValidationException {
     int changeId = commit.change().getChangeId();
