@@ -16,6 +16,24 @@
       "revId": "90121fb947fc1837263b61b27322ec82d7c3ae65",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "b51f7849_6cd9cf25",
+        "filename": "src/main/java/com/googlesource/gerrit/plugins/automerger/MergeValidator.java",
+        "patchSetId": 1
+      },
+      "lineNbr": 21,
+      "author": {
+        "id": 1011323
+      },
+      "writtenOn": "2019-05-30T08:34:55Z",
+      "side": 1,
+      "message": "Done in: [1].\n\n* [1] https://gerrit-review.googlesource.com/c/plugins/automerger/+/226433",
+      "parentUuid": "3b7657bb_c4db908e",
+      "revId": "90121fb947fc1837263b61b27322ec82d7c3ae65",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
