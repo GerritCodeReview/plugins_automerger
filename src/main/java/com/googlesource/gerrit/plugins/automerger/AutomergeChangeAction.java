@@ -62,7 +62,7 @@ class AutomergeChangeAction
    * @throws StorageException
    */
   @Override
-  public Object apply(RevisionResource rev, Input input)
+  public Response<Object> apply(RevisionResource rev, Input input)
       throws IOException, RestApiException, StorageException, ConfigInvalidException {
     Map<String, Boolean> branchMap = input.branchMap;
 
