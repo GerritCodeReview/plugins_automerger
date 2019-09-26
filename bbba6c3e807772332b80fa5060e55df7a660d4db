@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "0ed921d0_f90a4292",
+        "filename": "src/main/resources/static/automerger.js",
+        "patchSetId": 1
+      },
+      "lineNbr": 96,
+      "author": {
+        "id": 1077840
+      },
+      "writtenOn": "2019-09-26T14:58:14Z",
+      "side": 0,
+      "message": "I\u0027m unfamiliar with this right now. Why are we removing \u0027revision\u0027?",
+      "range": {
+        "startLine": 96,
+        "startChar": 18,
+        "endLine": 96,
+        "endChar": 28
+      },
+      "revId": "bbba6c3e807772332b80fa5060e55df7a660d4db",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
