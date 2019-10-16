@@ -32,7 +32,7 @@ From Gerrit source tree issue the command:
 The output is created in
 
 ```
-  bazel-genfiles/plugins/automerger/automerger.jar
+  bazel-bin/plugins/automerger/automerger.jar
 ```
 
 To execute the tests run:
