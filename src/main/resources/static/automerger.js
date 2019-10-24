@@ -15,6 +15,8 @@
 var currentChange;
 var downstreamConfigMap;
 Gerrit.install(function(self) {
+    const restApi = self.restApi();
+    const changeActions = self.changeActions();
 
     function onAutomergeChange(c) {
         addCheckboxes(c, downstreamConfigMap);
@@ -76,23 +78,24 @@ Gerrit.install(function(self) {
         var revisionId = currentChange.current_revision;
         var url = `/changes/${changeId}/revisions/${revisionId}` +
                    `/automerger~config-downstream`;
-        Gerrit.post(
-            url, {'subject': currentChange.subject},
-            function(resp) {
+        restApi.post(url, {'subject': currentChange.subject})
+            .then((resp) => {
                 downstreamConfigMap = resp;
                 styleRelatedChanges();
             });
     }
 
-    function onShowChange(e) {
+    function onShowChange(e, revision) {
         currentChange = e;
         getDownstreamConfigMap();
+        const detail = changeActions.getActionDetails('automerge-change');
+        if (details) {
+            changeActions.addTapListener(detail.__key, () => {
+              onAutomergeChange(
+                new GrPluginActionContext(self, detail, e, revision)
+              );
+            });
+        }
     }
-
-    if (window.Polymer) {
-        self.deprecated.install();
-    }
-
-    self.onAction('revision', 'automerge-change', onAutomergeChange);
     self.on('showchange', onShowChange);
 });
