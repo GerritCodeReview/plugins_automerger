@@ -56,6 +56,7 @@ import com.google.gerrit.extensions.restapi.AuthException;
 import com.google.gerrit.extensions.restapi.BinaryResult;
 import com.google.gerrit.extensions.restapi.RestApiException;
 import com.google.gerrit.server.group.SystemGroupBackend;
+import com.google.gerrit.testing.ConfigSuite;
 import com.google.inject.Inject;
 import com.googlesource.gerrit.plugins.automerger.helpers.ConfigOption;
 import java.io.InputStream;
@@ -75,6 +76,18 @@ import org.junit.Test;
 public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
   @Inject private GroupOperations groupOperations;
   @Inject private ProjectOperations projectOperations;
+
+  @ConfigSuite.Default
+  public static Config minimalEventPayload() {
+    Config cfg = new Config();
+    // Expect only identifiers in internal Gerrit events
+    cfg.setStringList(
+        "event",
+        "payload",
+        "listChangeOptions",
+        ImmutableList.of("SKIP_MERGEABLE", "SKIP_DIFFSTAT"));
+    return cfg;
+  }
 
   @Test
   public void testExpectedFlow() throws Exception {

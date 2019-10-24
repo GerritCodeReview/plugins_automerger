@@ -100,10 +100,15 @@ public class DownstreamCreator
   public void onChangeAbandoned(ChangeAbandonedListener.Event event) {
     try (ManualRequestContext ctx = oneOffRequestContext.openAs(config.getContextUserId())) {
       ChangeInfo change = event.getChange();
-      String revision = event.getRevision().commit.commit;
+      String revision =
+          gApi.changes()
+              .id(change._number)
+              .revision(event.getRevision()._number)
+              .commit(false)
+              .commit;
       log.debug("Detected revision {} abandoned on {}.", revision, change.project);
       abandonDownstream(change, revision);
-    } catch (ConfigInvalidException | StorageException e) {
+    } catch (ConfigInvalidException | StorageException | RestApiException e) {
       log.error("Automerger plugin failed onChangeAbandoned for {}", event.getChange().id, e);
     }
   }
@@ -191,7 +196,7 @@ public class DownstreamCreator
         return;
       }
       ChangeInfo change = event.getChange();
-      String revision = change.currentRevision;
+      String revision = gApi.changes().id(event.getChange()._number).current().commit(false).commit;
       Set<String> downstreamBranches;
       downstreamBranches = config.getDownstreamBranches(change.branch, change.project);
 
@@ -558,7 +563,8 @@ public class DownstreamCreator
   private void automergeChanges(ChangeInfo change, RevisionInfo revisionInfo)
       throws RestApiException, IOException, ConfigInvalidException, InvalidQueryParameterException,
           StorageException {
-    String currentRevision = revisionInfo.commit.commit;
+    String currentRevision =
+        gApi.changes().id(change._number).revision(revisionInfo._number).commit(false).commit;
     log.debug(
         "Handling patchsetevent with change id {} and revision {}", change.id, currentRevision);
 
