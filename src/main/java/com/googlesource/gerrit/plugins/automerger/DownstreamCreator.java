@@ -219,7 +219,7 @@ public class DownstreamCreator
             ChangeInfo downstreamChange =
                 gApi.changes().id(changeNumber).get(EnumSet.of(ListChangesOption.CURRENT_REVISION));
             for (Map.Entry<String, LabelInfo> labelEntry : labels.entrySet()) {
-              if (labelEntry.getValue().all.size() > 0) {
+              if (labelEntry.getValue().all != null && labelEntry.getValue().all.size() > 0) {
                 OptionalInt maxVote =
                     labelEntry.getValue().all.stream()
                         .filter(o -> o.value != null)
