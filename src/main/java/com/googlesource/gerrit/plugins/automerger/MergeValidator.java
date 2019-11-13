@@ -18,6 +18,7 @@ import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Joiner;
 import com.google.gerrit.common.data.ParameterizedString;
 import com.google.gerrit.entities.BranchNameKey;
+import com.google.gerrit.entities.Change;
 import com.google.gerrit.entities.PatchSet;
 import com.google.gerrit.extensions.api.GerritApi;
 import com.google.gerrit.extensions.client.ListChangesOption;
@@ -65,13 +66,13 @@ public class MergeValidator implements MergeValidationListener {
       CodeReviewCommit commit,
       ProjectState destProject,
       BranchNameKey destBranch,
+      Change.Id changeId,
       PatchSet.Id patchSetId,
       IdentifiedUser caller)
       throws MergeValidationException {
-    int changeId = commit.change().getChangeId();
     try {
       ChangeInfo upstreamChange =
-          gApi.changes().id(changeId).get(EnumSet.of(ListChangesOption.CURRENT_REVISION));
+          gApi.changes().id(changeId.get()).get(EnumSet.of(ListChangesOption.CURRENT_REVISION));
       Set<String> missingDownstreams = getMissingDownstreamMerges(upstreamChange);
       if (!missingDownstreams.isEmpty()) {
         throw new MergeValidationException(getMissingDownstreamsMessage(missingDownstreams));
