@@ -84,15 +84,18 @@ Gerrit.install(function(self) {
             });
     }
 
-    function onShowChange(e) {
-        currentChange = e;
+    function onShowChange(change, revision) {
+        const details =
+            this.changeActions().getActionDetails('automerge-change');
+        if (details) {
+          this.changeActions().addTapListener(details.__key, () => {
+              onAutomergeChange(new GrPluginActionContext(
+                  this, details, change, revision));
+          });
+        }
+        currentChange = change;
         getDownstreamConfigMap();
     }
 
-    if (window.Polymer) {
-        self.deprecated.install();
-    }
-
-    self.onAction('revision', 'automerge-change', onAutomergeChange);
     self.on('showchange', onShowChange);
 });
