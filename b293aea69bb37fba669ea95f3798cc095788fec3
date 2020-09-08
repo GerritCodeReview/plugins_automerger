@@ -33,6 +33,29 @@
       "revId": "b293aea69bb37fba669ea95f3798cc095788fec3",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": false
+    },
+    {
+      "key": {
+        "uuid": "3a67087d_0725c460",
+        "filename": "src/main/resources/static/automerger.js",
+        "patchSetId": 4
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 1023872
+      },
+      "writtenOn": "2020-09-08T22:09:04Z",
+      "side": 1,
+      "message": "do we need to worry about unbinding this listener on page change?",
+      "range": {
+        "startLine": 93,
+        "startChar": 26,
+        "endLine": 93,
+        "endChar": 40
+      },
+      "revId": "b293aea69bb37fba669ea95f3798cc095788fec3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
     }
   ]
 }
