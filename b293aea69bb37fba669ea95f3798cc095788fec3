@@ -59,6 +59,30 @@
     },
     {
       "key": {
+        "uuid": "74449dfc_439eb1e2",
+        "filename": "src/main/resources/static/automerger.js",
+        "patchSetId": 4
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1086906
+      },
+      "writtenOn": "2020-09-09T07:10:14Z",
+      "side": 1,
+      "message": "Done",
+      "parentUuid": "0ba2046e_820f2718",
+      "range": {
+        "startLine": 92,
+        "startChar": 12,
+        "endLine": 92,
+        "endChar": 19
+      },
+      "revId": "b293aea69bb37fba669ea95f3798cc095788fec3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    },
+    {
+      "key": {
         "uuid": "3a67087d_0725c460",
         "filename": "src/main/resources/static/automerger.js",
         "patchSetId": 4
