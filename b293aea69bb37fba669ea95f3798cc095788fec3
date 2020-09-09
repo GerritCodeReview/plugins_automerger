@@ -36,6 +36,29 @@
     },
     {
       "key": {
+        "uuid": "0ba2046e_820f2718",
+        "filename": "src/main/resources/static/automerger.js",
+        "patchSetId": 4
+      },
+      "lineNbr": 92,
+      "author": {
+        "id": 1013302
+      },
+      "writtenOn": "2020-09-09T07:08:28Z",
+      "side": 1,
+      "message": "typo? should probably be \u0027detail\u0027",
+      "range": {
+        "startLine": 92,
+        "startChar": 12,
+        "endLine": 92,
+        "endChar": 19
+      },
+      "revId": "b293aea69bb37fba669ea95f3798cc095788fec3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    },
+    {
+      "key": {
         "uuid": "3a67087d_0725c460",
         "filename": "src/main/resources/static/automerger.js",
         "patchSetId": 4
@@ -56,6 +79,30 @@
       "revId": "b293aea69bb37fba669ea95f3798cc095788fec3",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "1d2d8c3c_acaa78ec",
+        "filename": "src/main/resources/static/automerger.js",
+        "patchSetId": 4
+      },
+      "lineNbr": 93,
+      "author": {
+        "id": 1013302
+      },
+      "writtenOn": "2020-09-09T07:08:28Z",
+      "side": 1,
+      "message": "That is a good point. What Tao did here is basically just inlining what \u0027onAction\u0027 was doing before, so this should not be a behavior change compared to before.\n\nBut looking closer at the code this is indeed a bit worrying, because the underlying GrChangeActions element is a re-used singleton and without actually debugging this code I would think that onAutomergeChange() might be called multiple times once these listeners have accumulated. Anyway, this would be something for the maintainers of this plugin to investigate.",
+      "parentUuid": "3a67087d_0725c460",
+      "range": {
+        "startLine": 93,
+        "startChar": 26,
+        "endLine": 93,
+        "endChar": 40
+      },
+      "revId": "b293aea69bb37fba669ea95f3798cc095788fec3",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
