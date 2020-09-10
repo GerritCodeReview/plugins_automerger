@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "f9cbf23f_7bdf2930",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 5
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1086906
+      },
+      "writtenOn": "2020-09-10T07:10:03Z",
+      "side": 1,
+      "message": "Approve to have the change in and to be tested by the owners on staging / canary with google\u0027s deployment",
+      "revId": "083cb3c13b577aa439cf0ea4e7c3e64dba1b3c24",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
+    }
+  ]
+}
