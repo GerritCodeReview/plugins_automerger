@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "key": {
+        "uuid": "df18848c_60567f9f",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/DownstreamCreatorIT.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 611,
+      "author": {
+        "id": 1013302
+      },
+      "writtenOn": "2020-09-14T08:49:34Z",
+      "side": 0,
+      "message": "I think you have removed the wrong test. Sorry for not looking closer during review.",
+      "revId": "6172bd5b55f5f4e2036d75a0817a6a6335d37262",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": true
+    }
+  ]
+}
