@@ -16,6 +16,24 @@
       "revId": "6172bd5b55f5f4e2036d75a0817a6a6335d37262",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
       "unresolved": true
+    },
+    {
+      "key": {
+        "uuid": "3876e0c4_7abe513f",
+        "filename": "src/test/java/com/googlesource/gerrit/plugins/automerger/DownstreamCreatorIT.java",
+        "patchSetId": 2
+      },
+      "lineNbr": 611,
+      "author": {
+        "id": 1085183
+      },
+      "writtenOn": "2020-09-14T08:59:02Z",
+      "side": 0,
+      "message": "Done",
+      "parentUuid": "df18848c_60567f9f",
+      "revId": "6172bd5b55f5f4e2036d75a0817a6a6335d37262",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153",
+      "unresolved": false
     }
   ]
 }
