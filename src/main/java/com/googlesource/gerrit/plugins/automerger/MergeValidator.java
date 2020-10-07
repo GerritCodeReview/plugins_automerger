@@ -27,6 +27,7 @@ import com.google.gerrit.extensions.common.RevisionInfo;
 import com.google.gerrit.extensions.restapi.RestApiException;
 import com.google.gerrit.server.IdentifiedUser;
 import com.google.gerrit.server.git.CodeReviewCommit;
+import com.google.gerrit.server.git.CodeReviewCommit.CodeReviewRevWalk;
 import com.google.gerrit.server.git.validators.MergeValidationException;
 import com.google.gerrit.server.git.validators.MergeValidationListener;
 import com.google.gerrit.server.project.ProjectState;
@@ -62,6 +63,7 @@ public class MergeValidator implements MergeValidationListener {
   @Override
   public void onPreMerge(
       Repository repo,
+      CodeReviewRevWalk revWalk,
       CodeReviewCommit commit,
       ProjectState destProject,
       BranchNameKey destBranch,
