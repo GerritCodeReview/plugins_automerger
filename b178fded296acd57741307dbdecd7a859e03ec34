@@ -1,0 +1,27 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "486209d9_ab009966",
+        "filename": "src/main/resources/static/automerger.js",
+        "patchSetId": 2
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1085182
+      },
+      "writtenOn": "2021-09-15T06:45:40Z",
+      "side": 1,
+      "message": "nit:\n\npopupElements.forEach(el \u003d\u003e {div.appendChild(el);});",
+      "range": {
+        "startLine": 46,
+        "startChar": 8,
+        "endLine": 48,
+        "endChar": 9
+      },
+      "revId": "b178fded296acd57741307dbdecd7a859e03ec34",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
