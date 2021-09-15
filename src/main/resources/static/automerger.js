@@ -42,7 +42,11 @@ Gerrit.install(function(self) {
         // Create actual merge button
         var b = createMergeButton(c, branchToCheckbox);
         var popupElements = checkboxes.concat(b);
-        c.popup(c.div.apply(this, popupElements));
+        const div = document.createElement('div');
+        for (const el of popupElements) {
+          div.appendChild(el);
+        }
+        c.popup(div);
         return branchToCheckbox;
     }
 
