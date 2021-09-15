@@ -39,6 +39,30 @@
       },
       "revId": "b178fded296acd57741307dbdecd7a859e03ec34",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "477732f7_81b9d5d0",
+        "filename": "src/main/resources/static/automerger.js",
+        "patchSetId": 2
+      },
+      "lineNbr": 48,
+      "author": {
+        "id": 1013302
+      },
+      "writtenOn": "2021-09-15T06:49:57Z",
+      "side": 1,
+      "message": "FWIW I prefer for-of loops over forEach.",
+      "parentUuid": "486209d9_ab009966",
+      "range": {
+        "startLine": 46,
+        "startChar": 8,
+        "endLine": 48,
+        "endChar": 9
+      },
+      "revId": "b178fded296acd57741307dbdecd7a859e03ec34",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
