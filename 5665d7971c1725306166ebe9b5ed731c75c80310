@@ -16,6 +16,57 @@
       "message": "wow thank you Ben!",
       "revId": "5665d7971c1725306166ebe9b5ed731c75c80310",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1daf151b_56097c01",
+        "filename": "web/automerger.ts",
+        "patchSetId": 2
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1139611
+      },
+      "writtenOn": "2021-09-22T16:07:39Z",
+      "side": 1,
+      "message": "Should this become part of the public API?",
+      "revId": "5665d7971c1725306166ebe9b5ed731c75c80310",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "610a0e30_151ef4ef",
+        "filename": "web/test/test-setup.ts",
+        "patchSetId": 2
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1139611
+      },
+      "writtenOn": "2021-09-22T16:07:39Z",
+      "side": 1,
+      "message": "Is there a way to reuse these across plugins?",
+      "revId": "5665d7971c1725306166ebe9b5ed731c75c80310",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "394b9b26_fe1b9da2",
+        "filename": "web/test/test-util.ts",
+        "patchSetId": 2
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1139611
+      },
+      "writtenOn": "2021-09-22T16:07:39Z",
+      "side": 1,
+      "message": "Is there a way to reuse these across plugins?",
+      "revId": "5665d7971c1725306166ebe9b5ed731c75c80310",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
