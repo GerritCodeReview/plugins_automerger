@@ -10,6 +10,7 @@ gerrit_plugin(
         "Implementation-Title: Automerger plugin",
         "Implementation-URL: https://gerrit-review.googlesource.com/#/admin/projects/plugins/automerger",
     ],
+    resource_jars = ["//plugins/automerger/web:automerger"],
     resources = glob(["src/main/resources/**/*"]),
     deps = [
         "@re2j//jar",
