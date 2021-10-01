@@ -35,6 +35,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "3a563244_cb1f9a2f",
+        "filename": "web/automerger.ts",
+        "patchSetId": 2
+      },
+      "lineNbr": 37,
+      "author": {
+        "id": 1013302
+      },
+      "writtenOn": "2021-10-01T08:31:42Z",
+      "side": 1,
+      "message": "Done in https://gerrit-review.googlesource.com/c/gerrit/+/319598",
+      "parentUuid": "1daf151b_56097c01",
+      "revId": "5665d7971c1725306166ebe9b5ed731c75c80310",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "610a0e30_151ef4ef",
@@ -52,6 +70,24 @@
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     },
     {
+      "unresolved": false,
+      "key": {
+        "uuid": "e0f6748c_6c2b0ae1",
+        "filename": "web/test/test-setup.ts",
+        "patchSetId": 2
+      },
+      "lineNbr": 32,
+      "author": {
+        "id": 1013302
+      },
+      "writtenOn": "2021-10-01T08:31:42Z",
+      "side": 1,
+      "message": "see other reply",
+      "parentUuid": "610a0e30_151ef4ef",
+      "revId": "5665d7971c1725306166ebe9b5ed731c75c80310",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
       "unresolved": true,
       "key": {
         "uuid": "394b9b26_fe1b9da2",
@@ -65,6 +101,24 @@
       "writtenOn": "2021-09-22T16:07:39Z",
       "side": 1,
       "message": "Is there a way to reuse these across plugins?",
+      "revId": "5665d7971c1725306166ebe9b5ed731c75c80310",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "c5e528e3_0f714953",
+        "filename": "web/test/test-util.ts",
+        "patchSetId": 2
+      },
+      "lineNbr": 64,
+      "author": {
+        "id": 1013302
+      },
+      "writtenOn": "2021-10-01T08:31:42Z",
+      "side": 1,
+      "message": "There probably is. I guess the best way would be to create a /plugins/common directory and put stuff there. And then either depend on that directly or publish an npm package. I would like to defer that until I come back and will work more on plugin TypeScript conversion.",
+      "parentUuid": "394b9b26_fe1b9da2",
       "revId": "5665d7971c1725306166ebe9b5ed731c75c80310",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
