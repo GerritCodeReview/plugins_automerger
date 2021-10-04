@@ -27,12 +27,12 @@ import {RequestPayload} from '@gerritcodereview/typescript-api/rest';
 // export for testing only
 export type ConfigMap = {[branch: string]: boolean};
 
-export interface UIActionInfo extends ActionInfo {
+export declare interface UIActionInfo extends ActionInfo {
   __key: string;
   __url?: string;
 }
 
-interface PopupPluginApiExtended extends PopupPluginApi {
+export interface PopupPluginApiExtended extends PopupPluginApi {
   // TODO: Remove this reference to a private method. This can break any time.
   _getElement: () => HTMLElement;
 }
@@ -131,7 +131,7 @@ export class Automerger {
     document.querySelectorAll('[data-branch]').forEach(relChange => {
       if (!(relChange instanceof HTMLElement)) return;
       if (!this.change) return;
-      const relatedBranch = relChange.dataset.branch;
+      const relatedBranch = relChange.dataset['branch'];
       if (relatedBranch === this.change.branch) {
         relChange.style.fontWeight = 'bold';
       } else {
