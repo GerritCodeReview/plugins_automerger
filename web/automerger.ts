@@ -32,6 +32,11 @@ export declare interface UIActionInfo extends ActionInfo {
   __url?: string;
 }
 
+export interface PopupPluginApiExtended extends PopupPluginApi {
+  // TODO: Remove this reference to a private method. This can break any time.
+  _getElement: () => HTMLElement;
+}
+
 export class Automerger {
   private change?: ChangeInfo;
 
@@ -89,7 +94,9 @@ export class Automerger {
     popupContent.appendChild(this.createMergeButton(branchToCheckbox));
 
     this.plugin.popup().then((popApi: PopupPluginApi) => {
-      popup.appendContent(popupContent);
+      const popupEl = (popApi as PopupPluginApiExtended)._getElement();
+      if (!popupEl) throw new Error('Popup element not found');
+      popupEl.appendChild(popupContent);
     });
   }
 
