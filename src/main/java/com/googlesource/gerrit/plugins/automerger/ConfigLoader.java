@@ -17,6 +17,7 @@ package com.googlesource.gerrit.plugins.automerger;
 import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
+import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.entities.Account;
 import com.google.gerrit.extensions.annotations.PluginName;
 import com.google.gerrit.extensions.api.GerritApi;
@@ -39,13 +40,11 @@ import java.util.List;
 import java.util.Set;
 import org.eclipse.jgit.errors.ConfigInvalidException;
 import org.eclipse.jgit.lib.Config;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /** Class to read the config. */
 @Singleton
 public class ConfigLoader {
-  private static final Logger log = LoggerFactory.getLogger(ConfigLoader.class);
+  private static final FluentLogger logger = FluentLogger.forEnclosingClass();
   private static final String BRANCH_DELIMITER = ":";
   private static final String DEFAULT_CONFLICT_MESSAGE = "Merge conflict found on ${branch}";
 
@@ -194,10 +193,10 @@ public class ConfigLoader {
       Set<String> projectSet = getManifestProjects(fromBranch, toBranch);
       projectSet = applyConfig(fromBranch, toBranch, projectSet);
 
-      log.debug("Project set for {} to {} is {}", fromBranch, toBranch, projectSet);
+      logger.atFine().log("Project set for %s to %s is %s", fromBranch, toBranch, projectSet);
       return projectSet;
     } catch (RestApiException | IOException e) {
-      log.error("Error reading manifest for {}!", fromBranch, e);
+      logger.atSevere().withCause(e).log("Error reading manifest for %s!", fromBranch);
       throw e;
     }
   }
@@ -362,7 +361,7 @@ public class ConfigLoader {
       ManifestReader manifestReader = new ManifestReader(branch, manifestConfig.asString());
       return manifestReader.getProjects();
     } catch (ResourceNotFoundException e) {
-      log.debug("Manifest for {} not found", branch);
+      logger.atFine().log("Manifest for %s not found", branch);
       return new HashSet<>();
     }
   }

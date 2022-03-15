@@ -16,6 +16,7 @@ package com.googlesource.gerrit.plugins.automerger;
 
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Joiner;
+import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.common.data.ParameterizedString;
 import com.google.gerrit.entities.BranchNameKey;
 import com.google.gerrit.entities.PatchSet;
@@ -41,15 +42,13 @@ import java.util.Map;
 import java.util.Set;
 import org.eclipse.jgit.errors.ConfigInvalidException;
 import org.eclipse.jgit.lib.Repository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * MergeValidator will validate that all downstream changes are uploaded for review before
  * submission.
  */
 public class MergeValidator implements MergeValidationListener {
-  private static final Logger log = LoggerFactory.getLogger(MergeValidator.class);
+  private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
   protected GerritApi gApi;
   protected ConfigLoader config;
@@ -82,7 +81,7 @@ public class MergeValidator implements MergeValidationListener {
         | IOException
         | ConfigInvalidException
         | InvalidQueryParameterException e) {
-      log.error("Automerger plugin failed onPreMerge for {}", changeId, e);
+      logger.atSevere().withCause(e).log("Automerger plugin failed onPreMerge for %s", changeId);
       e.printStackTrace();
       throw new MergeValidationException("Error when validating merge for: " + changeId);
     }

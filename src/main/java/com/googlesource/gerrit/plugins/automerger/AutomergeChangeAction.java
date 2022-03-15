@@ -14,6 +14,7 @@
 
 package com.googlesource.gerrit.plugins.automerger;
 
+import com.google.common.flogger.FluentLogger;
 import com.google.gerrit.entities.Change;
 import com.google.gerrit.exceptions.StorageException;
 import com.google.gerrit.extensions.restapi.ResourceConflictException;
@@ -29,14 +30,12 @@ import com.google.inject.Provider;
 import java.io.IOException;
 import java.util.Map;
 import org.eclipse.jgit.errors.ConfigInvalidException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /** Implementation behind the "Recreate Automerges" button. */
 class AutomergeChangeAction
     implements UiAction<RevisionResource>,
         RestModifyView<RevisionResource, AutomergeChangeAction.Input> {
-  private static final Logger log = LoggerFactory.getLogger(AutomergeChangeAction.class);
+  private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
   private Provider<CurrentUser> user;
   private ConfigLoader config;
@@ -68,7 +67,7 @@ class AutomergeChangeAction
 
     Change change = rev.getChange();
     if (branchMap == null) {
-      log.debug("Branch map is empty for change {}", change.getKey().get());
+      logger.atFine().log("Branch map is empty for change %s", change.getKey().get());
       return Response.none();
     }
     String revision = rev.getPatchSet().commitId().name();
@@ -83,7 +82,7 @@ class AutomergeChangeAction
     mdsMergeInput.obsoleteRevision = revision;
     mdsMergeInput.currentRevision = revision;
 
-    log.debug("Multiple downstream merge input: {}", mdsMergeInput.dsBranchMap);
+    logger.atFine().log("Multiple downstream merge input: %s", mdsMergeInput.dsBranchMap);
 
     try {
       dsCreator.createMergesAndHandleConflicts(mdsMergeInput);
@@ -116,7 +115,7 @@ class AutomergeChangeAction
         desc = desc.setVisible(user.get() instanceof IdentifiedUser);
       }
     } catch (RestApiException | IOException | ConfigInvalidException e) {
-      log.error("Failed to recreate automerges for {} on {}", project, branch);
+      logger.atSevere().log("Failed to recreate automerges for %s on %s", project, branch);
       desc = desc.setVisible(false);
     }
     return desc;

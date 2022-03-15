@@ -14,6 +14,7 @@
 
 package com.googlesource.gerrit.plugins.automerger;
 
+import com.google.common.flogger.FluentLogger;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.HashSet;
@@ -21,8 +22,6 @@ import java.util.Set;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -32,7 +31,7 @@ import org.xml.sax.SAXException;
 
 /** Class to read a repo manifest. */
 public class ManifestReader {
-  private static final Logger log = LoggerFactory.getLogger(ManifestReader.class);
+  private static final FluentLogger logger = FluentLogger.forEnclosingClass();
 
   private final String manifestString;
   private final String branch;
@@ -79,7 +78,7 @@ public class ManifestReader {
       }
 
     } catch (SAXException | ParserConfigurationException | IOException e) {
-      log.error("Exception on manifest for branch {}", branch, e);
+      logger.atSevere().withCause(e).log("Exception on manifest for branch %s", branch);
     }
     return projectSet;
   }
