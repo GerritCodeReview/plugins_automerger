@@ -24,4 +24,7 @@ window.Gerrit.install(plugin => {
   plugin.on(EventType.SHOW_CHANGE, (change: ChangeInfo) =>
     automerger.onShowChange(change)
   );
+  plugin.on(EventType.SHOW_REVISION_ACTIONS, () =>
+    automerger.onShowRevision()
+  );
 });

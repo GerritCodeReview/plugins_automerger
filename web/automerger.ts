@@ -18,8 +18,6 @@ import {
   ActionInfo,
   ChangeInfo,
 } from '@gerritcodereview/typescript-api/rest-api';
-import {RestPluginApi} from '@gerritcodereview/typescript-api/rest';
-import {ChangeActionsPluginApi} from '@gerritcodereview/typescript-api/change-actions';
 import {PopupPluginApi} from '@gerritcodereview/typescript-api/popup';
 import {PluginApi} from '@gerritcodereview/typescript-api/plugin';
 import {RequestPayload} from '@gerritcodereview/typescript-api/rest';
@@ -44,13 +42,10 @@ export class Automerger {
 
   private downstreamConfigMap: ConfigMap = {};
 
-  readonly restApi: RestPluginApi;
+  readonly plugin: PluginApi;
 
-  readonly actionsApi: ChangeActionsPluginApi;
-
-  constructor(readonly plugin: PluginApi) {
-    this.restApi = plugin.restApi();
-    this.actionsApi = plugin.changeActions();
+  constructor(readonly p: PluginApi) {
+    this.plugin = p;
   }
 
   private callAction(payload: RequestPayload, onSuccess: () => void) {
@@ -149,12 +144,17 @@ export class Automerger {
   private getDownstreamConfigMap() {
     const change = this.change;
     if (!change) return;
+
     const changeId = change._number;
+    if(changeId === undefined) return;
+
     const revisionId = change.current_revision;
+    if(revisionId === undefined) return;
+
     const url =
       `/changes/${changeId}/revisions/${revisionId}` +
       '/automerger~config-downstream';
-    this.restApi.post<ConfigMap>(url, {subject: change.subject}).then(resp => {
+    this.plugin.restApi().post<ConfigMap>(url, {subject: change.subject}).then(resp => {
       this.downstreamConfigMap = resp;
       this.styleRelatedChanges();
     });
@@ -162,13 +162,19 @@ export class Automerger {
 
   onShowChange(change: ChangeInfo) {
     this.change = change;
-    this.action = this.actionsApi.getActionDetails(
-      'automerge-change'
-    ) as UIActionInfo;
     this.downstreamConfigMap = {};
     this.getDownstreamConfigMap();
+  }
+
+  onShowRevision() {
+    let actionsApi = this.plugin.changeActions();
+
+    this.action = actionsApi.getActionDetails(
+      'automerge-change'
+    ) as UIActionInfo;
+
     if (this.action) {
-      this.actionsApi.addTapListener(this.action.__key, () => {
+      actionsApi.addTapListener(this.action.__key, () => {
         this.onAutomergeChange();
       });
     }
