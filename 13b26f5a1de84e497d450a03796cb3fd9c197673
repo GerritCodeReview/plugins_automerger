@@ -1,0 +1,38 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "5ab0ab55_128c2407",
+        "filename": "/COMMIT_MSG",
+        "patchSetId": 2
+      },
+      "lineNbr": 9,
+      "author": {
+        "id": 1091982
+      },
+      "writtenOn": "2023-07-27T14:39:02Z",
+      "side": 1,
+      "message": "nit: please wrap text at 72 characters / line (also in L 12/13).",
+      "revId": "13b26f5a1de84e497d450a03796cb3fd9c197673",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "1012faee_8622f275",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1091982
+      },
+      "writtenOn": "2023-07-27T14:39:02Z",
+      "side": 1,
+      "message": "Are there any implications of running these work items async, i.e. can some callers rely on some results being available immediately? Also is it OK if the async execution fails?\n\n(maybe we can include these details in the commit message)",
+      "revId": "13b26f5a1de84e497d450a03796cb3fd9c197673",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
