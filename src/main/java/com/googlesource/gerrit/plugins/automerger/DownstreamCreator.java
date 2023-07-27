@@ -41,9 +41,10 @@ import com.google.gerrit.extensions.events.TopicEditedListener;
 import com.google.gerrit.extensions.restapi.AuthException;
 import com.google.gerrit.extensions.restapi.MergeConflictException;
 import com.google.gerrit.extensions.restapi.RestApiException;
-import com.google.gerrit.server.CurrentUser;
+import com.google.gerrit.server.FanOutExecutor;
 import com.google.gerrit.server.util.ManualRequestContext;
 import com.google.gerrit.server.util.OneOffRequestContext;
+import com.google.gson.Gson;
 import com.google.inject.Inject;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -55,6 +56,8 @@ import java.util.OptionalInt;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.UUID;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
 import org.eclipse.jgit.errors.ConfigInvalidException;
 
 /**
@@ -76,18 +79,25 @@ public class DownstreamCreator
   private static final String SKIPPED_PREFIX = "skipped";
   private static final String CURRENT = "current";
 
-  protected GerritApi gApi;
-  protected ConfigLoader config;
-  protected CurrentUser user;
+  private final GerritApi gApi;
+  private final ConfigLoader config;
+  private final Gson gson;
+  private final ExecutorService executorService;
 
   private final OneOffRequestContext oneOffRequestContext;
 
   @Inject
   public DownstreamCreator(
-      GerritApi gApi, ConfigLoader config, OneOffRequestContext oneOffRequestContext) {
+      GerritApi gApi,
+      ConfigLoader config,
+      OneOffRequestContext oneOffRequestContext,
+      Gson gson,
+      @FanOutExecutor ExecutorService executorService) {
     this.gApi = gApi;
     this.config = config;
     this.oneOffRequestContext = oneOffRequestContext;
+    this.gson = gson;
+    this.executorService = executorService;
   }
 
   /**
@@ -97,6 +107,12 @@ public class DownstreamCreator
    */
   @Override
   public void onChangeAbandoned(ChangeAbandonedListener.Event event) {
+    ChangeAbandonedListener.Event eventCopy = deepCopy(event);
+    @SuppressWarnings("unused")
+    Future<?> ignored = executorService.submit(() -> onChangeAbandonedImpl(eventCopy));
+  }
+
+  private void onChangeAbandonedImpl(ChangeAbandonedListener.Event event) {
     try (ManualRequestContext ctx = oneOffRequestContext.openAs(config.getContextUserId())) {
       ChangeInfo change = event.getChange();
       String revision =
@@ -120,6 +136,12 @@ public class DownstreamCreator
    */
   @Override
   public void onTopicEdited(TopicEditedListener.Event event) {
+    TopicEditedListener.Event eventCopy = deepCopy(event);
+    @SuppressWarnings("unused")
+    Future<?> ignored = executorService.submit(() -> onTopicEditedImpl(eventCopy));
+  }
+
+  private void onTopicEditedImpl(TopicEditedListener.Event event) {
     try (ManualRequestContext ctx = oneOffRequestContext.openAs(config.getContextUserId())) {
       ChangeInfo eventChange = event.getChange();
       // We have to re-query for this in order to include the current revision
@@ -191,6 +213,12 @@ public class DownstreamCreator
    */
   @Override
   public void onCommentAdded(CommentAddedListener.Event event) {
+    CommentAddedListener.Event eventCopy = deepCopy(event);
+    @SuppressWarnings("unused")
+    Future<?> ignored = executorService.submit(() -> onCommentAddedImpl(eventCopy));
+  }
+
+  private void onCommentAddedImpl(CommentAddedListener.Event event) {
     try (ManualRequestContext ctx = oneOffRequestContext.openAs(config.getContextUserId())) {
       RevisionInfo eventRevision = event.getRevision();
       if (!eventRevision.isCurrent) {
@@ -255,6 +283,12 @@ public class DownstreamCreator
    */
   @Override
   public void onChangeRestored(ChangeRestoredListener.Event event) {
+    ChangeRestoredListener.Event eventCopy = deepCopy(event);
+    @SuppressWarnings("unused")
+    Future<?> ignored = executorService.submit(() -> onChangeRestoredImpl(eventCopy));
+  }
+
+  private void onChangeRestoredImpl(ChangeRestoredListener.Event event) {
     try (ManualRequestContext ctx = oneOffRequestContext.openAs(config.getContextUserId())) {
       ChangeInfo change = event.getChange();
       automergeChanges(change, event.getRevision());
@@ -275,6 +309,12 @@ public class DownstreamCreator
    */
   @Override
   public void onRevisionCreated(RevisionCreatedListener.Event event) {
+    RevisionCreatedListener.Event eventCopy = deepCopy(event);
+    @SuppressWarnings("unused")
+    Future<?> ignored = executorService.submit(() -> onRevisionCreatedImpl(eventCopy));
+  }
+
+  public void onRevisionCreatedImpl(RevisionCreatedListener.Event event) {
     try (ManualRequestContext ctx = oneOffRequestContext.openAs(config.getContextUserId())) {
       ChangeInfo change = event.getChange();
       automergeChanges(change, event.getRevision());
@@ -347,6 +387,11 @@ public class DownstreamCreator
         gApi.changes().id(originalChange._number).revision(CURRENT).review(reviewInput);
       }
     }
+  }
+
+  @SuppressWarnings("unchecked")
+  private <T> T deepCopy(T obj) {
+    return (T) gson.fromJson(gson.toJson(obj), obj.getClass());
   }
 
   /**
