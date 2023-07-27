@@ -41,9 +41,14 @@ import com.google.gerrit.extensions.events.TopicEditedListener;
 import com.google.gerrit.extensions.restapi.AuthException;
 import com.google.gerrit.extensions.restapi.MergeConflictException;
 import com.google.gerrit.extensions.restapi.RestApiException;
-import com.google.gerrit.server.CurrentUser;
+import com.google.gerrit.json.OutputFormat;
+import com.google.gerrit.server.FanOutExecutor;
+import com.google.gerrit.server.events.EventGson;
+import com.google.gerrit.server.events.EventGsonProvider;
 import com.google.gerrit.server.util.ManualRequestContext;
 import com.google.gerrit.server.util.OneOffRequestContext;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.inject.Inject;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -55,6 +60,8 @@ import java.util.OptionalInt;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.UUID;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
 import org.eclipse.jgit.errors.ConfigInvalidException;
 
 /**
@@ -76,18 +83,24 @@ public class DownstreamCreator
   private static final String SKIPPED_PREFIX = "skipped";
   private static final String CURRENT = "current";
 
-  protected GerritApi gApi;
-  protected ConfigLoader config;
-  protected CurrentUser user;
-
+  private final GerritApi gApi;
+  private final ConfigLoader config;
+  private final ExecutorService executorService;
   private final OneOffRequestContext oneOffRequestContext;
+  private final Gson gson;
 
   @Inject
   public DownstreamCreator(
-      GerritApi gApi, ConfigLoader config, OneOffRequestContext oneOffRequestContext) {
+      GerritApi gApi,
+      ConfigLoader config,
+      OneOffRequestContext oneOffRequestContext,
+      @FanOutExecutor ExecutorService executorService,
+      @EventGson Gson gson) {
     this.gApi = gApi;
     this.config = config;
     this.oneOffRequestContext = oneOffRequestContext;
+    this.executorService = executorService;
+    this.gson = gson;
   }
 
   /**
@@ -97,19 +110,24 @@ public class DownstreamCreator
    */
   @Override
   public void onChangeAbandoned(ChangeAbandonedListener.Event event) {
+    ChangeInfo change = deepCopy(event.getChange());
+    @SuppressWarnings("unused")
+    Future<?> ignored = executorService.submit(() -> onChangeAbandonedImpl(change, event.getRevision()._number));
+  }
+
+  private void onChangeAbandonedImpl(ChangeInfo change, int revisionNumber) {
     try (ManualRequestContext ctx = oneOffRequestContext.openAs(config.getContextUserId())) {
-      ChangeInfo change = event.getChange();
       String revision =
           gApi.changes()
               .id(change._number)
-              .revision(event.getRevision()._number)
+              .revision(revisionNumber)
               .commit(false)
               .commit;
       logger.atFine().log("Detected revision %s abandoned on %s.", revision, change.project);
       abandonDownstream(change, revision);
     } catch (ConfigInvalidException | StorageException | RestApiException e) {
       logger.atSevere().withCause(e).log(
-          "Automerger plugin failed onChangeAbandoned for %s", event.getChange().id);
+          "Automerger plugin failed onChangeAbandoned for %s", change.id);
     }
   }
 
@@ -120,8 +138,14 @@ public class DownstreamCreator
    */
   @Override
   public void onTopicEdited(TopicEditedListener.Event event) {
+    ChangeInfo change = deepCopy(event.getChange());
+    String oldTopic = event.getOldTopic();
+    @SuppressWarnings("unused")
+    Future<?> ignored = executorService.submit(() -> onTopicEditedImpl(change,oldTopic));
+  }
+
+  private void onTopicEditedImpl(ChangeInfo eventChange, String oldTopic) {
     try (ManualRequestContext ctx = oneOffRequestContext.openAs(config.getContextUserId())) {
-      ChangeInfo eventChange = event.getChange();
       // We have to re-query for this in order to include the current revision
       ChangeInfo change;
       try {
@@ -134,7 +158,6 @@ public class DownstreamCreator
             "Automerger could not get change with current revision for onTopicEdited.");
         return;
       }
-      String oldTopic = event.getOldTopic();
       String revision = change.currentRevision;
       Set<String> downstreamBranches;
       try {
@@ -180,7 +203,7 @@ public class DownstreamCreator
       }
     } catch (StorageException | ConfigInvalidException e) {
       logger.atSevere().withCause(e).log(
-          "Automerger plugin failed onTopicEdited for %s", event.getChange().id);
+          "Automerger plugin failed onTopicEdited for %s", eventChange.id);
     }
   }
 
@@ -191,16 +214,22 @@ public class DownstreamCreator
    */
   @Override
   public void onCommentAdded(CommentAddedListener.Event event) {
+    if (!event.getRevision().isCurrent) {
+      logger.atInfo().log(
+          "Not updating downstream votes since revision %s is not current.",
+          event.getRevision()._number);
+      return;
+    }
+
+    ChangeInfo change = deepCopy(event.getChange());
+    RevisionInfo eventRevision = deepCopy(event.getRevision());
+    @SuppressWarnings("unused")
+    Future<?> ignored = executorService.submit(() -> onCommentAddedImpl(change, eventRevision));
+  }
+
+  private void onCommentAddedImpl(ChangeInfo change, RevisionInfo eventRevision) {
     try (ManualRequestContext ctx = oneOffRequestContext.openAs(config.getContextUserId())) {
-      RevisionInfo eventRevision = event.getRevision();
-      if (!eventRevision.isCurrent) {
-        logger.atInfo().log(
-            "Not updating downstream votes since revision %s is not current.",
-            eventRevision._number);
-        return;
-      }
-      ChangeInfo change = event.getChange();
-      String revision = gApi.changes().id(event.getChange()._number).current().commit(false).commit;
+      String revision = gApi.changes().id(change._number).current().commit(false).commit;
       Set<String> downstreamBranches;
       downstreamBranches = config.getDownstreamBranches(change.branch, change.project);
 
@@ -244,7 +273,7 @@ public class DownstreamCreator
       }
     } catch (StorageException | ConfigInvalidException | RestApiException | IOException e) {
       logger.atSevere().withCause(e).log(
-          "Automerger plugin failed onCommentAdded for %s", event.getChange().id);
+          "Automerger plugin failed onCommentAdded for %s", change.id);
     }
   }
 
@@ -255,16 +284,22 @@ public class DownstreamCreator
    */
   @Override
   public void onChangeRestored(ChangeRestoredListener.Event event) {
+    ChangeInfo change = deepCopy(event.getChange());
+    RevisionInfo revision = deepCopy(event.getRevision());
+    @SuppressWarnings("unused")
+    Future<?> ignored = executorService.submit(() -> onChangeRestoredImpl(change, revision));
+  }
+
+  private void onChangeRestoredImpl(ChangeInfo change, RevisionInfo revision) {
     try (ManualRequestContext ctx = oneOffRequestContext.openAs(config.getContextUserId())) {
-      ChangeInfo change = event.getChange();
-      automergeChanges(change, event.getRevision());
+      automergeChanges(change, revision);
     } catch (RestApiException
         | IOException
         | ConfigInvalidException
         | InvalidQueryParameterException
         | StorageException e) {
       logger.atSevere().withCause(e).log(
-          "Automerger plugin failed onChangeRestored for %s", event.getChange().id);
+          "Automerger plugin failed onChangeRestored for %s", change.id);
     }
   }
 
@@ -275,16 +310,22 @@ public class DownstreamCreator
    */
   @Override
   public void onRevisionCreated(RevisionCreatedListener.Event event) {
+    ChangeInfo change = deepCopy(event.getChange());
+    RevisionInfo revision = deepCopy(event.getRevision());
+    @SuppressWarnings("unused")
+    Future<?> ignored = executorService.submit(() -> onRevisionCreatedImpl(change, revision));
+  }
+
+  public void onRevisionCreatedImpl(ChangeInfo change, RevisionInfo revision) {
     try (ManualRequestContext ctx = oneOffRequestContext.openAs(config.getContextUserId())) {
-      ChangeInfo change = event.getChange();
-      automergeChanges(change, event.getRevision());
+      automergeChanges(change, revision);
     } catch (RestApiException
         | IOException
         | ConfigInvalidException
         | InvalidQueryParameterException
         | StorageException e) {
       logger.atSevere().withCause(e).log(
-          "Automerger plugin failed onRevisionCreated for %s", event.getChange().id);
+          "Automerger plugin failed onRevisionCreated for %s", change.id);
     }
   }
 
@@ -347,6 +388,11 @@ public class DownstreamCreator
         gApi.changes().id(originalChange._number).revision(CURRENT).review(reviewInput);
       }
     }
+  }
+
+  @SuppressWarnings("unchecked")
+  private <T> T deepCopy(T obj) {
+    return (T) gson.fromJson(gson.toJson(obj), obj.getClass());
   }
 
   /**
