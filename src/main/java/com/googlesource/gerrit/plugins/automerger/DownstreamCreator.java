@@ -43,12 +43,9 @@ import com.google.gerrit.extensions.restapi.MergeConflictException;
 import com.google.gerrit.extensions.restapi.RestApiException;
 import com.google.gerrit.json.OutputFormat;
 import com.google.gerrit.server.FanOutExecutor;
-import com.google.gerrit.server.events.EventGson;
-import com.google.gerrit.server.events.EventGsonProvider;
 import com.google.gerrit.server.util.ManualRequestContext;
 import com.google.gerrit.server.util.OneOffRequestContext;
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.inject.Inject;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -82,25 +79,23 @@ public class DownstreamCreator
   private static final String SUBJECT_PREFIX = "automerger";
   private static final String SKIPPED_PREFIX = "skipped";
   private static final String CURRENT = "current";
+  private static final Gson GSON = OutputFormat.JSON_COMPACT.newGson();
 
   private final GerritApi gApi;
   private final ConfigLoader config;
   private final ExecutorService executorService;
   private final OneOffRequestContext oneOffRequestContext;
-  private final Gson gson;
 
   @Inject
   public DownstreamCreator(
       GerritApi gApi,
       ConfigLoader config,
       OneOffRequestContext oneOffRequestContext,
-      @FanOutExecutor ExecutorService executorService,
-      @EventGson Gson gson) {
+      @FanOutExecutor ExecutorService executorService) {
     this.gApi = gApi;
     this.config = config;
     this.oneOffRequestContext = oneOffRequestContext;
     this.executorService = executorService;
-    this.gson = gson;
   }
 
   /**
@@ -112,17 +107,14 @@ public class DownstreamCreator
   public void onChangeAbandoned(ChangeAbandonedListener.Event event) {
     ChangeInfo change = deepCopy(event.getChange());
     @SuppressWarnings("unused")
-    Future<?> ignored = executorService.submit(() -> onChangeAbandonedImpl(change, event.getRevision()._number));
+    Future<?> ignored =
+        executorService.submit(() -> onChangeAbandonedImpl(change, event.getRevision()._number));
   }
 
   private void onChangeAbandonedImpl(ChangeInfo change, int revisionNumber) {
     try (ManualRequestContext ctx = oneOffRequestContext.openAs(config.getContextUserId())) {
       String revision =
-          gApi.changes()
-              .id(change._number)
-              .revision(revisionNumber)
-              .commit(false)
-              .commit;
+          gApi.changes().id(change._number).revision(revisionNumber).commit(false).commit;
       logger.atFine().log("Detected revision %s abandoned on %s.", revision, change.project);
       abandonDownstream(change, revision);
     } catch (ConfigInvalidException | StorageException | RestApiException e) {
@@ -141,7 +133,7 @@ public class DownstreamCreator
     ChangeInfo change = deepCopy(event.getChange());
     String oldTopic = event.getOldTopic();
     @SuppressWarnings("unused")
-    Future<?> ignored = executorService.submit(() -> onTopicEditedImpl(change,oldTopic));
+    Future<?> ignored = executorService.submit(() -> onTopicEditedImpl(change, oldTopic));
   }
 
   private void onTopicEditedImpl(ChangeInfo eventChange, String oldTopic) {
@@ -392,7 +384,7 @@ public class DownstreamCreator
 
   @SuppressWarnings("unchecked")
   private <T> T deepCopy(T obj) {
-    return (T) gson.fromJson(gson.toJson(obj), obj.getClass());
+    return (T) GSON.fromJson(GSON.toJson(obj), obj.getClass());
   }
 
   /**
