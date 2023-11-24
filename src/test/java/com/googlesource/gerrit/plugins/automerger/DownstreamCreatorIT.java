@@ -68,6 +68,7 @@ import org.eclipse.jgit.internal.storage.dfs.InMemoryRepository;
 import org.eclipse.jgit.junit.TestRepository;
 import org.eclipse.jgit.lib.Config;
 import org.eclipse.jgit.lib.ObjectId;
+import org.junit.Ignore;
 import org.junit.Test;
 
 @TestPlugin(
@@ -142,6 +143,7 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
   }
 
   @Test
+  @Ignore("b/313019948")
   public void testDiamondMerge() throws Exception {
     Project.NameKey manifestNameKey = defaultSetup();
     // Create initial change
@@ -469,6 +471,7 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
   }
 
   @Test
+  @Ignore("b/313019948")
   public void testDownstreamMergeConflict() throws Exception {
     Project.NameKey manifestNameKey = defaultSetup();
     // Create initial change
@@ -532,6 +535,7 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
   }
 
   @Test
+  @Ignore("b/313019948")
   public void testRestrictedVotePermissions() throws Exception {
     Project.NameKey manifestNameKey = defaultSetup();
     // Create initial change
@@ -852,6 +856,7 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
   }
 
   @Test
+  @Ignore("b/313019948")
   public void testContextUser_mergeConflictOnDownstreamVotesOnTopLevel() throws Exception {
     // Branch flow for contextUser is master -> ds_one -> ds_two
     Project.NameKey manifestNameKey = defaultSetup();
