@@ -144,6 +144,8 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
   @Test
   public void testDiamondMerge() throws Exception {
     Project.NameKey manifestNameKey = defaultSetup();
+    ObjectId initial = repo().exactRef("HEAD").getLeaf().getObjectId();
+
     // Create initial change
     PushOneCommit.Result initialResult = createChange("subject", "filename", "echo Hello");
     // Project name is scoped by test, so we need to get it from our initial change
@@ -152,23 +154,33 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
     createBranch(BranchNameKey.create(projectName, "right"));
     initialResult.assertOkStatus();
     merge(initialResult);
+    ObjectId masterWithMergedChange = repo().exactRef("HEAD").getLeaf().getObjectId();
+
     // Reset to create a sibling
-    ObjectId initial = repo().exactRef("HEAD").getLeaf().getObjectId();
     testRepo.reset(initial);
     // Make left != right
     PushOneCommit.Result left =
         createChange(
-            testRepo, "left", "subject", "filename", "echo \"Hello asdfsd World\"", "randtopic");
+            testRepo,
+            "left",
+            "subject",
+            "filename-left",
+            "echo \"Hello asdfsd World\"",
+            "randtopic");
     left.assertOkStatus();
     merge(left);
+
+    testRepo.reset(initial);
 
     String leftRevision = gApi.projects().name(projectName).branch("left").get().revision;
     String rightRevision = gApi.projects().name(projectName).branch("right").get().revision;
     // For this test, right != left
     assertThat(leftRevision).isNotEqualTo(rightRevision);
     createBranch(BranchNameKey.create(projectName, "bottom"));
+
     pushDiamondConfig(manifestNameKey.get(), projectName);
     // After we upload our config, we upload a new patchset to create the downstreams
+    testRepo.reset(masterWithMergedChange);
     PushOneCommit.Result result =
         createChange(testRepo, "master", "subject", "filename2", "echo Hello", "sometopic");
     result.assertOkStatus();
@@ -471,6 +483,7 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
   @Test
   public void testDownstreamMergeConflict() throws Exception {
     Project.NameKey manifestNameKey = defaultSetup();
+    ObjectId initial = repo().exactRef("HEAD").getLeaf().getObjectId();
     // Create initial change
     PushOneCommit.Result result = createChange("subject", "filename", "echo Hello");
     // Project name is scoped by test, so we need to get it from our initial change
@@ -480,7 +493,6 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
     result.assertOkStatus();
     merge(result);
     // Reset to create a sibling
-    ObjectId initial = repo().exactRef("HEAD").getLeaf().getObjectId();
     testRepo.reset(initial);
     // Set up a merge conflict between master and ds_one
     PushOneCommit.Result ds1Result =
@@ -534,6 +546,7 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
   @Test
   public void testRestrictedVotePermissions() throws Exception {
     Project.NameKey manifestNameKey = defaultSetup();
+    ObjectId initial = repo().exactRef("HEAD").getLeaf().getObjectId();
     // Create initial change
     PushOneCommit.Result result = createChange("subject", "filename", "echo Hello");
     // Project name is scoped by test, so we need to get it from our initial change
@@ -543,7 +556,6 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
     result.assertOkStatus();
     merge(result);
     // Reset to create a sibling
-    ObjectId initial = repo().exactRef("HEAD").getLeaf().getObjectId();
     testRepo.reset(initial);
     // Set up a merge conflict between master and ds_one
     PushOneCommit.Result ds1Result =
@@ -855,6 +867,7 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
   public void testContextUser_mergeConflictOnDownstreamVotesOnTopLevel() throws Exception {
     // Branch flow for contextUser is master -> ds_one -> ds_two
     Project.NameKey manifestNameKey = defaultSetup();
+    ObjectId initial = repo().exactRef("HEAD").getLeaf().getObjectId();
     // Create initial change
     PushOneCommit.Result initialResult = createChange("subject", "filename", "echo Hello");
     // Project name is scoped by test, so we need to get it from our initial change
@@ -866,7 +879,7 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
     merge(initialResult);
 
     // Reset to create a sibling
-    ObjectId initial = repo().exactRef("HEAD").getLeaf().getObjectId();
+    testRepo.reset(initial);
     PushOneCommit.Result ds1Result =
         createChange(
             testRepo, "ds_one", "subject", "filename", "echo \"Hello asdfsd World\"", "randtopic");
