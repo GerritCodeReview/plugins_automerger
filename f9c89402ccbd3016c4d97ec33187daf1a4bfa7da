@@ -1,0 +1,21 @@
+{
+  "comments": [
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "f6c376cc_09c617ee",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 1
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1085901
+      },
+      "writtenOn": "2023-11-29T09:05:12Z",
+      "side": 1,
+      "message": "Tests was fixed, I think this change can be deleted.",
+      "revId": "f9c89402ccbd3016c4d97ec33187daf1a4bfa7da",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    }
+  ]
+}
