@@ -17,7 +17,6 @@ package com.googlesource.gerrit.plugins.automerger;
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.gerrit.testing.GerritJUnit.assertThrows;
 
-import com.google.common.base.Charsets;
 import com.google.common.io.CharStreams;
 import com.google.gerrit.acceptance.GitUtil;
 import com.google.gerrit.acceptance.LightweightPluginDaemonTest;
@@ -35,6 +34,7 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.HashSet;
 import java.util.Set;
 import org.eclipse.jgit.errors.ConfigInvalidException;
@@ -270,7 +270,8 @@ public class ConfigLoaderIT extends LightweightPluginDaemonTest {
       throws Exception {
     TestRepository<InMemoryRepository> repo = cloneProject(projectNameKey, admin);
     try (InputStream in = getClass().getResourceAsStream(resourceName)) {
-      String resourceString = CharStreams.toString(new InputStreamReader(in, Charsets.UTF_8));
+      String resourceString =
+          CharStreams.toString(new InputStreamReader(in, StandardCharsets.UTF_8));
 
       PushOneCommit push =
           pushFactory.create(admin.newIdent(), repo, "some subject", filename, resourceString);
@@ -283,7 +284,8 @@ public class ConfigLoaderIT extends LightweightPluginDaemonTest {
     GitUtil.fetch(allProjectRepo, RefNames.REFS_CONFIG + ":config");
     allProjectRepo.reset("config");
     try (InputStream in = getClass().getResourceAsStream(resourceName)) {
-      String resourceString = CharStreams.toString(new InputStreamReader(in, Charsets.UTF_8));
+      String resourceString =
+          CharStreams.toString(new InputStreamReader(in, StandardCharsets.UTF_8));
 
       Config cfg = new Config();
       cfg.fromText(resourceString);

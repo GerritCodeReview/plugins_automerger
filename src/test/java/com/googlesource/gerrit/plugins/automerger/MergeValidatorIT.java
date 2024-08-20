@@ -17,7 +17,6 @@ package com.googlesource.gerrit.plugins.automerger;
 import static com.google.common.truth.Truth.assertThat;
 import static com.google.gerrit.testing.GerritJUnit.assertThrows;
 
-import com.google.common.base.Charsets;
 import com.google.common.io.CharStreams;
 import com.google.gerrit.acceptance.GitUtil;
 import com.google.gerrit.acceptance.LightweightPluginDaemonTest;
@@ -30,6 +29,7 @@ import com.google.gerrit.extensions.common.ChangeInfo;
 import com.google.gerrit.extensions.restapi.ResourceConflictException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -48,7 +48,8 @@ public class MergeValidatorIT extends LightweightPluginDaemonTest {
     GitUtil.fetch(allProjectRepo, RefNames.REFS_CONFIG + ":config");
     allProjectRepo.reset("config");
     try (InputStream in = getClass().getResourceAsStream(resourceName)) {
-      String resourceString = CharStreams.toString(new InputStreamReader(in, Charsets.UTF_8));
+      String resourceString =
+          CharStreams.toString(new InputStreamReader(in, StandardCharsets.UTF_8));
 
       Config cfg = new Config();
       cfg.fromText(resourceString);

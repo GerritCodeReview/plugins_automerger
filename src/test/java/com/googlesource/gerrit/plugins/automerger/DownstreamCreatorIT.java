@@ -29,7 +29,6 @@ import static com.google.gerrit.extensions.client.ListChangesOption.MESSAGES;
 import static com.google.gerrit.testing.GerritJUnit.assertThrows;
 import static java.util.Comparator.comparing;
 
-import com.google.common.base.Charsets;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Iterables;
 import com.google.common.io.CharStreams;
@@ -60,6 +59,7 @@ import com.google.inject.Inject;
 import com.googlesource.gerrit.plugins.automerger.helpers.ConfigOption;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -944,7 +944,8 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
       throws Exception {
     TestRepository<InMemoryRepository> repo = cloneProject(projectNameKey, admin);
     try (InputStream in = getClass().getResourceAsStream(resourceName)) {
-      String resourceString = CharStreams.toString(new InputStreamReader(in, Charsets.UTF_8));
+      String resourceString =
+          CharStreams.toString(new InputStreamReader(in, StandardCharsets.UTF_8));
 
       PushOneCommit push =
           pushFactory.create(admin.newIdent(), repo, "some subject", filename, resourceString);
@@ -957,7 +958,8 @@ public class DownstreamCreatorIT extends LightweightPluginDaemonTest {
     GitUtil.fetch(allProjectRepo, RefNames.REFS_CONFIG + ":config");
     allProjectRepo.reset("config");
     try (InputStream in = getClass().getResourceAsStream(resourceName)) {
-      String resourceString = CharStreams.toString(new InputStreamReader(in, Charsets.UTF_8));
+      String resourceString =
+          CharStreams.toString(new InputStreamReader(in, StandardCharsets.UTF_8));
 
       Config cfg = new Config();
       cfg.fromText(resourceString);

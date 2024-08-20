@@ -16,10 +16,10 @@ package com.googlesource.gerrit.plugins.automerger;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import com.google.common.base.Charsets;
 import com.google.common.io.CharStreams;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.HashSet;
 import java.util.Set;
 import org.junit.Before;
@@ -32,7 +32,7 @@ public class ManifestReaderTest {
   @Before
   public void setUp() throws Exception {
     try (InputStream in = getClass().getResourceAsStream("default.xml")) {
-      manifestString = CharStreams.toString(new InputStreamReader(in, Charsets.UTF_8));
+      manifestString = CharStreams.toString(new InputStreamReader(in, StandardCharsets.UTF_8));
     }
     manifestReader = new ManifestReader("master", manifestString);
   }
