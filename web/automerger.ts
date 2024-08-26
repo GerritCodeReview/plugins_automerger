@@ -35,6 +35,35 @@ export interface PopupPluginApiExtended extends PopupPluginApi {
   _getElement: () => HTMLElement;
 }
 
+/**
+ * Error callback that throws an error.
+ *
+ * Pass into REST API methods as errFn to make the returned Promises reject on
+ * error.
+ *
+ * If error is provided, it's thrown.
+ * Otherwise if response with error is provided the promise that will throw an
+ * error is returned.
+ */
+export function throwingErrorCallback(
+  response?: Response | null,
+  err?: Error
+): void | Promise<void> {
+  if (err) throw err;
+  if (!response) return;
+
+  return response.text().then(errorText => {
+    let message = `Error ${response.status}`;
+    if (response.statusText) {
+      message += ` (${response.statusText})`;
+    }
+    if (errorText) {
+      message += `: ${errorText}`;
+    }
+    throw new Error(message);
+  });
+}
+
 export class Automerger {
   private change?: ChangeInfo;
 
@@ -53,12 +82,16 @@ export class Automerger {
     if (!this.action?.__url) return;
     this.plugin
       .restApi()
-      .send(this.action.method, this.action.__url, payload)
+      .fetch(
+        this.action.method,
+        this.action.__url,
+        payload,
+        throwingErrorCallback)
       .then(onSuccess)
       .catch((error: unknown) => {
         document.dispatchEvent(
           new CustomEvent('show-alert', {
-            detail: {message: `Plugin network error: ${error}`},
+            detail: {message: `Plugin error: ${error}`},
           })
         );
       });
