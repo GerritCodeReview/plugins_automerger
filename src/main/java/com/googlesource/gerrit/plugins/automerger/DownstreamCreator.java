@@ -17,6 +17,7 @@ import static com.google.common.base.Strings.isNullOrEmpty;
 
 import com.google.common.base.Joiner;
 import com.google.common.flogger.FluentLogger;
+import com.google.gerrit.entities.Account;
 import com.google.gerrit.exceptions.StorageException;
 import com.google.gerrit.extensions.api.GerritApi;
 import com.google.gerrit.extensions.api.changes.AbandonInput;
@@ -42,11 +43,13 @@ import com.google.gerrit.extensions.restapi.AuthException;
 import com.google.gerrit.extensions.restapi.MergeConflictException;
 import com.google.gerrit.extensions.restapi.RestApiException;
 import com.google.gerrit.json.OutputFormat;
+import com.google.gerrit.server.CurrentUser;
 import com.google.gerrit.server.FanOutExecutor;
 import com.google.gerrit.server.util.ManualRequestContext;
 import com.google.gerrit.server.util.OneOffRequestContext;
 import com.google.gson.Gson;
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.EnumSet;
@@ -85,17 +88,20 @@ public class DownstreamCreator
   private final ConfigLoader config;
   private final ExecutorService executorService;
   private final OneOffRequestContext oneOffRequestContext;
+  private final Provider<CurrentUser> user;
 
   @Inject
   public DownstreamCreator(
       GerritApi gApi,
       ConfigLoader config,
       OneOffRequestContext oneOffRequestContext,
-      @FanOutExecutor ExecutorService executorService) {
+      @FanOutExecutor ExecutorService executorService,
+      Provider<CurrentUser> user) {
     this.gApi = gApi;
     this.config = config;
     this.oneOffRequestContext = oneOffRequestContext;
     this.executorService = executorService;
+    this.user = user;
   }
 
   /**
@@ -106,17 +112,18 @@ public class DownstreamCreator
   @Override
   public void onChangeAbandoned(ChangeAbandonedListener.Event event) {
     ChangeInfo change = deepCopy(event.getChange());
+    CurrentUser user = this.user.get();
     @SuppressWarnings("unused")
     Future<?> ignored =
-        executorService.submit(() -> onChangeAbandonedImpl(change, event.getRevision()._number));
+        executorService.submit(() -> onChangeAbandonedImpl(change, event.getRevision()._number, user.getAccountId()));
   }
 
-  private void onChangeAbandonedImpl(ChangeInfo change, int revisionNumber) {
-    try (ManualRequestContext ctx = oneOffRequestContext.openAs(config.getContextUserId())) {
+  private void onChangeAbandonedImpl(ChangeInfo change, int revisionNumber, Account.Id accountId) {
+    try (ManualRequestContext ctx = oneOffRequestContext.openAs(accountId)) {
       String revision =
           gApi.changes().id(change._number).revision(revisionNumber).commit(false).commit;
       logger.atFine().log("Detected revision %s abandoned on %s.", revision, change.project);
-      abandonDownstream(change, revision);
+      abandonDownstream(change, revision, accountId);
     } catch (ConfigInvalidException | StorageException | RestApiException e) {
       logger.atSevere().withCause(e).log(
           "Automerger plugin failed onChangeAbandoned for %s", change.id);
@@ -132,12 +139,13 @@ public class DownstreamCreator
   public void onTopicEdited(TopicEditedListener.Event event) {
     ChangeInfo change = deepCopy(event.getChange());
     String oldTopic = event.getOldTopic();
+    CurrentUser user = this.user.get();
     @SuppressWarnings("unused")
-    Future<?> ignored = executorService.submit(() -> onTopicEditedImpl(change, oldTopic));
+    Future<?> ignored = executorService.submit(() -> onTopicEditedImpl(change, oldTopic, user.getAccountId()));
   }
 
-  private void onTopicEditedImpl(ChangeInfo eventChange, String oldTopic) {
-    try (ManualRequestContext ctx = oneOffRequestContext.openAs(config.getContextUserId())) {
+  private void onTopicEditedImpl(ChangeInfo eventChange, String oldTopic, Account.Id accountId) {
+    try (ManualRequestContext ctx = oneOffRequestContext.openAs(accountId)) {
       // We have to re-query for this in order to include the current revision
       ChangeInfo change;
       try {
@@ -183,7 +191,7 @@ public class DownstreamCreator
         for (String downstreamBranch : downstreamBranches) {
           try {
             List<Integer> existingDownstream =
-                getExistingMergesOnBranch(revision, oldTopic, downstreamBranch);
+                getExistingMergesOnBranch(revision, oldTopic, downstreamBranch, accountId);
             for (Integer changeNumber : existingDownstream) {
               logger.atFine().log("Setting topic %s on %s", change.topic, changeNumber);
               gApi.changes().id(changeNumber).topic(change.topic);
@@ -215,12 +223,13 @@ public class DownstreamCreator
 
     ChangeInfo change = deepCopy(event.getChange());
     RevisionInfo eventRevision = deepCopy(event.getRevision());
+    CurrentUser user = this.user.get();
     @SuppressWarnings("unused")
-    Future<?> ignored = executorService.submit(() -> onCommentAddedImpl(change, eventRevision));
+    Future<?> ignored = executorService.submit(() -> onCommentAddedImpl(change, eventRevision, user.getAccountId()));
   }
 
-  private void onCommentAddedImpl(ChangeInfo change, RevisionInfo eventRevision) {
-    try (ManualRequestContext ctx = oneOffRequestContext.openAs(config.getContextUserId())) {
+  private void onCommentAddedImpl(ChangeInfo change, RevisionInfo eventRevision, Account.Id accountId) {
+    try (ManualRequestContext ctx = oneOffRequestContext.openAs(accountId)) {
       String revision = gApi.changes().id(change._number).current().commit(false).commit;
       Set<String> downstreamBranches;
       downstreamBranches = config.getDownstreamBranches(change.branch, change.project);
@@ -240,7 +249,7 @@ public class DownstreamCreator
       for (String downstreamBranch : downstreamBranches) {
         try {
           List<Integer> existingDownstream =
-              getExistingMergesOnBranch(revision, change.topic, downstreamBranch);
+              getExistingMergesOnBranch(revision, change.topic, downstreamBranch, accountId);
           for (Integer changeNumber : existingDownstream) {
             ChangeInfo downstreamChange =
                 gApi.changes().id(changeNumber).get(EnumSet.of(ListChangesOption.CURRENT_REVISION));
@@ -278,13 +287,14 @@ public class DownstreamCreator
   public void onChangeRestored(ChangeRestoredListener.Event event) {
     ChangeInfo change = deepCopy(event.getChange());
     RevisionInfo revision = deepCopy(event.getRevision());
+    CurrentUser user = this.user.get();
     @SuppressWarnings("unused")
-    Future<?> ignored = executorService.submit(() -> onChangeRestoredImpl(change, revision));
+    Future<?> ignored = executorService.submit(() -> onChangeRestoredImpl(change, revision, user.getAccountId()));
   }
 
-  private void onChangeRestoredImpl(ChangeInfo change, RevisionInfo revision) {
-    try (ManualRequestContext ctx = oneOffRequestContext.openAs(config.getContextUserId())) {
-      automergeChanges(change, revision);
+  private void onChangeRestoredImpl(ChangeInfo change, RevisionInfo revision, Account.Id accountId) {
+    try (ManualRequestContext ctx = oneOffRequestContext.openAs(accountId)) {
+      automergeChanges(change, revision, accountId);
     } catch (RestApiException
         | IOException
         | ConfigInvalidException
@@ -304,13 +314,14 @@ public class DownstreamCreator
   public void onRevisionCreated(RevisionCreatedListener.Event event) {
     ChangeInfo change = deepCopy(event.getChange());
     RevisionInfo revision = deepCopy(event.getRevision());
+    CurrentUser user = this.user.get();
     @SuppressWarnings("unused")
-    Future<?> ignored = executorService.submit(() -> onRevisionCreatedImpl(change, revision));
+    Future<?> ignored = executorService.submit(() -> onRevisionCreatedImpl(change, revision, user.getAccountId()));
   }
 
-  public void onRevisionCreatedImpl(ChangeInfo change, RevisionInfo revision) {
-    try (ManualRequestContext ctx = oneOffRequestContext.openAs(config.getContextUserId())) {
-      automergeChanges(change, revision);
+  public void onRevisionCreatedImpl(ChangeInfo change, RevisionInfo revision, Account.Id accountId) {
+    try (ManualRequestContext ctx = oneOffRequestContext.openAs(accountId)) {
+      automergeChanges(change, revision, accountId);
     } catch (RestApiException
         | IOException
         | ConfigInvalidException
@@ -321,9 +332,9 @@ public class DownstreamCreator
     }
   }
 
-  public String getOrSetTopic(int sourceId, String topic)
+  public String getOrSetTopic(int sourceId, String topic, Account.Id accountId)
       throws RestApiException, ConfigInvalidException {
-    try (ManualRequestContext ctx = oneOffRequestContext.openAs(config.getContextUserId())) {
+    try (ManualRequestContext ctx = oneOffRequestContext.openAs(accountId)) {
       if (isNullOrEmpty(topic)) {
         topic = "am-" + UUID.randomUUID();
         logger.atFine().log("Setting original change %s topic to %s", sourceId, topic);
@@ -337,19 +348,20 @@ public class DownstreamCreator
    * Creates merges downstream, and votes on the automerge label if we have a failed merge.
    *
    * @param mdsMergeInput Input containing the downstream branch map and source change ID.
+   * @param accountId Account ID to authorize Gerrit API calls.
    * @throws RestApiException Throws if we fail a REST API call.
    * @throws ConfigInvalidException Throws if we get a malformed configuration
    * @throws InvalidQueryParameterException Throws if we attempt to add an invalid value to query.
    * @throws StorageException Throws if we fail to open the request context
    */
-  public void createMergesAndHandleConflicts(MultipleDownstreamMergeInput mdsMergeInput)
+  public void createMergesAndHandleConflicts(MultipleDownstreamMergeInput mdsMergeInput, Account.Id accountId)
       throws RestApiException, ConfigInvalidException, InvalidQueryParameterException,
           StorageException {
-    try (ManualRequestContext ctx = oneOffRequestContext.openAs(config.getContextUserId())) {
+    try (ManualRequestContext ctx = oneOffRequestContext.openAs(accountId)) {
       ReviewInput reviewInput = new ReviewInput();
       Map<String, Short> labels = new HashMap<>();
       try {
-        createDownstreamMerges(mdsMergeInput);
+        createDownstreamMerges(mdsMergeInput, accountId);
 
         reviewInput.message =
             "Automerging change "
@@ -391,16 +403,17 @@ public class DownstreamCreator
    * Creates merge downstream.
    *
    * @param mdsMergeInput Input containing the downstream branch map and source change ID.
+   * @param accountId Account ID to authorize Gerrit API calls.
    * @throws RestApiException Throws if we fail a REST API call.
    * @throws FailedMergeException Throws if we get a merge conflict when merging downstream.
    * @throws ConfigInvalidException Throws if we get a malformed config file
    * @throws InvalidQueryParameterException Throws if we attempt to add an invalid value to query.
    * @throws StorageException Throws if we fail to open the request context
    */
-  private void createDownstreamMerges(MultipleDownstreamMergeInput mdsMergeInput)
+  private void createDownstreamMerges(MultipleDownstreamMergeInput mdsMergeInput, Account.Id accountId)
       throws RestApiException, FailedMergeException, ConfigInvalidException,
           InvalidQueryParameterException, StorageException {
-    try (ManualRequestContext ctx = oneOffRequestContext.openAs(config.getContextUserId())) {
+    try (ManualRequestContext ctx = oneOffRequestContext.openAs(accountId)) {
       // Map from branch to error message
       Map<String, String> failedMergeBranchMap = new TreeMap<>();
 
@@ -412,7 +425,7 @@ public class DownstreamCreator
         if (mdsMergeInput.obsoleteRevision != null) {
           existingDownstream =
               getExistingMergesOnBranch(
-                  mdsMergeInput.obsoleteRevision, mdsMergeInput.topic, downstreamBranch);
+                  mdsMergeInput.obsoleteRevision, mdsMergeInput.topic, downstreamBranch, accountId);
           if (!existingDownstream.isEmpty()) {
             logger.atFine().log(
                 "Attempting to update downstream merge of %s on branch %s",
@@ -451,7 +464,7 @@ public class DownstreamCreator
           sdsMergeInput.downstreamBranch = downstreamBranch;
           sdsMergeInput.doMerge = mdsMergeInput.dsBranchMap.get(downstreamBranch);
           try {
-            createSingleDownstreamMerge(sdsMergeInput);
+            createSingleDownstreamMerge(sdsMergeInput, accountId);
           } catch (MergeConflictException e) {
             failedMergeBranchMap.put(downstreamBranch, e.getMessage());
           }
@@ -482,6 +495,7 @@ public class DownstreamCreator
    * @param upstreamRevision Revision of the original change.
    * @param topic Topic of the original change.
    * @param downstreamBranch Branch to check for existing merge CLs.
+   * @param accountId Account ID to authorize Gerrit API calls.
    * @return List of change numbers that are downstream of the given branch.
    * @throws RestApiException Throws when we fail a REST API call.
    * @throws InvalidQueryParameterException Throws when we try to add an invalid value to the query.
@@ -489,10 +503,10 @@ public class DownstreamCreator
    * @throws StorageException Throws if we fail to open the request context
    */
   private List<Integer> getExistingMergesOnBranch(
-      String upstreamRevision, String topic, String downstreamBranch)
+      String upstreamRevision, String topic, String downstreamBranch, Account.Id accountId)
       throws RestApiException, InvalidQueryParameterException, StorageException,
           ConfigInvalidException {
-    try (ManualRequestContext ctx = oneOffRequestContext.openAs(config.getContextUserId())) {
+    try (ManualRequestContext ctx = oneOffRequestContext.openAs(accountId)) {
       List<Integer> downstreamChangeNumbers = new ArrayList<>();
       List<ChangeInfo> changes = getChangesInTopicAndBranch(topic, downstreamBranch);
 
@@ -515,16 +529,17 @@ public class DownstreamCreator
    * Create a single downstream merge.
    *
    * @param sdsMergeInput Input containing metadata for the merge.
+   * @param accountId Account ID to authorize Gerrit API calls.
    * @throws RestApiException
    * @throws ConfigInvalidException
    * @throws InvalidQueryParameterException
    * @throws StorageException
    */
-  private void createSingleDownstreamMerge(SingleDownstreamMergeInput sdsMergeInput)
+  private void createSingleDownstreamMerge(SingleDownstreamMergeInput sdsMergeInput, Account.Id accountId)
       throws RestApiException, ConfigInvalidException, InvalidQueryParameterException,
           StorageException {
-    try (ManualRequestContext ctx = oneOffRequestContext.openAs(config.getContextUserId())) {
-      String currentTopic = getOrSetTopic(sdsMergeInput.changeNumber, sdsMergeInput.topic);
+    try (ManualRequestContext ctx = oneOffRequestContext.openAs(accountId)) {
+      String currentTopic = getOrSetTopic(sdsMergeInput.changeNumber, sdsMergeInput.topic, accountId);
 
       if (isAlreadyMerged(sdsMergeInput, currentTopic)) {
         logger.atInfo().log(
@@ -603,7 +618,7 @@ public class DownstreamCreator
     return null;
   }
 
-  private void automergeChanges(ChangeInfo change, RevisionInfo revisionInfo)
+  private void automergeChanges(ChangeInfo change, RevisionInfo revisionInfo, Account.Id accountId)
       throws RestApiException, IOException, ConfigInvalidException, InvalidQueryParameterException,
           StorageException {
     String currentRevision =
@@ -635,15 +650,15 @@ public class DownstreamCreator
     mdsMergeInput.changeNumber = change._number;
     mdsMergeInput.patchsetNumber = revisionInfo._number;
     mdsMergeInput.project = change.project;
-    mdsMergeInput.topic = getOrSetTopic(change._number, change.topic);
+    mdsMergeInput.topic = getOrSetTopic(change._number, change.topic, accountId);
     mdsMergeInput.subject = change.subject;
     mdsMergeInput.obsoleteRevision = previousRevision;
     mdsMergeInput.currentRevision = currentRevision;
 
-    createMergesAndHandleConflicts(mdsMergeInput);
+    createMergesAndHandleConflicts(mdsMergeInput, accountId);
   }
 
-  private void abandonDownstream(ChangeInfo change, String revision)
+  private void abandonDownstream(ChangeInfo change, String revision, Account.Id accountId)
       throws ConfigInvalidException, StorageException {
     try {
       Set<String> downstreamBranches = config.getDownstreamBranches(change.branch, change.project);
@@ -655,7 +670,7 @@ public class DownstreamCreator
 
       for (String downstreamBranch : downstreamBranches) {
         List<Integer> existingDownstream =
-            getExistingMergesOnBranch(revision, change.topic, downstreamBranch);
+            getExistingMergesOnBranch(revision, change.topic, downstreamBranch, accountId);
         logger.atFine().log("Abandoning existing downstreams: %s", existingDownstream);
         for (Integer changeNumber : existingDownstream) {
           abandonChange(changeNumber);
