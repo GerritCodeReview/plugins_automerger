@@ -33,6 +33,23 @@
       "message": "Hi Baligh,\n\nAre you able to approve this? I\u0027ve also filed a CL to add the keystone team as owners for this plugin",
       "revId": "b275c983af3d5e2b33d29638a113eb5823b8b313",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": true,
+      "key": {
+        "uuid": "ddc17cbf_bf986e47",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1154920
+      },
+      "writtenOn": "2024-09-04T05:01:33Z",
+      "side": 1,
+      "message": "Do you have +2 permissions? (I ask you because you\u0027ve approved a plugin change in the past: https://gerrit-review.git.corp.google.com/c/plugins/automerger/+/354634)",
+      "revId": "b275c983af3d5e2b33d29638a113eb5823b8b313",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
