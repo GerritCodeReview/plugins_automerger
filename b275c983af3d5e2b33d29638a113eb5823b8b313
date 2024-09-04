@@ -16,6 +16,23 @@
       "message": "Looks good!",
       "revId": "b275c983af3d5e2b33d29638a113eb5823b8b313",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "ed9c3525_7bec557f",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1154920
+      },
+      "writtenOn": "2024-09-04T02:00:15Z",
+      "side": 1,
+      "message": "Hi Baligh,\n\nAre you able to approve this? I\u0027ve also filed a CL to add the keystone team as owners for this plugin",
+      "revId": "b275c983af3d5e2b33d29638a113eb5823b8b313",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
