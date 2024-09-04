@@ -50,6 +50,24 @@
       "message": "Do you have +2 permissions? (I ask you because you\u0027ve approved a plugin change in the past: https://gerrit-review.git.corp.google.com/c/plugins/automerger/+/354634)",
       "revId": "b275c983af3d5e2b33d29638a113eb5823b8b313",
       "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
+    },
+    {
+      "unresolved": false,
+      "key": {
+        "uuid": "91d18b91_c96069ac",
+        "filename": "/PATCHSET_LEVEL",
+        "patchSetId": 2
+      },
+      "lineNbr": 0,
+      "author": {
+        "id": 1155215
+      },
+      "writtenOn": "2024-09-04T12:04:11Z",
+      "side": 1,
+      "message": "sorry - i dont have +2, only +1, I am no longer on the AEp team.",
+      "tag": "mailMessageId\u003d\u003cCACRFb3zSfbDJDxs\u003dT6bSGJdVsKsOxCKy9_t78BzzTiy9rTvGEw@mail.gmail.com\u003e",
+      "revId": "b275c983af3d5e2b33d29638a113eb5823b8b313",
+      "serverId": "173816e5-2b9a-37c3-8a2e-48639d4f1153"
     }
   ]
 }
