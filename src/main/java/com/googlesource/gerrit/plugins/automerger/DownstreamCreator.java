@@ -115,7 +115,14 @@ public class DownstreamCreator
     CurrentUser user = this.user.get();
     @SuppressWarnings("unused")
     Future<?> ignored =
-        executorService.submit(() -> onChangeAbandonedImpl(change, event.getRevision()._number, user.getAccountId()));
+        executorService.submit(() -> {
+          try {
+            onChangeAbandonedImpl(change, event.getRevision()._number, config.getContextUserId(user));
+          } catch (ConfigInvalidException | UnsupportedOperationException e) {
+            logger.atSevere().withCause(e).log(
+                "Automerger plugin failed onChangeAbandoned for %s", change.id);
+          }
+        });
   }
 
   private void onChangeAbandonedImpl(ChangeInfo change, int revisionNumber, Account.Id accountId) {
@@ -141,7 +148,14 @@ public class DownstreamCreator
     String oldTopic = event.getOldTopic();
     CurrentUser user = this.user.get();
     @SuppressWarnings("unused")
-    Future<?> ignored = executorService.submit(() -> onTopicEditedImpl(change, oldTopic, user.getAccountId()));
+    Future<?> ignored = executorService.submit(() -> {
+      try {
+        onTopicEditedImpl(change, oldTopic, config.getContextUserId(user));
+      } catch (ConfigInvalidException | UnsupportedOperationException e) {
+        logger.atSevere().withCause(e).log(
+            "Automerger plugin failed onTopicEdited for %s", change.id);
+      }
+    });
   }
 
   private void onTopicEditedImpl(ChangeInfo eventChange, String oldTopic, Account.Id accountId) {
@@ -225,7 +239,14 @@ public class DownstreamCreator
     RevisionInfo eventRevision = deepCopy(event.getRevision());
     CurrentUser user = this.user.get();
     @SuppressWarnings("unused")
-    Future<?> ignored = executorService.submit(() -> onCommentAddedImpl(change, eventRevision, user.getAccountId()));
+    Future<?> ignored = executorService.submit(() -> {
+      try {
+        onCommentAddedImpl(change, eventRevision, config.getContextUserId(user));
+      } catch (ConfigInvalidException | UnsupportedOperationException e) {
+        logger.atSevere().withCause(e).log(
+            "Automerger plugin failed onCommentAdded for %s", change.id);
+      }
+    });
   }
 
   private void onCommentAddedImpl(ChangeInfo change, RevisionInfo eventRevision, Account.Id accountId) {
@@ -289,7 +310,14 @@ public class DownstreamCreator
     RevisionInfo revision = deepCopy(event.getRevision());
     CurrentUser user = this.user.get();
     @SuppressWarnings("unused")
-    Future<?> ignored = executorService.submit(() -> onChangeRestoredImpl(change, revision, user.getAccountId()));
+    Future<?> ignored = executorService.submit(() -> {
+      try {
+        onChangeRestoredImpl(change, revision, config.getContextUserId(user));
+      } catch (ConfigInvalidException | UnsupportedOperationException e) {
+        logger.atSevere().withCause(e).log(
+            "Automerger plugin failed onChangeRestored for %s", change.id);
+      }
+    });
   }
 
   private void onChangeRestoredImpl(ChangeInfo change, RevisionInfo revision, Account.Id accountId) {
@@ -315,8 +343,16 @@ public class DownstreamCreator
     ChangeInfo change = deepCopy(event.getChange());
     RevisionInfo revision = deepCopy(event.getRevision());
     CurrentUser user = this.user.get();
+
     @SuppressWarnings("unused")
-    Future<?> ignored = executorService.submit(() -> onRevisionCreatedImpl(change, revision, user.getAccountId()));
+    Future<?> ignored = executorService.submit(() -> {
+      try {
+        onRevisionCreatedImpl(change, revision, config.getContextUserId(user));
+      } catch (ConfigInvalidException | UnsupportedOperationException e) {
+        logger.atSevere().withCause(e).log(
+            "Automerger plugin failed onRevisionCreated for %s", change.id);
+      }
+    });
   }
 
   public void onRevisionCreatedImpl(ChangeInfo change, RevisionInfo revision, Account.Id accountId) {
