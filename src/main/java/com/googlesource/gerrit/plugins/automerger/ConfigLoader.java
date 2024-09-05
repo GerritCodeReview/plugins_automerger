@@ -298,12 +298,20 @@ public class ConfigLoader {
     return getConfig().getBoolean("global", "disableMinAutomergeVote", false);
   }
 
-  public Account.Id getContextUserId() throws ConfigInvalidException {
+  public Account.Id getContextUserId(CurrentUser currentUser) throws ConfigInvalidException {
     int contextUserId = getConfig().getInt("global", "contextUserId", -1);
     if (contextUserId > 0) {
       return Account.id(contextUserId);
     }
-    return user.get().getAccountId();
+    // Use the Guice injected user if one isn't provided.
+    if(currentUser == null)
+      return user.get().getAccountId();
+
+    return currentUser.getAccountId();
+  }
+
+  public Account.Id getContextUserId() throws ConfigInvalidException {
+    return getContextUserId(null);
   }
 
   /**
