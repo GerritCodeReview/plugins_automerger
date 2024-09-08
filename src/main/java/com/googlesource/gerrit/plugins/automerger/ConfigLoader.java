@@ -400,4 +400,10 @@ public class ConfigLoader {
     projects.removeAll(ignoreProjects);
     return projects;
   }
+
+  public ChangeMode changeMode() throws ConfigInvalidException {
+    boolean cherryPickMode = getConfig().getBoolean("global", "cherryPickMode", false);
+
+    return cherryPickMode ? ChangeMode.CHERRY_PICK : ChangeMode.MERGE;
+  }
 }

@@ -17,6 +17,7 @@ the `automerger.config` file of the project.
     blankMerge = .*RESTRICT AUTOMERGE.*
     blankMerge = .*SKIP UNLESS MERGEALL SET.*
     missingDownstreamsMessage = there is no ${missingDownstreams}
+    cherryPickMode = False
 
   [automerger "branch1:branch2"]
     setProjects = some/project
@@ -132,6 +133,12 @@ global.contextUserId
   If set to a valid user ID, all automerger operations will be done using the
   credentials of this user ID instead of the credentials of the user doing the
   upstream operation.
+
+global.cherryPickMode
+: If this is true, cherry-picks will be executed instead of merges.
+
+When a change is skipped in cherry-pick mode, a downstream change is not created
+and a "am_skip_<branch>" hashtag is added to the upstream commit.
 
 automerger.branch1:branch2.setProjects
 : Projects to automerge for.

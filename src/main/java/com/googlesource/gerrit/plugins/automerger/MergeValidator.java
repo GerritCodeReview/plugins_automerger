@@ -23,8 +23,6 @@ import com.google.gerrit.entities.PatchSet;
 import com.google.gerrit.extensions.api.GerritApi;
 import com.google.gerrit.extensions.client.ListChangesOption;
 import com.google.gerrit.extensions.common.ChangeInfo;
-import com.google.gerrit.extensions.common.CommitInfo;
-import com.google.gerrit.extensions.common.RevisionInfo;
 import com.google.gerrit.extensions.restapi.RestApiException;
 import com.google.gerrit.server.IdentifiedUser;
 import com.google.gerrit.server.git.CodeReviewCommit;
@@ -105,6 +103,7 @@ public class MergeValidator implements MergeValidationListener {
       throws RestApiException, IOException, ConfigInvalidException, InvalidQueryParameterException {
     Set<String> missingDownstreamBranches = new HashSet<>();
 
+    ChangeMode changeMode = config.changeMode();
     Set<String> downstreamBranches =
         config.getDownstreamBranches(upstreamChange.branch, upstreamChange.project);
     for (String downstreamBranch : downstreamBranches) {
@@ -113,6 +112,9 @@ public class MergeValidator implements MergeValidationListener {
       if (upstreamChange.topic == null || upstreamChange.topic.equals("")) {
         // If topic is null or empty, we immediately know that downstream is missing.
         missingDownstreamBranches.add(downstreamBranch);
+        continue;
+      }
+      if(cherryPickSkipped(upstreamChange, downstreamBranch)){
         continue;
       }
       queryBuilder.addParameter("topic", upstreamChange.topic);
@@ -124,14 +126,9 @@ public class MergeValidator implements MergeValidationListener {
               .withOptions(ListChangesOption.ALL_REVISIONS, ListChangesOption.CURRENT_COMMIT)
               .get();
       for (ChangeInfo change : changes) {
-        RevisionInfo revision = change.revisions.get(change.currentRevision);
-        List<CommitInfo> parents = revision.commit.parents;
-        if (parents.size() > 1) {
-          String secondParent = parents.get(1).commit;
-          if (secondParent.equals(upstreamChange.currentRevision)) {
-            dsExists = true;
-            break;
-          }
+        if(ChangeUtils.isDownstreamChange(gApi, upstreamChange.currentRevision, change, changeMode)) {
+          dsExists = true;
+          break;
         }
       }
       if (!dsExists) {
@@ -139,5 +136,17 @@ public class MergeValidator implements MergeValidationListener {
       }
     }
     return missingDownstreamBranches;
+  }
+
+  private boolean cherryPickSkipped(ChangeInfo change, String downstreamBranch){
+    try {
+      if(config.changeMode() == ChangeMode.MERGE){
+        return false;
+      }
+    } catch (ConfigInvalidException e) {
+      return false;
+    }
+
+    return change.hashtags.contains(ChangeUtils.getSkipHashtag(downstreamBranch));
   }
 }
