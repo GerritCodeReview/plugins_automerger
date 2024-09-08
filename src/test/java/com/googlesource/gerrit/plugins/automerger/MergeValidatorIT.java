@@ -24,6 +24,7 @@ import com.google.gerrit.acceptance.PushOneCommit;
 import com.google.gerrit.acceptance.TestPlugin;
 import com.google.gerrit.entities.BranchNameKey;
 import com.google.gerrit.entities.RefNames;
+import com.google.gerrit.extensions.api.changes.HashtagsInput;
 import com.google.gerrit.extensions.client.ListChangesOption;
 import com.google.gerrit.extensions.common.ChangeInfo;
 import com.google.gerrit.extensions.restapi.ResourceConflictException;
@@ -33,7 +34,9 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import org.eclipse.jgit.internal.storage.dfs.InMemoryRepository;
 import org.eclipse.jgit.junit.TestRepository;
 import org.eclipse.jgit.lib.Config;
@@ -43,7 +46,7 @@ import org.junit.Test;
     name = "automerger",
     sysModule = "com.googlesource.gerrit.plugins.automerger.AutomergerModule")
 public class MergeValidatorIT extends LightweightPluginDaemonTest {
-  private void pushConfig(String resourceName, String project, String branch) throws Exception {
+  private void pushConfig(String resourceName, String project, String branch, ChangeMode changeMode) throws Exception {
     TestRepository<InMemoryRepository> allProjectRepo = cloneProject(allProjects, admin);
     GitUtil.fetch(allProjectRepo, RefNames.REFS_CONFIG + ":config");
     allProjectRepo.reset("config");
@@ -51,8 +54,10 @@ public class MergeValidatorIT extends LightweightPluginDaemonTest {
       String resourceString =
           CharStreams.toString(new InputStreamReader(in, StandardCharsets.UTF_8));
 
+      String cherryPickMode = (changeMode == ChangeMode.MERGE) ? "False" : "True";
       Config cfg = new Config();
       cfg.fromText(resourceString);
+      cfg.setString("global", null, "cherryPickMode", cherryPickMode);
       // Update manifest project path to the result of createProject(resourceName), since it is
       // scoped to the test method
       cfg.setString("automerger", "master:" + branch, "setProjects", project);
@@ -61,6 +66,10 @@ public class MergeValidatorIT extends LightweightPluginDaemonTest {
               admin.newIdent(), allProjectRepo, "Subject", "automerger.config", cfg.toText());
       push.to(RefNames.REFS_CONFIG).assertOkStatus();
     }
+  }
+
+  private void pushConfig(String resourceName, String project, String branch) throws Exception {
+    pushConfig(resourceName, project, branch, ChangeMode.MERGE);
   }
 
   @Test
@@ -195,6 +204,25 @@ public class MergeValidatorIT extends LightweightPluginDaemonTest {
             "Failed to submit 1 change due to the following problems:\nChange "
                 + changeNumber
                 + ": there is no ds_one");
+  }
+
+  @Test
+  public void testSkippedCherryPick() throws Exception {
+    // Create initial change
+    PushOneCommit.Result result =
+        createChange(testRepo, "master", "subject", "filename", "content", "testtopic");
+
+    // Add the skip hashtag.
+    Set set = new HashSet<>();
+    set.add("am_skip_ds_one");
+    HashtagsInput input = new HashtagsInput(set);
+    gApi.changes().id(result.getChangeId()).setHashtags(input);
+
+    pushConfig("automerger.config", result.getChange().project().get(), "ds_one", ChangeMode.CHERRY_PICK);
+    result.assertOkStatus();
+
+    // Should be able to merge successfully.
+    merge(result);
   }
 
   private List<ChangeInfo> sortedChanges(List<ChangeInfo> changes) {

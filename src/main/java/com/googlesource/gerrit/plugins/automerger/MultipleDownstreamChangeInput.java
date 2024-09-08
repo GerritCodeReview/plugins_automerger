@@ -14,14 +14,19 @@
 
 package com.googlesource.gerrit.plugins.automerger;
 
-/** Class to hold input for a merge for a single source change and destination branch. */
-public class SingleDownstreamMergeInput {
-  public String currentRevision;
+import java.util.Map;
+
+/**
+ * Class to hold input for a set of downstream changes from a single source change, with associated
+ * metadata.
+ */
+public class MultipleDownstreamChangeInput {
+  public Map<String, Boolean> dsBranchMap;
   public int changeNumber;
   public int patchsetNumber;
   public String project;
   public String topic;
   public String subject;
-  public String downstreamBranch;
-  public boolean doMerge;
+  public String obsoleteRevision;
+  public String currentRevision;
 }

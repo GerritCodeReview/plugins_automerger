@@ -17,3 +17,5 @@ automerged patchset, it will update them all.
 A UI button "Recreate automerges" has been added so that users can skip
 downstream merges. Unchecking a branch's checkbox will skip that branch and
 all automerges downstream of that branch.
+
+The plugin can be configured to perform cherry-picks instead of merges.

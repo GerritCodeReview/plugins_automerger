@@ -71,6 +71,8 @@ export class Automerger {
 
   private downstreamConfigMap: ConfigMap = {};
 
+  private mergeMode: string = "";
+
   readonly plugin: PluginApi;
 
   constructor(readonly p: PluginApi) {
@@ -145,7 +147,7 @@ export class Automerger {
       }
     };
     const button = document.createElement('gr-button');
-    button.appendChild(document.createTextNode('Merge'));
+    button.appendChild(document.createTextNode(this.mergeMode));
     button.addEventListener('click', onClick);
     return button;
   }
@@ -193,9 +195,18 @@ export class Automerger {
     });
   }
 
+  private getMode() {
+    const url = `/config/server/automerger~automerge-mode`;
+    this.plugin.restApi().get<string>(url).then(resp => {
+      this.mergeMode = resp;
+    });
+  }
+
   onShowChange(change: ChangeInfo) {
     this.change = change;
     this.downstreamConfigMap = {};
+    this.mergeMode = "";
+    this.getMode();
     this.getDownstreamConfigMap();
   }
 
