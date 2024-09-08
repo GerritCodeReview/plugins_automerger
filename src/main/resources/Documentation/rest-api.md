@@ -86,3 +86,24 @@ strategy `-s ours` if the value in the map is false.
 ```
   HTTP/1.1 204 No Content
 ```
+
+### <a id="config-downstream"> Cherry Pick Mode
+GET /config/server/automerger~automerge-mode
+
+Returns either "CHERRY-PICK" or "MERGE".
+
+#### Request
+
+```
+  GET /config/server/automerger~automerge-mode HTTP/1.1
+```
+
+#### Response
+
+```
+  HTTP/1.1 200 OK
+  Content-Disposition: attachment
+  Content-Type: application/json;charset=utf-8
+  )]}'
+  "CHERRY-PICK"
+```

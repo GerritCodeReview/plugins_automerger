@@ -72,7 +72,7 @@ class AutomergeChangeAction
     }
     String revision = rev.getPatchSet().commitId().name();
 
-    MultipleDownstreamMergeInput mdsMergeInput = new MultipleDownstreamMergeInput();
+    MultipleDownstreamChangeInput mdsMergeInput = new MultipleDownstreamChangeInput();
     mdsMergeInput.dsBranchMap = branchMap;
     mdsMergeInput.changeNumber = change.getId().get();
     mdsMergeInput.patchsetNumber = rev.getPatchSet().number();
@@ -85,7 +85,7 @@ class AutomergeChangeAction
     logger.atFine().log("Multiple downstream merge input: %s", mdsMergeInput.dsBranchMap);
 
     try {
-      dsCreator.createMergesAndHandleConflicts(mdsMergeInput, config.getContextUserId());
+      dsCreator.createChangesAndHandleConflicts(mdsMergeInput, config.getContextUserId());
     } catch (ConfigInvalidException e) {
       throw new ResourceConflictException(
           "Automerger configuration file is invalid: " + e.getMessage());

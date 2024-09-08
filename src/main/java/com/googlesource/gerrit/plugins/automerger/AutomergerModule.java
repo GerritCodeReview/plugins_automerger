@@ -15,6 +15,7 @@
 package com.googlesource.gerrit.plugins.automerger;
 
 import static com.google.gerrit.server.change.RevisionResource.REVISION_KIND;
+import static com.google.gerrit.server.config.ConfigResource.CONFIG_KIND;
 import static com.google.gerrit.server.project.BranchResource.BRANCH_KIND;
 
 import com.google.gerrit.extensions.events.ChangeAbandonedListener;
@@ -40,6 +41,7 @@ public class AutomergerModule extends AbstractModule {
     DynamicSet.bind(binder(), RevisionCreatedListener.class).to(DownstreamCreator.class);
     DynamicSet.bind(binder(), TopicEditedListener.class).to(DownstreamCreator.class);
     DynamicSet.bind(binder(), MergeValidationListener.class).to(MergeValidator.class);
+    bind(ChangeCreatorApi.class).toProvider(ChangeCreatorProvider.class);
     install(
         new RestApiModule() {
           @Override
@@ -47,6 +49,7 @@ public class AutomergerModule extends AbstractModule {
             post(REVISION_KIND, "automerge-change").to(AutomergeChangeAction.class);
             post(REVISION_KIND, "config-downstream").to(ConfigDownstreamAction.class);
             get(BRANCH_KIND, "all-config-downstream").to(AllConfigDownstreamAction.class);
+            get(CONFIG_KIND, "automerge-mode").to(AutomergeMode.class);
           }
         });
     DynamicSet.bind(binder(), WebUiPlugin.class).toInstance(new JavaScriptPlugin("automerger.js"));
