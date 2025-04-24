@@ -26,9 +26,13 @@ import {
   ChangeId,
   Timestamp,
   ChangeInfoId,
+  PatchSetNumber,
+  CommitId,
 } from '@gerritcodereview/typescript-api/rest-api';
 import {Automerger, ConfigMap, UIActionInfo} from './automerger';
 import {queryAll, queryAndAssert, waitUntil} from './test/test-util';
+import {assert} from '@open-wc/testing';
+import sinon from 'sinon';
 
 const change: ChangeInfo = {
   _number: 123 as NumericChangeId,
@@ -44,6 +48,8 @@ const change: ChangeInfo = {
   status: ChangeStatus.NEW,
   subject: 'test-subject',
   updated: '2021-09-02 12:12:12.000000000' as Timestamp,
+  current_revision_number: 1 as PatchSetNumber,
+  current_revision: 'abc' as CommitId,
 };
 
 const configMap: ConfigMap = {
@@ -55,7 +61,8 @@ const configMap: ConfigMap = {
 suite('automerger tests', () => {
   let automerger: Automerger;
   let callback: (() => void) | undefined;
-  let sendStub: sinon.SinonStub;
+  let fetchStub: sinon.SinonStub;
+  let getStub: sinon.SinonStub;
   let postStub: sinon.SinonStub;
   let reloadStub: sinon.SinonStub;
   let popup: HTMLElement | undefined;
@@ -70,8 +77,10 @@ suite('automerger tests', () => {
   };
 
   setup(async () => {
-    sendStub = sinon.stub();
-    sendStub.returns(Promise.resolve({}));
+    fetchStub = sinon.stub();
+    fetchStub.returns(Promise.resolve({}));
+    getStub = sinon.stub();
+    getStub.returns(Promise.resolve({}));
     postStub = sinon.stub();
     postStub.returns(Promise.resolve(configMap));
     const fakePlugin = {
@@ -90,7 +99,8 @@ suite('automerger tests', () => {
       },
       restApi: () => {
         return {
-          send: sendStub,
+          fetch: fetchStub,
+          get: getStub,
           post: postStub,
         };
       },
@@ -108,8 +118,8 @@ suite('automerger tests', () => {
   test('callback set, popup created', async () => {
     assert.isNotOk(callback);
     assert.isNotOk(popup);
-
     automerger.onShowChange(change);
+    automerger.onShowRevision();
     assert.isOk(callback, 'callback expected to be set');
     if (callback) callback();
     await waitUntil(() => popup !== undefined);
@@ -118,6 +128,7 @@ suite('automerger tests', () => {
 
   test('popup contains 3 checkboxes', async () => {
     automerger.onShowChange(change);
+    automerger.onShowRevision();
     await waitUntil(() => postStub.called);
     if (callback) callback();
     await waitUntil(() => popup !== undefined);
@@ -127,12 +138,13 @@ suite('automerger tests', () => {
 
   test('popup contains button, which triggers send', async () => {
     automerger.onShowChange(change);
+    automerger.onShowRevision();
     await waitUntil(() => postStub.called);
     if (callback) callback();
     await waitUntil(() => popup !== undefined);
     const button = queryAndAssert<HTMLElement>(popup, 'gr-button');
     button.click();
-    assert.isTrue(sendStub.called, 'expected send() to be called');
+    assert.isTrue(getStub.called, 'expected send() to be called');
     await waitUntil(() => reloadStub.called);
   });
 });

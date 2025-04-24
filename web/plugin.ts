@@ -19,7 +19,7 @@ import {EventType} from '@gerritcodereview/typescript-api/plugin';
 import {ChangeInfo} from '@gerritcodereview/typescript-api/rest-api';
 import {Automerger} from './automerger';
 
-window.Gerrit.install(plugin => {
+window.Gerrit?.install(plugin => {
   const automerger = new Automerger(plugin);
   plugin.on(EventType.SHOW_CHANGE, (change: ChangeInfo) =>
     automerger.onShowChange(change)
