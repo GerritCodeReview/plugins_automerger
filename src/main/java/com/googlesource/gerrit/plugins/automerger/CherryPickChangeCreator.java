@@ -149,8 +149,8 @@ public class CherryPickChangeCreator implements ChangeCreatorApi {
     List<ChangeInfo> changes =
         ChangeUtils.getChangesInTopicAndBranch(gApi, currentTopic, sdsChangeInput.downstreamBranch);
     for (ChangeInfo change : changes) {
-      if(change.cherryPickOfChange.equals(sdsChangeInput.changeNumber)
-          && change.cherryPickOfPatchSet == sdsChangeInput.patchsetNumber) {
+      if(change.cherryPickOfChange != null && change.cherryPickOfChange.equals(sdsChangeInput.changeNumber)
+          && change.cherryPickOfPatchSet != null && change.cherryPickOfPatchSet.equals(sdsChangeInput.patchsetNumber)) {
         return true;
       }
     }
